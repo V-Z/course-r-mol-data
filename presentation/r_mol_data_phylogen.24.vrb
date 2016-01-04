@@ -1,0 +1,18 @@
+\frametitle{Set repositories}
+Follow all code we will use at \href{https://trapa.cz/sites/default/rcourse/rcommands.html}{https://trapa.cz/sites/default/rcourse/rcommands.html}
+  \begin{spluscode}
+    # Basic package installation
+    install.packages("PackageName") # Case sensitive!
+    ?install.packages # Shows all available parameters
+    # We will need extra repositories:
+    options(repos=c("http://cran.at.r-project.org",
+      "http://r-forge.r-project.org/", "http://www.rforge.net/",
+      "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/bioc",
+      "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/data/
+      annotation", "http://bioconductor.statistik.tu-dortmund.de/
+      packages/3.1/data/experiment",
+      "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/extra"))
+    getOption("repos") # Shows actual repositories
+    options() # Generic function to modify various settings
+    ?options # Gives details
+  \end{spluscode}

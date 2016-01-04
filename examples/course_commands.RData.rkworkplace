@@ -1,0 +1,12 @@
+base::::file:///home/vojta/dokumenty/fakulta/vyuka/r_mol_data/priklady
+script::::file:///home/vojta/dokumenty/fakulta/vyuka/r_mol_data/priklady/course_commands.r
+output::::file:///home/vojta/.rkward/rk_out.html
+workspace::sidebar,0::
+commandlog::sidebar,3::
+filebrowser::sidebar,0::
+pendingjobs::sidebar,4::
+console::sidebar,3::
+helpsearch::sidebar,3::
+debugframes::sidebar,1::
+debugconsole::sidebar,4::
+rkdebugmessages::sidebar,4::
