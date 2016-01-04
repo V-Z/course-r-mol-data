@@ -1,126 +1,44 @@
-## Core latex/pdflatex auxiliary files:
-*.aux
-*.lof
-*.log
-*.lot
-*.fls
-*.out
-*.toc
-
-## Intermediate documents:
-*.dvi
-*-converted-to.*
-# these rules might exclude image files for figures etc.
-# *.ps
-# *.eps
-# *.pdf
-
-## Bibliography auxiliary files (bibtex/biblatex/biber):
-*.bbl
-*.bcf
-*.blg
-*-blx.aux
-*-blx.bib
-*.brf
-*.run.xml
-
-## Build tool auxiliary files:
-*.fdb_latexmk
-*.synctex
-*.synctex.gz
-*.synctex.gz(busy)
-*.pdfsync
-
-## Auxiliary and intermediate files from other packages:
-
-# algorithms
-*.alg
-*.loa
-
-# achemso
-acs-*.bib
-
-# amsthm
-*.thm
-
+## XeLaTeX
+presentation/*.aux
+presentation/*.lof
+presentation/*.log
+presentation/*.lot
+presentation/*.fls
+presentation/*.out
+presentation/*.toc
+presentation/*~
+presentation/*.bak
+presentation/*.backup
+presentation/*.kilepr
+presentation/*.pdf
 # beamer
-*.nav
-*.snm
-*.vrb
-
-#(e)ledmac/(e)ledpar
-*.end
-*.[1-9]
-*.[1-9][0-9]
-*.[1-9][0-9][0-9]
-*.[1-9]R
-*.[1-9][0-9]R
-*.[1-9][0-9][0-9]R
-*.eledsec[1-9]
-*.eledsec[1-9]R
-*.eledsec[1-9][0-9]
-*.eledsec[1-9][0-9]R
-*.eledsec[1-9][0-9][0-9]
-*.eledsec[1-9][0-9][0-9]R
-
-# glossaries
-*.acn
-*.acr
-*.glg
-*.glo
-*.gls
-
-# gnuplottex
-*-gnuplottex-*
-
+presentation/*.nav
+presentation/*.snm
+presentation/*.vrb
 # hyperref
-*.brf
-
+presentation/*.brf
 # knitr
-*-concordance.tex
-*.tikz
-*-tikzDictionary
-
+presentation/*-concordance.tex
+presentation/*.tikz
+presentation/*-tikzDictionary
 # listings
-*.lol
-
+presentation/*.lol
 # makeidx
-*.idx
-*.ilg
-*.ind
-*.ist
-
+presentation/*.idx
+presentation/*.ilg
+presentation/*.ind
+presentation/*.ist
 # minitoc
-*.maf
-*.mtc
-*.mtc0
-
+presentation/*.maf
+presentation/*.mtc
+presentation/*.mtc0
 # minted
-_minted*
-*.pyg
-
-# morewrites
-*.mw
-
+presentation/_minted*
+presentation/*.pyg
 # nomencl
-*.nlo
-
-# sagetex
-*.sagetex.sage
-*.sagetex.py
-*.sagetex.scmd
-
-# sympy
-*.sout
-*.sympy
-sympy-plots-for-*.tex/
-
-# todonotes
-*.tdo
-
-# xindy
-*.xdy
-
-# WinEdt
+presentation/*.nlo
+## Other
+*~
 *.bak
-*.sav
+*.backup
+examples/*.RData.rkworkplace
