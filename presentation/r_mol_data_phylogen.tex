@@ -1,34 +1,82 @@
-\documentclass[hyperref={bookmarks=true, unicode=true, colorlinks=true, pdftitle={Molecular data in R}, plainpages=false, pdfauthor={Vojtech Zeisek}, pdfsubject={Course about phylogeny and evolution in R}, pdfcreator={XeLaTeX, http://www.xelatex.org/}, pdfkeywords={R, evolution, phylogeny, molecular data}, linkcolor=Sienna, anchorcolor=black, citecolor=green, filecolor=magenta, menucolor=Sienna, urlcolor=cyan, pdftex}, compress, ucs, xelatex, xcolor=svgnames, 11pt]{beamer}
-% Nastavení vzhledu
+\documentclass[compress, ucs, xelatex, 11pt, xcolor=svgnames,
+  hyperref={
+    bookmarks=true,
+    unicode=true,
+    colorlinks=true,
+    pdftitle={Molecular data in R},
+    plainpages=false,
+    pdfauthor={Vojtech Zeisek},
+    pdfsubject={Course about phylogeny and evolution in R},
+    pdfcreator={XeLaTeX},
+    pdfkeywords={R, evolution, phylogeny, molecular data},
+    linkcolor=Tomato,
+    anchorcolor=SaddleBrown,
+    citecolor=Goldenrod,
+    filecolor=DarkMagenta,
+    menucolor=Sienna,
+    urlcolor=DarkTurquoise,
+    pdftex},
+  url={hyphens, lowtilde} % Allow line breaks within URLs
+  ]{beamer}
+
+% Theme settings
 \usetheme[secheader]{Boadilla}
 \usecolortheme{whale}
 \setbeamertemplate{headline} {
   \begin{beamercolorbox}{section in head/foot}
     \insertsectionnavigationhorizontal{\paperwidth}{\hskip0pt plus1fill}{\hskip0pt plus1fill}
   \end{beamercolorbox}
-  \begin{beamercolorbox}[ht=2.5ex, dp=1.125ex]{subsection in head/foot}
+  \begin{beamercolorbox}[ht=2ex, dp=1.125ex]{subsection in head/foot}
     \insertsubsectionnavigationhorizontal{\paperwidth}{}{\hfill\hfill}
   \end{beamercolorbox}
-}
+  }
 \useinnertheme{circles}
-% Další balíčky
-\usepackage{xltxtra}
+
+% Basic packages
+\usepackage{xltxtra} % Loads following 4 packages for processing with XeLaTeX
+\usepackage{fixltx2e}
+\usepackage{metalogo}
 \usepackage{xunicode}
-\usepackage{polyglossia}
+\usepackage{fontspec}
+
+% Othe packages
 \usepackage{multicol}
-% Barevné zvýraznění syntaxe
+
+% In-line higlighting
+\usepackage{soul}
+
+% Add background for \texttt{} (using pacakge soul)
+\sethlcolor{Beige}
+\renewcommand{\texttt}[1]{\hl{\ttfamily #1}}
+
+% Syntax higlight
 \usepackage{minted}
-\usemintedstyle{vim} % styly se zjistí pygmentize -L styles; jazyky vypíše pygmentize -L lexers
-\newminted{splus}{linenos, fontsize=\footnotesize, gobble=4, bgcolor=Azure, numbersep=6pt}
-\newmint{splus}{fontsize=\footnotesize, bgcolor=Azure}
+\usemintedstyle{vim} % Styles are listed by pygmentize -L styles; languages are listed by pygmentize -L lexers
+\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Beige, fontfamily=tt, gobble=4, numbersep=-3pt}
+% Change line number style
+\renewcommand{\theFancyVerbLine}{
+  \sffamily
+  \textcolor{BlueViolet}{
+    \tiny
+    \oldstylenums{
+      \arabic{FancyVerbLine}
+      }
+    }
+  }
+% Inline source code
+\newmint{splus}{fontsize=\footnotesize, bgcolor=Beige}
+
 % Věci na titulku apod.
-\setdefaultlanguage{english}
 \author{Vojtěch Zeisek}
-\institute[\href{http://trapa.cz/}{http://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University in Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\href{http://trapa.cz/}{http://trapa.cz/}, \href{zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
+\institute[\url{https://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University in Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\url{https://trapa.cz/}, \href{mailto:zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
-\date{January 14 to 16, 2015}
-\titlegraphic{\includegraphics[width=1.5cm]{rlogo.jpg}}
+\titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
+\date{January 25 to 27, 2016}
+
+% Default language
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
 
 \begin{document}
 
@@ -3278,9 +3326,20 @@ Other implementations are available in packages geiger (functions fitContinuousM
 \end{center}
 \begin{flushright}
   \begin{tiny}
-   \href{http://www.xelatex.org/}{Typesetting} using \XeLaTeX~on \href{http://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}
+   \href{https://en.wikipedia.org/wiki/XeTeX}{Typesetting} using \XeLaTeX~on \href{https://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}
   \end{tiny}
 \end{flushright}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Missing topics}
+  \begin{itemize}
+    \item More theory for methods
+    \item Reconstruction of character evolution
+    \item Tree graphics
+    \item Functions from GitHub
+    \item How to create R function
+    \item How to create/run R script
+  \end{itemize}
 \end{frame}
 
 \end{document}
