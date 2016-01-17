@@ -185,7 +185,7 @@
 
 \subsection{Installation}
 
-\begin{frame}{MS Windows, Apple Mac OS X}
+\begin{frame}{MS Windows, Apple Mac OS~X}
 \begin{itemize}
  \item Got to \url{https://cran.r-project.org/}
  \item Download appropriate version and install as usual
@@ -992,9 +992,9 @@ It returns various population statistics. \texttt{png()} will produce set of fig
     dev.off() # Closes graphical device - needed after use of functions
               # png(), svg(), pdf(), ... to write the file(s) to the disk
   \end{spluscode}
-  \begin{multicols}{2}
-    \begin{itemize}
-      \begin{tiny}
+  \begin{tiny}
+    \begin{multicols}{2}
+      \begin{itemize}
 	\item Pop -- Population name (Note that ``Total'' also means ``Pooled'')
 	\item N -- Number of individuals observed
 	\item MLG -- Number of multilocus genotypes (MLG) observed
@@ -1007,9 +1007,9 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 	\item Ia -- The index of association, IA
 	\item rbarD -- The standardized index of association
 	\item See \href{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analysis-r/installation}{poppr's manual} for details
-      \end{tiny}
-    \end{itemize}
-  \end{multicols}
+      \end{itemize}
+    \end{multicols}
+  \end{tiny}
 \end{frame}
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
@@ -1629,17 +1629,27 @@ Package poppr (bootstrap is incorporated within the function)
 
 \section{DAPC}
 
-\begin{frame}{DAPC}
-\begin{itemize}
- \item Discriminant Analysis of Principal components
- \item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
- \item Finally it runs discriminant analysis
- \item Various modes of displaying of results -- ``Structure-like'', ``PCA-like'' and more
- \item More information at \url{http://adegenet.r-forge.r-project.org/} and \texttt{adegenetTutorial("dapc")}
- \item If following commands would seem to complicated to you, try web interface by this command:
-\end{itemize}
-\splus/adegenetServer("DAPC")/
+\begin{frame}[fragile]{DAPC}
+  \begin{itemize}
+    \item Discriminant Analysis of Principal components (\href{http://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94}{Jombart et al. 2010})
+    \item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
+    \item Finally it runs discriminant analysis (DA) to maximize differences among groups
+    \item Various modes of displaying of results -- ``Structure-like'', ``PCA-like'' and more
+    \item More information at \url{http://adegenet.r-forge.r-project.org/} and \texttt{adegenetTutorial("dapc")}
+    \item If following commands would seem too complicated to you, try web interface by this command:
+  \end{itemize}
+  \begin{spluscode}
+    adegenetServer("DAPC") # Recommended to open in Google Chrome/Chromium
+  \end{spluscode}
 \end{frame}
+
+\begin{frame}{Principal difference between PCA and DA}
+\begin{center}
+  \includegraphics[height=6cm]{dapc-da-pca.png}
+\end{center}
+\end{frame}
+
+\subsection{Bayesian clustering}
 
 \begin{frame}[fragile]{K-find -- Bayesian K-means clustering}
   \begin{spluscode}
@@ -1684,6 +1694,8 @@ Package poppr (bootstrap is incorporated within the function)
   \includegraphics[height=6cm]{kmeans.png}
 \end{multicols}
 \end{frame}
+
+\subsection{Discriminant analysis and visualization}
 
 \begin{frame}[fragile]{DAPC code I}
   \begin{spluscode}
@@ -2462,22 +2474,40 @@ We will use figures and F$_{ST}$ outputs only from the best run.
 
 \section{Structure}
 
+\begin{frame}{Structure}
+\begin{itemize}
+  \item Population genetic software for Bayesian clustering, \url{http://pritchardlab.stanford.edu/structure.html}
+  \item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
+  \item One Structure run tests one selected K
+  \begin{itemize}
+    \item User must run it repeatedly for several Ks to find the best division
+    \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm)
+    \item Finally there can be hundreds of runs\ldots
+    \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python)
+  \end{itemize}
+  \item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
+\end{itemize}
+\end{frame}
+
+\subsection{Running Structure from R}
+
 \begin{frame}[fragile]{Running Structure in parallel with R}
 \begin{itemize}
- \item Population genetic software for Bayesian clustering \href{http://pritchardlab.stanford.edu/software.html}{Structure} requires several runs for each K~and various Ks. It can result in hundreds runs
- \item With should use power of modern multi-core CPUs
- \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} library can optimally distribute computations of independent Structure runs among CPU cores
+ \item Let's use modern multi-core CPUs and plenty of RAM in current computers -- parallelisation saves time
+ \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
  \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
  \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
+ \item Authors recommend to run it without GUI and not on Windows
 \end{itemize}
   \begin{spluscode}
-    # Prepare special directory and set working directory
+    # Prepare special new empty directory and set working directory
     setwd("~/dokumenty/fakulta/vyuka/r_mol_data/priklady/structure/")
+    install.packages("ParallelStructure",
+      repos="http://R-Forge.R-project.org") # Install the package
     library(ParallelStructure) # Load the library
     # See Structure manual and function's documentation
-    # It takes more or less same parameter as for normal Structure
+    # It takes more or less same parameter as normal Structure
     ?parallel_structure
-    # Author's recommend to run it without GUI and not on Windows
   \end{spluscode}
 \end{frame}
 
@@ -2496,14 +2526,15 @@ Within working ``structure'' directory you need
   \end{itemize}
  \item Data input file
   \begin{itemize}
-    \item Make it as simple as possible -- remove any unneeded columns
-    \item For population names use subsequent number from 1~to number of populations
+    \item Make it as simple as possible -- remove all unneeded columns
+    \item For population names use subsequent numbers from 1~to number of populations
+    \item For individual names use only alphanumerical characters
   \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Input files}
-Joblist file:\\
+\textbf{Joblist file:}\\
 \vfill
 \begin{tabular}{lllll}
 S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
@@ -2512,7 +2543,7 @@ S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
 ... & ... & ... & ... & ...\\
 \end{tabular}
 \vfill
-Input file:\\
+\textbf{Input file:}\\
 \vfill
 \begin{tabular}{lllllllllll}
  & & & msta93 & msta101 & msta102 & msta103 & ...\\
@@ -2537,17 +2568,19 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
 \begin{itemize}
  \item Choose \texttt{n\_cpu} according to your computer
  \item \texttt{structure\_path} points to \alert{directory} containing Structure binary
- \item \texttt{outpath} should aim to empty directory
+ \item \texttt{outpath} should aim to \alert{empty} directory
  \item \texttt{plot\_output=1} will produce plots for all runs
  \item Check all other settings according to Structure manual and your needs
  \item Get input file \url{https://trapa.cz/sites/default/rcourse/hauss_stru.in} and joblist \url{https://trapa.cz/sites/default/rcourse/joblist.txt}
 \end{itemize}
 \end{frame}
 
+\subsection{ParallelStructure on Windows}
+
 \begin{frame}[fragile]{ParallelStructure and Windows}
 \begin{itemize}
  \item Authors do not recommend to run ParallelStructure on Windows\ldots
- \item \texttt{parallel\_structure()} is missing paralleling library which is not available on Windows, instead try
+ \item \texttt{parallel\_structure()} uses for parallelisation library which is not available on Windows, instead try
 \end{itemize}
   \begin{spluscode}
     # Install Rmpi library required by ParallelStructure for
@@ -2559,7 +2592,7 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
     MPI_structure(...) # Same arguments as on previous slide
   \end{spluscode}
 \begin{itemize}
- \item If this fails, look for some UNIX machine (Linux, Mac OS X, BSD,~\ldots)\ldots
+ \item If this fails, look for some UNIX machine (Linux, Mac OS~X, BSD,~\ldots)\ldots
 \end{itemize}
 \end{frame}
 
@@ -2999,7 +3032,7 @@ Calculate Robinsons-Foulds distance (allow compare trees created by different al
 \begin{frame}[fragile]{Maximum parsimony}
 \begin{multicols}{2}
   \includegraphics[height=6cm]{parsimony.png}
-  \splus/# Parsimony details: ?parsimony/
+  \splus/?parsimony # Parsimony details/
   \begin{spluscode}
     # Conversion to phyDat
     meles.phydat <-
@@ -3236,13 +3269,13 @@ Calculate Robinsons-Foulds distance (allow compare trees created by different al
 \subsection{Ancestral state reconstruction}
 
 \begin{frame}[fragile]{Ancestral state reconstruction}
-By default \texttt{ace} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood
+By default \texttt{ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood
   \begin{spluscode}
     # See ?ace for possible settings
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
       type="continuous", method="REML", corStruct=corBrownian(
       value=1, phy=primates.tree))
-    # See result - reconstructions are in $ace
+    # See result - reconstructions are in $ace slot
     # To be plotted on nodes - 1st column are node numbers
     primates.body.ace
     # Plot it
@@ -3364,7 +3397,7 @@ By default \texttt{ace} performs estimation for continuous characters assuming a
   \ldots~any final questions?
   \vfill
   \begin{tiny}
-   \href{https://en.wikipedia.org/wiki/XeTeX}{Typesetting} using \XeLaTeX~on \href{https://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}
+   \href{https://en.wikipedia.org/wiki/XeTeX}{Typesetting} using \XeLaTeX~on \href{https://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}, \today.
   \end{tiny}
 \end{flushright}
 \end{frame}
@@ -3386,3 +3419,108 @@ By default \texttt{ace} performs estimation for continuous characters assuming a
 \end{frame}
 
 \end{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% Arlequin
+
+% https://trapa.cz/en/arlequin-r-linux
+% 
+% setwd("~/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/")
+% library(XML)
+% source("rParsingSettings_fst_vse.r")
+% source("rParsingSettings_jen_rst.r")
+% 
+% infile <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/nuphar_fst_vse.xml"
+% outfiles <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/Graphics/"
+% sourcePath <- "/home/vojta/bin/arlecore/Rfunctions/"
+% 
+% source(paste(sourcePath, "parseArlequin.r", sep="") )
+% parseArlequin(infile, outfiles, sourcePath)
+
+
+
+%%% Diversity
+
+% library(plotrix) # Závislos diveRsity
+% library(shiny) # Závislos diveRsity
+% library(ggplot2) # Závislos diveRsity
+% library(diveRsity)
+% 
+% setwd("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/")
+% 
+% # Diviersity
+% dioszegia.divpart <- divPart(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
+% dioszegia.incalc <- inCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
+% dioszegia.genepop <- readGenepop(infile="diversity/dioszegia.genepop", gp=3, bootstrap=FALSE)
+% corPlot(dioszegia.genepop, dioszegia.divpart)
+% difPlot(dioszegia.divpart, outfile="diversity/dioszegia/", interactive=TRUE)
+% chiCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, minFreq=0.01)
+% dioszegia.divratio <- divRatio(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pop_stats=dioszegia.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
+% # Private alleles apod.
+% # Po populacích
+% convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
+% popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
+% # Po druzích
+% convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
+% popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_sp.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
+% 
+% # Diversity
+% haussknechtii.divpart <- divPart(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
+% haussknechtii.incalc <- inCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
+% haussknechtii.genepop <- readGenepop(infile="diversity/haussknechtii.genepop", gp=3, bootstrap=FALSE)
+% corPlot(haussknechtii.genepop, haussknechtii.divpart)
+% difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
+% haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
+% divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
+
+
+
+%%%
+
+% # Compare topology of the species trees
+% all.equal.phylo(tree.sp.min, tree.sp.mean, use.edge.length=FALSE, use.tip.label=TRUE, index.return=FALSE)
+
+
+
+%%%
+
+% # Robinsons-Foulds distance - some trees are not fully bifurcating - some results might be misleading
+% trees.nexus.d.rf <- RF.dist(tree1=trees.nexus, tree2=NULL, check.labels=TRUE)
+% # trees.nexus.d.rf <- multiRF(trees.nexus)
+
+
+
+%%%
+
+% # PCoA of trees distances
+% trees.d.raxml.red.pcoa <- dudi.pco(d=quasieuclid(distmat=as.dist(m=trees.d.raxml.red, diag=TRUE, upper=TRUE)), full=TRUE)
+
+
+
+%%%
+
+% ## Check sequences
+% pegas: nuc.div() #?
+% ape: base.freq()
+% seqinr: count() # And other functions from the package?
+% seqinr: SeqFastadna() # And other functions from the package?
+% Biostrings: alphabetFrequency() # And other functions from the package?
+% # DNA is a DNAbin object - graph displays missing data and gaps:
+% image(DNA, c("g", "n"), c("black", "grey"))
+% grid(ncol(x), nrow(x), col = "lightgrey")
+
+
+
+%%%
+
+% # Plot multiple trees in once
+% # Comparing MrBayes and RAxML
+% #par(mfrow=c(3, 2))
+% cophyloplot(x=ladderize(tree.sp.astral), y=ladderize(tree.sp.raxml.astral), assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
+% title("ASTRAL trees (MrBayes left and RAxML right)")
+% legend("topleft", legend="A", cex=2, bty="n", x.intersp=-1, y.intersp=-2.5)
+
+
+%%%
+
