@@ -2722,7 +2722,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 
 \section{Trees}
 
-\subsection{Tree manipulations}
+\subsection{Manipulations}
 
 \begin{frame}[fragile]{Read and write tree and drop tips}
   \begin{spluscode}
@@ -2834,7 +2834,23 @@ Class ``multiPhylo'' is just a~list of ``phylo'' objects to store multiple trees
 
 \subsection{Seeing trees in the forest}
 
-\begin{frame}[fragile]{Topographical distances among trees I}
+\begin{frame}{Topographical distances among matrices I -- implementations}
+\begin{itemize}
+  \item Robinsons-Foulds distance in \texttt{phytools::multiRF}
+  \begin{itemize}
+    \item The index adds 1 for each difference between pair of trees
+    \item Well defined only for fully bifurcating trees -- if not fulfilled, some results might be misleading
+    \item Allow comparison of trees created by different methods
+  \end{itemize}
+  \item Methods implemented in \texttt{ape::dist.topo} allow comparison of trees with polytomies (\texttt{method="PH85"}) or use of squared lengths of internal branches (\texttt{method="score"})
+  \item Final matrices are not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} -- may be problematic for usage in methods like PCA
+  \begin{itemize}
+    \item Test it with \texttt{ade4::is.euclid}, can be scaled by (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} -- carefully, it may damage meaning of the data
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Topographical distances among trees II}
 We have plenty of trees. How much are their topologies different?
   \begin{spluscode}
     library(gplots)
@@ -2850,14 +2866,14 @@ We have plenty of trees. How much are their topologies different?
         oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]],
           oxalis.trees[[j]])
       }
-    }
+    } # dist.topo can compare only two trees in one step... :-(
     # Basic information about the distance matrix
     dim(oxalis.trees.d)
     head.matrix(oxalis.trees.d)
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Topographical distances among trees II}
+\begin{frame}[fragile]{Topographical distances among trees III}
 Post process the matrix and plot it. There are several methods for calculating distance matrices among the trees -- some take branch lengths into account, some only topology.
   \begin{spluscode}
     # Add names of columns and rows
@@ -2878,8 +2894,11 @@ Post process the matrix and plot it. There are several methods for calculating d
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Topographical distances among trees III}
-Calculate Robinsons-Foulds distance (allow compare trees created by different algorithms) matrix among trees and plot it.
+\begin{frame}[fragile]{Topographical distances among trees IV}
+\begin{itemize}
+  \item Calculate Robinsons-Foulds distance matrix among trees and plot it
+  \item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects and directly create matrices (no need to create loops)
+\end{itemize}
   \begin{spluscode}
     # Robinsons-Foulds distance
     oxalis.trees.d.rf <- multiRF(oxalis.trees)
@@ -2898,7 +2917,7 @@ Calculate Robinsons-Foulds distance (allow compare trees created by different al
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{Topographical distances among trees IV -- the matrices}
+\begin{frame}{Topographical distances among trees V -- the matrices}
 \includegraphics[width=\textwidth]{oxalis-dist.png}
 \end{frame}
 
@@ -3053,6 +3072,42 @@ Calculate Robinsons-Foulds distance (allow compare trees created by different al
       type="clad", edge.width=2)
   \end{spluscode}
 \end{multicols}
+\end{frame}
+
+\subsection{Comparisons}
+
+\begin{frame}[fragile]{Compare two trees}
+  \begin{spluscode}
+    # Compare topology of the species trees - basically outputs TRUE/FALSE
+    all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean,
+      use.edge.length=FALSE)
+    ?all.equal.phylo # Use to see comparison possibilities
+    # Plot two trees with connecting lines
+    # We need 2 column matrix with tip labels
+    tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]),
+      sort(oxalis.tree.sp.mean[["tip.label"]])),
+      nrow=length(oxalis.tree.sp[["tip.label"]]), ncol=2)
+    # Draw a tree - play with graphical parameters and use rotate=TRUE
+    # to be able to adjust fit manually
+    cophyloplot(x=ladderize(oxalis.tree.sp),
+      y=ladderize(oxalis.tree.sp.mean),  assoc=tips.labels,
+      use.edge.length=FALSE, space=60, length.line=1, gap=2,
+      type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
+    title("Comparing the trees\nParsimony super tree\tSpecies tree")
+    legend("topleft", legend="Red lines\nconnect tips", text.col="red",
+      cex=0.75, bty="n", x.intersp=-2, y.intersp=-2)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{Cophyloplot comparing two trees}
+  \begin{multicols}{2}
+    \includegraphics[height=6cm]{cophyloplot.png}
+    \begin{itemize}
+      \item \texttt{ladderize()} pre-sorts tips in the tree -- it helps to \texttt{cophyloplot()} to create better plot
+      \item Automatic plot is usually not perfect -- there use to be unneeded crossing lines -- \texttt{rotate=TRUE} is recommended to can fix this manually by clicking to the nodes
+      \item \texttt{cophyloplot()} has similar parameters like \texttt{plot.phylo()} -- play with it and adjust in graphical editor
+    \end{itemize}
+  \end{multicols}
 \end{frame}
 
 \subsection{Notes about plotting the trees}
@@ -3478,28 +3533,6 @@ By default \texttt{ace()} performs estimation for continuous characters assuming
 
 %%%
 
-% # Compare topology of the species trees
-% all.equal.phylo(tree.sp.min, tree.sp.mean, use.edge.length=FALSE, use.tip.label=TRUE, index.return=FALSE)
-
-
-
-%%%
-
-% # Robinsons-Foulds distance - some trees are not fully bifurcating - some results might be misleading
-% trees.nexus.d.rf <- RF.dist(tree1=trees.nexus, tree2=NULL, check.labels=TRUE)
-% # trees.nexus.d.rf <- multiRF(trees.nexus)
-
-
-
-%%%
-
-% # PCoA of trees distances
-% trees.d.raxml.red.pcoa <- dudi.pco(d=quasieuclid(distmat=as.dist(m=trees.d.raxml.red, diag=TRUE, upper=TRUE)), full=TRUE)
-
-
-
-%%%
-
 % ## Check sequences
 % pegas: nuc.div() #?
 % ape: base.freq()
@@ -3510,16 +3543,6 @@ By default \texttt{ace()} performs estimation for continuous characters assuming
 % image(DNA, c("g", "n"), c("black", "grey"))
 % grid(ncol(x), nrow(x), col = "lightgrey")
 
-
-
-%%%
-
-% # Plot multiple trees in once
-% # Comparing MrBayes and RAxML
-% #par(mfrow=c(3, 2))
-% cophyloplot(x=ladderize(tree.sp.astral), y=ladderize(tree.sp.raxml.astral), assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
-% title("ASTRAL trees (MrBayes left and RAxML right)")
-% legend("topleft", legend="A", cex=2, bty="n", x.intersp=-1, y.intersp=-2.5)
 
 
 %%%
