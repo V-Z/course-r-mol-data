@@ -3324,12 +3324,12 @@ Post process the matrix and plot it. There are several methods for calculating d
 \subsection{Ancestral state reconstruction}
 
 \begin{frame}[fragile]{Ancestral state reconstruction}
-By default \texttt{ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood
+By default \texttt{ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood.
   \begin{spluscode}
     # See ?ace for possible settings
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
-      type="continuous", method="REML", corStruct=corBrownian(
-      value=1, phy=primates.tree))
+      type="continuous", method="REML",
+      corStruct=corBrownian(value=1, phy=primates.tree))
     # See result - reconstructions are in $ace slot
     # To be plotted on nodes - 1st column are node numbers
     primates.body.ace
