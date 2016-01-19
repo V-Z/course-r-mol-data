@@ -1393,9 +1393,9 @@ apiaceae.tree <- read.nexus("https://trapa.cz/sites/default/rcourse/apiaceae_mrb
 print.phylo(apiaceae.tree)
 plot.phylo(apiaceae.tree)
 
-apiaceae.names <- c("Angelica sylvestris", "Anthriscus sylvestris", "Astrantia major", "Bupleurum falcatum", "Cicuta virosa", "Daucus carota", "Eryngium campestre", "Falcaria vulgaris", "Heracleum mantegazzianum", "Heracleum sphondylium", "Chaerophyllum aromaticum", "Chaerophyllum temulum", "Pastinaca sativa", "Peucedanum cervaria", "Pimpinella saxifraga", "Selinum carvifolia", "Seseli hippomarathrum", "Torilis japonica")
-apiaceae.eco <- c(10.93, 105.73, 70.69, 92.21, 58.08, 48.88, 113.12, 64.67, 24.24, 0.6, 59.4, 71.33, 70.99, 100.44, 122.83, 73.44, 106.4, 87.41)
-names(apiaceae.eco) <- apiaceae.names
+apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1, model="BM")[,,1]
+
+names(apiaceae.eco) <- apiaceae.tree[["tip.label"]]
 apiaceae.eco
 
 apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
@@ -1406,8 +1406,6 @@ plot.phylo(apiaceae.tree)
 apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
 plot.phylo(apiaceae.tree)
 
-apiaceae.tree.red <- drop.tip(phy=apiaceae.tree, tip=c("Cicuta virosa", "Chaerophyllum temulum", "Peucedanum cervaria"), trim.internal=TRUE, subtree=FALSE, rooted=TRUE, interactive=FALSE)
-
 ## Orthonormal Decomposition - phylogenetic eigenvector regression
 # orthobasis.phylo() vrací matici, která je lineární transformací cofenetických vzdáleností - z 1. 2 sloupců lze spočítat fylogenetická variance. Z toho pak lze spočítat lineární regrese - silná korelace odpovědní proměnné a transformované cofenetické matice značí silnou netečnost proměnné k fylogenezi
 # signifikantní výsledek - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
@@ -1415,8 +1413,6 @@ library(adephylo)
 anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree, method="patristic")[,1:2])))
 
 # Orthonormal decomposition of variance of a quantitative variable on an orthonormal basis
-# MrBayes
-# kořeny
 orthogram(x=apiaceae.eco, tre=apiaceae.tree, nrepet=1000, alter="two-sided")
 
 # Dekompozice topografických vzdáleností
@@ -1426,51 +1422,43 @@ table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree, resu
 
 # Funkce pro correlation: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
 # Fitting an Ornstein-Uhlenbeck Motion model in PGLS
-# MrBayes
-# Exud
-summary(gls(model=primates.body ~ primates.longevity, correlation=corMartins(value=1, phy=primates.tree, fixed=FALSE)))
+summary(gls(model=primates.longevity ~ primates.body, data=as.data.frame(cbind(primates.longevity, primates.body)), correlation=corBrownian(value=1, phy=primates.tree)))
 
 # Implementace v caper
-# MrBayes
-# Exud
-primates.pgls <- pgls(formula=primates.body ~ primates.longevity, data=comparative.data(phy=primates.tree, data=as.data.frame(cbind(primates.body, primates.tree[["tip.label"]])), names.col=V2, vcv=TRUE))
-summary(primates.pgls)
-plot(primates.pgls)
+shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
+summary(shorebird.pgls)
+plot(shorebird.pgls)
 abline(a=0, b=1, col="red")
-anova(primates.pgls)
-AIC(primates.pgls)
+anova(shorebird.pgls)
+AIC(shorebird.pgls)
 
 ## Generalized Estimating Equations
 
-# MrBayes
-# Exudáty
-compar.gee(formula=primates.body ~ primates.longevity, phy=primates.tree)
+compar.gee(formula=primates.longevity ~ primates.body, phy=primates.tree)
 
 # Místo přímo stromu lze použít fylogenetické korelační struktura
 # Funkce pro corStruct: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
-# MrBayes
-# Exudáty
-compar.gee(formula=primates.body ~ primates.longevity, corStruct=corPagel(value=1, phy=primates.tree))
+compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(value=51, phy=primates.tree, fixed=TRUE))
 
-# multiple phylogenetic regressions and residuals
-# x can be matrix of data
-phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
-phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
+# # multiple phylogenetic regressions and residuals
+# # x can be matrix of data
+# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
+# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
 
-# Ornstein-Uhlenbeck Model
-# Simulace evoluce na fylogenetickém stromu
-compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
+# # Ornstein-Uhlenbeck Model
+# # Simulace evoluce na fylogenetickém stromu
+# compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
 
-## Variance Partitioning
-# vare: the estimated residual variance–covariance matrix;
-# vara: the estimated additive effect variance–covariance matrix;
-# u: the estimates of the phylogeny wide means;
-# A: the additive value estimates;
-# E: the residual value estimates;
-# lik: the log-likelihood.
-# x can be vector, matric or df
-apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
-mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
+# ## Variance Partitioning
+# # vare: the estimated residual variance–covariance matrix;
+# # vara: the estimated additive effect variance–covariance matrix;
+# # u: the estimates of the phylogeny wide means;
+# # A: the additive value estimates;
+# # E: the residual value estimates;
+# # lik: the log-likelihood.
+# # x can be vector, matric or df
+# apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
+# mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
 
 ## Phylogenetic Signal
 # If Blomberg's values of 1 correspond to a Brownian motion process, which implies some degree of phylogenetic signal or conservatism. K values closer to zero correspond to a random or convergent pattern of evolution, while K values greater than 1 indicate strong phylogenetic signal and conservatism of traits.
@@ -1479,56 +1467,46 @@ Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
 sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
 
 # Blomberg's K statistic of phylogenetic signal as well as P-value based on variance of phylogenetically independent contrasts relative to tip shuffling randomization
-phylosignal()
-sapply(X=list(exud1=resp.pos.exud1.concat.mrbayes, exud2=resp.pos.exud2.concat.mrbayes, exud3=resp.pos.exud3.concat.mrbayes, metab.exud1.1=metab.pos.exud1.concat.mrbayes.pca1, metab.exud1.2=metab.pos.exud1.concat.mrbayes.pca2, metab.exud2.1=metab.pos.exud2.concat.mrbayes.pca1, metab.exud2.2=metab.pos.exud2.concat.mrbayes.pca2, metab.exud3.1=metab.pos.exud3.concat.mrbayes.pca1, metab.exud3.2=metab.pos.exud3.concat.mrbayes.pca2), FUN=phylosignal, phy=strom.concat.mrbayes.exud, reps=10000)
+phylosignal(x=apiaceae.eco, phy=apiaceae.tree, reps=1000, checkdata=TRUE)
+sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=phylosignal, phy=primates.tree, reps=1000)
 
 # Místo sapply lze použít multiPhylosignal
-multiPhylosignal(x=as.data.frame(cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes, metab.pos.exud1.concat.mrbayes.pca$li, metab.pos.exud2.concat.mrbayes.pca$li, metab.pos.exud3.concat.mrbayes.pca$li)), phy=strom.concat.mrbayes.exud, reps=10000)
+multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000)
 
 # Alternativně funkce phylosig()
-phylosig(tree=strom.concat.mrbayes, x=resp.pos.root1.concat.mrbayes, method="K", test=TRUE, nsim=10000)
-phylosig(tree=strom.concat.mrbayes, x=resp.pos.root1.concat.mrbayes, method="lambda", test=TRUE)
+phylosig(tree=apiaceae.tree, x=apiaceae.eco, method="K", test=TRUE, nsim=1000)
+phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
 
 ## Intraspecific variation
 # PIC - orthonormal contrasts using the method
-# MrBayes
-# Exud
-resp.pos.exud.pic.mrbayes <- pic.ortho(x=list(cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[1,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[2,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[3,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[4,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[5,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[6,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[7,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[8,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[9,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[10,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[11,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[12,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[13,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[14,], cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes)[15,]), phy=strom.concat.mrbayes.exud, var.contrasts=FALSE, intra=FALSE)
+primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,]), phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
 
 # Variance Partitioning
 # when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
-resp.pos.exud.concat.mrbayes.varcomp <- varCompPhylip(x=cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes), phy=strom.concat.mrbayes.exud)
-mantel.test(m1=resp.pos.exud.concat.mrbayes.varcomp$varA, m2=resp.pos.exud.concat.mrbayes.varcomp$varE, nperm=10000, graph=TRUE, alternative="two.sided")
-mantel.randtest(m1=as.dist(resp.pos.exud.concat.mrbayes.varcomp$varA), m2=as.dist(resp.pos.exud.concat.mrbayes.varcomp$varE), nrepet=10000)
-plot(mantel.randtest(m1=as.dist(resp.pos.exud.concat.mrbayes.varcomp$varA), m2=as.dist(resp.pos.exud.concat.mrbayes.varcomp$varE), nrepet=10000))
+# http://evolution.gs.washington.edu/phylip.html
+primates.varcomp <- varCompPhylip(x=cbind(primates.body, primates.longevity), phy=primates.tree, exec="~/bin/phylip/exe/contrast")
+mantel.test(m1=primates.varcomp$varA, m2=primates.varcomp$varE, nperm=1000, graph=TRUE, alternative="two.sided")
+mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000)
+plot(mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000))
 
 ## Estimating ancestral state
 # ACE
-# MrBayes
-# Exudáty
-resp.pos.exud1.concat.mrbayes.ace <- ace(x=resp.pos.exud1.concat.mrbayes, phy=strom.concat.mrbayes.exud, type="continuous", method="REML", CI=TRUE)
-plot.phylo(x=strom.concat.mrbayes.exud, type="cladogram", use.edge.length=FALSE, edge.width=4, cex=1.5, label.offset=1.1, main="ACE, resp.pos.exud1.concat.mrbayes")
-tiplabels(text=round(x=resp.pos.exud1.concat.mrbayes, digits=2), bg=num2col(x=resp.pos.exud1.concat.mrbayes, col.pal=spectral, reverse=TRUE), cex=1.3)
-nodelabels(text=round(x=resp.pos.exud1.concat.mrbayes.ace$ace, digits=2), bg=num2col(x=resp.pos.exud1.concat.mrbayes.ace$ace, col.pal=spectral, reverse=TRUE, x.min=min(resp.pos.exud1.concat.mrbayes), x.max=max(resp.pos.exud1.concat.mrbayes)), cex=1.1)
-
-# Varianta pro GLS s různými korelačními maticemi (lze použít jiné funkce cor*())
-ace(x=resp.pos.exud1.concat.mrbayes, phy=strom.concat.mrbayes.exud, type="continuous", method="GLS", corStruct=corBrownian(value=1, phy=strom.concat.mrbayes.exud))
 
 # Graduální zobrazení na stromu, barvy může nastavit setMap(), k rekonstrukci využívá fastAnc()
-contMap(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes)
+contMap(tree=primates.tree, x=primates.body)
 
 # fitContinuous (umí pracovat s SE)
-# MrBayes
-# Exudáty
-resp.pos.exud1.concat.mrbayes.fit <- fitContinuous(phy=strom.concat.mrbayes.exud, dat=resp.pos.exud1.concat.mrbayes, model="lambda")
+primates.fit <- fitContinuous(phy=primates.tree, dat=primates.body, model="lambda")
 
 # anc.trend
 # This function estimates the evolutionary parameters and ancestral states for Brownian evolution with directional trend. Pro znaky vykazující trend.
-anc.trend(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes, maxit=100000) # Pro nodelabels() XXX$ace
+anc.trend(tree=primates.tree, x=primates.body, maxit=1000) # Pro nodelabels() XXX$ace
 # anc.ML
-anc.ML(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes, maxit=100000, model="BM") # Pro nodelabels() XXX$ace
+anc.ML(tree=primates.tree, x=primates.body, maxit=1000, model="BM") # Pro nodelabels() XXX$ace
 # anc.Bayes - Bayesiánská rekonstrukce - vezme se výsledek z poslední generace
-anc.Bayes(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes, ngen=100000) # Pro nodelabels XXX[100001,]
+anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000) # Pro nodelabels XXX[100001,]
+primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000)
+primates.body.ace.bayes
 
 # Další možnosti:
 # ancestral.pml(object, type = c("ml", "bayes"))
@@ -1537,33 +1515,23 @@ anc.Bayes(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes, ngen=
 # plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
 
 ## Zobrazení více hodnot na stromu
-table.phylo4d(x=phylo4d(x=strom.concat.mrbayes.exud, tip.data=as.data.frame(cbind(pos.exud1=resp.pos.exud1.concat.mrbayes, pos.exud2=resp.pos.exud2.concat.mrbayes, pos.exud3=resp.pos.exud3.concat.mrbayes))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
 
 ## Phenogram
-# MrBayes
-# Exudáty
-phenogram(tree=strom.concat.mrbayes.exud, x=resp.pos.exud1.concat.mrbayes, fsize=1.2, ftype="i", colors="red", main="Phenogram, exudáty 1")
-fancyTree(tree=strom.concat.mrbayes.exud, type="phenogram95", x=resp.pos.exud1.concat.mrbayes, fsize=1.2, ftype="i", main="95-percent phenogram, exudáty 1")
+phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Phenogram, exudáty 1")
+fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percent phenogram, exudáty 1")
 
 # 2 znaky najednou
-# MrBayes
-# exudáty vs kořeny
-phylomorphospace(tree=strom.concat.mrbayes.exud, X=cbind(resp.pos.exud1.concat.mrbayes, resp.pos.root1.concat.mrbayes.exud), label="horizontal", lwd=2, fsize=1.2)
+phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.2)
 
 # 3D - 3 znaky
-phylomorphospace3d(tree=strom.concat.mrbayes.exud, X=cbind(resp.pos.exud1.concat.mrbayes, resp.pos.root1.concat.mrbayes.exud, metab.pos.root1.concat.mrbayes.pca$li[-c(4, 7, 14),1]), label=TRUE)
+phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body-primates.longevity)), label=TRUE)
 
 ## Pheongram + ACE, více znaků
-# Exudáty vs kořeny vs metabolická data
-fancyTree(tree=strom.concat.mrbayes.exud, type="scattergram", X=cbind(resp.exud1=resp.pos.exud1.concat.mrbayes, resp.root1=resp.pos.root1.concat.mrbayes.exud, metab.exud1=metab.pos.exud1.concat.mrbayes.pca1, metab.root1=metab.pos.root1.concat.mrbayes.pca$li[-c(4, 7, 14),1]), res=500, ftype="i")
-
-# Metabolická data
-# MrBayes
-fancyTree(tree=strom.concat.mrbayes.exud, type="scattergram", X=as.matrix(metab.pos.exud1.concat.mrbayes.pca$li[,1:4]), res=500, ftype="i")
+fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
 
 ## Disparity-through-time
-disparity(phy=strom.concat.mrbayes.exud, data=cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes))
-dtt(phy=strom.concat.mrbayes.exud, data=cbind(resp.pos.exud1.concat.mrbayes, resp.pos.exud2.concat.mrbayes, resp.pos.exud3.concat.mrbayes), nsim=1000)
+disparity(phy=primates.tree, data=primates.body)
+dtt(phy=primates.tree, data=primates.body, nsim=1000)
 # lineage-through-time plot
-ltt(tree=strom.concat.mrbayes, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
-
+ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
