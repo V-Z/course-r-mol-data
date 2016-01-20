@@ -153,8 +153,8 @@
  \item Open-source -- freely available with source code -- anyone can use it and contribute its development
  \item Development is organized by non-governmental non-profit organization from Vienna
  \item Thousands of packages extending its functionality are available -- all fields of computing
- \item Provides only command line interface -- full control over analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis
- \item Several projects provide convenient graphical interfaces (GUI)
+ \item Provides only command line interface -- full control over the analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis
+ \item Several projects provide convenient graphical user interfaces (GUI)
  \item More details: \url{https://www.r-project.org/}
 \end{itemize}
 \end{frame}
@@ -185,7 +185,7 @@
 
 \subsection{Installation}
 
-\begin{frame}{MS Windows, Apple Mac OS~X}
+\begin{frame}{MS Windows \& Apple Mac OS~X}
 \begin{itemize}
  \item Got to \url{https://cran.r-project.org/}
  \item Download appropriate version and install as usual
@@ -261,7 +261,7 @@
  \item \splus/function(argument1="SomeName", argument2=SomeVariable, argument3=8)/
  \item \splus/ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)/
  \item Object is on the left: ``<-'' says to insert result of the function on the right into the object
- \item Functions have various parameters/arguments (in brackets, separated by comas): argument=ItsValue
+ \item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
  \item Arguments are named -- if you keep order, no need to name them:
  \item \splus/SomeFunction(MyData, TRUE, 123, "SomeName")/
  \item When only some of the arguments are in use, use the names (order doesn't matter any more)
@@ -278,11 +278,11 @@
     help.search("searched phrase") # Search for the phrase within all
       # installed packages - return list of hits sorted according to
       # type and package (i.e. package::function)
-    install.package("sos") # More comprehensive search from package sos
+    install.packages("sos") # More comprehensive search from packages
     library(sos)
-    findFN("function")# Search for function name
+    findFn("function") # Search for function name
   \end{spluscode}
-\alert{\texttt{?}} shows help for questioned function:
+\alert{\texttt{?}} shows help for questioned function (type \texttt{q} to close it):
 \begin{multicols}{2}
   \begin{itemize}
     \item Name of the package (top left)
@@ -321,15 +321,15 @@
 
 \begin{frame}{Types of objects}
 \begin{itemize}
- \item Vectors -- numbers or characters
- \item Matrices -- columns are of same type (numeric, character, etc.) and the same length
- \item Arrays -- like matrices, but with possibly more dimensions
- \item Data frames -- more general -- columns can be of different type
- \item Lists -- ordered collections of objects (vectors, matrices, \ldots) -- not necessarily of the same type
- \item Factors -- a~vector of levels, e.g. populations, colors, etc.
+ \item \textbf{Vectors} -- numbers or characters
+ \item \textbf{Matrices} -- columns are of same type (numeric, character, etc.) and the same length
+ \item \textbf{Arrays} -- like matrices, but with possibly more dimensions
+ \item \textbf{Data frames} -- more general -- columns can be of different type
+ \item \textbf{Lists} -- ordered collections of objects (vectors, matrices, \ldots) -- not necessarily of the same type
+ \item \textbf{Factors} -- a~vector of levels, e.g. populations, colors, etc.
  \item More ``advanced'' objects to store plots, genetic data, \ldots
  \begin{itemize}
-  \item Commonly called ``S3'' and ``S4'' objects
+  \item Commonly called ``\textbf{S3}'' and ``\textbf{S4}'' objects
   \item Technically commonly just lists putting together various information
   \item We will meat many of them\ldots
  \end{itemize}
@@ -339,35 +339,35 @@
 
 \begin{frame}{Popular object classes (we are going to use) I}
 \begin{itemize}
- \item dist -- distance matrices
- \item genind -- stores various genetic information for individuals
- \item genpop -- like genind, but on population level
- \item genlight -- variant of genind to store large multiple genomes
- \item SNPbin -- stores large SNP data for single genome
- \item DNAbin -- stores DNA sequences (aligned or not)
- \item haplotype -- unique sequences from DNAbin
- \item alignment -- aligned sequences (seqinr)
- \item phyDat -- ``preparation'' of data for some phylogenetic analysis
- \item loci -- extension of DF, stores information about loci
- \item hclust -- output of hierarchical clustering, can be converted to phylo
- \item treeshape -- derived from hclust
+ \item \texttt{dist} -- distance matrices
+ \item \texttt{genind} -- stores various genetic information for individuals
+ \item \texttt{genpop} -- like genind, but on population level
+ \item \texttt{genlight} -- variant of genind to store large multiple genomes
+ \item \texttt{SNPbin} -- stores large SNP data for single genome
+ \item \texttt{DNAbin} -- stores DNA sequences (aligned or not)
+ \item \texttt{haplotype} -- unique sequences from DNAbin
+ \item \texttt{alignment} -- aligned sequences (seqinr)
+ \item \texttt{phyDat} -- ``preparation'' of data for some phylogenetic analysis
+ \item \texttt{loci} -- extension of DF, stores information about loci
+ \item \texttt{hclust} -- output of hierarchical clustering, can be converted to phylo
+ \item \texttt{treeshape} -- derived from hclust
 \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Popular object classes (we are going to use) II}
 \begin{itemize}
- \item phylo -- phylogenetic information, typically trees
- \item phylo4 -- derived from phylo, S4 instead of S3
- \item matching -- binary phylogenetic trees
- \item haplonet -- networks without reticulation
- \item spca -- results of sPCA
- \item pco; dudi -- results of PCA, PCoA, \ldots
- \item dapc -- results of DAPC
+ \item \texttt{phylo} -- phylogenetic information, typically trees
+ \item \texttt{phylo4} -- derived from phylo, S4 instead of S3
+ \item \texttt{matching} -- binary phylogenetic trees
+ \item \textit{haplonet} -- networks without reticulation
+ \item \texttt{spca} -- results of sPCA
+ \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA, \ldots
+ \item \texttt{dapc} -- results of DAPC
  \item and more\ldots common task is converting among formats\ldots
  \item \ldots not all formats are (easily) convertible among each other\ldots
 \end{itemize}
 To get information about content of each data type see
-\splus/getClassDef("genind") # Or any other class name/
+\splus/getClassDef("genind") # Or any other class name (of loaded package)/
 There are information about slots within that classes you can access.
 \end{frame}
 
@@ -433,9 +433,10 @@ There are information about slots within that classes you can access.
 \begin{frame}[fragile]{Basic operations with data I}
   \begin{spluscode}
     x <- c(1, 2, 3, 4, 5) # Creates vector (see also ?rep)
+    x # Print "x" content
     c() # Is generic function to concatenate objects into new one
     length(x) # Length of the object - for matrices and DF use dim()
-    str(x) # Information about structure of the object, try also ls.str()
+    str(x) # Information about structure of the object
     mode(x) # Gets type of storage mode of the object
     class(x) # Shows class of the object
     x[2] # Shows second element of the object
@@ -515,8 +516,8 @@ There are information about slots within that classes you can access.
 \begin{block}{Installation of packages in GUI}
   \begin{footnotesize}
     \begin{itemize}
-      \item RStudio: set repositories by command from slide~\ref{repos} and in bottom right pane select ``Packages'' and click on ``Install Packages''\ldots
-      \item RKWard: go to menu ``Settings'' | ``Configure 'RKWard''' and select ``Packages R''. Add URLs pf repositories from slide~\ref{repos}. OK. Go to menu ``Settings'' | ``Manage R packages'', click to ``Install\ldots'', select and install desired packages\ldots
+      \item RStudio: set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
+      \item RKWard: go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{Packages R}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages}, click to \textbf{Install\ldots}, select and install desired packages\ldots
     \end{itemize}
   \end{footnotesize}
 \end{block}
@@ -534,12 +535,37 @@ There are information about slots within that classes you can access.
     ?biocLite
     # Install packages
     biocLite(c("package1", "package2", "..."))
-    # Upgrades installed Bioconductor packages
+    # Upgrades installed Bioconductor packages to new R release
     biocLite("BiocUpgrade")
   \end{spluscode}
 \begin{itemize}
  \item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
 \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Bioconductor usage -- differences from another repositories}
+  \begin{spluscode}
+    # Standard installation
+    install.pacakges(c("adegenet", "poppr", "phytools"))
+    update.packages() # Update packages
+    # Installation from custom repository
+    install.packages("ParallelStructure",
+      repos="http://R-Forge.R-project.org")
+    ?install.packages # See help for details
+    # Bioconductor - if https fails, use http
+    source("https://bioconductor.org/biocLite.R")
+    ?biocLite
+    # Install package(s)
+    biocLite(c("Biostrings", "seqinr"))
+    biocLite() # Update Bioconductor packages
+  \end{spluscode}
+  \begin{itemize}
+    \item Bioconductor has it own installation method
+    \item Its repositories can be set in R and its packages can then be installed as usually with \texttt{install.paskages()}
+    \begin{itemize}
+      \item Although Bioconductor developers recommend usage of \texttt{biocLite}
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \section{Data}
@@ -550,9 +576,9 @@ There are information about slots within that classes you can access.
     \item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{http://grunwaldlab.cgrb.oregonstate.edu/poppr-r-package-population-genetics}{poppr}
     \item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{http://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
     \item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP
-    \item Most of methods are able for polyploids (although not all)
+    \item Most of methods are available for polyploids (although not all)
     \item Some methods are unavailable for dominant (presence/absence) data
-    \item Mixing of ploidy levels is tricky -- it doesn't matter when data are encoded as PA, otherwise it is problematic
+    \item Mixing of ploidy levels is tricky (but possible) -- it doesn't matter when data are encoded as PA, otherwise it is problematic
   \end{itemize}
   \begin{spluscode}
     library(ape)
@@ -576,7 +602,7 @@ H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
 \end{verbatim}
   \begin{spluscode}
     # Load training data (Taraxacum haussknechtii from Macedonia)
-    hauss.loci <- read.loci(file="http://trapa.cz/sites/default/rcourse/
+    hauss.loci <- read.loci(file="https://trapa.cz/sites/default/rcourse/
       haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/",
       col.pop=2, col.loci=3:14, row.names=1) # \t means TAB key
     # Data control
@@ -584,7 +610,7 @@ H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
     print(hauss.loci, details=TRUE)
   \end{spluscode}
 \begin{footnotesize}
-  First line starts with empty cell (if \textbf{header} is presented), there can be any extra column, just take care about \texttt{col.loci}. \texttt{row.names} are individual names (firs column). Take care about \texttt{loci.sep} (here TAB -- \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) according to data formatting.
+  First line starts with empty cell (if \textbf{header} is presented), there can be any extra column, just take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB -- \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) according to data formatting.
 \end{footnotesize}
 \end{frame}
 
@@ -594,7 +620,7 @@ H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
     hauss.genind <- loci2genind(hauss.loci)
     # See population names
     pop(hauss.genind)
-    hauss.genind$pop.names # "$" separates extra slots within object
+    hauss.genind$pop # "$" separates extra slots within object
   \end{spluscode}
 Coordinates can be in any projection or scale -- according to aim\\
 Source data:
@@ -605,7 +631,7 @@ H01  21.3333  41.1
 \end{verbatim}
   \begin{spluscode}
     # Read coordinates
-    hauss.coord <- read.csv("http://trapa.cz/sites/default/rcourse/
+    hauss.coord <- read.csv("https://trapa.cz/sites/default/rcourse/
       haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="",
       dec=".", row.names=1)
     hauss.coord
@@ -623,15 +649,15 @@ H01  21.3333  41.1
     hauss.genind$other$xy
     hauss.genind
     # Removes missing data - see ?missingno for types of dealing them
-    hauss.genind <- missingno(pop=hauss.genind, type="mean", cutoff=0.1)
+    # WARNING! Currently, this function does not work well with adegenet 2
+    hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1)
     # Convert corrected genind to loci
-    hauss.loci.cor <- genind2loci(hauss.genind)
+    hauss.loci.cor <- genind2loci(hauss.genind.cor)
     # Writes loci file to the disk
     write.loci(hauss.loci.cor, file="hauss.loci.cor.txt",
       loci.sep="\t", allele.sep="/")
     # Conversion to genpop - for population-level analysis
-    hauss.genpop <- genind2genpop(hauss.genind, missing="NA",
-      process.other=TRUE)
+    hauss.genpop <- genind2genpop(hauss.genind, process.other=TRUE)
     # See result
     hauss.genpop
   \end{spluscode}
@@ -653,8 +679,8 @@ H01  21.3333  41.1
 
 \begin{frame}[fragile]{Import of polyploid microsatellites}
 \begin{itemize}
- \item adegent, poppr and related packages can for most of functions handle any ploidy level (but no mixing of various ploidy levels for microsatellites)
- \item polysat can handle mixed ploidy levels for microsatellites, but range of methods is limited
+ \item \texttt{adegent}, \texttt{poppr} and related packages can for most of functions handle any ploidy level (including mixing of ploidy levels, but not for all analysis)
+ \item \texttt{polysat} can handle mixed ploidy levels for microsatellites, but range of methods is limited
 \end{itemize}
 As for AFLP, we need two files: the data matrix and individual's populations:
 \begin{verbatim}
@@ -681,7 +707,7 @@ ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
     # Check "ploidy" and "ncode" (how many digits code one allele - must be
     # same everywhere). See ?df2genind for more details.
     tarax3n.genind <- df2genind(X=tarax3n.table[,1:6], sep="/", ncode=3,
-      pop=tarax3n.table[["pop"]], missing=NA, ploidy=3, type="codom")
+      pop=tarax3n.table[["pop"]], ploidy=3, type="codom")
     # See resulting genind object
     tarax3n.genind
     summary(tarax3n.genind)
@@ -719,20 +745,21 @@ popZ
 
 \begin{frame}[fragile]{Import of AFLP data -- the code}
   \begin{spluscode}
-    amara.aflp <- read.table(file="http://trapa.cz/sites/default/rcourse/
+    amara.aflp <- read.table(file="https://trapa.cz/sites/default/rcourse/
       amara_aflp.txt", header=TRUE, sep="\t", quote="")
     amara.aflp
     dim(amara.aflp)
     class(amara.aflp) # Must be matrix or data frame
     # Populations - just one column with population names for all inds
-    amara.pop <- read.table(file="http://trapa.cz/sites/default/rcourse/
+    amara.pop <- read.table(file="https://trapa.cz/sites/default/rcourse/
       amara_pop.txt", header=TRUE, sep="\t", quote="")
     amara.pop
     # You can use just one file, where populations are in last column and
     # in df2genind() use for example X=aflp[,1:XXX] and pop=aflp[,YYY]
     # Create genind object - ind.names and loc.names are taken from X
-    aflp.genind <- df2genind(X=amara.aflp, sep=NULL, ind.names=NULL,
+    aflp.genind <- df2genind(X=amara.aflp, sep="", ind.names=NULL,
       loc.names=NULL, pop=amara.pop[,1], missing=NA, type="PA")
+    indNames(aflp.genind) <- amara.aflp[,1] # Add individual names
     aflp.genind
     summary(amara.aflp)
     # You can add any other variables into genind$other$XXX
@@ -878,7 +905,7 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
     # If it crashes (on Windows), try add parameter "parallel=FALSE"
   \end{spluscode}
 \begin{itemize}
- \item For small datasets it doesn't matter if resulting dataset is genind or genlight, for large genlight is more efficient
+ \item For small datasets, keep data as genind as it is more information-rich -- genlight is more efficient for large data
 \end{itemize}
   \begin{spluscode}
     # Convert genlight to genind
@@ -895,7 +922,7 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
  \item Can be quickly converted to genind (not back)
  \item Use is basically same as when working with genind -- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
  \item SNPbin is version of genind/genlight to store one large genome -- serves basically as storage, no need to deal with it
- \item genlight allows varying ploidy level -- genind has issues with it
+ \item genlight as well as genind allow varying ploidy level
 \end{itemize}
 \end{frame}
 
@@ -903,9 +930,7 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
 
 \begin{frame}[fragile]{Export data}
   \begin{spluscode}
-    # Convert genind into DF using genind2genotype() or genind2df()
-    hauss.df <- genind2genotype(x=hauss.genind, pop=hauss.genind@pop,
-      res.type="matrix")
+    # Convert genind into DF using genind2df()
     hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/",
       usepop=TRUE, oneColPerAll=FALSE)
     write.table(x=hauss.df, file="haussdata.txt", quote=FALSE,
@@ -915,6 +940,8 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
       append=FALSE, nbcol=6)
     write.fasta(sequences=meles.dna, names=names(meles.dna),
       file.out="meles.fasta", open="w")
+    # Export DNA sequnces on NEXUS
+    write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
     # Export trees (objects of class phylo)
     # Writes tree(s) in NEWICK format
     write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk")
@@ -960,25 +987,21 @@ We will now work mainly with diploid SSRs for \textit{Taraxacum haussknechtii}, 
     text(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall,
       lab=names(hauss.summ$pop.eff), cex=1.5)
     # Barplots of various data
-    barplot(height=hauss.summ$loc.nall, ylab="Number of alleles",
-      main="Number of alleles per locus",
-      names.arg=hauss.genind@loc.names, las=3)
+    barplot(height=hauss.summ$loc.n.all, ylab="Number of alleles",
+      main="Number of alleles per locus", las=3)
     barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity:
-      expected-observed", ylab="Hexp - Hobs",
-      names.arg=hauss.genind@loc.names, las=3)
+      expected-observed", ylab="Hexp - Hobs", las=3)
     barplot(height=hauss.summ[["pop.eff"]], main="Sample sizes per
       population", ylab="Number of genotypes", las=3)
+    dev.off() # Closes graphical device - otherwise following
+              # graphs would still be divided into 4 parts
   \end{spluscode}
 \end{frame}
 
 \subsection{Statistics}
 
-\begin{frame}[fragile]{Graphs from previous two slides}
+\begin{frame}{Graphs from previous two slides}
   \includegraphics[width=\textwidth]{heterozygosity.png}
-  \begin{spluscode}
-    dev.off() # Closes graphical device - otherwise following
-              # graphs would still be divided into 4 parts
-  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Population statistics by poppr}
@@ -1014,66 +1037,57 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
   \begin{spluscode}
-    # Departure from HWE
-    hauss.hwe <- HWE.test.genind(x=hauss.genind, permut=TRUE,
-      nsim=1000, res.type="matrix")
-    # According to populations
-    barplot(apply(X=hauss.hwe<0.05, 1, FUN=mean, na.rm=TRUE),
-      las=3, ylab="Proportion of departure from HWE", main="By
-      population", names.arg=hauss.genind@pop.names)
     # According to loci
-    barplot(apply(X=hauss.hwe<0.05, 2, FUN=mean, na.rm=TRUE),
-      las=3, ylab="Proportion of departure from HWE", main="By marker")
     hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
     hauss.hwe.test
-    # List of lists for all combinations of loci and populations
-    hauss.hwe.full <- HWE.test.genind(x=hauss.genind, permut=TRUE,
-      nsim=1000, res.type="full")
-    hauss.hwe.full # Very looong list...
+    # According to populations
+    # Separate genind object into list of genind objects for individual
+    # populations
+    hauss.pops <- seppop(hauss.genind)
+    hauss.pops
+    # Convert genind back to loci (list of loci objects according to
+    # populations)
+    hauss.pops.loci <- lapply(X=hauss.pops, FUN=genind2loci)
+    # Calculate the results per populations
+    lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
   \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Departure from HWE -- results}
-  \begin{multicols}{2}
-    \begin{footnotesize}
-      > hauss.hwe.test
-      \begin{tabular}{lllll}
-	& chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
-	msta93 & 383.5519728 & 190 & 3.552714e-15 & 0.000\\
-	msta101 & 0.6927242 & 1 & 4.052393e-01 & 0.657\\
-	msta102 & 83.0741964 & 10 & 1.250111e-13 & 0.000\\
-	msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
-	msta105 & 282.3441356 & 66 & 0.000000e+00 & 0.000\\
-	msta131 & 175.8647805 & 36 & 0.000000e+00 & 0.000\\
-	msta143 & 155.4567196 & 45 & 4.474199e-14 & 0.000\\
-	msta44B & 112.6283892 & 28 & 4.149125e-12 & 0.000\\
-	msta53 & 110.2581985 & 55 & 1.436375e-05 & 0.002\\
-	msta61 & 70.7719907 & 66 & 3.215148e-01 & 0.070\\
-	msta73 & 310.9811293 & 153 & 7.842615e-13 & 0.000\\
-	msta78 & 4.4688908 & 10 & 9.237260e-01 & 0.569
-      \end{tabular}
-    \end{footnotesize}
-    \begin{flushright}
-      \includegraphics[height=6.5cm]{hwe.png}
-    \end{flushright}
-  \end{multicols}
+  > hauss.hwe.test
+
+  \begin{tabular}{lllll}
+    & chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
+    msta93 & 383.5519728 & 190 & 3.552714e-15 & 0.000\\
+    msta101 & 0.6927242 & 1 & 4.052393e-01 & 0.657\\
+    msta102 & 83.0741964 & 10 & 1.250111e-13 & 0.000\\
+    msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
+    msta105 & 282.3441356 & 66 & 0.000000e+00 & 0.000\\
+    msta131 & 175.8647805 & 36 & 0.000000e+00 & 0.000\\
+    msta143 & 155.4567196 & 45 & 4.474199e-14 & 0.000\\
+    msta44B & 112.6283892 & 28 & 4.149125e-12 & 0.000\\
+    msta53 & 110.2581985 & 55 & 1.436375e-05 & 0.002\\
+    msta61 & 70.7719907 & 66 & 3.215148e-01 & 0.070\\
+    msta73 & 310.9811293 & 153 & 7.842615e-13 & 0.000\\
+    msta78 & 4.4688908 & 10 & 9.237260e-01 & 0.569
+  \end{tabular}
 \end{frame}
 
 \begin{frame}[fragile]{F-statistics and population theta}
 Functions return tables of F$_{ST}$/thetas values for populations/loci
   \begin{spluscode}
     # Fit, Fst and Fis for each locus
-    Fst(x=hauss.loci.cor, pop=1)
+    Fst(x=hauss.loci, pop=1)
     # multilocus estimators of variance components and F-statistics,
     # alternative to Fst
+    library(hierfstat)
     fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
     # Nei's pairwise Fst between all pairs of populations.
-    # Difference in res.type="dist"/"matrix" is only in format of output
     pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix", truenames=T)
     # Estimates of population theta according to Kimmel et al. 1998
-    theta.msat(hauss.loci.cor)
+    theta.msat(hauss.loci)
   \end{spluscode}
-  \splus/Fst(x=hauss.loci.cor, pop=1)/
+  \splus/Fst(x=hauss.loci, pop=1)/
   \begin{tabular}{llll}
     & F$_{IT}$ & F$_{ST}$ & F$_{IS}$\\
     msta93 & 0.31835291 & 0.17867087 & 0.17006829\\
@@ -1088,20 +1102,47 @@ Functions return tables of F$_{ST}$/thetas values for populations/loci
   \begin{spluscode}
     # Total number of MLGs
     # (simple value)
-    mlg(pop=hauss.genind, quiet=FALSE)
+    mlg(gid=hauss.genind, quiet=FALSE)
     # MLGs shared among populations
-    mlg.crosspop(pop=hauss.genind,
+    mlg.crosspop(gid=hauss.genind,
       df=TRUE, quiet=FALSE)
     # Detailed view on distribution
     # of MLGs into populations
     # (table and/or plot)
-    mlg.table(pop=hauss.genind,
+    mlg.table(gid=hauss.genind,
       bar=TRUE, total=TRUE,
       quiet=FALSE)
-    # See manual pages for details
+    mlg.vector(hauss.genind)
+    mlg.id(hauss.genind)
   \end{spluscode}
   \end{multicols}
 Functions from poppr package -- the best for microsatellites, although available also from another data types
+\end{frame}
+
+\begin{frame}[fragile]{Inbreeding}
+\begin{multicols}{2}
+  \includegraphics[height=6cm]{inbreeding.png}
+  \begin{spluscode}
+    # Load training data (cattle)
+    data(microbov)
+    # Separate populations of Salers
+    microbov.pops <- seppop(microbov)
+      [["Salers"]]
+    # Calculate the inbreeding
+    microbov.inbr <- inbreeding(x=
+      microbov.pops, N=100)
+    # Check for more settings
+    ?inbreeding
+    # population means for plotting
+    microbov.bar <- sapply(X=
+      microbov.inbr, FUN=mean)
+    # Plot it
+    hist(x=microbov.bar, col=
+      "firebrick", main="Average
+      inbreeding in Salers cattles")
+  \end{spluscode}
+\end{multicols}
+
 \end{frame}
 
 \subsection{Genetic distances}
@@ -1143,7 +1184,10 @@ Most of analysis based on distances more or less require Euclidean (non-negative
     # Show it
     hauss.dist.bruvo
   \end{spluscode}
-See poppr's manual and manual pages of the functions for details and different possibilities of settings.
+  \begin{itemize}
+    \item See poppr's manual and manual pages of the functions for details and different possibilities of settings
+    \item Be careful when changing non-Euclidean distances to Euclidean -- \alert{the transformation more or less changes meaning of the distances!}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Turning distance matrix into Euclidean is controversial\ldots}
@@ -1197,11 +1241,16 @@ Ne 156.7619 9.96143 16.6927 ...
 \alert{The sequences must be aligned before calculating distances among them!}
 \vfill
   \begin{spluscode}
-    ?dist.dna # There are various models available
+    # There are various models available
+    ?dist.dna
+    # Create the distance matrix
     usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
+    # Check the resulting distance matrix
     usflu.dist
     class(usflu.dist)
+    # Create another distance matrix
     dim(as.matrix(usflu.dist))
+    # Check it
     meles.dist <- dist.dna(x=meles.dna, model="F81")
     meles.dist
     class(meles.dist)
@@ -1282,7 +1331,7 @@ Rationale of this approach is to save resources when dividing whole data set int
 \begin{footnotesize}
   There are various settings -- colors, dendrogram, \ldots See \texttt{?heatmap}.
 \end{footnotesize}
-\vfil
+\vfill
 \end{frame}
 
 \begin{frame}[fragile]{Hierarchical clustering -- UPGMA and others}
@@ -1298,6 +1347,7 @@ Rationale of this approach is to save resources when dividing whole data set int
     plot(hclust(d=hauss.dist.
       bruvo, method="complete"))
   \end{spluscode}
+  \vfill
   This is very basic function to make dendrogram. There are better possibilities (NJ etc).
 \end{multicols}
 \end{frame}
@@ -1353,7 +1403,7 @@ Rationale of this approach is to save resources when dividing whole data set int
   \includegraphics[height=6cm]{msn.png}
   \columnbreak
   \begin{spluscode}
-    bruvo.msn(pop=hauss.genind,
+    bruvo.msn(gid=hauss.genind,
       replen=rep(2, 12), loss=TRUE,
       palette=rainbow, vertex.label
       ="inds", gscale=TRUE,
@@ -1379,7 +1429,7 @@ Rationale of this approach is to save resources when dividing whole data set int
     summary(lm(as.vector(hauss.dist) ~
       as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
     # Bootstrap
-    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.cor,
+    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci,
       FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
     # Plot a basic tree - see ?plot.phylo for details
     plot.phylo(x=hauss.nj, type="phylogram")
@@ -1430,7 +1480,7 @@ Rationale of this approach is to save resources when dividing whole data set int
 Package poppr (bootstrap is incorporated within the function)
   \begin{spluscode}
     # NJ
-    hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
+    hauss.nj.bruvo <- bruvo.boot(gid=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE,
       lwd=3, main="Neighbor-Joining tree.")
@@ -1439,7 +1489,7 @@ Package poppr (bootstrap is incorporated within the function)
     tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop,
       col.pal=nj.rainbow))
     # UPGMA
-    hauss.upgma <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
+    hauss.upgma <- bruvo.boot(gid=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="upgma", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3,
       main="UPGMA tree")
@@ -1455,11 +1505,11 @@ Package poppr (bootstrap is incorporated within the function)
 
 \begin{frame}[fragile]{NJ tree of populations}
   \begin{spluscode}
-    # Populations
+    # NJ tree of populations
     hauss.nj.pop <- nj(hauss.dist.pop)
     # Bootstrap - source() loads external scripts
     # boot.phylo doesn't work for population trees
-    source("http://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
+    source("https://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
     hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
     # Plot a tree
     plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3,
@@ -1473,6 +1523,7 @@ Package poppr (bootstrap is incorporated within the function)
 
 \begin{frame}[fragile]{NJ tree based on DNA sequences}
   \begin{spluscode}
+    # Calculate the tree
     usflu.tree <- nj(X=usflu.dist)
     # Plot it
     plot.phylo(x=usflu.tree, type="unrooted", show.tip=FALSE)
@@ -1499,7 +1550,7 @@ Package poppr (bootstrap is incorporated within the function)
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("Rooted NJ tree")
     # Labeling of tips
-    tiplabels(text=annot$year, bg=transp(num2col(x=annot$year,
+    tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot$year,
       col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
     # Add axis with phylogenetic distance
     axisPhylo()
@@ -1519,7 +1570,7 @@ Package poppr (bootstrap is incorporated within the function)
     # Plot the tree
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("NJ tree + bootstrap values")
-    tiplabels(frame="none", pch=20, col=transp(num2col(x=annot[["year"]],
+    tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot[["year"]],
       col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
     axisPhylo()
     # Legend - describing years - pretty() automatically shows best
@@ -1546,7 +1597,7 @@ Package poppr (bootstrap is incorporated within the function)
     # Plot the consensus tree
     plot.phylo(x=usflu.tree.collapsed, show.tip=FALSE, edge.width=2)
     title("NJ tree after collapsing weak nodes")
-    tiplabels(text=annot$year, bg=transp(num2col(x=annot[["year"]],
+    tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot[["year"]],
       col.pal=usflu.pal), alpha=0.7), cex=0.5, fg="transparent")
     axisPhylo()
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
@@ -1576,8 +1627,8 @@ Package poppr (bootstrap is incorporated within the function)
 \begin{frame}[fragile]{PCoA I}
   \begin{spluscode}
     hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE,
-      scale=FALSE, truenames=TRUE, missing="NA"), method="euclidean"),
-      scannf=FALSE, nf=3)
+      scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE,
+      nf=3)
     # Basic display
     s.label(dfxy=hauss.pcoa$li, clabel=0.75)
     # To plot different axes use for example dfxy=hauss.pcoa$li[c(2, 3)]
@@ -1663,8 +1714,8 @@ Package poppr (bootstrap is incorporated within the function)
     hauss.kfind
     # Graph showing table of original and inferred populations and
     # assignment of individuals
-    table.value(df=table(pop(hauss.genind), hauss.kfind$grp),
-      col.lab=paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=T)
+    table.value(df=table(pop(hauss.genind), hauss.kfind$grp), col.lab=
+      paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=T)
     # For K=3 - note parameters n.pca and n.clust - we just rerun the
     # analysis and when results are stable, no problem here
     hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3,
@@ -1850,7 +1901,8 @@ Those tools are designed mainly for situation when having multiple (nearly) comp
     usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
     # Plot colored phylogenetic tree
     plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
-    tiplabels(pch=20, col=usflu.col, cex=4)
+    tiplabels(pch=20, col=num2col(usflu.annot[["year"]],
+      col.pal=usflu.pal), cex=4)
     title("NJ tree of the US influenza data")
   \end{spluscode}
 \end{frame}
@@ -2054,8 +2106,8 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
  \item Finds boundaries of maximum differences between contiguous polygons of a~tessellation
  \item Detects genetic boundaries among georeferenced genotypes (or populations)
  \item For more information see \texttt{adegenetTutorial("basics")}
- \item Requires every point to have unique coordinates (use \texttt{jitter()} when having same coordinates from one locality)
- \item Example here is on population level, which is not ideal for all cases
+ \item Requires every point to have unique coordinates -- in case of population data it is better to work with populations, not individuals (but it is not ideal)
+ \item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation}
 \end{itemize}
   \begin{spluscode}
     # Calculates Monmonier's function (for threshold use 'd')
@@ -2064,6 +2116,16 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
       ask=FALSE, type=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
     coords.monmonier(hauss.monmonier) # See result as text
   \end{spluscode}
+\end{frame}
+
+\begin{frame}{Voronoi tessellation}
+  \begin{multicols}{2}
+    \includegraphics[height=5.5cm]{voronoi_diagram.png}
+    \begin{itemize}
+      \item In simplest case, all points have certain area and all points within this area are closer to the respective ``main'' point than to any other ``neighbor'' point
+      \item Extreme differences among size of areas make computational problems and results are unstable
+    \end{itemize}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Plot genetic boundaries}
@@ -2076,7 +2138,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
       cex=2.5, pch=20, col="red")
     text(x=hauss.genpop$other$xy$lon,
       y=hauss.genpop$other$xy$lat,
-      labels=hauss.genpop@pop.names,
+      labels=popNames(hauss.genpop),
       cex=3)
     legend("bottomright",
       leg="Genetic boundaries\n
@@ -2200,7 +2262,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # Load data (only haploid or diploid data are supported)
     # only plain table with alleles
     hauss.geneland.data <- read.table(file=
-      "http://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt",
+      "https://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt",
       na.string="-999", header=FALSE, sep="\t")
     dim(hauss.geneland.data)
     hauss.geneland.data
@@ -2360,7 +2422,7 @@ We will use figures and F$_{ST}$ outputs only from the best run.
       [["lat"]], pch=15:19, col="red", cex=4)
     # Add text descriptions for points. Text is aside and with background
     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy
-      [["lat"]], labels=as.vector(hauss.genind@pop.names), col="black",
+      [["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
       bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
   \end{spluscode}
@@ -2456,7 +2518,7 @@ We will use figures and F$_{ST}$ outputs only from the best run.
       xy[["lat"]], pch=15:19, col="red", cex=4)
     # Add description of sampling points
     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
-      xy[["lat"]], labels=as.vector(hauss.genind@pop.names), col="black",
+      xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
       bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
   \end{spluscode}
@@ -3694,31 +3756,112 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{}
+\begin{frame}[fragile]{Continuous map}
+\begin{multicols}{2}
+  \includegraphics[height=6cm]{contmap.png}
   \begin{spluscode}
-    # 
+    library(phytools)
+    contMap(tree=primates.tree,
+      x=primates.body)
+    # Change colors with setMap()
+    primates.contmap <- setMap(x=
+      contMap(primates.tree,
+      primates.body),
+      colors=c("white", "black"))
+    plot(primates.contmap)
+    # See ?par for more settings
   \end{spluscode}
+  \begin{center}
+    \includegraphics[height=2cm]{contmapbw.png}
+  \end{center}
+\end{multicols}
 \end{frame}
 
 \subsection{Phenogram}
 
-\begin{frame}[fragile]{}
+\begin{frame}[fragile]{Display more characters on a tree in a table}
   \begin{spluscode}
-    # 
+    library(adephylo)
+    table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame
+      (cbind(primates.body, primates.longevity))), treetype="cladogram",
+      symbol="circles", scale=FALSE, ratio.tree=0.5)
+    table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data),
+      treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
   \end{spluscode}
+  \begin{center}
+    \includegraphics[height=4.5cm]{phylotable.png}
+  \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{}
+\begin{frame}[fragile]{Phenogram}{Vertical axis shows character values}
   \begin{spluscode}
-    # 
+    phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2,
+      ftype="i", colors="red", main="Longevity")
+    fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity,
+      fsize=1.2, ftype="i", main="95-percentile of longevity")
   \end{spluscode}
+  \begin{center}
+    \includegraphics[height=5cm]{phenogram.png}
+  \end{center}
 \end{frame}
 
-\begin{frame}[fragile]{}
+\begin{frame}[fragile]{Display 2 continuous characters in space and 3D tree connecting them}
+\begin{multicols}{2}
   \begin{spluscode}
-    # 
+    # 2 characters on 2 axis
+    phylomorphospace(tree=
+      primates.tree, X=cbind
+      (primates.body,
+      primates.longevity),
+      label="horizontal",
+      lwd=2, fsize=1.5)
+    # 3D (3rd character is fake here)
+    # 3 characters it a rotating cube
+    phylomorphospace3d(tree=
+      primates.tree, X=cbind
+      (primates.body,
+      primates.longevity,
+      abs(primates.body-
+      primates.longevity)),
+      label=TRUE)
   \end{spluscode}
+  \begin{center}
+    \includegraphics[height=5.5cm]{phylomorphospace.png}
+  \end{center}
+\end{multicols}
 \end{frame}
+
+\begin{frame}[fragile]{Combine phenograms and ancestral state reconstructions}
+\begin{multicols}{2}
+  \begin{spluscode}
+    # 2 characters on 2 axis
+    fancyTree(tree=primates.tree,
+      type="scattergram",
+      X=cbind(primates.body,
+      primates.longevity),
+      res=500, ftype="i")
+    # See manuals for more settings
+    ?fancyTree
+    ?phenogram
+    ?phylomorphospace
+    ?phylomorphospace3d
+    ?contMap
+    ?setMap
+    ?par
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=5.5cm]{phenogram-ace.png}
+  \end{center}
+\end{multicols}
+\end{frame}
+
+% \subsection{Disparity}
+% 
+% \begin{frame}[fragile]{}
+%   \begin{spluscode}
+%     # 
+%   \end{spluscode}
+% \end{frame}
 
 \section{The end}
 

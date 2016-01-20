@@ -3,9 +3,12 @@ help(rep) # Help for particular function (package must be loaded)
 ?rep # Help for particular function (package must be loaded)
 ??ANOVA # Search for the term within all installed packages
 help.search("analysis of variance") # Search for the phrase within all installed packages - return list of hits sorted according to type and package (i.e. package::function)
+install.packages("sos") # More comprehensive search from packages
+library(sos)
+findFn("DAPC") # Search for function name
 
 ## Set working directory
-setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/priklady/") # Create empty directory and modify the path accordingly
+setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/") # Create empty directory and modify the path accordingly
 getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
@@ -14,7 +17,7 @@ ls() # Lists currently available R objects
 x <- c(1, 2, 3, 4, 5) # Creates vector (see also ?rep)
 c() # Is generic function to concatenate objects into new one
 length(x) # Length of the object - for matrices and DF use dim()
-str(x) # Information about structure of the object, try also ls.str()
+str(x) # Information about structure of the object
 mode(x) # Gets type of storage mode of the object
 class(x) # Shows class of the object
 x[2] # Shows second element of the object
@@ -48,14 +51,32 @@ getClassDef("genind") # Or select any other class name
 
 ## Packages and repositories
 # Set repositories
-options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.1/extra"))
+options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/ packages/3.2/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one
-install.packages(pkgs=c("Geneland", "PBSmapping", "ParallelStructure", "RandomFields", "RgoogleMaps", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "colorspace", "combinat", "corrplot", "fields", "gplots", "grid", "ips", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "pegas", "permute", "phangorn", "phyloch", "phytools", "polysat", "poppr", "rworldmap", "seqinr", "sp", "spam", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("Geneland", "PBSmapping", "ParallelStructure", "RandomFields", "RgoogleMaps", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "colorspace", "combinat", "corrplot", "fields", "gplots", "grid", "hierfstat", "ips", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "pegas", "permute", "phangorn", "phyloch", "phytools", "polysat", "poppr", "rworldmap", "seqinr", "sp", "spdep", "spam", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
 # We will load packages by library(package) one by one when needed
 # Update packages
 update.packages(repos=getOption("repos"))
+
+## Bioconductor
+
+# Standard installation
+install.pacakges(c("adegenet", "poppr", "phytools"))
+update.packages() # Update packages
+# Installation from custom repository
+install.packages("ParallelStructure", repos="http://R-Forge.R-project.org")
+?install.packages # See help for details
+# Bioconductor - if https fails, use http
+source("https://bioconductor.org/biocLite.R")
+# Get help how to use it
+?biocLite
+# Install package(s)
+biocLite(c("Biostrings", "seqinr"))
+biocLite() # Update Bioconductor packages
+# Upgrades installed Bioconductor packages to new R release
+biocLite("BiocUpgrade")
 
 ## Libraries for population - genetic analysis
 
@@ -69,7 +90,7 @@ library(vegan)
 
 ## Data
 # Load training data
-hauss.loci <- read.loci("http://trapa.cz/sites/default/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
+hauss.loci <- read.loci("https://trapa.cz/sites/default/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
 # Data control
 hauss.loci
 print(hauss.loci, details=TRUE)
@@ -78,9 +99,10 @@ print(hauss.loci, details=TRUE)
 hauss.genind <- loci2genind(hauss.loci)
 # See population names
 pop(hauss.genind)
-hauss.genind$pop.names
+hauss.genind$pop
 
 # Removes missing data - see ?missingno for types of dealing with them
+# WARNING! Currently, this function does not work well with adegenet 2
 hauss.genind <- missingno(pop=hauss.genind, type="mean", cutoff=0.1, quiet=FALSE)
 
 # Convert corrected genind to loci
@@ -90,7 +112,7 @@ hauss.loci.cor <- genind2loci(hauss.genind)
 write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t", allele.sep="/")
 
 # Read coordinates
-hauss.coord <- read.csv("http://trapa.cz/sites/default/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
+hauss.coord <- read.csv("https://trapa.cz/sites/default/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
 hauss.coord
 
 # Add coordinates - note identification of slots within object
@@ -100,7 +122,7 @@ hauss.genind$other$xy
 hauss.genind
 
 # Conversion to genpop - for population-level analysis
-hauss.genpop <- genind2genpop(hauss.genind, missing="NA", process.other=TRUE)
+hauss.genpop <- genind2genpop(hauss.genind, process.other=TRUE)
 # See result
 hauss.genpop
 
@@ -112,28 +134,29 @@ read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
 read.structure() # adegenet - reads *.str files, only haploid/diploid data
 
 # Import of triploid microsattelites
-tarax3n.table <- read.table("http://trapa.cz/sites/default/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
+tarax3n.table <- read.table("https://trapa.cz/sites/default/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
 # Check the data
 tarax3n.table
 class(tarax3n.table)
 dim(tarax3n.table)
 
-tarax3n.genind <- df2genind(X=tarax3n.table[,1:6], sep="/", ncode=3, pop=tarax3n.table[["pop"]], missing=NA, ploidy=3, type="codom")
+tarax3n.genind <- df2genind(X=tarax3n.table[,1:6], sep="/", ncode=3, pop=tarax3n.table[["pop"]], ploidy=3, type="codom")
 # See resulting genind object
 tarax3n.genind
 summary(tarax3n.genind)
 
 # Import of AFLP data
-amara.aflp <- read.table(file="http://trapa.cz/sites/default/rcourse/amara_aflp.txt", header=TRUE, sep="\t", quote="")
+amara.aflp <- read.table(file="https://trapa.cz/sites/default/rcourse/amara_aflp.txt", header=TRUE, sep="\t", quote="")
 amara.aflp
 dim(amara.aflp)
 class(amara.aflp) # Must be matrix or data frame
 # Populations - just one column with population names for all inds
-amara.pop <- read.table(file="http://trapa.cz/sites/default/rcourse/amara_pop.txt", header=TRUE, sep="\t", quote="")
+amara.pop <- read.table(file="https://trapa.cz/sites/default/rcourse/amara_pop.txt", header=TRUE, sep="\t", quote="")
 amara.pop
 dim(amara.pop)
 # Create genind object - ind.names and loc.names are taken from X
-aflp.genind <- df2genind(X=amara.aflp, sep=NULL, ind.names=NULL, loc.names=NULL, pop=amara.pop[,1], missing=NA, type="PA")
+aflp.genind <- df2genind(X=amara.aflp, sep="", ind.names=NULL, loc.names=NULL, pop=amara.pop[,1], type="PA")
+indNames(aflp.genind) <- amara.aflp[,1] # Add individual names
 aflp.genind
 summary(amara.aflp)
 
@@ -192,6 +215,7 @@ nothofagus.annot <- getAnnot(nothofagus$req)
 closebank()
 # Convert sequences from a list to DNAbin (functions as.DNAbin*)
 nothofagus.dna <- as.DNAbin.list(nothofagus.sequences)
+nothofagus.dna # See it
 
 # Checking SNPs
 # Position of polymorphism within alignment - snpposi.plot() requires input data in form of matrix
@@ -216,13 +240,14 @@ usflu.genind <- as.genind(usflu.genlight)
 # Resulting data matrix might be slightly different than when using DNAbin2genind - depends on used settings
 
 # Exporting data
-# Convert genind into DF using genind2genotype() or genind2df()
-hauss.df <- genind2genotype(x=hauss.genind, pop=hauss.genind@pop, res.type="matrix")
+# Convert genind into DF using genind2df()
 hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerAll=FALSE)
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
 # Export of DNA sequences into FASTA format
 write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6)
 seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna), file.out="meles.fasta", open="w")
+# Export DNA sequnces on NEXUS
+write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
 # Export trees (objects of class phylo)
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
@@ -245,8 +270,8 @@ plot(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall, xlab="Populations sample size"
 # Add text description to the point
 text(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall, lab=names(hauss.summ$pop.eff), cex=1.5)
 # Barplots of various data
-barplot(height=hauss.summ$loc.nall, ylab="Number of alleles", main="Number of alleles per locus", names.arg=hauss.genind@loc.names, las=3)
-barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity: expected-observed", ylab="Hexp - Hobs", names.arg=hauss.genind@loc.names, las=3)
+barplot(height=hauss.summ$loc.n.all, ylab="Number of alleles", main="Number of alleles per locus", las=3)
+barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity: expected-observed", ylab="Hexp - Hobs", las=3)
 barplot(height=hauss.summ[["pop.eff"]], main="Sample sizes per population", ylab="Number of genotypes", las=3)
 dev.off() # Closes graphical device - otherwise following graphs would still be divided into 4 parts
 # poppr returns various population statistics for populations - png() will produce set of figures for each population
@@ -266,35 +291,51 @@ dev.off() # Closes graphical device - needed after use of functions like png(), 
 # rbarD - The standardized index of association
 
 # Departure from HWE
-hauss.hwe <- HWE.test.genind(x=hauss.genind, permut=TRUE, nsim=1000, res.type="matrix")
-# According to populations
-barplot(apply(X=hauss.hwe<0.05, 1, FUN=mean, na.rm=TRUE), las=3, ylab="Proportion of departure from HWE", main="By population", names.arg=hauss.genind@pop.names)
 # According to loci
-barplot(apply(X=hauss.hwe<0.05, 2, FUN=mean, na.rm=TRUE), las=3, ylab="Proportion of departure from HWE", main="By marker")
 hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
 hauss.hwe.test
-# List of lists for all combinations of loci and populations - very looong list
-hauss.hwe.full <- HWE.test.genind(x=hauss.genind, permut=TRUE, nsim=1000, res.type="full")
-hauss.hwe.full
+# According to populations
+# Separate genind object into list of genind objects for individual populations
+hauss.pops <- seppop(hauss.genind)
+hauss.pops
+# Convert genind back to loci (list of loci objects according to populations)
+hauss.pops.loci <- lapply(X=hauss.pops, FUN=genind2loci)
+# Calculate the results per populations
+lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 
 # FST
 # Fit, Fst and Fis for each locus
-Fst(x=hauss.loci.cor, pop=1)
+Fst(x=hauss.loci, pop=1)
 # multilocus estimators of variance components and F-statistics, alternative to Fst
+library(hierfstat)
 fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
 # Nei's pairwise Fst between all pairs of populations. Difference in res.type="dist"/"matrix" is only in format of output
-pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix", truenames=TRUE)
+pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
 
 # Estimates of population theta according to Kimmel et al. 1998
-theta.msat(hauss.loci.cor)
+theta.msat(hauss.loci)
 
 ## Multi locus genotypes
 # Total number of MLGs (simple value)
-mlg(pop=hauss.genind, quiet=FALSE)
+mlg(gid=hauss.genind, quiet=FALSE)
 # MLGs shared among populations (a list)
-mlg.crosspop(pop=hauss.genind, df=TRUE, quiet=FALSE)
+mlg.crosspop(gid=hauss.genind, df=TRUE, quiet=FALSE)
 # Detailed view on distribution of MLGs into populations (table and/or plot)
-mlg.table(pop=hauss.genind, bar=TRUE, total=TRUE, quiet=FALSE)
+mlg.table(gid=hauss.genind, bar=TRUE, total=TRUE, quiet=FALSE)
+
+## Inbreeding
+
+# Load training data
+data(microbov)
+# Separate populations of Salers cattle
+microbov.pops <- seppop(microbov)[["Salers"]]
+# Calculate the inbreeding
+?inbreeding # Check for more settings
+microbov.inbr <- inbreeding(x=microbov.pops, N=100)
+# Prepare population means for plotting
+microbov.bar <- sapply(X=microbov.inbr, FUN=mean)
+# Plot it
+hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles")
 
 ## Genetic distances
 
@@ -404,7 +445,7 @@ hauss.amova
 # Another possibility is poppr.amova - for more complicated hierarchy - see ?poppr.amova
 
 ## MSN based on Bruvo's distance
-bruvo.msn(pop=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
+bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
 
 ## NJ
 
@@ -416,8 +457,16 @@ plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))), xlab="Orig
 abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
+meles.nj <- nj(meles.dist)
+meles.boot <- boot.phylo(phy=meles.nj, x=genind2loci(DNAbin2genind(meles.dna)), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+
+
+
 # Bootstrap
-hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.cor, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+
+boot.phylo(nj(dist),dist,FUN = function(xx) nj(xx),B=100)
+
 
 # Plot a basic tree - see ?plot.phylo for details
 plot.phylo(x=hauss.nj, type="phylogram")
@@ -461,7 +510,7 @@ tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.
 # Populations
 hauss.nj.pop <- nj(hauss.dist.pop)
 # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
-source("http://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
+source("https://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
 hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
 # Plot a tree
 plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3, main="Neighbor-Joining tree of populations")
@@ -499,7 +548,7 @@ usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=function(EEE) r
 # Plot the tree
 plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("NJ tree + bootstrap values")
-tiplabels(frame="none", pch=20, col=transp(num2col(x=annot$year, col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
+tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
 axisPhylo()
 # Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
@@ -517,7 +566,7 @@ usflu.tree.collapsed <- di2multi(phy=usflu.tree.usflu.na.density, tol=0.00001)
 # Plot the consensus tree
 plot.phylo(x=usflu.tree.collapsed, show.tip=FALSE, edge.width=2)
 title("NJ tree after collapsing weak nodes")
-tiplabels(text=annot$year, bg=transp(num2col(x=annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.5, fg="transparent")
+tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.5, fg="transparent")
 axisPhylo()
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
@@ -532,7 +581,7 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 
 ## PCoA
 # Calculate it - based on various distance matrix
-hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE, scale=FALSE, truenames=TRUE, missing="NA"), method="euclidean"), scannf=FALSE, nf=3)
+hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE, scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE, nf=3)
 # Basic display
 s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 # To plot different axes use for example "...dfxy=hauss.pcoa$li[c(2, 3)]..."
@@ -649,7 +698,7 @@ add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio
 usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
 # Plot coloured phylogenetic tree
 plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
-tiplabels(pch=20, col=usflu.col, cex=4)
+tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
 title("NJ tree of the US influenza data")
 
 ## Moran's I
@@ -693,19 +742,19 @@ screeplot.spca(x=hauss.spca, main=NULL)
 
 # Map of genetic clines
 library(akima) # This library is needed for some manipulation with coordinates
-hauss.spca.usflu.na.density <- interp(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]), le=200), yo=seq(min(other(hauss.genind)$xy[,2]), max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
+hauss.spca.temp <- interp(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]), le=200), yo=seq(min(other(hauss.genind)$xy[,2]), max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
 # For 1st axis
-image(x=hauss.spca.usflu.na.density, col=spectral(100))
+image(x=hauss.spca.temp, col=spectral(100))
 s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE, csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
 # For 2nd axis
-image(x=hauss.spca.usflu.na.density, col=spectral(100))
+image(x=hauss.spca.temp, col=spectral(100))
 s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
 # Interpolated lagged score on a map
 hauss.spca.annot <- function() {
     title("sPCA - interpolated map of individual scores")
     points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
   }
-filled.contour(hauss.spca.usflu.na.density, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
+filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
 
 # Loading plots - which alleles contribute the most?
 hauss.spca.loadings <- hauss.spca$c1[,1]^2
@@ -721,7 +770,7 @@ coords.monmonier(hauss.monmonier) # See result as text
 # Plot genetic boundaries
 plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
 points(hauss.genpop$other$xy, cex=2.5, pch=20, col="red")
-text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=hauss.genpop$pop.names, cex=3)
+text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=popNames(hauss.genpop), cex=3)
 legend("bottomright", leg="Genetic boundaries\namong populations")
 
 ## Mantel test - isolation by distance
@@ -767,7 +816,7 @@ hauss.geneland.coord
 dim(hauss.geneland.coord.utm)
 hauss.geneland.coord.utm # Final coordinates
 # Load data (only haploid or diploid data are supported) - only plain table with alleles
-hauss.geneland.data <- read.table(file="http://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt", na.string="-999", header=FALSE, sep="\t")
+hauss.geneland.data <- read.table(file="https://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt", na.string="-999", header=FALSE, sep="\t")
 dim(hauss.geneland.data)
 hauss.geneland.data
 # Set number of independent runs
@@ -841,7 +890,7 @@ box() # Add frame around the map
 # Plot location points
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
 # Add text descriptions for points. Text is aside and with background
-shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(hauss.genind@pop.names), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
+shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
 # Insert legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
@@ -888,7 +937,7 @@ plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
 # Add sampling points
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
 # Add description of psampling points
-shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(hauss.genind@pop.names), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
+shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
 # Add legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
@@ -1518,8 +1567,8 @@ primates.body.ace.bayes
 table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
 
 ## Phenogram
-phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Phenogram, exudáty 1")
-fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percent phenogram, exudáty 1")
+phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
+fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
 
 # 2 znaky najednou
 phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.2)
@@ -1530,8 +1579,8 @@ phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity
 ## Pheongram + ACE, více znaků
 fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
 
-## Disparity-through-time
-disparity(phy=primates.tree, data=primates.body)
-dtt(phy=primates.tree, data=primates.body, nsim=1000)
-# lineage-through-time plot
-ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
+# ## Disparity-through-time
+# disparity(phy=primates.tree, data=primates.body)
+# dtt(phy=primates.tree, data=primates.body, nsim=1000)
+# # lineage-through-time plot
+# ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
