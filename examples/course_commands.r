@@ -51,11 +51,12 @@ getClassDef("genind") # Or select any other class name
 
 ## Packages and repositories
 # Set repositories
-options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/ packages/3.2/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
+options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one
-install.packages(pkgs=c("Geneland", "PBSmapping", "ParallelStructure", "RandomFields", "RgoogleMaps", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "colorspace", "combinat", "corrplot", "fields", "gplots", "grid", "hierfstat", "ips", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "pegas", "permute", "phangorn", "phyloch", "phytools", "polysat", "poppr", "rworldmap", "seqinr", "sp", "spdep", "spam", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "grid", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "parallel", "pegas", "permute", "phangorn", "phylobase", "phyloch", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "stats4", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+
 # We will load packages by library(package) one by one when needed
 # Update packages
 update.packages(repos=getOption("repos"))
@@ -211,6 +212,7 @@ nothofagus.sequences <- getSequence(nothofagus$req)
 nothofagus.sequences
 # Get annotations
 nothofagus.annot <- getAnnot(nothofagus$req)
+nothofagus.annot
 # Close the bank when work is over
 closebank()
 # Convert sequences from a list to DNAbin (functions as.DNAbin*)
@@ -236,10 +238,24 @@ usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/fil
 # Function has several options to speed up reading
 ?fasta2genlight
 # Convert genlight to genind
-usflu.genind <- as.genind(usflu.genlight)
+genind <- df2genind(as.data.frame(genlight)) # Check settings!
 # Resulting data matrix might be slightly different than when using DNAbin2genind - depends on used settings
 
-# Exporting data
+## Check sequences
+# Nucleotide diversity
+pegas::nuc.div(x=meles.dna)
+# Base frequencies
+ape::base.freq(x=meles.dna)
+# GC content
+ape::GC.content(x=meles.dna)
+# umber of times dimer/trimer/etc oligomers occur in a sequence
+seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
+# View sequences
+image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+# Function "image" requires as input matrix, so that sequences must be of same length
+image(x=as.matrix(usflu.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+
+## Exporting data
 # Convert genind into DF using genind2df()
 hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerAll=FALSE)
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
@@ -457,13 +473,13 @@ plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))), xlab="Orig
 abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
-meles.nj <- nj(meles.dist)
-meles.boot <- boot.phylo(phy=meles.nj, x=genind2loci(DNAbin2genind(meles.dna)), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-
-
-
 # Bootstrap
 hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+
+hauss.boot <- boot.phylo(phy=hauss.nj, x=genind2loci(hauss.genind), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+
+meles.nj <- nj(meles.dist)
+meles.boot <- boot.phylo(phy=meles.nj, x=genind2loci(DNAbin2genind(meles.dna)), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
 
 boot.phylo(nj(dist),dist,FUN = function(xx) nj(xx),B=100)
 
@@ -947,7 +963,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
 # get input data from https://trapa.cz/sites/default/rcourse/hauss_stru.in and joblist https://trapa.cz/sites/default/rcourse/joblist.txt
 # Set working directory
-setwd("~/dokumenty/fakulta/vyuka/r_mol_data/priklady/structure/")
+setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
 getwd()
 # Load ParallelStructure package
 library(ParallelStructure)
@@ -964,9 +980,9 @@ MPI_structure(...) # Same arguments as on previous slide
 # If this fails, look for some UNIX machine...
 
 # Postprocess results with Structure sum R script by Dorothee Ehrich
-source("http://trapa.cz/sites/default/rcourse/structure-sum-2009.r")
+source("https://trapa.cz/sites/default/rcourse/structure-sum-2011.r")
 # Create new directory with result files results_job_*_f and set working directory accordingly
-setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/priklady/structure/structure_sum/")
+setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/structure_sum/")
 dir()
 # Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://trapa.cz/sites/default/rcourse/list_k.txt
 # See documentation for details. Functions take as an argument list_k file and number of populations
@@ -987,26 +1003,18 @@ Structure.order("list_k_07.txt", 5)
 
 ## Multiple sequence alignment
 
-library(muscle) # Muscle has its own functions read.fasta and write.fasta
-# Reads local file and writes R object or external file with alignment, you can use any command line argument available for muscle, see ?muscle and its manual
-muscle(seqs="usflu.fasta", out="usflu.aln", quiet=FALSE) # Write result to external file
-usflu.muscle <- muscle(seqs="usflu.fasta", out=NULL, quiet=FALSE) # Write result to R object
-# Prints the alignment
-print(usflu.muscle, from=1, to=usflu.muscle$length)
-class(usflu.muscle)
-
 # Libraries 
 library(colorspace)
 library(XML)
 library(phyloch) # Alignment with mafft, you can also try package ips
 # Requires mafft binary on specific location - might be needed to copy it or make symlink
 # read ?mafft and mafft's documentation
-meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100)
+meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft")
 meles.mafft
 class(meles.mafft)
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
-clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, quiet=FALSE, original.ordering=TRUE)
+meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE)
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE)
 meles.muscle
 class(meles.muscle)
@@ -1020,7 +1028,7 @@ meles.nogaps <- del.gaps(meles.muscle)
 ## Tree manipulations
 
 # Read trees in NEWICK format - single or multiple tree(s)
-oxalis.trees <- read.tree("http://trapa.cz/sites/default/rcourse/oxalis.nwk")
+oxalis.trees <- read.tree("https://trapa.cz/sites/default/rcourse/oxalis.nwk")
 summary(oxalis.trees)
 length(oxalis.trees)
 names(oxalis.trees)
@@ -1054,7 +1062,7 @@ plot.phylo(hauss.nj.extracted)
 # tolerance is respective to the used metrics
 plot.phylo(hauss.nj)
 axisPhylo()
-hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.25)
+hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.4)
 plot.phylo(hauss.nj.fossil)
 
 # Bind two trees into one
@@ -1080,7 +1088,7 @@ plot.phylo(hauss.nj.ladderized)
 # Root the tree
 plot.phylo(hauss.nj)
 print.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, outgroup="10")
+hauss.nj.rooted <- root(phy=hauss.nj, outgroup=10)
 print.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj.rooted)
 # Root the tree interactive
@@ -1207,17 +1215,33 @@ meles.tre.pars <- optim.parsimony(tree=meles.tre.ini, data=meles.phydat)
 plot.phylo(x=meles.tre.pars, type="cladogram", edge.width=2)
 title("Maximum-parsimony tree of Meles")
 
+## Compare two trees
+
+# Compare topology of the species trees - basically outputs TRUE/FALSE
+all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean, use.edge.length=FALSE)
+?all.equal.phylo # Use to see comparison possibilities
+# Plot two trees with connecting lines
+# We need 2 column matrix with tip labels
+tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]), sort(oxalis.tree.sp.mean[["tip.label"]])), nrow=length(oxalis.tree.sp[["tip.label"]]), ncol=2)
+# Draw a tree - play with graphical parameters and use rotate=TRUE
+# to be able to adjust fit manually
+cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean),  assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
+title("Comparing the trees\nParsimony super tree\tSpecies tree")
+legend("topleft", legend="Red lines\nconnect tips", text.col="red", cex=0.75, bty="n", x.intersp=-2, y.intersp=-2)
+
 ## More about plotting the trees
 ?plot.phylo # check it for various possibilities what to influence
-plot.phylo(x=hauss.nj, type="cladogram", use.edge.length=FALSE, direction="leftwards")
+par(mfrow=c(1, 2)) # Plot two plots in one row
 plot.phylo(x=hauss.nj, type="cladogram", use.edge.length=FALSE, direction="rightwards")
+plot.phylo(x=hauss.nj, type="cladogram", use.edge.length=FALSE, direction="leftwards")
+dev.off() # Close graphical device to cancel par() settings
 
 # Nice tiplabels and higlighted tiplabel
 trape <- read.tree(text = "((Homo, Pan), Gorilla);")
 plot.phylo(x=trape, show.tip.label=FALSE)
-tiplabels(trape$tip.label, bg=c("white", "black", "white"), col=c("black", "white", "black"), cex=2)
+tiplabels(trape[["tip.label"]], bg=c("white", "black", "white"), col=c("black", "white", "black"), cex=2)
 nodelabels(text=c("6.4 Ma", "5.4 Ma"), frame="circle", bg="yellow")
-add.scale.bar() 
+add.scale.bar()
 
 ## PIC
 
@@ -1254,6 +1278,11 @@ lm(formula=primates.pic.longevity~primates.pic.body-1)
 
 # Permutation procedure to test PIC
 lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
+
+# Intraspecific variation
+# PIC - orthonormal contrasts using the method
+primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,]), phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
+primates.pic.ortho
 
 ## Phylogenetic autocorrelation
 
@@ -1298,6 +1327,123 @@ plot.correlogramList(x=carnivora.correlogram2, lattice=TRUE, legend=TRUE, test.l
 # Only one graph
 plot.correlogramList(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
 
+## Orthonormal Decomposition - phylogenetic eigenvector regression
+
+# Prepare toy data
+# Load MrBayes tree in NEXUS format
+apiaceae.tree <- read.nexus("https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus")
+# See it
+print.phylo(apiaceae.tree)
+plot.phylo(apiaceae.tree)
+# Root the tree
+apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
+# Remove "_" from taxa names
+# plot.phylo() by default omits "_" from tip names
+apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ", x=apiaceae.tree$tip.label)
+# Drop outgroup (Aralia and Hydrocotyle)
+# Click on last common ancestor of ingroup desired to be kept
+plot.phylo(apiaceae.tree)
+apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
+plot.phylo(apiaceae.tree)
+# Decomposition of topographical distances (right plot)
+library(adephylo)
+library(phylobase)
+table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart (x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
+# Generate some random variable
+library(geiger)
+apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1, model="BM")[,,1]
+?sim.char # See it for another possibilities to simulate data
+# Names for the values
+names(apiaceae.eco) <- apiaceae.tree[["tip.label"]]
+apiaceae.eco # See it
+
+# significant result - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
+anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree, method="patristic")[,1:2])))
+orthogram(x=apiaceae.eco, tre=apiaceae.tree, nrepet=1000, alter="two-sided")
+?orthogram # See another calculation possibilities
+
+## Phylogenetic Generalized Least Squares
+
+# Funkce pro correlation: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
+# Fitting an Ornstein-Uhlenbeck Motion model in PGLS
+library(nlme)
+library(ape)
+summary(gls(model=primates.longevity ~ primates.body, data=as.data.frame(cbind(primates.longevity, primates.body)), correlation=corBrownian(value=1, phy=primates.tree)))
+
+# Implementation in caper package
+library(caper) # Load needed library
+data(shorebird) # Load training data
+?shorebird.data
+shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
+summary(shorebird.pgls)
+plot(shorebird.pgls)
+abline(a=0, b=1, col="red")
+anova(shorebird.pgls)
+AIC(shorebird.pgls)
+
+## Generalized Estimating Equations
+
+# Calculate the model
+compar.gee(formula=primates.longevity ~ primates.body, phy=primates.tree)
+# or with correlation matrix:
+compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(value=1, phy=primates.tree, fixed=TRUE))
+# for corStruct there are similar functions corBlomberg, corMartins, corPagel, corBrownian - see manuals for differences
+
+# # multiple phylogenetic regressions and residuals
+# # x can be matrix of data
+# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
+# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
+
+# # Ornstein-Uhlenbeck Model
+# # Simulation of evolution on phylogenetic tree
+# compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
+
+# ## Variance Partitioning
+# # vare: the estimated residual variance–covariance matrix;
+# # vara: the estimated additive effect variance–covariance matrix;
+# # u: the estimates of the phylogeny wide means;
+# # A: the additive value estimates;
+# # E: the residual value estimates;
+# # lik: the log-likelihood.
+# # x can be vector, matric or df
+# apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
+# mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
+
+# # when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
+# # http://evolution.gs.washington.edu/phylip.html
+# primates.varcomp <- varCompPhylip(x=cbind(primates.body, primates.longevity), phy=primates.tree, exec="~/bin/phylip/exe/contrast")
+# mantel.test(m1=primates.varcomp$varA, m2=primates.varcomp$varE, nperm=1000, graph=TRUE, alternative="two.sided")
+# mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000)
+# plot(mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000))
+
+## Phylogenetic Signal
+
+library(picante)
+# If Blomberg's values of 1 correspond to a Brownian motion process, which implies some degree of phylogenetic signal or conservatism. K values closer to zero correspond to a random or convergent pattern of evolution, while K values greater than 1 indicate strong phylogenetic signal and conservatism of traits.
+# Test for Bloomberg's K statistics
+Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
+# Test with permutations
+phylosignal(x=apiaceae.eco, phy=apiaceae.tree, reps=1000, checkdata=TRUE)
+# sapply performs analysis on list of variables (numeric vectors)
+sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
+sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=phylosignal, phy=primates.tree, reps=1000)
+# Alternative to use phylosignal with sapply:
+multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000)
+# Note sapply() and multiPhylosignal() return same data, but the matrices are transposed - use t() to transpose one to look like the other:
+t(multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000))
+
+# When there are vectors with standard errors of measurements
+library(phytools)
+?phylosig # See for details
+# Test for phylogenetic signal (here without SE)
+phylosig(tree=apiaceae.tree, x=apiaceae.eco, method="K", test=TRUE, nsim=1000)
+phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
+# phylosig() can be used as an alternative to phylosignal() - the functions are similar in basic usage
+
+# Examples of usage of GLS for testing of phylogenetic signal
+summary(gls(model=primates.longevity ~ 1, data=as.data.frame (primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
+summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame (cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
+
 ## phylogenetic PCA
 library(phylobase) # Library needed to create phylo4d object required by ppca
 # Calculate pPCA
@@ -1314,6 +1460,7 @@ screeplot.ppca(primates.ppca)
 plot.ppca(primates.ppca)
 
 ## Ancestral state reconstruction
+
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
 # See ?ace for possible settings
 primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=primates.tree))
@@ -1325,13 +1472,99 @@ plot(primates.tree, lwd=2, cex=2)
 tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
 nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
 
+# More possibilities
+plot.phylo(primates.tree, lwd=2, cex=2)
+# ML estimation of a continuous trait, can compute confidence interval
+nodelabels(fastAnc(tree=primates.tree, x=primates.body))
+# ACE for Brownian evolution with directional trend
+plot.phylo(primates.tree, lwd=2, cex=2)
+nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=1000)$ace)
+# ACE for Brownian evolution using likelihood
+plot.phylo(primates.tree, lwd=2, cex=2)
+nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=1000, model="BM")$ace))
+# Bayesian ancestral character estimation (next slide)
+plot.phylo(primates.tree, lwd=2, cex=2)
+primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000) # Use more MCMC generations
+primates.body.ace.bayes
+nodelabels(primates.body.ace.bayes[11,3:6]) # See next slide
+# ACE returns long numbers - truncate them by e.g.
+# round(x=..., digits=3) # "x" is vector with ACE values
+# Another possibility for ancestral character reconstruction
+?phangorn::ancestral.pml
 
+# Continuous map
+library(phytools)
+contMap(tree=primates.tree, x=primates.body)
+# Change colors with setMap()
+primates.contmap <- setMap(x= contMap(primates.tree, primates.body), colors=c("white", "black"))
+plot(primates.contmap)
+# See ?par for more settings
+
+## Phenogram
+
+library(adephylo)
+table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
+fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
+# 2 characters on 2 axis
+phylomorphospace(tree= primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
+# 3D (3rd character is fake here)
+# 3 characters it a rotating cube
+phylomorphospace3d(tree= primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body- primates.longevity)), label=TRUE)
+# 2 characters on 2 axis
+fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
+# See manuals for more settings
+?fancyTree
+?phenogram
+?phylomorphospace
+?phylomorphospace3d
+?contMap
+?setMap
+?par
+
+# ## Disparity-through-time
+# disparity(phy=primates.tree, data=primates.body)
+# dtt(phy=primates.tree, data=primates.body, nsim=1000)
+# # lineage-through-time plot
+# ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
+
+## Install pacakges from GitHub
+
+# Needed library
+install.packages("devtools")
+library(devtools)
+dev_mode(on=TRUE)
+# Install selected package from GitHub (user/project)
+install_github("thibautjombart/adegenet")
+# when finished go back to normal version
+dev_mode(on=FALSE)
+
+## Loops
+# Simplest loop - print value of "i" in each step
+for (i in 1:5) { print(i) }
+# In every step modify value of variable "X"
+X <- 0
+for (i in 10:1) { 
+  print(i)
+  X <- X+i
+  print(X)
+  }
+# Work on each item of a list object
+for (L in 1:length(nothofagus.sequences)) {
+  print(length(nothofagus.sequences[[L]])) }
+
+## Functions
+MyFunction <- function (x, y) {
+  # Any commands can be here...
+  x + y
+  }
+# Use as usually:
+MyFunction(5, 8)
+MyFunction(1, 4)
+MyFunction(x=4, y=7)
 
 ################################################################################
-
-# - populační indexy po populacích - seppop a lapply
-# - bootstrap Fst
-# - konverze muscle do DNAbin/něčeho jiného
 
 ## RAxML
 meles.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
@@ -1417,7 +1650,31 @@ plot(meles.tre4, show.tip=FALSE, edge.width=2)
 title("Maximum-likelihood tree")
 axisPhylo()
 
+## Arlequin
+
+# https://trapa.cz/en/arlequin-r-linux
+
+setwd("~/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/")
+library(XML)
+source("rParsingSettings_fst_vse.r")
+source("rParsingSettings_jen_rst.r")
+
+infile <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/nuphar_fst_vse.xml"
+outfiles <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/Graphics/"
+sourcePath <- "/home/vojta/bin/arlecore/Rfunctions/"
+
+source(paste(sourcePath, "parseArlequin.r", sep="") )
+parseArlequin(infile, outfiles, sourcePath)
+
 ## Diversity
+
+library(plotrix) # Závislos diveRsity
+library(shiny) # Závislos diveRsity
+library(ggplot2) # Závislos diveRsity
+library(diveRsity)
+
+setwd("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/")
+
 nuphar.divpart <- fastDivPart(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=TRUE)
 inCalc(infile="diversity/nuphar.genepop", outfile="diversity/", pairwise=FALSE, xlsx=FALSE, bootstraps=1000, parallel=TRUE)
 nuphar.genepop <- readGenepop(infile="diversity/nuphar.genepop", gp=3, bootstrap=FALSE)
@@ -1427,160 +1684,33 @@ chiCalc(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, minFreq=0
 divRatio(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, pop_stats=nuphar.genepop, refPos=10, bootstraps=1000, parallel=TRUE)
 divMigrate(infile="diversity/nuphar.genepop", nbs=1000, plot=TRUE, para=TRUE)
 
-## Private alleles apod.
+# Private alleles apod.
 convert("popgenkit/nuphar.genepop", ndigit=3)
 popgen("popgenkit/nuphar.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
 bootstrapHet("popgenkit/nuphar.arp", ndigit=3, nrepet=100) # Má problémy s množstvím chybějících dat (hlavně při vyšším BS)
 jackmsatpop("popgenkit/nuphar.arp", ndigit=3, interval=1, nrepet=1000, richness=FALSE) # Nefunguje (nejspíš kvůli množství chybějících dat)!
 
+# Diversity
+dioszegia.divpart <- divPart(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
+dioszegia.incalc <- inCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
+dioszegia.genepop <- readGenepop(infile="diversity/dioszegia.genepop", gp=3, bootstrap=FALSE)
+corPlot(dioszegia.genepop, dioszegia.divpart)
+difPlot(dioszegia.divpart, outfile="diversity/dioszegia/", interactive=TRUE)
+chiCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, minFreq=0.01)
+dioszegia.divratio <- divRatio(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pop_stats=dioszegia.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
+# Private alleles apod.
+# Po populacích
+convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
+popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
+# Po druzích
+convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
+popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_sp.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
 
-
-################################################################################
-
-apiaceae.tree <- read.nexus("https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus")
-
-print.phylo(apiaceae.tree)
-plot.phylo(apiaceae.tree)
-
-apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1, model="BM")[,,1]
-
-names(apiaceae.eco) <- apiaceae.tree[["tip.label"]]
-apiaceae.eco
-
-apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
-
-apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ", x=apiaceae.tree$tip.label)
-
-plot.phylo(apiaceae.tree)
-apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
-plot.phylo(apiaceae.tree)
-
-## Orthonormal Decomposition - phylogenetic eigenvector regression
-# orthobasis.phylo() vrací matici, která je lineární transformací cofenetických vzdáleností - z 1. 2 sloupců lze spočítat fylogenetická variance. Z toho pak lze spočítat lineární regrese - silná korelace odpovědní proměnné a transformované cofenetické matice značí silnou netečnost proměnné k fylogenezi
-# signifikantní výsledek - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
-library(adephylo)
-anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree, method="patristic")[,1:2])))
-
-# Orthonormal decomposition of variance of a quantitative variable on an orthonormal basis
-orthogram(x=apiaceae.eco, tre=apiaceae.tree, nrepet=1000, alter="two-sided")
-
-# Dekompozice topografických vzdáleností
-table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
-
-## Phylogenetic Generalized Least Squares
-
-# Funkce pro correlation: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
-# Fitting an Ornstein-Uhlenbeck Motion model in PGLS
-summary(gls(model=primates.longevity ~ primates.body, data=as.data.frame(cbind(primates.longevity, primates.body)), correlation=corBrownian(value=1, phy=primates.tree)))
-
-# Implementace v caper
-shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
-summary(shorebird.pgls)
-plot(shorebird.pgls)
-abline(a=0, b=1, col="red")
-anova(shorebird.pgls)
-AIC(shorebird.pgls)
-
-## Generalized Estimating Equations
-
-compar.gee(formula=primates.longevity ~ primates.body, phy=primates.tree)
-
-# Místo přímo stromu lze použít fylogenetické korelační struktura
-# Funkce pro corStruct: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
-compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(value=51, phy=primates.tree, fixed=TRUE))
-
-# # multiple phylogenetic regressions and residuals
-# # x can be matrix of data
-# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
-# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
-
-# # Ornstein-Uhlenbeck Model
-# # Simulace evoluce na fylogenetickém stromu
-# compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
-
-# ## Variance Partitioning
-# # vare: the estimated residual variance–covariance matrix;
-# # vara: the estimated additive effect variance–covariance matrix;
-# # u: the estimates of the phylogeny wide means;
-# # A: the additive value estimates;
-# # E: the residual value estimates;
-# # lik: the log-likelihood.
-# # x can be vector, matric or df
-# apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
-# mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
-
-## Phylogenetic Signal
-# If Blomberg's values of 1 correspond to a Brownian motion process, which implies some degree of phylogenetic signal or conservatism. K values closer to zero correspond to a random or convergent pattern of evolution, while K values greater than 1 indicate strong phylogenetic signal and conservatism of traits.
-# Blomberg's K statistic of phylogenetic signal
-Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
-sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
-
-# Blomberg's K statistic of phylogenetic signal as well as P-value based on variance of phylogenetically independent contrasts relative to tip shuffling randomization
-phylosignal(x=apiaceae.eco, phy=apiaceae.tree, reps=1000, checkdata=TRUE)
-sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=phylosignal, phy=primates.tree, reps=1000)
-
-# Místo sapply lze použít multiPhylosignal
-multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000)
-
-# Alternativně funkce phylosig()
-phylosig(tree=apiaceae.tree, x=apiaceae.eco, method="K", test=TRUE, nsim=1000)
-phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
-
-## Intraspecific variation
-# PIC - orthonormal contrasts using the method
-primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,]), phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
-
-# Variance Partitioning
-# when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
-# http://evolution.gs.washington.edu/phylip.html
-primates.varcomp <- varCompPhylip(x=cbind(primates.body, primates.longevity), phy=primates.tree, exec="~/bin/phylip/exe/contrast")
-mantel.test(m1=primates.varcomp$varA, m2=primates.varcomp$varE, nperm=1000, graph=TRUE, alternative="two.sided")
-mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000)
-plot(mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000))
-
-## Estimating ancestral state
-# ACE
-
-# Graduální zobrazení na stromu, barvy může nastavit setMap(), k rekonstrukci využívá fastAnc()
-contMap(tree=primates.tree, x=primates.body)
-
-# fitContinuous (umí pracovat s SE)
-primates.fit <- fitContinuous(phy=primates.tree, dat=primates.body, model="lambda")
-
-# anc.trend
-# This function estimates the evolutionary parameters and ancestral states for Brownian evolution with directional trend. Pro znaky vykazující trend.
-anc.trend(tree=primates.tree, x=primates.body, maxit=1000) # Pro nodelabels() XXX$ace
-# anc.ML
-anc.ML(tree=primates.tree, x=primates.body, maxit=1000, model="BM") # Pro nodelabels() XXX$ace
-# anc.Bayes - Bayesiánská rekonstrukce - vezme se výsledek z poslední generace
-anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000) # Pro nodelabels XXX[100001,]
-primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000)
-primates.body.ace.bayes
-
-# Další možnosti:
-# ancestral.pml(object, type = c("ml", "bayes"))
-# ancestral.pars(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
-# pace(tree, data, type = c("MPR", "ACCTRAN"), cost = NULL)
-# plotAnc(tree, data, i, col=NULL, cex.pie=par("cex"), pos="bottomright", ...)
-
-## Zobrazení více hodnot na stromu
-table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
-
-## Phenogram
-phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
-fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
-
-# 2 znaky najednou
-phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.2)
-
-# 3D - 3 znaky
-phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body-primates.longevity)), label=TRUE)
-
-## Pheongram + ACE, více znaků
-fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
-
-# ## Disparity-through-time
-# disparity(phy=primates.tree, data=primates.body)
-# dtt(phy=primates.tree, data=primates.body, nsim=1000)
-# # lineage-through-time plot
-# ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
+# Diversity
+haussknechtii.divpart <- divPart(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
+haussknechtii.incalc <- inCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
+haussknechtii.genepop <- readGenepop(infile="diversity/haussknechtii.genepop", gp=3, bootstrap=FALSE)
+corPlot(haussknechtii.genepop, haussknechtii.divpart)
+difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
+haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
+divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)

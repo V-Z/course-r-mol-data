@@ -66,7 +66,7 @@
 % Inline source code
 \newmint{splus}{fontsize=\footnotesize, bgcolor=Beige}
 
-% Věci na titulku apod.
+% Ttile page
 \author{Vojtěch Zeisek}
 \institute[\url{https://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University in Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\url{https://trapa.cz/}, \href{mailto:zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
 \title{Molecular data in R}
@@ -359,7 +359,7 @@
  \item \texttt{phylo} -- phylogenetic information, typically trees
  \item \texttt{phylo4} -- derived from phylo, S4 instead of S3
  \item \texttt{matching} -- binary phylogenetic trees
- \item \textit{haplonet} -- networks without reticulation
+ \item \texttt{haplonet} -- networks without reticulation
  \item \texttt{spca} -- results of sPCA
  \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA, \ldots
  \item \texttt{dapc} -- results of DAPC
@@ -502,25 +502,37 @@ There are information about slots within that classes you can access.
 
 \begin{frame}[fragile]{Install needed packages}
   \begin{spluscode}
-    install.packages(pkgs=c("Geneland", "PBSmapping", "ParallelStructure",
-      "RandomFields", "RgoogleMaps", "TeachingDemos", "XML", "ade4",
-      "adegenet", "adephylo", "akima", "ape", "colorspace", "combinat",
-      "corrplot", "fields", "gplots", "grid", "ips", "lattice", "mapdata",
-      "mapproj", "maps", "maptools", "muscle", "pegas", "permute",
-      "phangorn", "phyloch", "phytools", "polysat", "poppr", "rworldmap",
-      "seqinr", "sp", "spam", "tcltk", "vegan"), repos=getOption("repos"),
-      dependencies=TRUE)
+    # Simplest usage
+    install.packages("PackageName") # Case sensitive!
+    # Install packages needed for the course
+    install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland",
+      "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields",
+      "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors",
+      "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo",
+      "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot",
+      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "grid",
+      "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools",
+      "muscle", "mvtnorm", "nlme", "parallel", "pegas", "permute",
+      "phangorn", "phylobase", "phyloch", "phytools", "picante", "plotrix",
+      "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp",
+      "spdep", "spam", "stats4", "tcltk", "vegan"),
+      repos=getOption("repos"), dependencies=TRUE)
+    ?install.packages # See for more options
     library(package) # Loads installed package (we will do it on the fly)
     update.packages(repos=getOption("repos")) # Updates installed packages
   \end{spluscode}
-\begin{block}{Installation of packages in GUI}
-  \begin{footnotesize}
+\end{frame}
+
+\begin{frame}{Packages installation notes}
+  \begin{itemize}
+    \item Repositories (internet directories full of R packages) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command
+  \end{itemize}
+  \begin{block}{Installation of packages in GUI}
     \begin{itemize}
       \item RStudio: set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
       \item RKWard: go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{Packages R}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages}, click to \textbf{Install\ldots}, select and install desired packages\ldots
     \end{itemize}
-  \end{footnotesize}
-\end{block}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor}
@@ -909,9 +921,28 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
 \end{itemize}
   \begin{spluscode}
     # Convert genlight to genind
-    usflu.genind <- as.genind(usflu.genlight)
+    genind <- df2genind(as.data.frame(genlight)) # Check settings!
     # Resulting data matrix might be slightly different than when using
     # DNAbin2genind - depends on used settings
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Checking sequences}
+  \begin{spluscode}
+    # Nucleotide diversity
+    pegas::nuc.div(x=meles.dna)
+    # Base frequencies
+    ape::base.freq(x=meles.dna)
+    # GC content
+    ape::GC.content(x=meles.dna)
+    # umber of times dimer/trimer/etc oligomers occur in a sequence
+    seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
+    # View sequences
+    image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+    # Function "image" requires as input matrix
+    # So that sequences must be of same length
+    image(x=as.matrix(usflu.dna), c("a", "t", "c" ,"g", "n"),
+      col=rainbow(5))
   \end{spluscode}
 \end{frame}
 
@@ -2563,7 +2594,7 @@ We will use figures and F$_{ST}$ outputs only from the best run.
 \end{itemize}
   \begin{spluscode}
     # Prepare special new empty directory and set working directory
-    setwd("~/dokumenty/fakulta/vyuka/r_mol_data/priklady/structure/")
+    setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
     install.packages("ParallelStructure",
       repos="http://R-Forge.R-project.org") # Install the package
     library(ParallelStructure) # Load the library
@@ -2669,7 +2700,7 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
     source("structure-sum-2009.r")
     # Create new directory with result files results_job_*_f and set
     # working directory accordingly
-    setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/priklady/
+    setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/
       structure/structure_sum/")
   \end{spluscode}
  \begin{itemize}
@@ -2712,35 +2743,21 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 
 \section{Alignment}
 
-\subsection{MUSCLE}
-
-\begin{frame}[fragile]{Multiple sequence alignment -- package muscle}
-  \begin{spluscode}
-    # Muscle has its own functions read.fasta and write.fasta
-    library(muscle)
-    # Reads local file and writes R object or external file
-    # with alignment, you can use any command line argument
-    # available for muscle, see ?muscle and its manual
-    # Write result to external file
-    muscle(seqs="usflu.fasta", out="usflu.aln", quiet=FALSE)
-    # Write result to R object
-    usflu.muscle <- muscle(seqs="usflu.fasta", out=NULL, quiet=FALSE)
-    # Prints the alignment
-    print(usflu.muscle, from=1, to=usflu.muscle[["length"]])
-    class(usflu.muscle)
-  \end{spluscode}
-\begin{itemize}
- \item Package \href{https://www.bioconductor.org/packages/release/bioc/html/muscle.html}{muscle} contains MUSCLE binary
- \item Read \href{http://www.drive5.com/muscle/manual/}{MUSCLE documentation} to get correct parameters (if you are not fine with defaults)
-\end{itemize}
+\begin{frame}{Multiple sequence alignment}
+  \begin{itemize}
+    \item Good alignment is basic condition for any analysis of DNA sequences
+    \item R doesn't have any possibility for visual editing
+    \item R can (in batch) run multiple sequence alignments (there are several possibilities)
+    \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal}, \ldots
+  \end{itemize}
 \end{frame}
 
 \subsection{MAFFT}
 
-\begin{frame}[fragile]{Multiple sequence alignment}
+\begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
 \begin{itemize}
- \item MUSCLE is available in package \texttt{muscle} (above) and in package \texttt{ape} -- first one reads FASTA files and writes external FASTA files or R objects of class ``muscle''. The latter reads and writes object of class ``DNAbin''
- \item ape also contains functions to use Clustal and T-Coffee -- both read and write DNAbin
+ \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``*StringSet'' class R objects and writes ``*MultipleAlignment'' R objects; the latter reads and writes object of class ``DNAbin''
+ \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write DNAbin
  \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write DNAbin
 \end{itemize}
   \begin{spluscode}
@@ -2750,8 +2767,8 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # Requires mafft binary on specific location
     # you might be needed to copy it or make symlink or so
     # read ?mafft and mafft's documentation
-    meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100)
-    meles.mafft
+    meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100,
+      path="/usr/bin/mafft")
   \end{spluscode}
 \end{frame}
 
@@ -2759,11 +2776,13 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 
 \begin{frame}[fragile]{Clustal, MUSCLE and T-Coffee from ape}
   \begin{spluscode}
+    meles.mafft
     class(meles.mafft)
     # read ?clustal and documentation of Clustal, Muscle and T-Coffee
     # when using them to set correct parameters
-    clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10,
-      gapext=0.2, quiet=FALSE, original.ordering=TRUE)
+    meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1,
+      gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
+      original.ordering=TRUE)
     meles.muscle <- muscle(x=meles.dna, exec="muscle",
       quiet=FALSE, original.ordering=TRUE)
     meles.muscle
@@ -2790,7 +2809,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
   \begin{spluscode}
     # Read trees in NEWICK format - single or multiple tree(s)
     oxalis.trees <- read.tree
-      ("http://trapa.cz/sites/default/rcourse/oxalis.nwk")
+      ("https://trapa.cz/sites/default/rcourse/oxalis.nwk")
     summary(oxalis.trees)
     length(oxalis.trees)
     names(oxalis.trees)
@@ -2826,7 +2845,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # tolerance is respective to the used metrics
     plot.phylo(hauss.nj)
     axisPhylo()
-    hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.25)
+    hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.4)
     plot.phylo(hauss.nj.fossil)
   \end{spluscode}
 \end{frame}
@@ -2860,7 +2879,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # Root the tree
     plot.phylo(hauss.nj)
     print.phylo(hauss.nj)
-    hauss.nj.rooted <- root(phy=hauss.nj, outgroup="10")
+    hauss.nj.rooted <- root(phy=hauss.nj, outgroup=10)
     print.phylo(hauss.nj.rooted)
     plot.phylo(hauss.nj.rooted)
     # Root the tree interactive
@@ -2942,7 +2961,7 @@ Post process the matrix and plot it. There are several methods for calculating d
     colnames(oxalis.trees.d) <- names(oxalis.trees)
     rownames(oxalis.trees.d) <- names(oxalis.trees)
     # Make matrix symmetric
-    oxalis.trees.d[lower.tri(oxalis.trees.d)]=
+    oxalis.trees.d[lower.tri(oxalis.trees.d)] <-
       t(oxalis.trees.d)[lower.tri(oxalis.trees.d)]
     # Create heatmaps using heatmap.2 function from gplots package
     heatmap.2(x=oxalis.trees.d, Rowv=FALSE, Colv="Rowv", dendrogram="none",
@@ -3195,8 +3214,6 @@ Post process the matrix and plot it. There are several methods for calculating d
   \includegraphics[height=5cm]{highlight.png}
   \columnbreak
   \begin{spluscode}
-    # Nice tiplabels and
-    # highlighted tip label
     trape <- read.tree(text=
       "((Homo, Pan), Gorilla);")
     plot.phylo(x=trape,
@@ -3204,10 +3221,10 @@ Post process the matrix and plot it. There are several methods for calculating d
     tiplabels(trape[["tip.label"]],
       bg=c("white", "black",
       "white"), col=c("black",
-      "white", "black"))
+      "white", "black"), cex=2)
     nodelabels(text=c("6.4 Ma",
       "5.4 Ma"), frame="circle",
-      bg="white")
+      bg="yellow")
     add.scale.bar()
   \end{spluscode}
 \end{multicols}
@@ -3292,6 +3309,7 @@ Post process the matrix and plot it. There are several methods for calculating d
     \item \texttt{pic.ortho()} requires list of measurements (vectors) for all taxa -- their lengths can differ
     \item If we have sets of measurements in separated vectors (each vector has measurements for all taxa), we must for each \texttt{list} item use \texttt{cbind} to join columns and select appropriate line (from 1 to number of taxa)
     \item In example below, \texttt{jitter()} adds random noise
+    \item Other usage is same in previous case\ldots
   \end{itemize}
   \begin{spluscode}
     primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body,
@@ -3401,9 +3419,8 @@ Post process the matrix and plot it. There are several methods for calculating d
     # Load MrBayes tree in NEXUS format
     apiaceae.tree <- read.nexus
       ("https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus")
-    # See it
-    print.phylo(apiaceae.tree)
-    plot.phylo(apiaceae.tree)
+    print.phylo(apiaceae.tree) # See it
+    plot.phylo(apiaceae.tree) # See it
     # Root the tree
     apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
     # Remove "_" from taxa names
@@ -3415,6 +3432,8 @@ Post process the matrix and plot it. There are several methods for calculating d
     plot.phylo(apiaceae.tree)
     apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
     plot.phylo(apiaceae.tree)
+    library(adephylo)
+    library(phylobase)
   \end{spluscode}
 \end{frame}
 
@@ -3430,6 +3449,7 @@ Post process the matrix and plot it. There are several methods for calculating d
 \begin{frame}[fragile]{Prepare toy data set (the variable)}
   \begin{spluscode}
     # Generate some random variable
+    library(geiger)
     apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1,
       model="BM")[,,1]
     ?sim.char # See it for another possibilities to simulate data
@@ -3449,7 +3469,6 @@ Post process the matrix and plot it. There are several methods for calculating d
 
 \begin{frame}[fragile]{Orthonormal decomposition - phylogenetic eigenvector regression}
   \begin{spluscode}
-    # library(adephylo)
     anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree,
       method="patristic")[,1:2])))
   \end{spluscode}
@@ -3472,7 +3491,7 @@ Residuals    15 0.214443 0.014296
   \end{spluscode}
   \begin{itemize}
     \item Analyses one quantitative trait
-    \item Do not confuse with \texttt{ade4::orthogram} -- similar, but require data in little bit different form, marked as deprecated and replaced by \texttt{adephylo} version
+    \item Do not confuse with \texttt{ade4::orthogram} -- similar, but require data in little bit different form, marked as deprecated and replaced by the \texttt{adephylo} version
     \item It return results of results of 5 non-parametric tests associated to the variance decomposition
     \item Procedure decomposes data matrix to separate phylogeny and phenotype to see if there is significant signal
   \end{itemize}
@@ -3489,13 +3508,13 @@ Residuals    15 0.214443 0.014296
 
 \begin{frame}[fragile]{Phylogenetic Generalized Least Squares}
   \begin{itemize}
-    \item Model-based testing if there is significant correlation
+    \item Model-based testing if there is significant correlation between two traits (after removing the phylogenetic component)
     \item \texttt{nlme::gls} fits a linear model using generalized least squares
     \item Functions \texttt{corBlomberg}, \texttt{corBrownian}, \texttt{corMartins} and \texttt{corPagel} from \texttt{ape} package create correlation matrix of evolution of continuous character according to the given tree
   \end{itemize}
   \begin{spluscode}
-    # library(nlme)
-    # library(ape)
+    library(nlme)
+    library(ape)
     summary(gls(model=primates.longevity ~ primates.body,
       data=as.data.frame(cbind(primates.longevity, primates.body)),
       correlation=corBrownian(value=1, phy=primates.tree)))
@@ -3575,8 +3594,8 @@ primates.body 0.8497249 0.2157006 3.939372   0.1101432
 \end{frame}
 
 % \subsection{Partitioning}
-% 
-% \begin{frame}[fragile]{}
+%
+% \begin{frame}[fragile]{Variance partitioning}
 %   \begin{spluscode}
 %     # 
 %   \end{spluscode}
@@ -3612,7 +3631,7 @@ primates.body 0.8497249 0.2157006 3.939372   0.1101432
       FUN=phylosignal, phy=primates.tree, reps=1000)
     # Alternative to use phylosignal with sapply:
     multiPhylosignal(x=as.data.frame(cbind(primates.body,
-      primates.longevity)), phy=primates.tree, reps=1000
+      primates.longevity)), phy=primates.tree, reps=1000)
     # Note sapply() and multiPhylosignal() return same data, but the
     # matrices are transposed - use t() to transpose one to look like
     # the other:
@@ -3622,6 +3641,13 @@ primates.body 0.8497249 0.2157006 3.939372   0.1101432
 \end{frame}
 
 \begin{frame}[fragile]{When there are vectors with standard errors of measurements}
+  \begin{itemize}
+    \item Functions for testing of phylogenetic signal do not work with more measurements per taxon
+    \begin{itemize}
+      \item Currently, the only possibility is \texttt{phylosig()} which is able to work with SE (user must prepare this vector from the data manually)
+    \end{itemize}
+    \item \texttt{phylosig()} can be used as an alternative to \texttt{phylosignal()} -- the functions are similar in basic usage
+  \end{itemize}
   \begin{spluscode}
     library(phytools)
     ?phylosig # See for details
@@ -3630,8 +3656,6 @@ primates.body 0.8497249 0.2157006 3.939372   0.1101432
       nsim=1000)
     phylosig(tree=primates.tree, x=primates.body, method="lambda",
       test=TRUE)
-    # phylosig() can be used as an alternative to phylosignal() -
-    # the functions are similar in basic usage
   \end{spluscode}
 \end{frame}
 
@@ -3651,7 +3675,6 @@ primates.body 0.8497249 0.2157006 3.939372   0.1101432
       names.col=V2, vcv=TRUE)))
   \end{spluscode}
 \end{frame}
-
 
 \subsection{pPCA}
 
@@ -3856,14 +3879,96 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
 \end{frame}
 
 % \subsection{Disparity}
-% 
-% \begin{frame}[fragile]{}
+%
+% \begin{frame}[fragile]{Disparity through time}
 %   \begin{spluscode}
 %     # 
 %   \end{spluscode}
 % \end{frame}
 
 \section{The end}
+
+\subsection{GitHub}
+
+\begin{frame}[fragile]{Install package from GitHub}
+  \begin{itemize}
+    \item \href{https://github.com/}{GitHub} is probably the most popular platform to host development of open-source projects -- plenty of R packages are there
+    \item \href{https://git-scm.com/}{Git} is version controlling system -- it traces changes among all versions -- absolutely crucial for any software development
+    \item Normal stable version of package is installed from repository as usual, but sometimes it can be useful to get latest developmental version (e.g. when it fixes some bug and new release is not available yet)
+  \end{itemize}
+  \begin{spluscode}
+    # Needed library
+    install.packages("devtools")
+    library(devtools)
+    dev_mode(on=TRUE)
+    # Install selected package from GitHub (user/project)
+    install_github("thibautjombart/adegenet")
+    # when finished go back to normal version
+    dev_mode(on=FALSE)
+  \end{spluscode}
+\end{frame}
+
+\subsection{Scripts, functions and loops}
+
+\begin{frame}[fragile]{Simple loop}
+  \begin{itemize}
+    \item Loops repeat one task given number of time
+    \item variable \texttt{i} has changing value for every repetition
+    \item It is possible to use variables or numeric output of functions in \texttt{from:to} expression
+  \end{itemize}
+  \begin{spluscode}
+    # Simplest loop - print value of "i" in each step
+    for (i in 1:5) { print(i) }
+    # In every step modify value of variable "X"
+    X <- 0
+    for (i in 10:1) { 
+      print(i)
+      X <- X+i
+      print(X)
+      }
+    # Work on each item of a list object
+    for (L in 1:length(nothofagus.sequences)) {
+      print(length(nothofagus.sequences[[L]])) }
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Simple function}
+  \begin{itemize}
+    \item Functions pack sets of commands
+    \item People more interested in R programming need to check special courses and/or \href{https://cran.r-project.org/manuals.html}{documentation}
+  \end{itemize}
+  \begin{spluscode}
+    # General syntax:
+    MyFunction <- function (x, y) {
+      # Any commands can be here...
+      x + y
+      }
+    # Use as usually:
+    MyFunction(5, 8)
+    MyFunction(1, 4)
+    MyFunction(x=4, y=7)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{R script and its running from command line}
+  \begin{itemize}
+    \item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension with list of R commands
+    \item Mark all user comments with \texttt{\#} on the beginning
+    \item In command line (Linux/Mac OS~X/Windows/\ldots) use
+    \begin{itemize}
+      \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
+      \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow
+    \end{itemize}
+    \item Script end when there is some error or on the end of the file
+    \item When working on both Windows and Mac OS~X or Linux, take care about end of lines
+    \begin{itemize}
+      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for new line
+      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct end of lines
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\subsection{Resources}
 
 \begin{frame}{Citations}
 \begin{itemize}
@@ -3872,8 +3977,6 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
   \item Packages/functions commonly provide various methods to calculate desired task -- check function's help page (\texttt{\textbf{?}FunctionName}) and find references there and cite them accordingly
 \end{itemize}
 \end{frame}
-
-\subsection{Resources}
 
 \begin{frame}[allowframebreaks]{Where to look for the help}
 \begin{itemize}
@@ -3972,99 +4075,18 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
 \end{flushright}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Missing topics}
-  \begin{itemize}
-    \item More theory for methods
-    \item Reconstruction of character evolution
-    \item Tree graphics
-    \item Functions from GitHub
-    \item How to create R function
-    \item How to create/run R script
-    \item phyloch
-    \item polysat
-    \item splits
-    \item Currently, there is no package for coalescence based approach for creation of species tree from multiple gene trees. This function was in package \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{phybase}, but it is abandoned and doesn't install in R~3~without hacks
-    \item Other implementations of ACE are available in packages geiger (functions fitContinuousMCMC and fitDiscrete), phangorn and more in ape (MPR)
-  \end{itemize}
-\end{frame}
-
 \end{document}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%% Arlequin
-
-% https://trapa.cz/en/arlequin-r-linux
-% 
-% setwd("~/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/")
-% library(XML)
-% source("rParsingSettings_fst_vse.r")
-% source("rParsingSettings_jen_rst.r")
-% 
-% infile <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/nuphar_fst_vse.xml"
-% outfiles <- "/home/vojta/dokumenty/fakulta/diplomka_2009/clanek/vypocty/arlequin/nuphar_fst_vse.res/Graphics/"
-% sourcePath <- "/home/vojta/bin/arlecore/Rfunctions/"
-% 
-% source(paste(sourcePath, "parseArlequin.r", sep="") )
-% parseArlequin(infile, outfiles, sourcePath)
-
-
-
-%%% Diversity
-
-% library(plotrix) # Závislos diveRsity
-% library(shiny) # Závislos diveRsity
-% library(ggplot2) # Závislos diveRsity
-% library(diveRsity)
-% 
-% setwd("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/")
-% 
-% # Diviersity
-% dioszegia.divpart <- divPart(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
-% dioszegia.incalc <- inCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
-% dioszegia.genepop <- readGenepop(infile="diversity/dioszegia.genepop", gp=3, bootstrap=FALSE)
-% corPlot(dioszegia.genepop, dioszegia.divpart)
-% difPlot(dioszegia.divpart, outfile="diversity/dioszegia/", interactive=TRUE)
-% chiCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, minFreq=0.01)
-% dioszegia.divratio <- divRatio(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pop_stats=dioszegia.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
-% # Private alleles apod.
-% # Po populacích
-% convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
-% popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
-% # Po druzích
-% convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
-% popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_sp.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
-% 
-% # Diversity
-% haussknechtii.divpart <- divPart(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
-% haussknechtii.incalc <- inCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
-% haussknechtii.genepop <- readGenepop(infile="diversity/haussknechtii.genepop", gp=3, bootstrap=FALSE)
-% corPlot(haussknechtii.genepop, haussknechtii.divpart)
-% difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
-% haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
-% divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
-
-
-
-%%%
-
-% ## Check sequences
-% pegas: nuc.div() #?
-% ape: base.freq()
-% seqinr: count() # And other functions from the package?
-% seqinr: SeqFastadna() # And other functions from the package?
-% Biostrings: alphabetFrequency() # And other functions from the package?
-% # DNA is a DNAbin object - graph displays missing data and gaps:
-% image(DNA, c("g", "n"), c("black", "grey"))
-% grid(ncol(x), nrow(x), col = "lightgrey")
-
-
-
-%%%
-
-\begin{frame}[fragile]{}
-  \begin{spluscode}
-    # 
-  \end{spluscode}
-\end{frame}
-
+%% Missing topics:
+%% ----------------
+% More theory for methods
+% Tree graphics
+% polysat
+% splits
+% coalescence based approach for creation of species tree from multiple gene trees -- \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{phybase}
+% external tree builders
+% ML
+% Bayes trees
+% diveRsity package
+% Arlequin
+% Linarius
