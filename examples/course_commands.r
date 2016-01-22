@@ -356,7 +356,7 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles
 ## Genetic distances
 
 # Euclidean distance for individuals
-hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
+hauss.dist <- dist.genet(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
 hauss.dist
 
 # Nei's distance (not Euclidean) for populations (other methods are available, see ?dist.genpop)
@@ -466,6 +466,7 @@ bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, verte
 ## NJ
 
 # Calculates the tree (try with various distances)
+?ade4::dist.genet # See for another genetic distance
 hauss.nj <- nj(hauss.dist)
 
 # Test tree quality - plot original vs. reconstructed distance
@@ -474,15 +475,14 @@ abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
 # Bootstrap
+# boot.phylo() resamples all columns - remove population column first
+hauss.pop <- hauss.loci[["population"]]
+hauss.loci[["population"]] <- NULL
 hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-
-hauss.boot <- boot.phylo(phy=hauss.nj, x=genind2loci(hauss.genind), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
 
 meles.nj <- nj(meles.dist)
 meles.boot <- boot.phylo(phy=meles.nj, x=genind2loci(DNAbin2genind(meles.dna)), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-
-boot.phylo(nj(dist),dist,FUN = function(xx) nj(xx),B=100)
-
+# boot.phylo return NUMBER of replicates - NO PERCENTAGE
 
 # Plot a basic tree - see ?plot.phylo for details
 plot.phylo(x=hauss.nj, type="phylogram")
@@ -497,7 +497,7 @@ nodelabels(text=round(hauss.boot/10))
 # Coloured labels - creates vector of colors according to population information in genind object
 nj.rainbow <- colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
 # Colored tips
-tiplabels(text=hauss.genind$ind.names, bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
+tiplabels(text=indNames(hauss.genind), bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
 
 # Plot BW tree with tip symbols and legend
 plot.phylo(x=hauss.nj, type="cladogram", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")

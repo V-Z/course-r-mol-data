@@ -1451,23 +1451,23 @@ Rationale of this approach is to save resources when dividing whole data set int
 \begin{frame}[fragile]{Calculate and test NJ tree}
   \begin{spluscode}
     # Calculates the tree (try with various distances)
+    ?ade4::dist.genet # See for another genetic distance
     hauss.nj <- nj(hauss.dist)
     # Test tree quality - plot original vs. reconstructed distance
     plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))),
       xlab="Original distance", ylab="Reconstructed distance")
     abline(lm(as.vector(hauss.dist) ~
       as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
+    # Linear model for above graph
     summary(lm(as.vector(hauss.dist) ~
       as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
-    # Bootstrap
-    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci,
-      FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
     # Plot a basic tree - see ?plot.phylo for details
     plot.phylo(x=hauss.nj, type="phylogram")
     plot.phylo(x=hauss.nj, type="cladogram", edge.width=2)
     plot.phylo(x=hauss.nj, type="fan", edge.width=2, edge.lty=2)
     plot.phylo(x=hauss.nj, type="radial", edge.color="red",
       edge.width=2, edge.lty=3, cex=2)
+    # There are enormous graphical possibilities...
   \end{spluscode}
 \end{frame}
 
@@ -1475,6 +1475,23 @@ Rationale of this approach is to save resources when dividing whole data set int
   \begin{center}
     \includegraphics[width=\textwidth-1.5cm]{nj1.png}
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Bootstrap}
+  \begin{spluscode}
+    # boot.phylo() resamples all columns - remove population column first
+    hauss.pop <- hauss.loci[["population"]]
+    hauss.loci[["population"]] <- NULL
+    # Calculate the bootstrap
+    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci,
+      FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+    # Calculate the same for DNA sequences
+    meles.nj <- nj(meles.dist)
+    meles.boot <- boot.phylo(phy=meles.nj,
+      x=genind2loci(DNAbin2genind(meles.dna)),
+      FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+    # boot.phylo return NUMBER of replicates - NO PERCENTAGE
+  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Nicer trees}
