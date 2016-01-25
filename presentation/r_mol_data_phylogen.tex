@@ -817,8 +817,8 @@ SNPs can be into genind imported in same way as AFLP
     usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/
       files/usflu.fasta", format="fasta")
     # Another possibility (only for FASTA alignments, same result):
-    usflu.dna <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/
-      files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
+    usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org
+      /files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
     # Check the object
     usflu.dna
     class(usflu.dna)
@@ -1106,7 +1106,10 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 \end{frame}
 
 \begin{frame}[fragile]{F-statistics and population theta}
-Functions return tables of F$_{ST}$/thetas values for populations/loci
+  \begin{itemize}
+    \item Functions return tables of F$_{ST}$/thetas values for populations/loci
+    \item For \texttt{Fst}, \texttt{fstat} and \texttt{theta.msat} the loci object must contain population column
+  \end{itemize}
   \begin{spluscode}
     # Fit, Fst and Fis for each locus
     Fst(x=hauss.loci, pop=1)
@@ -1181,7 +1184,9 @@ Functions from poppr package -- the best for microsatellites, although available
 
 \begin{frame}[fragile]{Basic distances}
   \begin{spluscode}
-    # Euclidean distance for individuals
+    # See ?dist.gene for details about methods of this distance
+    hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
+    # Euclidean distance for individuals (plain ordinary distance matrix)
     hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=T, upper=T)
     hauss.dist
     # Nei's distance (not Euclidean) for populations
@@ -1194,10 +1199,8 @@ Functions from poppr package -- the best for microsatellites, although available
       tol=1e-07, cor.zero=TRUE)
     # Test if it is Euclidean
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
-    # Show it
-    hauss.dist.pop
   \end{spluscode}
-Most of analysis based on distances more or less require Euclidean (non-negative) distances. If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
+Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean (non-negative) distances}. If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
 \end{frame}
 
 \begin{frame}[fragile]{Distances reflecting microsatellite repeats}
@@ -1452,7 +1455,6 @@ Rationale of this approach is to save resources when dividing whole data set int
 \begin{frame}[fragile]{Calculate and test NJ tree}
   \begin{spluscode}
     # Calculates the tree (try with various distances)
-    ?ade4::dist.genet # See for another genetic distance
     hauss.nj <- nj(hauss.dist)
     # Test tree quality - plot original vs. reconstructed distance
     plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))),
@@ -1486,12 +1488,14 @@ Rationale of this approach is to save resources when dividing whole data set int
     # Calculate the bootstrap
     hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci,
       FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-    # Calculate the same for DNA sequences
-    meles.nj <- nj(meles.dist)
-    meles.boot <- boot.phylo(phy=meles.nj,
-      x=genind2loci(DNAbin2genind(meles.dna)),
-      FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-    # boot.phylo return NUMBER of replicates - NO PERCENTAGE
+    # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
+    # Another possibility
+    hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist,
+      sample=100) # Bootstrap values are in slot node.label
+    # Plot the tree, explicitly display node labels
+    plot.phylo(x=hauss.aboot, show.node.label=TRUE)
+    ?aboot # See details...
+    ??plot.phylo
   \end{spluscode}
 \end{frame}
 

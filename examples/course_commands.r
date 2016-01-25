@@ -176,7 +176,7 @@ seploc() # adegenet - splits genind, genpop or genlight by markers
 # Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years
 usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
 # Another possibility (only for FASTA alignments, same result):
-usflu.dna <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
+usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
 usflu.dna
 # Check the object
 class(usflu.dna)
@@ -321,6 +321,7 @@ lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 
 # FST
 # Fit, Fst and Fis for each locus
+# For Fst, fstat and theta.msat the loci object must contain population column
 Fst(x=hauss.loci, pop=1)
 # multilocus estimators of variance components and F-statistics, alternative to Fst
 library(hierfstat)
@@ -355,8 +356,11 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles
 
 ## Genetic distances
 
-# Euclidean distance for individuals
-hauss.dist <- dist.genet(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
+# See ?dist.gene for details about methods of this distance constructions
+hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
+
+# Euclidean distance for individuals (plain ordinary distance matrix)
+hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
 hauss.dist
 
 # Nei's distance (not Euclidean) for populations (other methods are available, see ?dist.genpop)
@@ -466,7 +470,6 @@ bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, verte
 ## NJ
 
 # Calculates the tree (try with various distances)
-?ade4::dist.genet # See for another genetic distance
 hauss.nj <- nj(hauss.dist)
 
 # Test tree quality - plot original vs. reconstructed distance
@@ -476,13 +479,17 @@ summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # 
 
 # Bootstrap
 # boot.phylo() resamples all columns - remove population column first
-hauss.pop <- hauss.loci[["population"]]
-hauss.loci[["population"]] <- NULL
-hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+hauss.loci.nopop <- hauss.loci
+hauss.loci.nopop[["population"]] <- NULL
+hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+# boot.phylo returns NUMBER of replicates - NO PERCENTAGE
 
-meles.nj <- nj(meles.dist)
-meles.boot <- boot.phylo(phy=meles.nj, x=genind2loci(DNAbin2genind(meles.dna)), FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
-# boot.phylo return NUMBER of replicates - NO PERCENTAGE
+# Another possibility
+hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist, sample=100) # Bootstrap values are in slot node.label
+# Plot the tree, explicitly display node labels
+plot.phylo(x=hauss.aboot, show.node.label=TRUE)
+?aboot # See details...
+??plot.phylo
 
 # Plot a basic tree - see ?plot.phylo for details
 plot.phylo(x=hauss.nj, type="phylogram")
