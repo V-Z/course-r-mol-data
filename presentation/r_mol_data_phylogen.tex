@@ -818,7 +818,7 @@ SNPs can be into genind imported in same way as AFLP
       files/usflu.fasta", format="fasta")
     # Another possibility (only for FASTA alignments, same result):
     usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org
-      /files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
+      /files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
     # Check the object
     usflu.dna
     class(usflu.dna)
@@ -1842,10 +1842,10 @@ Package poppr (bootstrap is incorporated within the function)
     # Information
     hauss.dapc
     # A la PCA graph
-    scatter(x=hauss.dapc3, main="DAPC, Cardamine", bg="white", cex=3,
-      clab=0, col=rainbow(3), posi.da="bottomleft", scree.pca=TRUE, 
-      posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2",
-      "Group 3"), posi.leg="topleft")
+    scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii",
+      bg="white", cex=3, clab=0, col=rainbow(3), posi.da="bottomleft",
+      scree.pca=TRUE, posi.pca="bottomright", leg=TRUE,
+      txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
   \end{spluscode}
 Especially graphical parameters have huge possibilities\ldots
 \end{frame}
@@ -1857,11 +1857,11 @@ Especially graphical parameters have huge possibilities\ldots
 \begin{frame}[fragile]{DAPC code III}
   \begin{spluscode}
     # Same in BW
-    scatter(x=hauss.dapc3, main="DAPC, Cardamine", bg="white", pch=c(15:17),
-      cell=0, cstar=0, solid=1, cex=2.5, clab=0, col=grey.colors(3, start=0,
-      end=0.8, gamma=2, alpha=0), posi.da="bottomleft", scree.pca=TRUE,
-      posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2",
-      "Group 3"), posi.leg="topleft")
+    scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii",
+      bg="white", pch=c(15:17), cell=0, cstar=0, solid=1, cex=2.5, clab=0,
+      col=grey.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da=
+      "bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE,
+      txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
     # Density functions
     scatter(x=hauss.dapc3, xax=1, yax=1, main="DAPC", bg="white", solid=0.5,
       leg=T, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
@@ -1927,8 +1927,11 @@ Especially graphical parameters have huge possibilities\ldots
     points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), 
       pch="|", cex=2, col="blue")
   \end{spluscode}
-\vfill
-Those tools are designed mainly for situation when having multiple (nearly) complete genomes. It is not needed for smaller (normal) datasets. Lets keep hoping in fast development of computers\ldots
+  \begin{itemize}
+    \item Those tools are designed mainly for situation when having multiple (nearly) complete genomes -- not needed for smaller (normal) datasets
+    \item Lets keep hoping in fast development of computers\ldots
+    \item \alert{Note for Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library, which is not available on Windows -- add parameter \texttt{parallel=FALSE}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
@@ -1982,6 +1985,8 @@ Those tools are designed mainly for situation when having multiple (nearly) comp
 
 \begin{frame}[fragile]{Calculation of Moran's \textit{I} I}
   \begin{spluscode}
+    # Load required library
+    library(spdep)
     # Creates connection network
     hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5,
       d1=0, d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
@@ -2771,16 +2776,19 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     \item R doesn't have any possibility for visual editing
     \item R can (in batch) run multiple sequence alignments (there are several possibilities)
     \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal}, \ldots
+    \begin{itemize}
+      \item User must install this software manually -- R is just using external applications
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
-\subsection{MAFFT}
+\subsection{MAFFT and others}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
 \begin{itemize}
- \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``*StringSet'' class R objects and writes ``*MultipleAlignment'' R objects; the latter reads and writes object of class ``DNAbin''
- \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write DNAbin
- \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write DNAbin
+ \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``\texttt{*StringSet}'' class R objects and writes ``\texttt{*MultipleAlignment}'' R objects; the latter reads and writes object of class ``\texttt{DNAbin}''
+ \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write \texttt{DNAbin}
+ \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write \texttt{DNAbin}
 \end{itemize}
   \begin{spluscode}
     library(colorspace) # Libraries needed by phyloch/ips
@@ -2790,7 +2798,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # you might be needed to copy it or make symlink or so
     # read ?mafft and mafft's documentation
     meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100,
-      path="/usr/bin/mafft")
+      path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
   \end{spluscode}
 \end{frame}
 
@@ -2804,9 +2812,9 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # when using them to set correct parameters
     meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1,
       gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
-      original.ordering=TRUE)
-    meles.muscle <- muscle(x=meles.dna, exec="muscle",
-      quiet=FALSE, original.ordering=TRUE)
+      original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+    meles.muscle <- muscle(x=meles.dna, exec="muscle", quiet=FALSE,
+      original.ordering=TRUE) # Change "exec" to fit your path to muscle!
     meles.muscle
     class(meles.muscle)
     # Plot the alignment - you can select which bases to plot
@@ -2815,12 +2823,33 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     # Add grey dotted grid
     grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
     # Remove gaps from alignment - destroy it
-    meles.nogaps <- del.gaps(meles.muscle)
+    meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
   \end{spluscode}
 \end{frame}
 
+\subsection{Display and cleaning}
+
 \begin{frame}{Multiple sequence alignment with MUSCLE}
 \includegraphics[width=\textwidth]{muscle.png}
+\end{frame}
+
+\begin{frame}[fragile]{Cleaning the alignment}
+  \begin{spluscode}
+    # Shortcut for plotting alignment
+    image.DNAbin(x=meles.mafft)
+    # Display aligned sequences with gaps
+    image.DNAbin(x=usflu.dna)
+    # Delete all columns containing any gap
+    library(ips)
+    usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+    # See of settings of "nmax" value - threshold for gap deletion
+    ?deleteGaps # "nmax=0" deletes all columns with any gap
+    # Do not confuse with function delete.gaps() from phyloch package
+    # Display the result
+    image.DNAbin(x=usflu.dna.ng)
+    # Delete positions in alignment containing only missing data/N
+    ?deleteEmptyCells # See help page for details
+  \end{spluscode}
 \end{frame}
 
 \section{Trees}
@@ -2932,7 +2961,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     compute.brtime()
     ?compute.brtima # Check it for mode how to calculate the lengths
   \end{spluscode}
-Class ``multiPhylo'' is just a~list of ``phylo'' objects to store multiple trees -- you can perform most of analysis on it as on phylo, commonly using \texttt{lapply} function (afterward use class(x) <- "multiPhylo" to ensure other functions will see it as multiPhylo object).
+Class \texttt{multiPhylo} is just a~list of \texttt{phylo} objects to store multiple trees -- you can perform most of analysis on it as on phylo, commonly using \texttt{lapply} function (afterward use \texttt{class(x) <- "multiPhylo"} to ensure other functions will see it as \texttt{multiPhylo} object).
 \end{frame}
 
 \subsection{Seeing trees in the forest}
@@ -3034,7 +3063,7 @@ Post process the matrix and plot it. There are several methods for calculating d
       "TaxaOut")
     class(oxalis.trees.rooted) <-
       "multiPhylo"
-    # Consensus tree (50 \% rule)
+    # Consensus tree (50 % rule)
     oxalis.tree.con <- consensus
       (oxalis.trees.rooted, p=0.5,
       check.labels=TRUE)
@@ -3236,17 +3265,22 @@ Post process the matrix and plot it. There are several methods for calculating d
   \includegraphics[height=5cm]{highlight.png}
   \columnbreak
   \begin{spluscode}
+    # Load tree in text format
     trape <- read.tree(text=
       "((Homo, Pan), Gorilla);")
+    # Plot the tree
     plot.phylo(x=trape,
       show.tip.label=FALSE)
+    # Add colored tip labels
     tiplabels(trape[["tip.label"]],
       bg=c("white", "black",
       "white"), col=c("black",
       "white", "black"), cex=2)
+    # Add colored node labels
     nodelabels(text=c("6.4 Ma",
       "5.4 Ma"), frame="circle",
       bg="yellow")
+    # Add scale bar
     add.scale.bar()
   \end{spluscode}
 \end{multicols}

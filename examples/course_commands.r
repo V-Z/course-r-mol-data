@@ -54,7 +54,7 @@ getClassDef("genind") # Or select any other class name
 options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
-# Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one
+# Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
 install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "grid", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "parallel", "pegas", "permute", "phangorn", "phylobase", "phyloch", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "stats4", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
 
 # We will load packages by library(package) one by one when needed
@@ -176,7 +176,7 @@ seploc() # adegenet - splits genind, genpop or genlight by markers
 # Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years
 usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
 # Another possibility (only for FASTA alignments, same result):
-usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP -- see ?fasta2DNAbin
+usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
 usflu.dna
 # Check the object
 class(usflu.dna)
@@ -670,9 +670,9 @@ hauss.dapc3 <- dapc(x=hauss.genind, pop=hauss.kfind3$grp, center=TRUE, scale=FAL
 # Information
 hauss.dapc
 # A la PCA graph
-scatter(x=hauss.dapc3, main="DAPC, Cardamine", bg="white", cex=3, clab=0, col=rainbow(3), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
+scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii", bg="white", cex=3, clab=0, col=rainbow(3), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Same in BW
-scatter(x=hauss.dapc3, main="DAPC, Cardamine", bg="white", pch=c(15:17), cell=0, cstar=0, solid=1, cex=2.5, clab=0, col=grey.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
+scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii", bg="white", pch=c(15:17), cell=0, cstar=0, solid=1, cex=2.5, clab=0, col=grey.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Density functions
 scatter(x=hauss.dapc3, xax=1, yax=1, main="DAPC", bg="white", solid=0.5, leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Assignment of individuals to clusters
@@ -725,6 +725,8 @@ tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
 title("NJ tree of the US influenza data")
 
 ## Moran's I
+# Load required library
+library(spdep)
 # Creates connection network
 hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5, d1=0, d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
 hauss.connectivity
@@ -1016,13 +1018,13 @@ library(XML)
 library(phyloch) # Alignment with mafft, you can also try package ips
 # Requires mafft binary on specific location - might be needed to copy it or make symlink
 # read ?mafft and mafft's documentation
-meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft")
+meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
 meles.mafft
 class(meles.mafft)
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
-meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE)
-meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE)
+meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
 # Plot the alignment - you can select which bases to plot and/or modify colours
@@ -1030,7 +1032,23 @@ image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
 grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
 # Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle)
+meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
+
+# Cleaning the alignment
+# Shortcut for plotting alignment
+image.DNAbin(x=meles.mafft)
+# Display aligned sequences with gaps
+image.DNAbin(x=usflu.dna)
+# Delete all columns containing any gap
+library(ips)
+usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+# See of settings of "nmax" value - threshold for gap deletion
+?deleteGaps # "nmax=0" deletes all columns with any gap
+# Do not confuse with function delete.gaps() from phyloch package
+# Display the result
+image.DNAbin(x=usflu.dna.ng)
+# Delete positions in alignment containing only missing data/N
+?deleteEmptyCells # See help page for details
 
 ## Tree manipulations
 
@@ -1042,16 +1060,16 @@ names(oxalis.trees)
 # Export trees in NEWICK format
 write.tree(phy=oxalis.trees, file="trees.nwk")
 
-# Drop a tip
-plot.phylo(hauss.nj)
-hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
-plot.phylo(hauss.nj.drop)
-
 # Drop a tip from multiPhylo
 plot.multiPhylo(x=oxalis.trees)
 oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, "1")
 class(oxalis.trees.drop) <- "multiPhylo"
 plot.multiPhylo(x=oxalis.trees.drop)
+
+# Drop a tip
+plot.phylo(hauss.nj)
+hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
+plot.phylo(hauss.nj.drop)
 
 # Interactively extract tree
 # Plot source tree
@@ -1119,7 +1137,7 @@ compute.brlen()
 
 # Computes the branch lengths of a tree giving its branching times (aka node ages or heights)
 compute.brtime()
-?compute.brtima # Check it for mode how to calculate the lengths
+?compute.brtime # Check it for mode how to calculate the lengths
 
 ## Topographical distances among trees
 
@@ -1244,10 +1262,15 @@ plot.phylo(x=hauss.nj, type="cladogram", use.edge.length=FALSE, direction="leftw
 dev.off() # Close graphical device to cancel par() settings
 
 # Nice tiplabels and higlighted tiplabel
+# Load tree in text format
 trape <- read.tree(text = "((Homo, Pan), Gorilla);")
+# Plot the tree
 plot.phylo(x=trape, show.tip.label=FALSE)
+# Add colored tip labels
 tiplabels(trape[["tip.label"]], bg=c("white", "black", "white"), col=c("black", "white", "black"), cex=2)
+# Add colored node labels
 nodelabels(text=c("6.4 Ma", "5.4 Ma"), frame="circle", bg="yellow")
+# Add scale bar
 add.scale.bar()
 
 ## PIC
