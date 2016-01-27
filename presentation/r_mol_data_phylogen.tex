@@ -581,7 +581,33 @@ There are information about slots within that classes you can access.
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Non-R software}
+  \begin{itemize}
+    \item We use several software packages outside R
+    \begin{itemize}
+      \item R functions can use them
+      \item User must install this software manually
+    \end{itemize}
+    \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct})
+%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/}
+    \item MAFFT \url{http://mafft.cbrc.jp/alignment/software/}
+    \item MUSCLE \url{http://www.drive5.com/muscle/}
+    \item Clustal \url{http://clustal.org/}
+  \end{itemize}
+\end{frame}
+
 \section{Data}
+
+\begin{frame}{Our data\ldots}
+  \begin{itemize}
+    \item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
+    \begin{itemize}
+      \item Examples are shown mainly with microsatellites, but AFLP and another presence-absence (0/1) data are used in same way -- try it
+    \end{itemize}
+    \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences, \ldots)
+    \item Extraction of SNP from DNA is useful in case of huge datasets -- for smaller datasets it is not necessary
+  \end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
 \begin{multicols}{2}
@@ -1113,6 +1139,10 @@ It returns various population statistics. \texttt{png()} will produce set of fig
   \begin{spluscode}
     # Fit, Fst and Fis for each locus
     Fst(x=hauss.loci, pop=1)
+                    Fit        Fst         Fis
+    msta93   0.31835291 0.17867087  0.17006829
+    msta101 -0.09968472 0.04064928 -0.14628018
+        ...         ...        ...         ...
     # multilocus estimators of variance components and F-statistics,
     # alternative to Fst
     library(hierfstat)
@@ -1122,13 +1152,6 @@ It returns various population statistics. \texttt{png()} will produce set of fig
     # Estimates of population theta according to Kimmel et al. 1998
     theta.msat(hauss.loci)
   \end{spluscode}
-  \splus/Fst(x=hauss.loci, pop=1)/
-  \begin{tabular}{llll}
-    & F$_{IT}$ & F$_{ST}$ & F$_{IS}$\\
-    msta93 & 0.31835291 & 0.17867087 & 0.17006829\\
-    msta101 & -0.09968472 & 0.04064928 & -0.14628018\\
-    \ldots & \ldots & \ldots & \ldots
-  \end{tabular}
 \end{frame}
 
 \begin{frame}[fragile]{Multi locus genotypes}
@@ -2595,18 +2618,43 @@ We will use figures and F$_{ST}$ outputs only from the best run.
 \section{Structure}
 
 \begin{frame}{Structure}
-\begin{itemize}
-  \item Population genetic software for Bayesian clustering, \url{http://pritchardlab.stanford.edu/structure.html}
-  \item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
-  \item One Structure run tests one selected K
   \begin{itemize}
-    \item User must run it repeatedly for several Ks to find the best division
-    \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm)
-    \item Finally there can be hundreds of runs\ldots
-    \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python)
+    \item Population genetic software for Bayesian clustering, \url{http://pritchardlab.stanford.edu/structure.html}
+    \item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
+    \item One Structure run tests one selected K
+    \begin{itemize}
+      \item User must run it repeatedly for several Ks to find the best division
+      \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm)
+      \item Finally there can be hundreds of runs\ldots
+      \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python)
+    \end{itemize}
+    \item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
   \end{itemize}
-  \item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
-\end{itemize}
+\end{frame}
+
+\begin{frame}{Structure work flow}
+  \begin{enumerate}
+    \item Run multiple runs of Structure
+    \begin{itemize}
+      \item Use must test several numbers of genetic clusters (K) a test each several times
+      \item ParallelStructure (see later) can do this
+    \end{itemize}
+    \item Decide which K is the best -- explore outputs
+    \begin{itemize}
+      \item Plain command line Structure does not help with this
+      \item There is need for external application reading Structure output, summing them and helping decide which K is the best
+      \item \href{http://taylor0.biology.ucla.edu/structureHarvester/}{Structure Harvester} or Structure-sum R script (see later) can do this
+    \end{itemize}
+    \item Post process Structure outputs to prepare them for plotting
+    \begin{itemize}
+      \item Sort and align Structure outputs
+      \item Probably most commonly done in \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP}
+    \end{itemize}
+    \item Plot the final graphs
+    \begin{itemize}
+      \item Can be done in nearly any enough advanced graphical tool (including some R functions), probably the most commonly used is \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct}
+    \end{itemize}
+  \end{enumerate}
 \end{frame}
 
 \subsection{Running Structure from R}
@@ -2641,7 +2689,7 @@ Within working ``structure'' directory you need
     \item Every line contains name of run, list of populations separated by comas (e.g. 1,2,3,4,5) -- you don't have to use all populations in all runs
     \item K~for actual run
     \item Length of burnin chain
-    \item Number of steps
+    \item Number of steps (in practice use much higher number than for the example -- also for length of burnin chain)
     \item Columns are separated by spaces (or TABs)
   \end{itemize}
  \item Data input file
@@ -2691,7 +2739,7 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
  \item \texttt{outpath} should aim to \alert{empty} directory
  \item \texttt{plot\_output=1} will produce plots for all runs
  \item Check all other settings according to Structure manual and your needs
- \item Get input file \url{https://trapa.cz/sites/default/rcourse/hauss_stru.in} and joblist \url{https://trapa.cz/sites/default/rcourse/joblist.txt}
+ \item Get toy input file \url{https://trapa.cz/sites/default/rcourse/hauss_stru.in} and joblist \url{https://trapa.cz/sites/default/rcourse/joblist.txt}
 \end{itemize}
 \end{frame}
 
@@ -2720,11 +2768,11 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
 
 \begin{frame}[fragile]{Post process Structure results -- select the best K}
  \begin{itemize}
-  \item Using Structure-sum-2009 R script by \href{http://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
+  \item Using Structure-sum-2011 R script by \href{http://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
  \end{itemize}
  \begin{spluscode}
     # Load the script
-    source("structure-sum-2009.r")
+    source("https://trapa.cz/sites/default/rcourse/structure-sum-2011.r")
     # Create new directory with result files results_job_*_f and set
     # working directory accordingly
     setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/
@@ -2732,14 +2780,14 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
   \end{spluscode}
  \begin{itemize}
   \item When using it, cite \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1471-8286.2006.01380.x/abstract}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net)
-  \item Prepare list\_k.txt containing on each line K~and name of output file
+  \item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
   \item Get list K~(example of the joblist below) from \url{https://trapa.cz/sites/default/rcourse/list_k.txt}
  \end{itemize}
-\begin{verbatim}
-2 results_job_S010_f
-3 results_job_S011_f
-...  ...
-\end{verbatim}
+  \begin{tabular}{ll}
+    2 & results\_job\_S010\_f\\
+    3 & results\_job\_S011\_f\\
+    \ldots & \ldots
+  \end{tabular}
 \end{frame}
 
 \begin{frame}[fragile]{Run Structure-sum}
@@ -2766,6 +2814,15 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 
 \begin{frame}{Outputs of Structure-sum -- the best K~is 2, may be 3~-- stability of runs, good posterior probability}{Results from different data set, not from our toy}
   \includegraphics[width=\textwidth]{structure.png}
+\end{frame}
+
+\begin{frame}{Example of final Structure plot}{Drawn by distruct after alignment of Structure outputs by CLUMPP}
+  \begin{itemize}
+    \item Each bar is one individual
+    \item Each color is one genetic cluster (here is shown clustering for K=12)
+    \item Individuals with columns composing of more colors are genetically mixture of more clusters
+  \end{itemize}
+  \includegraphics[width=\textwidth]{structure-fin.png}
 \end{frame}
 
 \section{Alignment}
@@ -3631,22 +3688,22 @@ Residuals    15 0.214443 0.014296
 \end{frame}
 
 \begin{frame}[fragile]{Not significant in this case\ldots}
-  \begin{verbatim}
-Call: compar.gee(formula = primates.longevity ~
-  primates.body, phy = primates.tree)
-Number of observations:  5 
-Model:
-                     Link: identity
-Variance to Mean Relation: gaussian
-QIC: 7.310142
-Summary of Residuals:
-       Min         1Q     Median         3Q        Max
--0.8031302 -0.0132754  0.0999588  0.1988258  0.2862064
-Coefficients:
-               Estimate      S.E.        t Pr(T > |t|)
-(Intercept)   1.0670417 0.5838429 1.827618   0.2695894
-primates.body 0.8497249 0.2157006 3.939372   0.1101432
-  \end{verbatim}
+  \begin{spluscode}
+    Call: compar.gee(formula = primates.longevity ~
+      primates.body, phy = primates.tree)
+    Number of observations:  5
+    Model:
+                         Link: identity
+    Variance to Mean Relation: gaussian
+    QIC: 7.310142
+    Summary of Residuals:
+           Min         1Q     Median         3Q        Max
+    -0.8031302 -0.0132754  0.0999588  0.1988258  0.2862064
+    Coefficients:
+                   Estimate      S.E.        t Pr(T > |t|)
+    (Intercept)   1.0670417 0.5838429 1.827618   0.2695894
+    primates.body 0.8497249 0.2157006 3.939372   0.1101432
+  \end{spluscode}
 \end{frame}
 
 % \subsection{Partitioning}
@@ -4053,10 +4110,9 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
  \item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/}
  \item Adegenet web \url{http://adegenet.r-forge.r-project.org/}, help mailing list \url{https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
  \item APE home page \url{http://ape-package.ird.fr/}
- \item ade4 documentation \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng}
  \item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
  \item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analysis-r/installation} and forum \url{https://groups.google.com/forum/\#!forum/poppr}
- \item ade4 home page and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
+ \item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
  \item Phangorn resources \url{http://cran.r-project.org/web/packages/phangorn/index.html}
  \item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
  \item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
