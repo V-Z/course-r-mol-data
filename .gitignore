@@ -33,7 +33,7 @@ presentation/*.maf
 presentation/*.mtc
 presentation/*.mtc0
 # minted
-presentation/_minted*
+presentation/*minted*
 presentation/*.pyg
 # nomencl
 presentation/*.nlo

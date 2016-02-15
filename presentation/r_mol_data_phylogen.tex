@@ -72,7 +72,7 @@
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
-\date{January 25 to 27, 2016}
+\date{February 17 to 19, 2016}
 
 % Default language
 \usepackage{polyglossia}
@@ -90,20 +90,20 @@
 
 \section{Introduction}
 
-\begin{frame}{The course information}
-  \begin{itemize}
-    \item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2016}
-    \begin{itemize}
-      \item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2016}
-    \end{itemize}
-    \item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
-    \begin{itemize}
-      \item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
-      \item For students having subscribed the subject, active participation and presence whole course is required
-    \end{itemize}
-    \item Working version is available at \url{https://github.com/V-Z/course-r-mol-data} -- feel free to contribute, request new parts or report bugs
-  \end{itemize}
-\end{frame}
+% \begin{frame}{The course information}
+%   \begin{itemize}
+%     \item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2016}
+%     \begin{itemize}
+%       \item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2016}
+%     \end{itemize}
+%     \item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
+%     \begin{itemize}
+%       \item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
+%       \item For students having subscribed the subject, active participation and presence whole course is required
+%     \end{itemize}
+%     \item Working version is available at \url{https://github.com/V-Z/course-r-mol-data} -- feel free to contribute, request new parts or report bugs
+%   \end{itemize}
+% \end{frame}
 
 \begin{frame}{Materials to help you\ldots}
 \begin{itemize}
@@ -283,6 +283,7 @@
     library(sos)
     findFn("function") # Search for function name
   \end{spluscode}
+
 \alert{\texttt{?}} shows help for questioned function (type \texttt{q} to close it):
 \begin{multicols}{2}
   \begin{itemize}
@@ -433,7 +434,7 @@ There are information about slots within that classes you can access.
 
 \begin{frame}[fragile]{Basic operations with data I}
   \begin{spluscode}
-    x <- c(1, 2, 3, 4, 5) # Creates vector (see also ?rep)
+    x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
     x # Print "x" content
     c() # Is generic function to concatenate objects into new one
     length(x) # Length of the object - for matrices and DF use dim()
@@ -478,6 +479,18 @@ There are information about slots within that classes you can access.
 
 \subsection{Packages for our work}
 
+\begin{frame}{Repositories}
+  \begin{itemize}
+    \item Repositories (internet directories full of R packages) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
+  \end{itemize}
+  \begin{block}{Installation of packages in GUI}
+    \begin{itemize}
+      \item \textbf{RStudio:} set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
+      \item \textbf{RKWard:} go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{R-Packages}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages and plugins\ldots}, click to \textbf{Install\ldots}, select and install desired packages\ldots
+    \end{itemize}
+  \end{block}
+\end{frame}
+
 \begin{frame}[fragile, label=repos]{Set repositories}
   \begin{spluscode}
     # Basic package installation
@@ -486,11 +499,11 @@ There are information about slots within that classes you can access.
     # We will need extra repositories:
     options(repos=c("http://cran.at.r-project.org",
       "http://r-forge.r-project.org/", "http://www.rforge.net/",
-      "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc",
-      "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/
-      annotation", "http://bioconductor.statistik.tu-dortmund.de/
+      "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc",
+      "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/
+      annotation", "https://bioconductor.statistik.tu-dortmund.de/
       packages/3.2/data/experiment",
-      "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
+      "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
     getOption("repos") # Shows actual repositories
     options() # Generic function to modify various settings
     ?options # Gives details
@@ -511,12 +524,11 @@ There are information about slots within that classes you can access.
       "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors",
       "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo",
       "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot",
-      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "grid",
-      "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools",
-      "muscle", "mvtnorm", "nlme", "parallel", "pegas", "permute",
-      "phangorn", "phylobase", "phyloch", "phytools", "picante", "plotrix",
-      "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp",
-      "spdep", "spam", "stats4", "tcltk", "vegan"),
+      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat",
+      "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle",
+      "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase",
+      "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap",
+      "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"),
       repos=getOption("repos"), dependencies=TRUE)
     ?install.packages # See for more options
     library(package) # Loads installed package (we will do it on the fly)
@@ -524,23 +536,45 @@ There are information about slots within that classes you can access.
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{Packages installation notes}
+\begin{frame}[fragile]{Install packages without setting the repositories}
   \begin{itemize}
-    \item Repositories (internet directories full of R packages) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command
+   \item If repositories from slide~\ref{repos} are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources (following slides)
   \end{itemize}
-  \begin{block}{Installation of packages in GUI}
-    \begin{itemize}
-      \item RStudio: set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
-      \item RKWard: go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{Packages R}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages}, click to \textbf{Install\ldots}, select and install desired packages\ldots
-    \end{itemize}
-  \end{block}
+  \begin{spluscode}
+    install.packages(pkgs=c("Geneland", "MASS", "PBSmapping",
+      "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi",
+      "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima",
+      "ape", "brew", "caper", "colorspace", "combinat", "corrplot",
+      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat",
+      "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm",
+      "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools",
+      "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr",
+      "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+    update.packages(ask=FALSE) # Update installed packages
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Install phyloch package}{Example of installation of package not available in any repository}
+  \begin{itemize}
+    \item Check \url{http://www.christophheibl.de/Rpackages.html} 
+    \item Package phyloch is similar to \href{https://cran.r-project.org/web/packages/ips/}{ips} from same author (but some functions behave differently) -- both are great for usage of external applications within R
+  \end{itemize}
+  \begin{spluscode}
+    # If not done already, install required packages first
+    install.packages(pkgs=c("ape", "colorspace", "XML"),
+      dependencies=TRUE)
+    # It is possible to specify direct path (local or web URL)
+    # to package source
+    install.packages(pkgs="http://www.christophheibl.de/
+      phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor}
-\begin{itemize}
- \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
- \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or use Bioconductor's special function (recommended by Bioconductor):
-\end{itemize}
+  \begin{itemize}
+    \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
+    \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or use Bioconductor's special function (recommended by Bioconductor):
+  \end{itemize}
   \begin{spluscode}
     # Load basic Bioconductor function
     source("http://bioconductor.org/biocLite.R")
@@ -556,27 +590,41 @@ There are information about slots within that classes you can access.
 \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Bioconductor usage -- differences from another repositories}
+\begin{frame}[fragile]{Bioconductor packages for the course}
+  \begin{itemize}
+    \item If repositories are not set via command on slide~\ref{repos}, it is possible to use Bioconductor's own installation method using function \texttt{biocLite}
+    \item If Bioconductor repositories are set manually, user must select correct version number
+    \item List of available Bioconductor mirrors is at \url{https://bioconductor.org/about/mirrors/} -- for us, \href{https://bioconductor.statistik.tu-dortmund.de/}{Technische Universität Dortmund} is the closest
+  \end{itemize}
+  \begin{spluscode}
+    # Install needed Bioconductor packages
+    biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors",
+      "XVector", "muscle"))
+    # From time to time update Bioconductor packages
+    biocLite()
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Bioconductor and others -- differences from another repositories}
   \begin{spluscode}
     # Standard installation
-    install.pacakges(c("adegenet", "poppr", "phytools"))
-    update.packages() # Update packages
+    install.pacakges(pkgs=c("adegenet", "poppr", "phytools"))
+    update.packages(ask=FALSE) # Update packages
     # Installation from custom repository
-    install.packages("ParallelStructure",
+    install.packages(pkgs="ParallelStructure",
       repos="http://R-Forge.R-project.org")
     ?install.packages # See help for details
     # Bioconductor - if https fails, use http
     source("https://bioconductor.org/biocLite.R")
     ?biocLite
-    # Install package(s)
-    biocLite(c("Biostrings", "seqinr"))
+    biocLite(pkgs=c("Biostrings", "seqinr")) # Install package(s)
     biocLite() # Update Bioconductor packages
   \end{spluscode}
   \begin{itemize}
     \item Bioconductor has it own installation method
     \item Its repositories can be set in R and its packages can then be installed as usually with \texttt{install.paskages()}
     \begin{itemize}
-      \item Although Bioconductor developers recommend usage of \texttt{biocLite}
+      \item Although Bioconductor developers recommend usage of \texttt{biocLite}\ldots
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -588,7 +636,7 @@ There are information about slots within that classes you can access.
       \item R functions can use them
       \item User must install this software manually
     \end{itemize}
-    \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct})
+    \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
 %     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/}
     \item MAFFT \url{http://mafft.cbrc.jp/alignment/software/}
     \item MUSCLE \url{http://www.drive5.com/muscle/}
@@ -607,6 +655,9 @@ There are information about slots within that classes you can access.
     \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences, \ldots)
     \item Extraction of SNP from DNA is useful in case of huge datasets -- for smaller datasets it is not necessary
   \end{itemize}
+  \begin{block}{Always save your work!}
+    \alert{We will use data objects for the whole course -- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
@@ -632,13 +683,15 @@ There are information about slots within that classes you can access.
 \subsection{Microsatellites}
 
 \begin{frame}[fragile]{Load data}
-Source data:
-\begin{verbatim}
-    pop msta93 msta101 msta102 msta103 msta105 msta131...
-H01 He 269/269 198/198 221/223 419/419 197/197 196/196...
-H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
-... ......     ...     ...     ...     ...     ...    ...
-\end{verbatim}
+\textbf{Source data:}
+  \begin{spluscode}
+        pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
+    H01 He  269/269 198/198 221/223 419/419 197/197 196/196 ...
+    H02 He  275/283 198/198 221/223 419/419 193/193 168/190 ...
+    ... ... ...     ...     ...     ...     ...     ...     ...
+  \end{spluscode}
+
+\textbf{Loading the data:}
   \begin{spluscode}
     # Load training data (Taraxacum haussknechtii from Macedonia)
     hauss.loci <- read.loci(file="https://trapa.cz/sites/default/rcourse/
@@ -649,7 +702,7 @@ H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
     print(hauss.loci, details=TRUE)
   \end{spluscode}
 \begin{footnotesize}
-  First line starts with empty cell (if \textbf{header} is presented), there can be any extra column, just take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB -- \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) according to data formatting.
+  First line starts with empty cell (if \textbf{header} is presented), there can be any extra column, take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB -- \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) according to data formatting.
 \end{footnotesize}
 \end{frame}
 
@@ -661,13 +714,15 @@ H02 He 275/283 198/198 221/223 419/419 193/193 168/190...
     pop(hauss.genind)
     hauss.genind$pop # "$" separates extra slots within object
   \end{spluscode}
+
 Coordinates can be in any projection or scale -- according to aim\\
-Source data:
-\begin{verbatim}
-Ind  lon      lat
-H01  21.3333  41.1
-...  ...      ...
-\end{verbatim}
+\textbf{Source data:}
+  \begin{spluscode}
+    Ind  lon      lat
+    H01  21.3333  41.1
+    ...  ...      ...
+  \end{spluscode}
+  \hrule
   \begin{spluscode}
     # Read coordinates
     hauss.coord <- read.csv("https://trapa.cz/sites/default/rcourse/
@@ -712,28 +767,32 @@ H01  21.3333  41.1
     import2genind() # adegenet - more automated version of above functions
   \end{spluscode}
 \begin{block}{One function rules them all\ldots}
-  All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \texttt{read.table()}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? Check data after import!
+  All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \texttt{read.table()}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
 \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Import of polyploid microsatellites}
 \begin{itemize}
  \item \texttt{adegent}, \texttt{poppr} and related packages can for most of functions handle any ploidy level (including mixing of ploidy levels, but not for all analysis)
- \item \texttt{polysat} can handle mixed ploidy levels for microsatellites, but range of methods is limited
+ \item \texttt{polysat} package can handle mixed ploidy levels for microsatellites, but range of methods is limited
 \end{itemize}
-As for AFLP, we need two files: the data matrix and individual's populations:
-\begin{verbatim}
-       msat58      msat31      msat78      msat61      ...
-ala1   124/124/124 237/237/237 164/164/172 136/136/138 ...
-ala2   124/124/124 237/237/237 164/164/172 136/136/138 ...
-ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
-...    ...         ...         ...         ...         ...
-\end{verbatim}
+As for AFLP, we need two files: the data matrix and individual's populations (it can be combined in one files -- next slide)\\
+\textbf{Triploid microsatellite data:}
+  \begin{spluscode}
+           msat58      msat31      msat78      msat61      ...
+    ala1   124/124/124 237/237/237 164/164/172 136/136/138 ...
+    ala2   124/124/124 237/237/237 164/164/172 136/136/138 ...
+    ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
+    ...    ...         ...         ...         ...         ...
+  \end{spluscode}
+  \begin{footnotesize}
+    Triploid species of \textit{Taraxacum} sect. \textit{Taraxacum}
+  \end{footnotesize}
 \end{frame}
 
 \begin{frame}[fragile]{How to import polyploid microsatellites}
   \begin{spluscode}
-    # Import if table is as usual. Last column contains populations
+    # Import of table is as usual. Last column contains populations
     tarax3n.table <- read.table("http://trapa.cz/sites/default/rcourse/
       tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
     # Check the data
@@ -758,28 +817,34 @@ ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
 \begin{frame}[fragile]{Import of AFLP data -- background}
 Source data (two files - AFLP data with individual names and populations)
 \begin{multicols}{2}
-AFLP -- presence/absence data:
-\begin{verbatim}
-     L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
-Ind1 0 0 1 1 1 0 0 0 1 ...
-IndG 0 0 1 1 0 0 0 0 0 ...
-...  ...  ...
-\end{verbatim}
-Individual's populations:
-\begin{verbatim}
-POP
-pop1
-popZ
-...
-\end{verbatim}
-\columnbreak
-\begin{itemize}
- \item Use any names, just keep one word (no spaces) and don't use special characters
- \item Keep names of loci as simple as possible, there are some issues when they contain dots
- \item As soon as one line of data = one individual, ploidies and their mixing doesn't matter
- \item Not all methods are available/meaningful for PA
-\end{itemize}
-\end{multicols}
+\textbf{AFLP or any other presence/absence data:}
+  \begin{spluscode}
+         L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
+    Ind1 0 0 1 1 1 0 0 0 1 ...
+    IndG 0 0 1 1 0 0 0 0 0 ...
+    ...  ...  ...
+  \end{spluscode}
+  \begin{footnotesize}
+    AFLP data of \textit{Cardamine amara} group
+  \end{footnotesize}
+\textbf{Individual's populations:}
+  \begin{spluscode}
+    POP
+    pop1
+    popZ
+    ...
+  \end{spluscode}
+  \begin{footnotesize}
+    Just list of populations for respective individuals\ldots
+  \end{footnotesize}
+  \columnbreak
+  \begin{itemize}
+    \item Use any names, just keep one word (no spaces) and don't use special characters
+    \item Keep names of loci as simple as possible, there are some issues when they contain dots
+    \item As soon as one line of data = one individual, ploidies and their mixing doesn't matter
+    \item Not all methods are available/meaningful for PA
+  \end{itemize}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Import of AFLP data -- the code}
@@ -808,7 +873,9 @@ popZ
 \subsection{Notes about data}
 
 \begin{frame}[fragile]{Another data manipulation}
-SNPs can be into genind imported in same way as AFLP
+  \begin{itemize}
+    \item SNPs can be into genind imported in same way as AFLP
+  \end{itemize}
   \begin{spluscode}
     genind2df() # adegenet - export into data frame
     genind2genalex() # poppr - export for genalex
@@ -879,6 +946,7 @@ SNPs can be into genind imported in same way as AFLP
     # computationally very intensive
     meles.genind <- DNAbin2genind(meles.dna)
   \end{spluscode}
+
 To query on-line database as through web interface we use \href{https://cran.r-project.org/web/packages/seqinr/index.html}{seqinr}.
 \end{frame}
 
@@ -1112,8 +1180,7 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 \end{frame}
 
 \begin{frame}[fragile]{Departure from HWE -- results}
-  > hauss.hwe.test
-
+  \splus/hauss.hwe.test/
   \begin{tabular}{lllll}
     & chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
     msta93 & 383.5519728 & 190 & 3.552714e-15 & 0.000\\
@@ -1223,6 +1290,7 @@ Functions from poppr package -- the best for microsatellites, although available
     # Test if it is Euclidean
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
   \end{spluscode}
+
 Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean (non-negative) distances}. If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
 \end{frame}
 
@@ -1268,20 +1336,18 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
     hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
     hauss.dist.diss
   \end{spluscode}
-\vfil
-Import own distance matrix from another software:
+\vfill
+\textbf{Import own distance matrix from another software:}
 \begin{multicols}{2}
-  \begin{footnotesize}
-    \begin{verbatim}
-   Fe       He      Oh      ...
-Fe 0.00000  132.019 109.159 ...
-He 132.0191 0.00000 9.89111 ...
-Oh 109.1590 9.89111 0.00000 ...
-Pr 139.5669 8.55312 4.40562 ...
-Ne 156.7619 9.96143 16.6927 ...
-... ...     ...     ...     ...
-    \end{verbatim}
-  \end{footnotesize}
+  \begin{spluscode}
+       Fe       He      Oh      ...
+    Fe 0.00000  132.019 109.159 ...
+    He 132.0191 0.00000 9.89111 ...
+    Oh 109.1590 9.89111 0.00000 ...
+    Pr 139.5669 8.55312 4.40562 ...
+    Ne 156.7619 9.96143 16.6927 ...
+    ... ...     ...     ...     ...
+  \end{spluscode}
   \columnbreak
   \begin{spluscode}
     MyDistance <- read.csv("distances.
@@ -1353,9 +1419,8 @@ Rationale of this approach is to save resources when dividing whole data set int
     heatmap(x=as.matrix(usflu.dist),
       Rowv=NA, Colv=NA, symm=TRUE)
   \end{spluscode}
-\vfil
+
   Another possibility is to use function \texttt{corrplot()} from package \texttt{corrplot} -- it plots correlation plots.
-\vfil
   \columnbreak
   \begin{center}
     \includegraphics[height=6cm]{dna-dists.png}
@@ -1385,11 +1450,10 @@ Rationale of this approach is to save resources when dividing whole data set int
     heatmap(as.matrix(hauss.dist.
       diss), symm=TRUE)
   \end{spluscode}
+  \begin{footnotesize}
+  There are various settings -- colors, dendrogram, \ldots See~\texttt{?heatmap}.
+  \end{footnotesize}
 \end{multicols}
-\begin{footnotesize}
-  There are various settings -- colors, dendrogram, \ldots See \texttt{?heatmap}.
-\end{footnotesize}
-\vfill
 \end{frame}
 
 \begin{frame}[fragile]{Hierarchical clustering -- UPGMA and others}
@@ -1406,7 +1470,7 @@ Rationale of this approach is to save resources when dividing whole data set int
       bruvo, method="complete"))
   \end{spluscode}
   \vfill
-  This is very basic function to make dendrogram. There are better possibilities (NJ etc).
+  This is very basic function to make dendrogram. There are better possibilities (NJ etc -- see further).
 \end{multicols}
 \end{frame}
 
@@ -1449,9 +1513,9 @@ Rationale of this approach is to save resources when dividing whole data set int
     hauss.pop 15.11916 3.779790 4
     Error     59.62501 1.419643 42
     Total     74.74417 1.624873 46
-    # Another possibility is poppr.amova - for more complicated hierarchy
-    # see ?poppr.amova
   \end{spluscode}
+
+  Another possibility is \texttt{poppr.amova} -- for more complicated hierarchy, see \texttt{?poppr.amova}
 \end{frame}
 
 \subsection{MSN}
@@ -1560,7 +1624,7 @@ Package poppr (bootstrap is incorporated within the function)
       sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE,
       lwd=3, main="Neighbor-Joining tree.")
-    # you can call node labels as phylo$node.labels or phylo[["node.labels"]]
+    # Call node labels as phylo$node.labels or phylo[["node.labels"]]
     nodelabels(hauss.nj.bruvo[["node.labels"]]) 
     tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop,
       col.pal=nj.rainbow))
@@ -1646,8 +1710,9 @@ Package poppr (bootstrap is incorporated within the function)
     # Plot the tree
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("NJ tree + bootstrap values")
-    tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot[["year"]],
-      col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
+    tiplabels(frame="none", pch=20,
+      col=transp(num2col(x=usflu.annot[["year"]], col.pal=usflu.pal),
+      alpha=0.7), cex=3.5, fg="transparent")
     axisPhylo()
     # Legend - describing years - pretty() automatically shows best
     # values from given range, num2col() selects colors from color scale
@@ -1673,8 +1738,9 @@ Package poppr (bootstrap is incorporated within the function)
     # Plot the consensus tree
     plot.phylo(x=usflu.tree.collapsed, show.tip=FALSE, edge.width=2)
     title("NJ tree after collapsing weak nodes")
-    tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot[["year"]],
-      col.pal=usflu.pal), alpha=0.7), cex=0.5, fg="transparent")
+    tiplabels(text=usflu.annot$year,
+      bg=transp(num2col(x=usflu.annot[["year"]], col.pal=usflu.pal),
+      alpha=0.7), cex=0.5, fg="transparent")
     axisPhylo()
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
@@ -1741,7 +1807,7 @@ Package poppr (bootstrap is incorporated within the function)
       eig, posi="bottomright", 3,1,2)
     # Another possibility for colored
     # plot (see ?colorplot for details)
-    colorplot(xy=hauss.pcoa$li[c(1, 2)],
+    colorplot(xy=hauss.pcoa$li[c(1,2)],
       X=hauss.pcoa$li, transp=TRUE,
       cex=3, xlab="PC 1", ylab="PC 2")
     title(main="PCoA, axes 1 and 3")
@@ -1802,6 +1868,7 @@ Package poppr (bootstrap is incorporated within the function)
 
 \begin{frame}[fragile]{K-find outputs}
 \begin{multicols}{2}
+  \includegraphics[height=5.5cm]{kmeans.png}
   \begin{spluscode}
     # See results as text
     table(pop(hauss.genind),
@@ -1817,8 +1884,10 @@ Package poppr (bootstrap is incorporated within the function)
       cluster",
       1:length(hauss.kfind3$size)),
       grid=TRUE)
+    # If needed, use custom text for
+    # parameter col.lab=c("...", "...")
+    # as many labels as inferred groups
   \end{spluscode}
-  \includegraphics[height=6cm]{kmeans.png}
 \end{multicols}
 \end{frame}
 
@@ -1870,6 +1939,7 @@ Package poppr (bootstrap is incorporated within the function)
       scree.pca=TRUE, posi.pca="bottomright", leg=TRUE,
       txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
   \end{spluscode}
+
 Especially graphical parameters have huge possibilities\ldots
 \end{frame}
 
@@ -2128,7 +2198,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{sPCA outputs}
+\begin{frame}{sPCA outputs I}
 \begin{center}
   \includegraphics[width=\textwidth-1.5cm]{spca.png}
 \end{center}
@@ -2153,7 +2223,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{sPCA outputs}
+\begin{frame}[fragile]{sPCA outputs II}
   \begin{spluscode}
     # Interpolated lagged score on a map
     hauss.spca.annot <- function() {
@@ -2164,10 +2234,11 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
       lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\n
       score 1"), plot.title=hauss.spca.annot())
   \end{spluscode}
+
 \includegraphics[width=\textwidth]{spca-pc.png}
 \end{frame}
 
-\begin{frame}[fragile]{Loading plots - which alleles contribute the most?}
+\begin{frame}[fragile]{Loading plots -- which alleles contribute the most?}
   \begin{spluscode}
     hauss.spca.loadings <- hauss.spca[["c1"]][,1]^2
     names(hauss.spca.loadings) <- rownames(hauss.spca$c1)
@@ -2177,6 +2248,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
       ylab="Contribution", xlab="Marker", main="Contribution by markers
       into the first global score", col="grey")
   \end{spluscode}
+
 \includegraphics[width=\textwidth]{spca-loading.png}
 \end{frame}
 
@@ -2211,6 +2283,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
 
 \begin{frame}[fragile]{Plot genetic boundaries}
 \begin{multicols}{2}
+  \includegraphics[height=5.5cm]{monmonier.png}
   \begin{spluscode}
     plot.monmonier(hauss.monmonier,
       add.arrows=FALSE, bwd=10,
@@ -2226,7 +2299,6 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
       among populations")
     # See ?points, ?text and ?legend
   \end{spluscode}
-  \includegraphics[height=6cm]{monmonier.png}
 \end{multicols}
 \end{frame}
 
@@ -2273,24 +2345,25 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
 
 \begin{frame}[fragile]{Mantel test outputs -- strongly significant}
 \begin{multicols}{2}
-  \begin{verbatim}
-> hauss.mantel
-Monte-Carlo test
-Call: mantel.randtest(m1 =
-  hauss.dist, m2 = 
-  hauss.gdist, nrepet = 1000)
-Observation: 0.35409
-Based on 1000 replicates
-Simulated p-value: 0.000999001
-Alternative hypothesis: greater
-   Std.Obs Expectation  Variance
-7.61967545 0.001687140 0.0021389
-  \end{verbatim}
+  \includegraphics[height=6cm]{mantel.png}
+  \begin{spluscode}
+    hauss.mantel # See output
+    Monte-Carlo test
+    Call: mantel.randtest(m1 =
+      hauss.dist, m2 =
+      hauss.gdist, nrepet = 1000)
+    Observation: 0.35409
+    Based on 1000 replicates
+    Simulated p-value: 0.000999001
+    Alternative hypothesis: greater
+      Std.Obs Expectation  Variance
+    7.61967545 0.001687140 0.0021389
+  \end{spluscode}
+  \vfill
   \begin{spluscode}
     # Plot correlogram (next slide)
     plot(hauss.mantel.cor)
   \end{spluscode}
-  \includegraphics[height=6cm]{mantel.png}
 \end{multicols}
 \end{frame}
 
@@ -2325,6 +2398,17 @@ Alternative hypothesis: greater
   \end{spluscode}
 \end{multicols}
 For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
+\end{frame}
+
+\begin{frame}{Geneland GUI}
+  \begin{itemize}
+    \item Some tasks are easier in GUI, some in command line\ldots
+    \item Command line is great for its repeatability\ldots
+    \item Always read manual!
+  \end{itemize}
+  \begin{center}
+    \includegraphics[height=5cm]{geneland_gui.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Loading and conversions of coordinates}
@@ -2612,7 +2696,8 @@ We will use figures and F$_{ST}$ outputs only from the best run.
       "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o",
       bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
   \end{spluscode}
-\includegraphics[width=\textwidth]{mapy.png}
+
+  \includegraphics[width=\textwidth]{mapy.png}
 \end{frame}
 
 \section{Structure}
@@ -2702,25 +2787,23 @@ Within working ``structure'' directory you need
 \end{frame}
 
 \begin{frame}[fragile]{Input files}
-\textbf{Joblist file:}\\
-\vfill
-\begin{tabular}{lllll}
-S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
-S06 & 1,2,3,4,5 & 2 & 500 & 10000\\
-S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
-... & ... & ... & ... & ...\\
-\end{tabular}
-\vfill
-\textbf{Input file:}\\
-\vfill
-\begin{tabular}{lllllllllll}
- & & & msta93 & msta101 & msta102 & msta103 & ...\\
-H01 & 1 & 0 & 269 & 198 & 221 & 419 & ...\\
-H01 & 1 & 0 & 269 & 198 & 223 & 419 & ...\\
-H02 & 1 & 0 & 275 & 198 & 221 & 419 & ...\\
-H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
-... & ... & ... & ... & ... & ... & ... & ...
-\end{tabular}
+  \textbf{Joblist file:}\\
+  \begin{tabular}{lllll}
+    S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
+    S06 & 1,2,3,4,5 & 2 & 500 & 10000\\
+    S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
+    ... & ... & ... & ... & ...\\
+  \end{tabular}
+  \vfill
+  \textbf{Input file:}\\
+  \begin{tabular}{lllllllllll}
+    & & & msta93 & msta101 & msta102 & msta103 & ...\\
+    H01 & 1 & 0 & 269 & 198 & 221 & 419 & ...\\
+    H01 & 1 & 0 & 269 & 198 & 223 & 419 & ...\\
+    H02 & 1 & 0 & 275 & 198 & 221 & 419 & ...\\
+    H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
+    ... & ... & ... & ... & ... & ... & ... & ...
+  \end{tabular}
 \end{frame}
 
 \begin{frame}[fragile]{Running ParallelStructure}
@@ -2809,6 +2892,7 @@ H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
     Structure.order("list_k_07.txt", 5)
     # Continue with CLUMPP and distruct...
   \end{spluscode}
+
 Details: \url{https://trapa.cz/en/structure-r-linux}
 \end{frame}
 
@@ -2834,7 +2918,7 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     \item R can (in batch) run multiple sequence alignments (there are several possibilities)
     \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal}, \ldots
     \begin{itemize}
-      \item User must install this software manually -- R is just using external applications
+      \item User must install this software manually -- R is just using external applications (in the examples shown)
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -3018,7 +3102,8 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     compute.brtime()
     ?compute.brtima # Check it for mode how to calculate the lengths
   \end{spluscode}
-Class \texttt{multiPhylo} is just a~list of \texttt{phylo} objects to store multiple trees -- you can perform most of analysis on it as on phylo, commonly using \texttt{lapply} function (afterward use \texttt{class(x) <- "multiPhylo"} to ensure other functions will see it as \texttt{multiPhylo} object).
+
+  Class \texttt{multiPhylo} is just a~list of \texttt{phylo} objects to store multiple trees -- you can perform most of analysis on it as on phylo, commonly using \texttt{lapply} function (afterward use \texttt{class(x) <- "multiPhylo"} to ensure other functions will see it as \texttt{multiPhylo} object).
 \end{frame}
 
 \subsection{Seeing trees in the forest}
@@ -3193,6 +3278,7 @@ Post process the matrix and plot it. There are several methods for calculating d
     oxalis.tree.net <- consensusNet
       (oxalis.trees.rooted, prob=0.25)
   \end{spluscode}
+
   \includegraphics[height=5.5cm]{oxalis-net.png}
   \columnbreak
   \begin{spluscode}
@@ -3589,11 +3675,11 @@ Post process the matrix and plot it. There are several methods for calculating d
     \item Significant result -- significant phylogenetic inertia (phylogenetic effect) -- the tendency for traits to resist evolutionary change despite environmental perturbations
     \item \texttt{orthobasis.phylo()} return matrix, which is linear transformation of cophenetic distances -- columns 1 and 2 can be used to calculate phylogenetic variance -- it can be used to calculate linear regression
   \end{itemize}
-  \begin{verbatim}
-             Df   Sum Sq  Mean Sq F value Pr(>F)
-as.matrix...  2 0.063689 0.031845  2.2275 0.1422
-Residuals    15 0.214443 0.014296
-  \end{verbatim}
+  \begin{spluscode}
+                 Df   Sum Sq  Mean Sq F value Pr(>F)
+    as.matrix...  2 0.063689 0.031845  2.2275 0.1422
+    Residuals    15 0.214443 0.014296
+  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Orthonormal decomposition of variance of a quantitative variable on an orthonormal basis}
@@ -3821,7 +3907,7 @@ Residuals    15 0.214443 0.014296
 \subsection{Ancestral state}
 
 \begin{frame}[fragile]{Ancestral state reconstruction}
-By default \texttt{ape::ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood.
+  By default \texttt{ape::ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood.
   \begin{spluscode}
     # See ?ace for possible settings and estimations
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
@@ -3837,7 +3923,8 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
     nodelabels(round(primates.body.ace$ace, digits=3),
     frame="circle", bg="red", cex=1.5)
   \end{spluscode}
-\texttt{ace()} can handle continuous as well as discrete data.
+
+  \texttt{ace()} can handle continuous as well as discrete data.
 \end{frame}
 
 \begin{frame}{Ancestral state reconstructions of primates body weights}
@@ -4191,7 +4278,7 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
 
 %% Missing topics:
 %% ----------------
-% More theory for methods
+% More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
 % polysat
 % splits
@@ -4202,3 +4289,5 @@ By default \texttt{ape::ace()} performs estimation for continuous characters ass
 % diveRsity package
 % Arlequin
 % Linarius
+% https://cran.r-project.org/web/packages/polyfreqs/
+% zkontrolovat tvorbu distance z genlight, read.snp, read.vcf, zpracovávání po blocích

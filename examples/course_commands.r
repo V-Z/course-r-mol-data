@@ -14,7 +14,8 @@ dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
 
 ## Basic operations
-x <- c(1, 2, 3, 4, 5) # Creates vector (see also ?rep)
+x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
+x # Print "x" content
 c() # Is generic function to concatenate objects into new one
 length(x) # Length of the object - for matrices and DF use dim()
 str(x) # Information about structure of the object
@@ -22,6 +23,7 @@ mode(x) # Gets type of storage mode of the object
 class(x) # Shows class of the object
 x[2] # Shows second element of the object
 x <- x[-5] # Removes fifth element
+x
 y <- matrix(data=5:20, nrow=4, ncol=4) # Creates a matrix
 is.matrix(y) # Is it matrix? Try is.<TAB><TAB> TAB key shows available functions and objects starting by typed text
 y # Prints the matrix
@@ -29,10 +31,13 @@ y[,2] # Prints second column
 y[3,] # Prints third row
 y[4,3] # Prints element from fourth row and third column
 x <- y[2,] # Replaces "x" by second row of "y" (no warning) - R doesn't ask neither notifies when overwriting objects! Be careful!
+x
 rm(x) # Deletes x
 y[,1:3] # Prints first through third column of the matrix
 y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
+y
 y[y==20] <- 10 # If value of y's element is 20, replace it by 10
+y
 summary(y) # Basic statistics - according to columns
 colnames(y) <- c("A", "B", "C", "D") # Set column names - Objects and functions are without quotation marks; files, text with
 colnames(y) # Prints column names, use rownames() in same way
@@ -40,6 +45,7 @@ y[,"C"] # Prints column C (R is case sensitive!)
 t(y) # Transposes the matrix
 y <- as.data.frame(y) # Turns into DF (see other functions as.*)
 y[y==17] <- "NA" # Removes values of 17
+y
 y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
 save(list=ls(), file="test.RData") # Saves all objects during the work
 load("test.RData") # Loads saved R environment with all objects
@@ -51,13 +57,23 @@ getClassDef("genind") # Or select any other class name
 
 ## Packages and repositories
 # Set repositories
-options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/experiment", "http://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
+options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.2/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "grid", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "parallel", "pegas", "permute", "phangorn", "phylobase", "phyloch", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "stats4", "tcltk", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
 
-# We will load packages by library(package) one by one when needed
+# Install packages without setting the repositories
+# If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
+install.packages(pkgs=c("Geneland", "MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+
+# Install package phyloch not available in any repository
+# If not done already, install required packages first
+install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
+# It is possible to specify direct path (local or web URL) to package source
+install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+
+# We will load packages by library(package) one by one when needed and plugins\ldots
 # Update packages
 update.packages(repos=getOption("repos"))
 
@@ -66,9 +82,11 @@ update.packages(repos=getOption("repos"))
 # Standard installation
 install.pacakges(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
+
 # Installation from custom repository
 install.packages("ParallelStructure", repos="http://R-Forge.R-project.org")
 ?install.packages # See help for details
+
 # Bioconductor - if https fails, use http
 source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
@@ -78,6 +96,8 @@ biocLite(c("Biostrings", "seqinr"))
 biocLite() # Update Bioconductor packages
 # Upgrades installed Bioconductor packages to new R release
 biocLite("BiocUpgrade")
+# Install Bioconductor packages used during the course
+biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors", "XVector", "muscle"))
 
 ## Libraries for population - genetic analysis
 
