@@ -895,8 +895,8 @@ Source data (two files - AFLP data with individual names and populations)
  \item When importing fragmentation data, we somehow use function \texttt{read.table()} -- it is important to understand it
  \item I~recommend to use TAB (TSV -- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
  \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``/'', ``|'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()}
- \item Do not use underscores (``\_'') to name objects in R -- only numbers, letters, dots and minuses
- \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{write.table()} instead\ldots
+ \item Do not use underscores (``\_'') or minuses to name objects in R -- only numbers, letters or dots
+ \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
  \item Genind object (since Adegenet 2) is able to store mixing ploidy data, but not all analysis are able to handle that\ldots
 \end{itemize}
 \end{frame}
@@ -909,11 +909,11 @@ Source data (two files - AFLP data with individual names and populations)
     # Sequences of flu viruses from various years
     usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/
       files/usflu.fasta", format="fasta")
+    usflu.dna # Check the object
     # Another possibility (only for FASTA alignments, same result):
     usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org
       /files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
-    # Check the object
-    usflu.dna
+    usflu.dna2 # Check the object
     class(usflu.dna)
     as.character(usflu.dna)[1:5,1:10]
     # Read annotations
@@ -930,7 +930,7 @@ Source data (two files - AFLP data with individual names and populations)
   \begin{spluscode}
     # read.fasta() from seqinr package reads DNA or AA in FASTA format
     # returns a list (DNAbin is for us now better choice)
-    usflu.dna <- read.fasta(file="http://adegenet.r-forge.r-project.org/
+    usflu.dna3 <- read.fasta(file="http://adegenet.r-forge.r-project.org/
       files/usflu.fasta", seqtype="DNA"
     # Importing sequences according to sequence ID
     # Data from https://www.ncbi.nlm.nih.gov/popset/608602125 (Meles meles)
@@ -1033,13 +1033,20 @@ Source data (two files - AFLP data with individual names and populations)
     ape::GC.content(x=meles.dna)
     # umber of times dimer/trimer/etc oligomers occur in a sequence
     seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
-    # View sequences
+    # View sequences - all must be of the same length
     image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
     # Function "image" requires as input matrix
     # So that sequences must be of same length
-    image(x=as.matrix(usflu.dna), c("a", "t", "c" ,"g", "n"),
+    image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"),
       col=rainbow(5))
+    # Direct function to display the sequences
+    image.DNAbin(x=usflu.dna)
+    image.DNAbin(x=as.matrix(meles.dna))
   \end{spluscode}
+\end{frame}
+
+\begin{frame}{\textit{Meles} sequences}
+  \includegraphics[width=\textwidth]{sequences_meles.png}
 \end{frame}
 
 \begin{frame}{Notes about using genlight (vs. genind)}
@@ -1109,18 +1116,18 @@ Source data (two files - AFLP data with individual names and populations)
     # Create pane with some information
     par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
     # Plot alleles number vs. population sizes
-    plot(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall, xlab="Populations
+    plot(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall, xlab="Populations
       sample size", ylab="Number of alleles", main="Alleles numbers and
       sample sizes", col="red", pch=20)
     # Add text description to the point
-    text(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall,
-      lab=names(hauss.summ$pop.eff), cex=1.5)
+    text(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall,
+      lab=names(hauss.summ$n.by.pop), cex=1.5)
     # Barplots of various data
     barplot(height=hauss.summ$loc.n.all, ylab="Number of alleles",
       main="Number of alleles per locus", las=3)
     barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity:
       expected-observed", ylab="Hexp - Hobs", las=3)
-    barplot(height=hauss.summ[["pop.eff"]], main="Sample sizes per
+    barplot(height=hauss.summ[["n.by.pop"]], main="Sample sizes per
       population", ylab="Number of genotypes", las=3)
     dev.off() # Closes graphical device - otherwise following
               # graphs would still be divided into 4 parts

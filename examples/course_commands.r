@@ -195,9 +195,10 @@ seploc() # adegenet - splits genind, genpop or genlight by markers
 
 # Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years
 usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
+usflu.dna
 # Another possibility (only for FASTA alignments, same result):
 usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
-usflu.dna
+usflu.dna2
 # Check the object
 class(usflu.dna)
 as.character(usflu.dna)[1:5,1:10]
@@ -208,7 +209,8 @@ head(usflu.annot)
 # Convert DNAbin to genind - only polymorphic loci are retained
 usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
 # read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)
-usflu.dna <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
+usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
+usflu.dna3
 
 # Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
 meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
@@ -270,10 +272,13 @@ ape::base.freq(x=meles.dna)
 ape::GC.content(x=meles.dna)
 # umber of times dimer/trimer/etc oligomers occur in a sequence
 seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
-# View sequences
+# View sequences - all must be of the same length
 image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Function "image" requires as input matrix, so that sequences must be of same length
-image(x=as.matrix(usflu.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+# Direct function to display the sequences
+image.DNAbin(x=usflu.dna)
+image.DNAbin(x=as.matrix(meles.dna))
 
 ## Exporting data
 # Convert genind into DF using genind2df()
@@ -302,14 +307,15 @@ bartlett.test(list(hauss.summ$Hexp,hauss.summ$Hobs))
 # Create pane with some information
 par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
 # Plot alleles number vs. population sizes
-plot(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall, xlab="Populations sample size", ylab="Number of alleles", main="Alleles numbers and sample sizes", col="red", pch=20)
+plot(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall, xlab="Populations sample size", ylab="Number of alleles", main="Alleles numbers and sample sizes", col="red", pch=20)
 # Add text description to the point
-text(x=hauss.summ$pop.eff, y=hauss.summ$pop.nall, lab=names(hauss.summ$pop.eff), cex=1.5)
+text(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall, lab=names(hauss.summ$n.by.pop), cex=1.5)
 # Barplots of various data
 barplot(height=hauss.summ$loc.n.all, ylab="Number of alleles", main="Number of alleles per locus", las=3)
 barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity: expected-observed", ylab="Hexp - Hobs", las=3)
-barplot(height=hauss.summ[["pop.eff"]], main="Sample sizes per population", ylab="Number of genotypes", las=3)
+barplot(height=hauss.summ[["n.by.pop"]], main="Sample sizes per population", ylab="Number of genotypes", las=3)
 dev.off() # Closes graphical device - otherwise following graphs would still be divided into 4 parts
+
 # poppr returns various population statistics for populations - png() will produce set of figures for each population
 png(filename="poppr_%03d.png", width=720, height=720, bg="white") # Output figures will be saved to the disk
 poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4, missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE, hist=TRUE, minsamp=1, legend=TRUE)
@@ -497,25 +503,26 @@ plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))), xlab="Orig
 abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
+# Plot a basic tree - see ?plot.phylo for details
+plot.phylo(x=hauss.nj, type="phylogram")
+plot.phylo(x=hauss.nj, type="cladogram", edge.width=2)
+plot.phylo(x=hauss.nj, type="fan", edge.width=2, edge.lty=2)
+plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2, edge.lty=3, cex=2)
+
 # Bootstrap
+
 # boot.phylo() resamples all columns - remove population column first
 hauss.loci.nopop <- hauss.loci
 hauss.loci.nopop[["population"]] <- NULL
 hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
 # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
 
-# Another possibility
+# Another bootstrap possibility
 hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist, sample=100) # Bootstrap values are in slot node.label
 # Plot the tree, explicitly display node labels
 plot.phylo(x=hauss.aboot, show.node.label=TRUE)
 ?aboot # See details...
 ??plot.phylo
-
-# Plot a basic tree - see ?plot.phylo for details
-plot.phylo(x=hauss.nj, type="phylogram")
-plot.phylo(x=hauss.nj, type="cladogram", edge.width=2)
-plot.phylo(x=hauss.nj, type="fan", edge.width=2, edge.lty=2)
-plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2, edge.lty=3, cex=2)
 
 # Plot a nice tree with colored tips
 plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
@@ -579,13 +586,13 @@ usflu.tree.rooted <- root(phy=usflu.tree, outgroup=1)
 plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("Rooted NJ tree")
 # Labeling of tips
-tiplabels(text=annot$year, bg=transp(num2col(x=annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
+tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
 # Add axis with phylogenetic distance
 axisPhylo()
 # Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
-# Bootstrap
+# Bootstrap rooted tree
 # Calculate it
 usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=function(EEE) root(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
 # Plot the tree
@@ -623,6 +630,7 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 ?fastme
 
 ## PCoA
+
 # Calculate it - based on various distance matrix
 hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE, scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE, nf=3)
 # Basic display
@@ -632,11 +640,13 @@ s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
 # Adds histogram of Eigenvalues
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
+
 # Colored display according to populations
 hauss.pcoa.col <- rainbow(length(levels(pop(hauss.genind)))) # Creates vector of colors according to populations
 s.class(dfxy=hauss.pcoa$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
 title("Principal Coordinates Analysis") # Adds title to the graph
+
 # Based on Bruvo's distance
 hauss.pcoa.bruvo <- dudi.pco(d=bruvo.dist(pop=hauss.genind, replen=rep(2, 12)), scannf=FALSE, nf=3)
 s.class(dfxy=hauss.pcoa.bruvo$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
@@ -647,8 +657,10 @@ title(main="PCoA, axes 1 and 3")
 abline(v=0, h=0, col="grey", lty=2)
 
 ## Clustering analysis
+
 # Graphical web interface for DAPC
 adegenetServer("DAPC")
+
 ## K-find
 # Bayesian K-means clustering
 # Retain all informative PC (here about 35). According to second graph select best K (here 2 or 3).
@@ -683,6 +695,7 @@ compoplot(x=hauss.dapc, xlab="Individuals", leg=FALSE)
 loadingplot(x=hauss.dapc$var.contr)
 # alfa-score - according to number of PC axis
 optim.a.score(x=hauss.dapc)
+
 # K=3
 # Creates DAPC
 # Number of informative PC (Here 15, adegenet recommends < N/3). Select number of informative DA (here 2).
