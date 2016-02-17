@@ -34,7 +34,7 @@
 
 % Basic packages
 \usepackage{xltxtra} % Loads following 4 packages for processing with XeLaTeX
-\usepackage{fixltx2e}
+% \usepackage{fixltx2e} % fixltx2e is not required with released after 2015 (fixltx2e), all files are now in the LaTeX kernel
 \usepackage{metalogo}
 \usepackage{xunicode}
 \usepackage{fontspec}
@@ -819,7 +819,7 @@ Source data (two files - AFLP data with individual names and populations)
 \begin{multicols}{2}
 \textbf{AFLP or any other presence/absence data:}
   \begin{spluscode}
-         L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
+        L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
     Ind1 0 0 1 1 1 0 0 0 1 ...
     IndG 0 0 1 1 0 0 0 0 0 ...
     ...  ...  ...
@@ -933,7 +933,7 @@ Source data (two files - AFLP data with individual names and populations)
     usflu.dna <- read.fasta(file="http://adegenet.r-forge.r-project.org/
       files/usflu.fasta", seqtype="DNA"
     # Importing sequences according to sequence ID
-    # data from https://www.ncbi.nlm.nih.gov/popset/608602125 (Meles meles)
+    # Data from https://www.ncbi.nlm.nih.gov/popset/608602125 (Meles meles)
     meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1",
       "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1",
       "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1",
@@ -946,17 +946,18 @@ Source data (two files - AFLP data with individual names and populations)
     # computationally very intensive
     meles.genind <- DNAbin2genind(meles.dna)
   \end{spluscode}
-
-To query on-line database as through web interface we use \href{https://cran.r-project.org/web/packages/seqinr/index.html}{seqinr}.
+  \begin{itemize}
+    \item To query on-line database as through web we use \href{https://cran.r-project.org/web/packages/seqinr/index.html}{seqinr} (next slide)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Query on-line sequence databases}
   \begin{spluscode}
     library(seqinr)
-    choosebank() # Genetic banks available for seqinr
+    choosebank() # List genetic banks available for seqinr
     choosebank("embl") # Choose some bank
     ?query # See how to construct the query
-    # Query selected database - there are much possibilities
+    # Query selected database - there are a lot of possibilities
     nothofagus <- query(listname="nothofagus",
       query="SP=Nothofagus AND K=rbcl", verbose=TRUE)
     # See the sequences information
@@ -1001,9 +1002,9 @@ To query on-line database as through web interface we use \href{https://cran.r-p
 \end{frame}
 
 \begin{frame}[fragile]{Importing SNP}
-Import from \href{http://pngu.mgh.harvard.edu/~purcell/plink/}{PLINK} requires saving of data with option \href{http://pngu.mgh.harvard.edu/~purcell/plink/dataman.shtml#recode}{``-recodeA''}:
-\splus/read.PLINK(file="PLINKfile", ...) # See ?readPLINK/
-Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
+  Import from \href{http://pngu.mgh.harvard.edu/~purcell/plink/}{PLINK} requires saving of data with option \href{http://pngu.mgh.harvard.edu/~purcell/plink/dataman.shtml#recode}{``-recodeA''}:
+  \splus/read.PLINK(file="PLINKfile", ...) # See ?readPLINK/
+  Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
   \begin{spluscode}
     usflu.genlight <- fasta2genlight(file=
       "http://adegenet.r-forge.r-project.org/files/usflu.fasta",
@@ -1011,9 +1012,9 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
     ?fasta2genlight # Function has several options to speed up reading
     # If it crashes (on Windows), try add parameter "parallel=FALSE"
   \end{spluscode}
-\begin{itemize}
- \item For small datasets, keep data as genind as it is more information-rich -- genlight is more efficient for large data
-\end{itemize}
+  \begin{itemize}
+  \item For small datasets, keep data as genind as it is more information-rich -- genlight is more efficient for large data
+  \end{itemize}
   \begin{spluscode}
     # Convert genlight to genind
     genind <- df2genind(as.data.frame(genlight)) # Check settings!
@@ -1081,7 +1082,9 @@ Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The me
 \subsection{First look at the data}
 
 \begin{frame}[fragile]{Descriptive statistics I}
-We will now work mainly with diploid SSRs for \textit{Taraxacum haussknechtii}, you can try other data examples by yourselves
+  \begin{itemize}
+    \item We will now work mainly with diploid SSRs for \textit{Taraxacum haussknechtii}, you can try other data examples by yourselves
+  \end{itemize}
   \begin{spluscode}
     # Get summary - names and sizes of populations,
     # heterozygosity, some info about loci
@@ -1201,7 +1204,7 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 \begin{frame}[fragile]{F-statistics and population theta}
   \begin{itemize}
     \item Functions return tables of F$_{ST}$/thetas values for populations/loci
-    \item For \texttt{Fst}, \texttt{fstat} and \texttt{theta.msat} the loci object must contain population column
+    \item For \texttt{Fst}, \texttt{fstat} and \texttt{theta.msat} the loci object \textbf{must} contain population column
   \end{itemize}
   \begin{spluscode}
     # Fit, Fst and Fis for each locus
@@ -1489,6 +1492,7 @@ Rationale of this approach is to save resources when dividing whole data set int
       ylab="Pairwise distances on the tree", main="Is UPGMA
       appropriate?", pch=20, col=transp(col="black",
       alpha=0.1), cex=2)
+    # Add correlation line
     abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~
       as.vector(usflu.dist)), col="red")
   \end{spluscode}
@@ -1581,8 +1585,9 @@ Rationale of this approach is to save resources when dividing whole data set int
       sample=100) # Bootstrap values are in slot node.label
     # Plot the tree, explicitly display node labels
     plot.phylo(x=hauss.aboot, show.node.label=TRUE)
-    ?aboot # See details...
-    ??plot.phylo
+    # See details...
+    ?aboot
+    ?boot.phylo
   \end{spluscode}
 \end{frame}
 
@@ -1857,7 +1862,7 @@ Package poppr (bootstrap is incorporated within the function)
     # Graph showing table of original and inferred populations and
     # assignment of individuals
     table.value(df=table(pop(hauss.genind), hauss.kfind$grp), col.lab=
-      paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=T)
+      paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=TRUE)
     # For K=3 - note parameters n.pca and n.clust - we just rerun the
     # analysis and when results are stable, no problem here
     hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3,
@@ -2023,7 +2028,7 @@ Especially graphical parameters have huge possibilities\ldots
   \begin{itemize}
     \item Those tools are designed mainly for situation when having multiple (nearly) complete genomes -- not needed for smaller (normal) datasets
     \item Lets keep hoping in fast development of computers\ldots
-    \item \alert{Note for Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library, which is not available on Windows -- add parameter \texttt{parallel=FALSE}
+    \item \alert{Note for Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library, which is not available on Windows -- add parameter \texttt{parallel=FALSE} to be able to use them on Windows
   \end{itemize}
 \end{frame}
 
@@ -2169,10 +2174,12 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
 \end{itemize}
   \begin{spluscode}
     data(rupica) # Loads adegenet's training dataset
+                 # Rupica rupica from French Alps
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
-    chooseCN(xy=rupica$other$xy, ask=T, type=5/6/7, plot.nb=T, edit.nb=F)
-    # See ?chooseCN for more details
+    chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE,
+      edit.nb=FALSE, ...) # Play with settings little bit...
+    ?chooseCN # See for more details - select the best "type" for your data
   \end{spluscode}
 \end{frame}
 
@@ -2207,19 +2214,23 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
 \begin{frame}[fragile]{Map of genetic clines}
   \begin{spluscode}
     library(akima) # It is needed for manipulation with coordinates
-    hauss.spca.temp <- interp(other(hauss.genind)$xy[,1], other(
-      hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(
-      hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]),
-      le=200), yo=seq(min(other(hauss.genind)$xy[,2]),
+    # Transform the coordinates
+    hauss.spca.temp <- interp(other(hauss.genind)$xy[,1],
+      other(hauss.genind)$xy[,2], hauss.spca$ls[,1],
+      xo=seq(min(other(hauss.genind)$xy[,1]),
+      max(other(hauss.genind)$xy[,1]), le=200),
+      yo=seq(min(other(hauss.genind)$xy[,2]),
       max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
     # For 1st axis
     image(x=hauss.spca.temp, col=spectral(100))
-    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE,
-      csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
+    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1],
+      add.p=TRUE, csize=0.5, sub="PCoA - first PC", csub=2,
+      possub="topleft")
     # For 2nd axis
     image(x=hauss.spca.temp, col=spectral(100))
-    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=
-      TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
+    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2],
+      add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2,
+      possub="topleft")
   \end{spluscode}
 \end{frame}
 
@@ -2404,7 +2415,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \begin{itemize}
     \item Some tasks are easier in GUI, some in command line\ldots
     \item Command line is great for its repeatability\ldots
-    \item Always read manual!
+    \item Always read manual! It is not the simplest tool\ldots
   \end{itemize}
   \begin{center}
     \includegraphics[height=5cm]{geneland_gui.png}
@@ -2517,8 +2528,9 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
         path.mcmc.adm=hauss.geneland.path.mcmc.adm)
       }
   \end{spluscode}
-\vfil
-Currently, there is no much use for admixture results, at lest not without extra work\ldots
+  \begin{itemize}
+    \item Currently, there is no much use for admixture results, at lest not without extra work\ldots
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Produce maps of respective inferred clusters}
@@ -2534,8 +2546,11 @@ Currently, there is no much use for admixture results, at lest not without extra
         dev.off() } # We must close graphical device manually
       }
   \end{spluscode}
-\vfil
-Maps are produced as PS (PostScript) files. Not every graphical software can handle them (try for example \href{https://www.gimp.org/}{GIMP}). There are as many plots as was maximal K, but only those up to inferred number of clusters have some content.
+  \begin{itemize}
+    \item Maps are produced as PS (PostScript) files
+    \item Not every graphical software can handle PS (try for example \href{https://www.gimp.org/}{GIMP})
+    \item There are as many plots as was maximal K, but only those up to inferred number of clusters have some content (the others are empty)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Determine which cluster is the best}
@@ -2555,8 +2570,9 @@ Maps are produced as PS (PostScript) files. Not every graphical software can han
     order(hauss.geneland.lpd, decreasing=TRUE)
     hauss.geneland.lpd
   \end{spluscode}
-\vfil
-We will use figures and F$_{ST}$ outputs only from the best run.
+  \begin{itemize}
+    \item We will use figures and F$_{ST}$ outputs only from the best run
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{MCMC chain, number of clusters and their map}
@@ -2606,11 +2622,11 @@ We will use figures and F$_{ST}$ outputs only from the best run.
     # Google map is produced into a
     # file. Parameter markers contain
     # data frame with coordinates and
-    # possibly with another information
-    hauss.gmap <- GetMap(center=c(lat=
-      41, lon=21), size=c(640, 640),
-      destfile="gmap.png", zoom=8,
-      markers=hauss.coord,
+    # possibly with more information
+    hauss.gmap <- GetMap(center=
+      c(lat=41, lon=21), size=c(640,
+      640), destfile="gmap.png",
+      zoom=8, markers=hauss.coord,
       maptype="terrain")
   \end{spluscode}
   \begin{center}
@@ -2621,7 +2637,7 @@ We will use figures and F$_{ST}$ outputs only from the best run.
 
 \begin{frame}[fragile]{OpenStreetMaps and datasets from mapproj}
   \begin{spluscode}
-    # Plot on OpenStreetMaps - server is commonly overloaded and doesn't
+    # Plot on OpenStreetMaps - server is commonly overloaded and does not
     # respond correctly - in fact, it rarely works...
     GetMap.OSM(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile=
       "osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE,
@@ -2629,8 +2645,8 @@ We will use figures and F$_{ST}$ outputs only from the best run.
     # Plot on datasets from mapproj package
     library(maps) # Various maping tools (plotting, ...)
     library(mapdata) # More detailed maps, but political boundaries often
-          # outdatet, see https://cran.r-project.org/web/packages/mapdata/
-    library(mapproj) # Converts latitude/longitude into projected coordinates
+           # outdatet, see https://cran.r-project.org/web/packages/mapdata/
+    library(mapproj) # Convert latitude/longitude into projected coordinates
     # Plot a map, check parameters
     # Check among others "projection" and ?mapproject for its details
     map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE,
@@ -2643,9 +2659,9 @@ We will use figures and F$_{ST}$ outputs only from the best run.
 \end{frame}
 
 \begin{frame}[fragile]{Plotting on SHP files I}
-\begin{scriptsize}
-  Get SHP files from \url{https://trapa.cz/sites/default/rcourse/macedonia.zip}
-\end{scriptsize}
+  \begin{scriptsize}
+    Get SHP files from \url{https://trapa.cz/sites/default/rcourse/macedonia.zip}
+  \end{scriptsize}
   \begin{spluscode}
     library(maptools)
     # Load SHP file
@@ -2892,8 +2908,9 @@ Within working ``structure'' directory you need
     Structure.order("list_k_07.txt", 5)
     # Continue with CLUMPP and distruct...
   \end{spluscode}
-
-Details: \url{https://trapa.cz/en/structure-r-linux}
+  \begin{itemize}
+    \item Details: \url{https://trapa.cz/en/structure-r-linux}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Outputs of Structure-sum -- the best K~is 2, may be 3~-- stability of runs, good posterior probability}{Results from different data set, not from our toy}
@@ -2914,8 +2931,11 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 \begin{frame}{Multiple sequence alignment}
   \begin{itemize}
     \item Good alignment is basic condition for any analysis of DNA sequences
-    \item R doesn't have any possibility for visual editing
-    \item R can (in batch) run multiple sequence alignments (there are several possibilities)
+    \item R doesn't have any possibility for visual editing (use rather software like \href{http://www.geneious.com/}{Geneious}, \href{http://www.clcbio.com/products/clc-sequence-viewer/}{CLC Sequence Viewer} or \href{http://www.mbio.ncsu.edu/bioedit/bioedit.html}{BioEdit})
+    \item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
+    \begin{itemize}
+      \item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python -- only matters what user likes, knows and wish to do with the results\ldots
+    \end{itemize}
     \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal}, \ldots
     \begin{itemize}
       \item User must install this software manually -- R is just using external applications (in the examples shown)
@@ -3102,8 +3122,9 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
     compute.brtime()
     ?compute.brtima # Check it for mode how to calculate the lengths
   \end{spluscode}
-
-  Class \texttt{multiPhylo} is just a~list of \texttt{phylo} objects to store multiple trees -- you can perform most of analysis on it as on phylo, commonly using \texttt{lapply} function (afterward use \texttt{class(x) <- "multiPhylo"} to ensure other functions will see it as \texttt{multiPhylo} object).
+  \begin{itemize}
+    \item Class \texttt{multiPhylo} is just a~\texttt{list} of \texttt{phylo} objects to store multiple trees -- you can perform most of analysis on it as on \texttt{phylo}, commonly using \texttt{lapply} function (afterward use \texttt{class(x) <- "multiPhylo"} to ensure other functions will see it as \texttt{multiPhylo} object)
+  \end{itemize}
 \end{frame}
 
 \subsection{Seeing trees in the forest}
@@ -3125,7 +3146,9 @@ Details: \url{https://trapa.cz/en/structure-r-linux}
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees II}
-We have plenty of trees. How much are their topologies different?
+  \begin{itemize}
+    \item We have plenty of trees. How much are their topologies different?
+  \end{itemize}
   \begin{spluscode}
     library(gplots)
     library(corrplot)
@@ -3148,11 +3171,13 @@ We have plenty of trees. How much are their topologies different?
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees III}
-Post process the matrix and plot it. There are several methods for calculating distance matrices among the trees -- some take branch lengths into account, some only topology.
+  \begin{itemize}
+    \item Post process the matrix and plot it
+    \item There are several methods for calculating distance matrices among the trees -- some take branch lengths into account, some only topology
+  \end{itemize}
   \begin{spluscode}
-    # Add names of columns and rows
-    colnames(oxalis.trees.d) <- names(oxalis.trees)
-    rownames(oxalis.trees.d) <- names(oxalis.trees)
+    colnames(oxalis.trees.d) <- names(oxalis.trees) # Add names of
+    rownames(oxalis.trees.d) <- names(oxalis.trees) # columns and rows
     # Make matrix symmetric
     oxalis.trees.d[lower.tri(oxalis.trees.d)] <-
       t(oxalis.trees.d)[lower.tri(oxalis.trees.d)]
@@ -3388,7 +3413,9 @@ Post process the matrix and plot it. There are several methods for calculating d
 \subsection{Notes about plotting the trees}
 
 \begin{frame}[fragile]{Change orientation of plots}
-\texttt{plot.phylo()} has plenty of possibilities to influence -- check \texttt{?plot.phylo} and \texttt{?par}
+  \begin{itemize}
+    \item \alert{\texttt{plot.phylo()} has plenty of possibilities to influence -- check \texttt{?plot.phylo}, \texttt{?par}, \texttt{?points}, \ldots}
+  \end{itemize}
   \begin{spluscode}
     ?plot.phylo # check it for various possibilities what to influence
     par(mfrow=c(1, 2)) # Plot two plots in one row
@@ -3828,7 +3855,7 @@ Post process the matrix and plot it. There are several methods for calculating d
       FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
     sapply(X=list(body=primates.body, longevity=primates.longevity),
       FUN=phylosignal, phy=primates.tree, reps=1000)
-    # Alternative to use phylosignal with sapply:
+    # Alternative to use multiPhylosignal instead of sapply
     multiPhylosignal(x=as.data.frame(cbind(primates.body,
       primates.longevity)), phy=primates.tree, reps=1000)
     # Note sapply() and multiPhylosignal() return same data, but the
@@ -3907,7 +3934,10 @@ Post process the matrix and plot it. There are several methods for calculating d
 \subsection{Ancestral state}
 
 \begin{frame}[fragile]{Ancestral state reconstruction}
-  By default \texttt{ape::ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood.
+  \begin{itemize}
+    \item By default \texttt{ape::ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood
+    \item \texttt{ace()} can handle continuous as well as discrete data
+  \end{itemize}
   \begin{spluscode}
     # See ?ace for possible settings and estimations
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
@@ -3923,8 +3953,6 @@ Post process the matrix and plot it. There are several methods for calculating d
     nodelabels(round(primates.body.ace$ace, digits=3),
     frame="circle", bg="red", cex=1.5)
   \end{spluscode}
-
-  \texttt{ace()} can handle continuous as well as discrete data.
 \end{frame}
 
 \begin{frame}{Ancestral state reconstructions of primates body weights}
@@ -3958,7 +3986,7 @@ Post process the matrix and plot it. There are several methods for calculating d
 
 \begin{frame}[fragile]{Bayesian ancestral character estimation}
   \begin{spluscode}
-    primates.body.ace.bayes
+    primates.body.ace.bayes # Print the output object and check it
            gen     sig2        6        7        8        9     logLik
      [1,]    0 1.391013 2.288170 2.288170 2.288170 2.288170 -13.238593
      [2,]  100 1.394484 1.742455 2.248855 2.648808 3.105533  -7.552295
@@ -4159,11 +4187,11 @@ Post process the matrix and plot it. There are several methods for calculating d
       \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
       \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow
     \end{itemize}
-    \item Script end when there is some error or on the end of the file
-    \item When working on both Windows and Mac OS~X or Linux, take care about end of lines
+    \item Script ends when there is some error or on the end of the file
+    \item When working on both Windows and Mac OS~X/Linux, take care about end of lines
     \begin{itemize}
       \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for new line
-      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct end of lines
+      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines
     \end{itemize}
   \end{itemize}
 \end{frame}
