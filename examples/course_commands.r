@@ -914,7 +914,8 @@ for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
   hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
   hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
-  # On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows is complicated)  system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
+  # On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows is complicated)
+  system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
   HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
   }
 # Produce maps of respective inferred clusters  

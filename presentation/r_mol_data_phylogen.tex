@@ -1858,8 +1858,9 @@ Package poppr (bootstrap is incorporated within the function)
 
 \begin{frame}[fragile]{K-find -- Bayesian K-means clustering}
   \begin{spluscode}
-    # Retain all informative PC (here about 35).
-    # According to second graph select best K (here 2 or 3).
+    # Retain all informative PC (here about 35)
+    # According to second graph select best K (here 2 or 3)
+    # Now we select K=2 and later rerun the analysis for K=3 (lines 14-18)
     hauss.kfind <- find.clusters(x=hauss.genind, stat="BIC",
       choose.n.clust=TRUE, max.n.clust=10, n.iter=100000, n.start=100,
       scale=FALSE, truenames=TRUE)
@@ -1880,7 +1881,12 @@ Package poppr (bootstrap is incorporated within the function)
 
 \begin{frame}[fragile]{K-find outputs}
 \begin{multicols}{2}
-  \includegraphics[height=5.5cm]{kmeans.png}
+  \begin{itemize}
+    \item Cumulative variance of axis
+    \item BIC helps to select the best K
+    \item Original and inferred groups
+  \end{itemize}
+  \includegraphics[height=5cm]{kmeans.png}
   \begin{spluscode}
     # See results as text
     table(pop(hauss.genind),
@@ -1915,7 +1921,7 @@ Package poppr (bootstrap is incorporated within the function)
       scale=FALSE, var.contrib=TRUE, pca.info=TRUE, truenames=TRUE)
     # Information
     hauss.dapc
-    # Density functions
+    # Density function - only for first axis here!
     scatter(x=hauss.dapc, xax=1, yax=1, main="DAPC", bg="white", solid=0.5,
       leg=TRUE, txt.leg=c("Group 1", "Group 2"), posi.leg="topright")
     # Assignment of individuals to clusters
@@ -1939,8 +1945,8 @@ Package poppr (bootstrap is incorporated within the function)
     optim.a.score(x=hauss.dapc)
     # K=3
     # Creates DAPC
-    # Number of informative PC (Here 15, adegenet recommends < N/3).
-    # Select number of informative DA (here 2).
+    # Number of informative PC (Here 15, adegenet recommends < N/3)
+    # Select number of informative DA (here 2 - usually keep all of them)
     hauss.dapc3 <- dapc(x=hauss.genind, pop=hauss.kfind3$grp, center=TRUE,
       scale=FALSE, var.contrib=TRUE, pca.info=TRUE, truenames=TRUE)
     # Information
@@ -1951,8 +1957,9 @@ Package poppr (bootstrap is incorporated within the function)
       scree.pca=TRUE, posi.pca="bottomright", leg=TRUE,
       txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
   \end{spluscode}
-
-Especially graphical parameters have huge possibilities\ldots
+  \begin{itemize}
+    \item Especially graphical parameters have huge possibilities\ldots~--see \texttt{?scatter} and play with it\ldots
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{DAPC for K=3}
@@ -1967,7 +1974,7 @@ Especially graphical parameters have huge possibilities\ldots
       col=grey.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da=
       "bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE,
       txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
-    # Density functions
+    # Density function - only for first axis here!
     scatter(x=hauss.dapc3, xax=1, yax=1, main="DAPC", bg="white", solid=0.5,
       leg=T, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
     # Assignment of individuals to clusters
@@ -2135,10 +2142,13 @@ Especially graphical parameters have huge possibilities\ldots
 \end{frame}
 
 \begin{frame}{Moran's~\textit{I} for our 1$^{st}$ axis isn't significant}
-\includegraphics[width=\textwidth]{moran1.png}
-\begin{footnotesize}
-We tested hypothesis ``greater'' -- there is \textbf{no} significant positive autocorrelation
-\end{footnotesize}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{moran1.png}
+  \end{center}
+  \begin{itemize}
+    \item Tested hypothesis ``greater'' -- \textbf{no} significant \textbf{positive} autocorrelation
+    \item If testing for hypothesis ``less'' -- significant \textbf{negative} autocorrelation -- individuals are significantly different
+  \end{itemize}
 \end{frame}
 
 
@@ -2164,10 +2174,10 @@ We tested hypothesis ``greater'' -- there is \textbf{no} significant positive au
 \end{frame}
 
 \begin{frame}{Second axis is surprisingly significant}
-\includegraphics[width=\textwidth]{moran2.png}
-\begin{footnotesize}
-We tested hypothesis ``greater'' -- there \textbf{is} significant positive autocorrelation
-\end{footnotesize}
+  \includegraphics[width=\textwidth]{moran2.png}
+  \begin{itemize}
+    \item Tested hypothesis ``greater'' -- there \textbf{is} significant positive autocorrelation -- individuals are genetically similar over space
+  \end{itemize}
 \end{frame}
 
 \subsection{sPCA}
@@ -2181,7 +2191,7 @@ We tested hypothesis ``greater'' -- there \textbf{is} significant positive autoc
 \end{itemize}
   \begin{spluscode}
     data(rupica) # Loads adegenet's training dataset
-                 # Rupica rupica from French Alps
+                 # Rupicapra rupicapra from French Alps
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
     chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE,
@@ -2866,6 +2876,7 @@ Within working ``structure'' directory you need
     MPI_structure(...) # Same arguments as on previous slide
   \end{spluscode}
 \begin{itemize}
+ \item It may help to set \texttt{n\_cpu=1}, but it is only for testing then, not for real work...
  \item If this fails, look for some UNIX machine (Linux, Mac OS~X, BSD,~\ldots)\ldots
 \end{itemize}
 \end{frame}
@@ -2929,6 +2940,7 @@ Within working ``structure'' directory you need
     \item Each bar is one individual
     \item Each color is one genetic cluster (here is shown clustering for K=12)
     \item Individuals with columns composing of more colors are genetically mixture of more clusters
+    \item Details: \url{https://trapa.cz/en/structure-r-linux}
   \end{itemize}
   \includegraphics[width=\textwidth]{structure-fin.png}
 \end{frame}
@@ -4317,7 +4329,7 @@ Within working ``structure'' directory you need
 % Tree graphics
 % polysat
 % splits
-% coalescence based approach for creation of species tree from multiple gene trees -- \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{phybase}
+% coalescence based approach for creation of species tree from multiple gene trees - https://faculty.franklin.uga.edu/lliu/content/phybase
 % external tree builders
 % ML
 % Bayes trees
