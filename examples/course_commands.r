@@ -1412,7 +1412,7 @@ plot.phylo(apiaceae.tree)
 # Decomposition of topographical distances (right plot)
 library(adephylo)
 library(phylobase)
-table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart (x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
+table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
 # Generate some random variable
 library(geiger)
 apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1, model="BM")[,,1]
@@ -1560,7 +1560,7 @@ nodelabels(primates.body.ace.bayes[11,3:6]) # See next slide
 library(phytools)
 contMap(tree=primates.tree, x=primates.body)
 # Change colors with setMap()
-primates.contmap <- setMap(x= contMap(primates.tree, primates.body), colors=c("white", "black"))
+primates.contmap <- setMap(x=contMap(primates.tree, primates.body), colors=c("white", "black"))
 plot(primates.contmap)
 # See ?par for more settings
 
