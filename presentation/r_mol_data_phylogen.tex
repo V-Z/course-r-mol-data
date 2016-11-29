@@ -107,12 +107,13 @@
 
 \begin{frame}{Materials to help you\ldots}
 \begin{itemize}
- \item Download the presentation \url{https://trapa.cz/sites/default/rcourse/r_mol_data_phylogen.pdf}
+ \item Download the presentation from \url{https://trapa.cz/sites/default/rcourse/r_mol_data_phylogen.pdf}
  \item Follow all code we will use at \url{https://trapa.cz/sites/default/rcourse/course_commands.html}
  \item Download the script from \url{https://trapa.cz/sites/default/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
  \begin{itemize}
   \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
   \item The best is to open the script in e.g. RStudio or any other R GUI (see further) and directly work with it
+  \item \alert{Downloaded file must have sufix \texttt{*.r}, not \texttt{*txt}}
  \end{itemize}
 \end{itemize}
 \end{frame}
@@ -167,7 +168,7 @@
  \item RKWard \url{https://rkward.kde.org/} -- feature very rich, developed mainly for Linux, available also for another operating systems
  \item R commander (Rcmdr) \url{http://www.rcommander.com/} -- multiplatform, not so rich as previous
  \item Java GUI for R \url{http://rforge.net/JGR/} -- Java (multiplatform, but with all Java issues like memory consumption)
- \item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/}, \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
+ \item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
  \item Pick one you like (from above list or any else) and install it\ldots
 \end{itemize}
 \end{frame}
@@ -308,7 +309,7 @@
 \begin{frame}[fragile]{Where we are?}
 \begin{itemize}
  \item In Linux/UNIX, R starts in current directory (use \texttt{cd} to change it before launching R)
- \item Set and check working directory in R:
+ \item \alert{Set and check working directory} in R:
 \end{itemize}
   \begin{spluscode}
     setwd("/some/path/") # Or "~/...". In Windows "C:\..."
@@ -318,8 +319,8 @@
   \end{spluscode}
 \begin{itemize}
  \item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
- \item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac)
- \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} file and it can be loaded next time
+ \item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac OS~X)
+ \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \underline{.Rhistory}) file(s) and it/they can be loaded next time
  \item RStudio and RKWard help with this very much
 \end{itemize}
 \end{frame}
@@ -505,7 +506,7 @@ There are information about slots within that classes you can access.
     # We will need extra repositories. For Bioconductor keep same version
     # as is version of your R installation (3.3 in this case).
     options(repos=c("http://cran.at.r-project.org",
-      "https://r-forge.r-project.org/", "http://www.rforge.net/",
+      "https://r-forge.r-project.org/", "https:/rforge.net/",
       "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc",
       "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/
       annotation", "https://bioconductor.statistik.tu-dortmund.de/
@@ -582,7 +583,7 @@ There are information about slots within that classes you can access.
 \begin{frame}[fragile]{Bioconductor}
   \begin{itemize}
     \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
-    \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or use Bioconductor's special function (recommended by Bioconductor):
+    \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or \textbf{use Bioconductor's special function} (recommended by Bioconductor):
   \end{itemize}
   \begin{spluscode}
     # Load basic Bioconductor function
@@ -611,6 +612,8 @@ There are information about slots within that classes you can access.
       "XVector", "muscle"))
     # From time to time update Bioconductor packages
     biocLite()
+    # When upgrading to new version of R (e.g. from 3.2 to 3.3) upgrade by
+    biocLite("BiocUpgrade")
   \end{spluscode}
 \end{frame}
 
@@ -621,7 +624,7 @@ There are information about slots within that classes you can access.
     update.packages(ask=FALSE) # Update packages
     # Installation from custom repository (example for our course)
     install.packages(pkgs="ParallelStructure",
-      repos="http://R-Forge.R-project.org")
+      repos="https://r-forge.r-project.org")
     ?install.packages # See help for details
     # Bioconductor - if https fails, use http
     source("https://bioconductor.org/biocLite.R")
@@ -665,6 +668,21 @@ There are information about slots within that classes you can access.
   \begin{block}{Always save your work!}
     \alert{We will use data objects during whole course -- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
   \end{block}
+\end{frame}
+
+\begin{frame}{Notes about paths to import the data}
+\begin{itemize}
+ \item Generally, R can accept any local or web location
+ \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}
+ \item Local paths (within one computer) can be absolute or relative
+ \begin{itemize}
+  \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash}
+  \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:}) -- in the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename
+  \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace any filename parameter
+ \end{itemize}
+ \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
+ \item One of the most common source of errors -- when the command fails, double check paths (and Internet connection, if applicable)
+\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
@@ -713,21 +731,6 @@ There are information about slots within that classes you can access.
 \end{footnotesize}
 \end{frame}
 
-\begin{frame}{Note about paths to import the data}
-\begin{itemize}
- \item Generally, R can accept any local or web location
- \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}
- \item Local paths (within one computer) can be absolute or relative
- \begin{itemize}
-  \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash}
-  \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:}) -- in the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename
-  \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace any filename parameter
- \end{itemize}
- \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
- \item One of the most commons source of errors -- when the command fails, double check paths (and Internet connection, if applicable)
-\end{itemize}
-\end{frame}
-
 \begin{frame}[fragile]{Prepare genind object for analysis and load coordinates}
   \begin{spluscode}
     # Conversion of loci to genind - used for many analysis
@@ -764,6 +767,10 @@ Coordinates can be in any projection or scale -- according to aim\\
     # See result
     hauss.genind$other$xy
     hauss.genind
+    # Conversion to genpop - for population-level analysis
+    hauss.genpop <- genind2genpop(hauss.genind, process.other=TRUE)
+    # See result
+    hauss.genpop
     # Removes missing data - see ?missingno for types of dealing them
     # Use with caution! It modifies original data!
     hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1,
@@ -773,10 +780,6 @@ Coordinates can be in any projection or scale -- according to aim\\
     # Writes loci file to the disk
     write.loci(hauss.loci.cor, file="hauss.loci.cor.txt",
       loci.sep="\t", allele.sep="/")
-    # Conversion to genpop - for population-level analysis
-    hauss.genpop <- genind2genpop(hauss.genind, process.other=TRUE)
-    # See result
-    hauss.genpop
   \end{spluscode}
 \end{frame}
 
@@ -784,13 +787,13 @@ Coordinates can be in any projection or scale -- according to aim\\
   \begin{spluscode}
     read.genalex() # poppr - reads *.csv file
     read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
-    read.genetix() # adegenet - reads *.gtx files, only haploid/diploid data
-    read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
-    read.structure() # adegenet - reads *.str files, only haploids/diploids
+    read.genetix() # adegenet - reads *.gtx files, only ha/diploid data
+    read.genepop() # adegenet - reads *.gen files, only ha/diploid data
+    read.structure() # adegenet - reads *.str files, only ha/diploids
     import2genind() # adegenet - more automated version of above functions
   \end{spluscode}
 \begin{block}{One function rules them all\ldots}
-  All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \texttt{read.table()}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
+  All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
 \end{block}
 \end{frame}
 
@@ -799,7 +802,7 @@ Coordinates can be in any projection or scale -- according to aim\\
  \item \texttt{adegent}, \texttt{poppr} and related packages can for most of functions handle any ploidy level (including mixing of ploidy levels, but not for all analysis)
  \item \texttt{polysat} package can handle mixed ploidy levels for microsatellites, but range of methods is limited
 \end{itemize}
-As for AFLP, we need two files: the data matrix and individual's populations (it can be combined in one files -- next slide)\\
+As for AFLP, we need two files: the data matrix and individual's populations (it can be combined in one file -- next slide)\\
 \textbf{Triploid microsatellite data:}
   \begin{spluscode}
            msat58      msat31      msat78      msat61      ...
@@ -838,7 +841,7 @@ As for AFLP, we need two files: the data matrix and individual's populations (it
 \subsection{AFLP}
 
 \begin{frame}[fragile]{Import of AFLP data -- background}
-Source data (two files - AFLP data with individual names and populations)
+Source data (two files -- AFLP data with individual names and populations)
 \begin{multicols}{2}
 \textbf{AFLP or any other presence/absence data:}
   \begin{spluscode}
@@ -921,7 +924,7 @@ Source data (two files - AFLP data with individual names and populations)
  \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()}
  \item Do not use underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, letters or dots
  \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
- \item Genind object (since Adegenet 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
+ \item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
 \end{itemize}
 \end{frame}
 
@@ -959,7 +962,7 @@ Source data (two files - AFLP data with individual names and populations)
     usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.
       r-project.org/files/usflu.fasta", seqtype="DNA")
     class(usflu.dna3)
-    length(usfl.dna3) # How many sequences we have in the list
+    length(usflu.dna3) # How many sequences we have in the list
     usflu.dna3
     # Convert into DNAbin class (technically, DNAbin is a list)
     class(usflu.dna3) <- "DNAbin"
@@ -1066,7 +1069,7 @@ Source data (two files - AFLP data with individual names and populations)
     ape::base.freq(x=meles.dna)
     # GC content
     ape::GC.content(x=meles.dna)
-    # umber of times dimer/trimer/etc oligomers occur in a sequence
+    # Number of times any dimer/trimer/etc oligomers occur in a sequence
     seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
     # View sequences - all must be of the same length
     image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
@@ -1533,8 +1536,8 @@ Rationale of this approach is to save resources when dividing whole data set int
     plot(hclust(d=hauss.dist.
       bruvo, method="complete"))
   \end{spluscode}
-  \vfill
-  This is very basic function to make dendrogram. There are better possibilities (NJ etc -- see further).
+  \vfil
+  This is very basic function to make dendrogram. There are better possibilities (NJ etc -- see slide \ref{NJ} and onward).
 \end{multicols}
 \end{frame}
 
@@ -1610,6 +1613,7 @@ All points in the right graph should be clustered along the red line\ldots
 \subsection{NJ (and UPGMA) tree}
 
 \begin{frame}[fragile]{Calculate and test NJ tree}
+  \label{NJ}
   \begin{spluscode}
     # Calculates the tree (try with various distances)
     hauss.nj <- nj(hauss.dist)
@@ -2872,7 +2876,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # Prepare special new empty directory and set working directory
     setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
     install.packages("ParallelStructure",
-      repos="http://R-Forge.R-project.org") # Install the package
+      repos="https://r-forge.r-project.org") # Install the package
     library(ParallelStructure) # Load the library
     # See Structure manual and function's documentation
     # It takes more or less same parameter as normal Structure

@@ -58,7 +58,7 @@ getClassDef("genind") # Or select any other class name
 ## Packages and repositories
 # Set repositories
 #  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (3.3 in this case).
-options(repos=c("http://cran.at.r-project.org", "http://r-forge.r-project.org/", "http://www.rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/extra"))
+options(repos=c("http://cran.at.r-project.org", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
@@ -83,7 +83,7 @@ install.pacakges(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
 
 # Installation from custom repository
-install.packages("ParallelStructure", repos="http://R-Forge.R-project.org")
+install.packages("ParallelStructure", repos="https://r-forge.r-project.org")
 ?install.packages # See help for details
 
 ## Bioconductor
@@ -204,7 +204,7 @@ usflu.dna
 # Another possibility (only for FASTA alignments, same result):
 usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
 # Check the object
-class(usflu.dna)
+class(usflu.dna2)
 usflu.dna2
 as.character(usflu.dna2)[1:5,1:10]
 dim(usflu.dna2) # Does it have correct size?
@@ -216,7 +216,7 @@ usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
 # read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)
 usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
 class(usflu.dna3)
-length(usfl.dna3) # How many sequences we have in the list
+length(usflu.dna3) # How many sequences we have in the list
 usflu.dna3
 # Convert into DNAbin class (technically, DNAbin is a list)
 class(usflu.dna3) <- "DNAbin"
@@ -279,7 +279,7 @@ pegas::nuc.div(x=meles.dna)
 ape::base.freq(x=meles.dna)
 # GC content
 ape::GC.content(x=meles.dna)
-# umber of times dimer/trimer/etc oligomers occur in a sequence
+# Number of times any dimer/trimer/etc oligomers occur in a sequence
 seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
 # View sequences - all must be of the same length
 image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
@@ -312,7 +312,7 @@ abline(0, 1, col="red")
 # T-test of difference between observed and expected heterozygosity - strongly significant
 t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=TRUE)
 # Bartlett's K-squared of difference between observed and expected heterozygosity - not significant
-bartlett.test(list(hauss.summ$Hexp,hauss.summ$Hobs))
+bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
 # Create pane with some information
 par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
 # Plot alleles number vs. population sizes
