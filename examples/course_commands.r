@@ -57,8 +57,8 @@ getClassDef("genind") # Or select any other class name
 
 ## Packages and repositories
 # Set repositories
-#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (3.3 in this case).
-options(repos=c("http://cran.at.r-project.org", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/extra"))
+#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3).
+options(repos=c("https://cran.wu.ac.at", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
@@ -432,6 +432,7 @@ hauss.dist.nei
 hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
 hauss.dist.diss
 
+
 # Import custom distance matrix
 MyDistance <- read.csv("distances.txt", header=TRUE, sep="\t", dec=".", row.names=1)
 MyDistance <- as.dist(MyDistance)
@@ -442,6 +443,37 @@ MyDistance
 MyDistance <- cailliez(MyDistance, print=TRUE, tol = 1e-10, cor.zero=TRUE)
 is.euclid(MyDistance, plot=TRUE, print=TRUE, tol = 1e-10)
 MyDistance
+
+vignette("algo", package = "poppr")
+
+Table: Distance measures and their respective assumptions
+Method Function Assumption Euclidean Citation
+Prevosti prevosti.dist - No (Prevosti et al., 1975)
+diss.dist
+Nei nei.dist Infinite Alleles No (Nei, 1972, 1978)
+Genetic Drift
+Edwards edwards.dist Genetic Drift Yes (Edwards, 1971)
+Reynolds reynolds.dist Genetic Drift Yes (Reynolds et al., 1983)
+Rogers rogers.dist - Yes (Rogers, 1972)
+Bruvo bruvo.dist Stepwise Mutation No (Bruvo et al., 2004)
+
+
+distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
+dists <- lapply(distances, function(x){
+  DISTFUN <- match.fun(paste(tolower(x), "dist", sep = "."))
+  DISTFUN(hauss.genind.cor)
+  })
+names(dists) <- distances
+dists$Bruvo <- hauss.dist.bruvo
+dists
+par(mfrow = c(2, 3))
+x <- lapply(names(dists), function(x){
+  plot(njs(dists[[x]]), main = x, type = "unrooted")
+  add.scale.bar(lcol = "red", length = 0.1)
+  })
+
+
+
 
 # DNA distances - there are various models available
 ?dist.dna
@@ -1034,7 +1066,7 @@ library(ParallelStructure)
 # See manual for the R package and Structure http://pritchardlab.stanford.edu/structure.html
 ?parallel_structure
 # Run Structure
-parallel_structure(joblist="joblist.txt", n_cpu=7, structure_path="~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47, numloci=12, plot_output=1, label=1, popdata=1, popflag=1, phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0, extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1, printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0, linkage=0, locprior=0, inferalpha=1)
+parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path="~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47, numloci=12, plot_output=1, label=1, popdata=1, popflag=1, phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0, extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1, printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0, linkage=0, locprior=0, inferalpha=1)
 
 # When running on Windows, parallel support may be missing - install Rmpi library required by ParallelStructure for parallelisation on Windows
 install.packages("Rmpi")
@@ -1171,7 +1203,7 @@ plot.phylo(hauss.nj.ladderized)
 # Root the tree
 plot.phylo(hauss.nj)
 print.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, outgroup=10)
+hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it soemtimes doesn't work)
 print.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj.rooted)
 # Root the tree interactive
@@ -1661,6 +1693,8 @@ MyFunction <- function (x, y) {
 MyFunction(5, 8)
 MyFunction(1, 4)
 MyFunction(x=4, y=7)
+MF <- MyFunction(9, 15)
+MF # See it works
 
 ################################################################################
 

@@ -66,13 +66,13 @@
 % Inline source code
 \newmint{splus}{fontsize=\footnotesize, bgcolor=Beige}
 
-% Ttile page
+% Title page
 \author{Vojtěch Zeisek}
 \institute[\url{https://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University in Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\url{https://trapa.cz/}, \href{mailto:zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
-\date{November 23 to 25, 2016}
+\date{January 18 to 20, 2017}
 
 % Default language
 \usepackage{polyglossia}
@@ -90,20 +90,20 @@
 
 \section{Introduction}
 
-% \begin{frame}{The course information}
-%   \begin{itemize}
-%     \item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2016}
-%     \begin{itemize}
-%       \item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2016}
-%     \end{itemize}
-%     \item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
-%     \begin{itemize}
-%       \item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
-%       \item For students having subscribed the subject, active participation and presence whole course is required
-%     \end{itemize}
-%     \item Working version is available at \url{https://github.com/V-Z/course-r-mol-data} -- feel free to contribute, request new parts or report bugs
-%   \end{itemize}
-% \end{frame}
+\begin{frame}{The course information}
+  \begin{itemize}
+    \item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2017}
+    \begin{itemize}
+      \item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2017}
+    \end{itemize}
+    \item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
+    \begin{itemize}
+      \item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
+      \item For students having subscribed the subject, active participation and presence whole course is required
+    \end{itemize}
+    \item Working version is available at \url{https://github.com/V-Z/course-r-mol-data} -- feel free to contribute, request new parts or report bugs
+  \end{itemize}
+\end{frame}
 
 \begin{frame}{Materials to help you\ldots}
 \begin{itemize}
@@ -113,7 +113,8 @@
  \begin{itemize}
   \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
   \item The best is to open the script in e.g. RStudio or any other R GUI (see further) and directly work with it
-  \item \alert{Downloaded file must have sufix \texttt{*.r}, not \texttt{*txt}}
+  \item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*txt}}
+  \item \alert{Never ever} open R script in software like MS~Word -- it destroys quotation marks and other things making script unusable
  \end{itemize}
 \end{itemize}
 \end{frame}
@@ -203,7 +204,7 @@
  \item R, and usually also GUI, is available in repositories -- use standard package management according to distribution
  \item Linux repositories provide automatic updates
  \item Packages are also partially available in repositories and can be installed and updated as usual application or from R
- \item Packages commonly have to be compiled -- R will do it automatically, but install basic Linux packages for building
+ \item Packages commonly have to be compiled -- R will do it automatically, but install basic Linux packages for building of C, C++, Fortran,~\ldots
  \item Compilation takes longer time and there are sometimes issues with missing dependencies (tools required by particular packages), but it can then provide higher performance\ldots
 \end{itemize}
 \end{frame}
@@ -213,18 +214,18 @@
  \item Install package \texttt{build-essential}
  \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
  \item Ubuntu (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/ubuntu/}
- \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{r.adu.org.za}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/}
+ \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://cran.wu.ac.at/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- openSUSE}
 \begin{itemize}
  \item See instructions at \url{https://cran.r-project.org/bin/linux/suse/}
- \item Add repositories for appropriate version of your distribution
+ \item Add repository/ies for appropriate version of your distribution
  \begin{itemize}
   \begin{footnotesize}
-    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/patched/}
-    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/released/}
+    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/patched/} (daily updated) or/and
+    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/released/} (updated with new R release)
   \end{footnotesize}
  \end{itemize}
  \item Install packages \texttt{R-base} (the R) and \texttt{rstudio} and/or \texttt{rkward}
@@ -320,9 +321,15 @@
 \begin{itemize}
  \item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
  \item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac OS~X)
- \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \underline{.Rhistory}) file(s) and it/they can be loaded next time
+ \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time
  \item RStudio and RKWard help with this very much
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Importance of working directory}
+  \begin{itemize}
+    \item 
+  \end{itemize}
 \end{frame}
 
 \subsection{Basic operations in R}
@@ -503,15 +510,15 @@ There are information about slots within that classes you can access.
     # Basic package installation
     install.packages("PackageName") # Case sensitive!
     ?install.packages # Shows all available parameters (options)
-    # We will need extra repositories. For Bioconductor keep same version
-    # as is version of your R installation (3.3 in this case).
-    options(repos=c("http://cran.at.r-project.org",
-      "https://r-forge.r-project.org/", "https:/rforge.net/",
-      "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc",
-      "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/
-      annotation", "https://bioconductor.statistik.tu-dortmund.de/
-      packages/3.3/data/experiment",
-      "https://bioconductor.statistik.tu-dortmund.de/packages/3.3/extra"))
+    # We will need extra repositories. For Bioconductor keep version for
+    # your R version (BioC 3.4 for R 3.4, see https://bioconductor.org).
+    options(repos=c("https://cran.wu.ac.at", "https:/rforge.net/",
+      "https://r-forge.r-project.org/", "https://bioconductor.
+      statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.
+      statistik.tu-dortmund.de/packages/3.4/data/annotation", 
+      "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/
+      experiment", "https://bioconductor.statistik.tu-dortmund.de/
+      packages/3.4/extra"))
     getOption("repos") # Shows actual repositories
     options() # Generic function to modify various settings
     ?options # Gives details
@@ -670,9 +677,15 @@ There are information about slots within that classes you can access.
   \end{block}
 \end{frame}
 
+\begin{frame}{Brief overview of molecular data types}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Notes about paths to import the data}
 \begin{itemize}
- \item Generally, R can accept any local or web location
+ \item Generally, R can accept nearly any local or web location
  \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}
  \item Local paths (within one computer) can be absolute or relative
  \begin{itemize}
@@ -1182,7 +1195,7 @@ Source data (two files -- AFLP data with individual names and populations)
 It returns various population statistics. \texttt{png()} will produce set of figures for each population. You can similarly use \texttt{svg()}, \texttt{pdf()}, \ldots
   \begin{spluscode}
     png(filename="poppr_%03d.png", width=720, height=720, bg="white")
-      # Output figures will be saved to the disk
+      # Output figure(s) will be saved to the disk
     poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4,
       missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE,
       hist=TRUE, minsamp=1, legend=TRUE)
@@ -1192,23 +1205,29 @@ It returns various population statistics. \texttt{png()} will produce set of fig
   \begin{tiny}
     \begin{multicols}{2}
       \begin{itemize}
-	\item Pop -- Population name (Note that ``Total'' also means ``Pooled'')
-	\item N -- Number of individuals observed
-	\item MLG -- Number of multilocus genotypes (MLG) observed
-	\item eMLG -- The number of expected MLG at the smallest sample size $\geq$ 10 based on rarefaction
-	\item SE -- Standard error based on eMLG
-	\item H -- Shannon-Wiener Index of MLG diversity
-	\item G -- Stoddart and Taylor's Index of MLG diversity
-	\item Hexp -- Nei's 1978 genotypic diversity (corrected for sample size), or Expected Heterozygosity
-	\item E.5 -- Evenness, E5
-	\item Ia -- The index of association, IA
-	\item rbarD -- The standardized index of association
+	\item Pop -- A vector indicating the population factor
+	\item N -- An integer vector indicating the number of individuals/isolates in the specified population
+	\item MLG -- An integer vector indicating the number of multilocus genotypes found in the specified population (see ?mlg)
+	\item eMLG -- The expected number of MLG at the lowest common sample size (set by the parameter minsamp)
+	\item SE -- The standard error for the rarefaction analysis
+	\item H -- Shannon-Weiner Diversity index
+	\item G -- Stoddard and Taylor's Index
+	\item lambda -- Simpson's index
+	\item E.5 -- Evenness
+	\item Hexp -- Nei's gene diversity (expected heterozygosity)
+	\item Ia -- A numeric vector giving the value of the Index of Association for each population factor (see ?ia)
+	\item p.Ia -- A numeric vector indicating the p-value for Ia from the number of reshuffling indicated in sample (lowest value is 1/n where n is the number of observed values)
+	\item rbarD -- A numeric vector giving the value of the Standardized Index of Association for each population factor (see ?ia)
+	\item p.rD -- A numeric vector indicating the p-value for rbarD from the number of reshuffles indicated in sample (lowest value is 1/n where n is the number of observed values)
 	\item See \href{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation}{poppr's manual} for details
 	\item The outputs are as table in R console and images saved to disk
       \end{itemize}
     \end{multicols}
   \end{tiny}
 \end{frame}
+
+
+
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
   \begin{spluscode}
@@ -1425,6 +1444,36 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
   \end{spluscode}
 \end{multicols}
 \end{frame}
+
+
+% vignette("algo", package = "poppr")
+% 
+% Table: Distance measures and their respective assumptions
+% Method Function Assumption Euclidean Citation
+% Prevosti prevosti.dist - No (Prevosti et al., 1975)
+% diss.dist
+% Nei nei.dist Infinite Alleles No (Nei, 1972, 1978)
+% Genetic Drift
+% Edwards edwards.dist Genetic Drift Yes (Edwards, 1971)
+% Reynolds reynolds.dist Genetic Drift Yes (Reynolds et al., 1983)
+% Rogers rogers.dist - Yes (Rogers, 1972)
+% Bruvo bruvo.dist Stepwise Mutation No (Bruvo et al., 2004)
+% 
+% 
+% distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
+% dists <- lapply(distances, function(x){
+%   DISTFUN <- match.fun(paste(tolower(x), "dist", sep = "."))
+%   DISTFUN(hauss.genind.cor)
+%   })
+% names(dists) <- distances
+% dists[["Bruvo"]] <- hauss.dist.bruvo
+% dists
+% par(mfrow = c(2, 3))
+% x <- lapply(names(dists), function(x){
+%   plot(njs(dists[[x]]), main = x, type = "unrooted")
+%   add.scale.bar(lcol = "red", length = 0.1)
+%   })
+
 
 \begin{frame}[fragile]{Distances among DNA sequences}
 \alert{The sequences must be aligned before calculating distances among them!}
@@ -1654,16 +1703,15 @@ All points in the right graph should be clustered along the red line\ldots
     plot.phylo(x=hauss.nj, type="unrooted", main="Neighbour-Joining tree")
     # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
     nodelabels(text=round(hauss.boot/10))
+    ?boot.phylo # See details
     # Another possibility
+    hauss.aboot <- aboot(x=hauss.genind, tree="nj", distance=nei.dist,
+      sample=100) # Bootstrap values are in slot node.label
+    # Plot the tree, explicitly display node labels
+    plot.phylo(x=hauss.aboot, show.node.label=TRUE)
     ?aboot # Package poppr
-    ?boot.phylo
   \end{spluscode}
 \end{frame}
-%     hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist,
-%       sample=100) # Bootstrap values are in slot node.label
-%     # Plot the tree, explicitly display node labels
-%     plot.phylo(x=hauss.aboot, show.node.label=TRUE)
-%     # See details...
 
 \begin{frame}[fragile]{Nicer trees}
   \begin{footnotesize}
@@ -2482,7 +2530,7 @@ All points in the right graph should be clustered along the red line\ldots
 \begin{frame}{Plot of Mantel Correlogram Analysis}
   \includegraphics[width=\textwidth]{mantel-cor.png}
 
-  Correlation (genetic similarity) in several distance classes (positive in short distance, negative in long) -- see \texttt{?mantel.correlog} for details of settings of distance classes
+  Correlation (genetic similarity) in several distance classes (positive [up] in short distance [left], negative [down] in long [right]; [full] -- significant, [empty] -- not significant) -- see \texttt{?mantel.correlog} for details of settings of distance classes
 \end{frame}
 
 \subsection{Geneland}
@@ -2870,7 +2918,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
  \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
  \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
  \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
- \item Authors recommend to run it without GUI and not on Windows
+ \item Authors recommend to run it without GUI and not on Windows\ldots
 \end{itemize}
   \begin{spluscode}
     # Prepare special new empty directory and set working directory
@@ -2897,7 +2945,7 @@ Within working ``structure'' directory you need
     \item Number of steps (in practice use much higher number than for the example -- also for length of burnin chain)
     \item Columns are separated by spaces (or TABs)
   \end{itemize}
- \item Data input file
+ \item Data input file (see Structure manual)
   \begin{itemize}
     \item Make it as simple as possible -- remove all unneeded columns
     \item For population names use subsequent numbers from 1~to number of populations
@@ -2928,7 +2976,7 @@ Within working ``structure'' directory you need
 
 \begin{frame}[fragile]{Running ParallelStructure}
   \begin{spluscode}
-    parallel_structure(joblist="joblist.txt", n_cpu=7, structure_path=
+    parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path=
       "~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47,
       numloci=12, plot_output=1, label=1, popdata=1, popflag=1,
       phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0,
@@ -2955,7 +3003,7 @@ Within working ``structure'' directory you need
 \end{itemize}
   \begin{spluscode}
     # Install Rmpi library required by ParallelStructure for
-    # parallelisation on Windows
+    # parallelisation on Windows (installation can be very problematic)
     install.packages("Rmpi")
     library(Rmpi)
     # Instead of parallel_structure() use MPI_structure()
@@ -3199,17 +3247,17 @@ Within working ``structure'' directory you need
     # Root the tree
     plot.phylo(hauss.nj)
     print.phylo(hauss.nj)
-    hauss.nj.rooted <- root(phy=hauss.nj, outgroup=10)
+    # resolve.root=TRUE ensures root will be bifurcating
+    # (without this parameter it soemtimes doesn't work)
+    hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10)
     print.phylo(hauss.nj.rooted)
     plot.phylo(hauss.nj.rooted)
     # Root the tree interactive
     plot.phylo(hauss.nj)
     hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
     plot.phylo(hauss.nj.rooted)
-    # unroot the tree
-    unroot()
-    # Check if it is rooted
-    is.rooted()
+    unroot() # unroot the tree
+    # Check if it is rooted is.rooted()
   \end{spluscode}
 \end{frame}
 
@@ -4270,7 +4318,7 @@ Within working ``structure'' directory you need
 
 \begin{frame}[fragile]{Simple function}
   \begin{itemize}
-    \item Functions pack sets of commands
+    \item Functions pack sets of commands for more comfortable repeated usage
     \item People more interested in R programming need to check special courses and/or \href{https://cran.r-project.org/manuals.html}{documentation}
   \end{itemize}
   \begin{spluscode}
@@ -4283,6 +4331,8 @@ Within working ``structure'' directory you need
     MyFunction(5, 8)
     MyFunction(1, 4)
     MyFunction(x=4, y=7)
+    MF <- MyFunction(9, 15)
+    MF # See it works
   \end{spluscode}
 \end{frame}
 
