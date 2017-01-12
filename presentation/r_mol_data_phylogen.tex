@@ -34,12 +34,12 @@
 
 % Basic packages
 \usepackage{xltxtra} % Loads following 4 packages for processing with XeLaTeX
-% \usepackage{fixltx2e} % fixltx2e is not required with released after 2015 (fixltx2e), all files are now in the LaTeX kernel
+% \usepackage{fixltx2e} % fixltx2e is not required with released after 2015, all files are now in the LaTeX kernel
 \usepackage{metalogo}
 \usepackage{xunicode}
 \usepackage{fontspec}
 
-% Othe packages
+% Other packages
 \usepackage{multicol}
 
 % In-line higlighting
@@ -68,7 +68,7 @@
 
 % Title page
 \author{Vojtěch Zeisek}
-\institute[\url{https://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University in Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\url{https://trapa.cz/}, \href{mailto:zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
+\institute[\url{https://trapa.cz/}]{Department of Botany, Faculty of Science, Charles University, Prague\\Institute of Botany, Czech Academy of Sciences, Průhonice\\\url{https://trapa.cz/}, \href{mailto:zeisek@natur.cuni.cz}{zeisek@natur.cuni.cz}}
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
@@ -107,9 +107,9 @@
 
 \begin{frame}{Materials to help you\ldots}
 \begin{itemize}
- \item Download the presentation from \url{https://trapa.cz/sites/default/rcourse/r_mol_data_phylogen.pdf}
- \item Follow all code we will use at \url{https://trapa.cz/sites/default/rcourse/course_commands.html}
- \item Download the script from \url{https://trapa.cz/sites/default/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
+ \item Download the presentation from \url{https://soubory.trapa.cz/rcourse/r_mol_data_phylogen.pdf}
+ \item Follow all code we will use at \url{https://soubory.trapa.cz/rcourse/course_commands.html}
+ \item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
  \begin{itemize}
   \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
   \item The best is to open the script in e.g. RStudio or any other R GUI (see further) and directly work with it
@@ -209,7 +209,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Linux -- Debian/Ubuntu}
+\begin{frame}{Linux -- Debian/Ubuntu and derivatives like Linux Mint or Kali Linux}
 \begin{itemize}
  \item Install package \texttt{build-essential}
  \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
@@ -218,7 +218,7 @@
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Linux -- openSUSE}
+\begin{frame}{Linux -- openSUSE and SUSE Linux Enterprise}
 \begin{itemize}
  \item See instructions at \url{https://cran.r-project.org/bin/linux/suse/}
  \item Add repository/ies for appropriate version of your distribution
@@ -230,6 +230,13 @@
  \end{itemize}
  \item Install packages \texttt{R-base} (the R) and \texttt{rstudio} and/or \texttt{rkward}
  \item Install package \texttt{patterns-openSUSE-devel\_basis} for compilation of R packages when installing them from R (only some R packages are available in repositories)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Linux -- RedHat, Fedora and derivatives like CENTOS, Scientific Linux, etc.}
+\begin{itemize}
+ \item See instructions at \url{https://cran.r-project.org/bin/linux/redhat/README}
+ \item Install packages \texttt{R-core}, \texttt{R-core-devel} and \texttt{rkward}
 \end{itemize}
 \end{frame}
 
@@ -267,7 +274,7 @@
  \item General look of R commands:
  \item \splus/function(argument1="SomeName", argument2=SomeVariable, argument3=8)/
  \item \splus/ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)/
- \item Object with data is on the left: ``\texttt{<-}'' says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
+ \item New/modified object (with data,~\ldots) is on the left: ``\texttt{<-}'' says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
  \item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
  \item Arguments are named -- if you keep order, no need to name them:
  \item \splus/SomeFunction(MyData, TRUE, 123, "SomeName")/
@@ -328,7 +335,15 @@
 
 \begin{frame}{Importance of working directory}
   \begin{itemize}
-    \item 
+    \item Default place to load/save, import/export data/results
+    \begin{itemize}
+      \item It changes paths -- one of the most common mistakes -- something is not found because of wrong path
+      \item Private folder for particular R project (task) prevents unwanted inferences with another tools/projects
+    \end{itemize}
+    \item Without saving and loading the R data next time, it is not possible to do any longer work or to check the work in the future
+    \item Get used that R \textbf{always} work in some directory and by default saves/loads files there
+    \item RStudio and RKWard also save session information (list of opened files,~\ldots) -- very convenient
+    \item Regularly save your work to prevent looses in case of crash or any other accident
   \end{itemize}
 \end{frame}
 
@@ -389,59 +404,59 @@ There are information about slots within that classes you can access.
 \begin{frame}{Conversions among data types I}
   \begin{tabular}{llll}
     \textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
-    phylo & phylo4 & as(x, "phylo4") & phylobase\\
-    phylo & matching & as.matching(x) & ape\\
-    phylo & treeshape & as.treeshape(x) & apTreeshape\\
-    phylo & hclust & as.hclust(x) & ape\\
-    phylo & prop.part & prop.part(x) & ape\\
-    phylo & splits & as.splits(x) & phangorn\\
-    phylo & evonet & evonet(x, from, to) & ape\\
-    phylo & network & as.network(x) & ape\\
-    phylo & igraph & as.igraph(x) & ape\\
-    phylo4 & phylo & as(x, "phylo") & phylobase\\
-    matching & phylo & as.phylo(x) & ape\\
-    treeshape & phylo & as.phylo(x) & apTreeshape\\
-    splits & phylo & as.phylo(x) & phangorn
+    phylo & phylo4 & \texttt{as(x, "phylo4")} & phylobase\\
+    phylo & matching & \texttt{as.matching(x)} & ape\\
+    phylo & treeshape & \texttt{as.treeshape(x)} & apTreeshape\\
+    phylo & hclust & \texttt{as.hclust(x)} & ape\\
+    phylo & prop.part & \texttt{prop.part(x)} & ape\\
+    phylo & splits & \texttt{as.splits(x)} & phangorn\\
+    phylo & evonet & \texttt{evonet(x, from, to)} & ape\\
+    phylo & network & \texttt{as.network(x)} & ape\\
+    phylo & igraph & \texttt{as.igraph(x)} & ape\\
+    phylo4 & phylo & \texttt{as(x, "phylo")} & phylobase\\
+    matching & phylo & \texttt{as.phylo(x)} & ape\\
+    treeshape & phylo & \texttt{as.phylo(x)} & apTreeshape\\
+    splits & phylo & \texttt{as.phylo(x)} & phangorn
   \end{tabular}
 \end{frame}
 
 \begin{frame}{Conversions among data types II}
   \begin{tabular}{llll}
     \textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
-    splits & networx & as.networx(x) & phangorn\\
-    evonet & phylo & as.phylo(x) & ape\\
-    evonet & networx & as.networx(x) & ape\\
-    evonet & network & as.network(x) & ape\\
-    evonet & igraph & as.igraph(x) & ape\\
-    haploNet & network & as.network(x) & pegas\\
-    haploNet & igraph & as.igraph(x) & pegas\\
-    hclust & phylo & as.phylo(x) & ape\\
-    hclust & dendrogram & as.dendrogram(x) & stats\\
-    DNAbin & character & as.character(x) & ape\\
-    DNAbin & alignment & as.alignment(x) & ape\\
-    DNAbin & phyDat & as.phyDat(x) & phangorn\\
-    DNAbin & genind & DNAbin2genind(x) & adegenet\\
-    character & DNAbin & as.DNAbin(x) & ape
+    splits & networx & \texttt{as.networx(x)} & phangorn\\
+    evonet & phylo & \texttt{as.phylo(x)} & ape\\
+    evonet & networx & \texttt{as.networx(x)} & ape\\
+    evonet & network & \texttt{as.network(x)} & ape\\
+    evonet & igraph & \texttt{as.igraph(x)} & ape\\
+    haploNet & network & \texttt{as.network(x)} & pegas\\
+    haploNet & igraph & \texttt{as.igraph(x)} & pegas\\
+    hclust & phylo & \texttt{as.phylo(x)} & ape\\
+    hclust & dendrogram & \texttt{as.dendrogram(x)} & stats\\
+    DNAbin & character & \texttt{as.character(x)} & ape\\
+    DNAbin & alignment & \texttt{as.alignment(x)} & ape\\
+    DNAbin & phyDat & \texttt{as.phyDat(x)} & phangorn\\
+    DNAbin & genind & \texttt{DNAbin2genind(x)} & adegenet\\
+    character & DNAbin & \texttt{as.DNAbin(x)} & ape
   \end{tabular}
 \end{frame}
 
 \begin{frame}{Conversions among data types III}
   \begin{tabular}{llll}
     \textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
-    character & loci & as.loci(x) & pegas\\
-    alignment & DNAbin & as.DNAbin(x) & ape\\
-    alignment & phyDat & as.phyDat(x) & phangorn\\
-    alignment & character & as.matrix(x) & seqinr\\
-    alignment & genind & alignment2genind(x) & adegenet\\
-    phyDat & DNAbin & as.DNAbin(x) & phangorn\\
-    phyDat & character & as.character(x) & phangorn\\
-    loci & genind & loci2genind(x) & pegas\\
-    loci & data frame & class(x) <- "data.frame" & --- \\
-    genind & loci & genind2loci(x) & pegas\\
-    data frame & phyDat & as.phyDat(x) & phangorn\\
-    data frame & loci & as.loci(x) & pegas\\
-    data frame & genind & df2genind(x) & adegenet\\
-    matrix & phyDat & as.phyDat(x) & phangorn
+    character & loci & \texttt{as.loci(x)} & pegas\\
+    alignment & DNAbin & \texttt{as.DNAbin(x)} & ape\\
+    alignment & phyDat & \texttt{as.phyDat(x)} & phangorn\\
+    alignment & character & \texttt{as.matrix(x)} & seqinr\\
+    alignment & genind & \texttt{alignment2genind(x)} & adegenet\\
+    phyDat & DNAbin & \texttt{as.DNAbin(x)} & phangorn\\
+    phyDat & character & \texttt{as.character(x)} & phangorn\\
+    loci & genind & \texttt{loci2genind(x)} & pegas\\
+    loci & data frame & \texttt{class(x) <- "data.frame"} & --- \\
+    genind & loci & \texttt{genind2loci(x)} & pegas\\
+    data frame & phyDat & \texttt{as.phyDat(x)} & phangorn\\
+    data frame & loci & \texttt{as.loci(x)} & pegas\\
+    data frame & genind & \texttt{df2genind(x)} & adegenet\\
+    matrix & phyDat & \texttt{as.phyDat(x)} & phangorn
   \end{tabular}
 \end{frame}
 
@@ -512,7 +527,7 @@ There are information about slots within that classes you can access.
     ?install.packages # Shows all available parameters (options)
     # We will need extra repositories. For Bioconductor keep version for
     # your R version (BioC 3.4 for R 3.4, see https://bioconductor.org).
-    options(repos=c("https://cran.wu.ac.at", "https:/rforge.net/",
+    options(repos=c("https://cran.wu.ac.at/", "https:/rforge.net/",
       "https://r-forge.r-project.org/", "https://bioconductor.
       statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.
       statistik.tu-dortmund.de/packages/3.4/data/annotation", 
@@ -663,7 +678,7 @@ There are information about slots within that classes you can access.
 
 \section{Data}
 
-\begin{frame}{Our data\ldots}
+\begin{frame}[allowframebreaks]{Our data\ldots}
   \begin{itemize}
     \item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
     \begin{itemize}
@@ -679,7 +694,27 @@ There are information about slots within that classes you can access.
 
 \begin{frame}{Brief overview of molecular data types}
   \begin{itemize}
-    \item 
+    \item Fragmentation data -- length polymorphism
+    \begin{itemize}
+      \item Codominant data -- e.g. microsatellites (SSRs)
+      \begin{itemize}
+	\item Variability in number of short (usually 1-3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 50-250 repeats)
+	\item Very variable, fast evolving
+	\item Mainly for population genetics, relationships among closely related species
+      \end{itemize}
+      \item Presence/absence data -- AFLP, RFLP,~\ldots
+      \begin{itemize}
+	\item The allele is or is not presented  -- it is impossible to distinguish heterozygots from dominant homozygots
+	\item AFLP is very variable, but nowadays bit expensive and outdated
+      \end{itemize}
+    \end{itemize}
+    \item Nucleic acid sequences (in nearly any form)
+    \begin{itemize}
+      \item Protein or DNA/RNA
+      \item From ``classical'' Sanger sequencing -- long individual reads
+      \item From modern HTS (NGS) -- 454 pyrosequencing, Illumina,~\ldots
+      \item Whole sequences or SNPs (Single Nucleotide Polymorphism -- only polymorphic sites are retained
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -732,7 +767,7 @@ There are information about slots within that classes you can access.
 \textbf{Loading the data:}
   \begin{spluscode}
     # Load training data (Taraxacum haussknechtii from Macedonia)
-    hauss.loci <- read.loci(file="https://trapa.cz/sites/default/rcourse/
+    hauss.loci <- read.loci(file="https://soubory.trapa.cz/rcourse/
       haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/",
       col.pop=2, col.loci=3:14, row.names=1) # \t means TAB key
     # Data control
@@ -763,7 +798,7 @@ Coordinates can be in any projection or scale -- according to aim\\
   \hrule
   \begin{spluscode}
     # Read coordinates
-    hauss.coord <- read.csv("https://trapa.cz/sites/default/rcourse/
+    hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/
       haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="",
       dec=".", row.names=1)
     hauss.coord
@@ -832,7 +867,7 @@ As for AFLP, we need two files: the data matrix and individual's populations (it
 \begin{frame}[fragile]{How to import polyploid microsatellites}
   \begin{spluscode}
     # Import of table is as usual. Last column contains populations
-    tarax3n.table <- read.table("http://trapa.cz/sites/default/rcourse/
+    tarax3n.table <- read.table("http://soubory.trapa.cz/rcourse/
       tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
     # Check the data
     tarax3n.table
@@ -888,13 +923,13 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Import of AFLP data -- the code}
   \begin{spluscode}
-    amara.aflp <- read.table(file="https://trapa.cz/sites/default/rcourse/
+    amara.aflp <- read.table(file="https://soubory.trapa.cz/rcourse/
       amara_aflp.txt", header=TRUE, sep="\t", quote="")
     amara.aflp
     dim(amara.aflp)
     class(amara.aflp) # Must be matrix or data frame
     # Populations - just one column with population names for all inds
-    amara.pop <- read.table(file="https://trapa.cz/sites/default/rcourse/
+    amara.pop <- read.table(file="https://soubory.trapa.cz/rcourse/
       amara_pop.txt", header=TRUE, sep="\t", quote="")
     amara.pop
     # You can use just one file, where populations are in last column and
@@ -1459,20 +1494,29 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 % Rogers rogers.dist - Yes (Rogers, 1972)
 % Bruvo bruvo.dist Stepwise Mutation No (Bruvo et al., 2004)
 % 
-% 
+% # Compare different distance matrices
+% # List of functions to be parsed to respective dist.* function
 % distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
-% dists <- lapply(distances, function(x){
-%   DISTFUN <- match.fun(paste(tolower(x), "dist", sep = "."))
+% # Calculate the distance matrices
+% dists <- lapply(distances, function(x) {
+%   DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
 %   DISTFUN(hauss.genind.cor)
 %   })
+% # Add names for the distance names
 % names(dists) <- distances
+% # Add Bruvo distance
 % dists[["Bruvo"]] <- hauss.dist.bruvo
 % dists
-% par(mfrow = c(2, 3))
-% x <- lapply(names(dists), function(x){
-%   plot(njs(dists[[x]]), main = x, type = "unrooted")
-%   add.scale.bar(lcol = "red", length = 0.1)
+% # Split graphical device into 2 lines, 3 panes each
+% par(mfrow=c(2, 3))
+% # Calculate NJ and plot all trees
+% x <- lapply(names(dists), function(x) {
+%   plot(njs(dists[[x]]), main=x, type="unrooted")
+%   add.scale.bar(lcol="red", length=0.1)
 %   })
+% dev.off() # Close graphical device to reset settings
+% # See details of distance methods in package poppr
+% vignette("algo", package="poppr")
 
 
 \begin{frame}[fragile]{Distances among DNA sequences}
@@ -1776,7 +1820,7 @@ All points in the right graph should be clustered along the red line\ldots
 %     hauss.nj.pop <- nj(hauss.dist.pop)
 %     # Bootstrap - source() loads external scripts
 %     # boot.phylo doesn't work for population trees
-%     source("https://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
+%     source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
 %     hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
 %     # Plot a tree
 %     plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3,
@@ -2589,7 +2633,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # Load data (only haploid or diploid data are supported)
     # only plain table with alleles
     hauss.geneland.data <- read.table(file=
-      "https://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt",
+      "https://soubory.trapa.cz/rcourse/haussknechtii_geneland.txt",
       na.string="-999", header=FALSE, sep="\t")
     dim(hauss.geneland.data)
     hauss.geneland.data
@@ -2812,7 +2856,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 
 \begin{frame}[fragile]{Plotting on SHP files I}
   \begin{scriptsize}
-    Get SHP files from \url{https://trapa.cz/sites/default/rcourse/macedonia.zip}
+    Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip}
   \end{scriptsize}
   \begin{spluscode}
     library(maptools)
@@ -2990,7 +3034,7 @@ Within working ``structure'' directory you need
  \item \texttt{outpath} should aim to \alert{empty} directory
  \item \texttt{plot\_output=1} will produce plots for all runs
  \item Check all other settings according to Structure manual and your needs
- \item Get toy input file \url{https://trapa.cz/sites/default/rcourse/hauss_stru.in} and joblist \url{https://trapa.cz/sites/default/rcourse/joblist.txt}
+ \item Get toy input file \url{https://soubory.trapa.cz/rcourse/hauss_stru.in} and joblist \url{https://soubory.trapa.cz/rcourse/joblist.txt}
 \end{itemize}
 \end{frame}
 
@@ -3024,7 +3068,7 @@ Within working ``structure'' directory you need
  \end{itemize}
  \begin{spluscode}
     # Load the script
-    source("https://trapa.cz/sites/default/rcourse/structure-sum-2011.r")
+    source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
     # Create new directory with result files results_job_*_f and set
     # working directory accordingly
     setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/
@@ -3033,7 +3077,7 @@ Within working ``structure'' directory you need
  \begin{itemize}
   \item When using it, cite \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1471-8286.2006.01380.x/abstract}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net)
   \item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
-  \item Get list K~(example of the joblist below) from \url{https://trapa.cz/sites/default/rcourse/list_k.txt}
+  \item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
  \end{itemize}
   \begin{tabular}{ll}
     2 & results\_job\_S010\_f\\
@@ -3175,7 +3219,7 @@ Within working ``structure'' directory you need
   \begin{spluscode}
     # Read trees in NEWICK format - single or multiple tree(s)
     oxalis.trees <- read.tree
-      ("https://trapa.cz/sites/default/rcourse/oxalis.nwk")
+      ("https://soubory.trapa.cz/rcourse/oxalis.nwk")
     summary(oxalis.trees)
     length(oxalis.trees)
     names(oxalis.trees)
@@ -3800,7 +3844,7 @@ Within working ``structure'' directory you need
   \begin{spluscode}
     # Load MrBayes tree in NEXUS format
     apiaceae.tree <- read.nexus
-      ("https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus")
+      ("https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
     print.phylo(apiaceae.tree) # See it
     plot.phylo(apiaceae.tree) # See it
     # Root the tree
@@ -4276,7 +4320,7 @@ Within working ``structure'' directory you need
 
 \begin{frame}[fragile]{Install package from GitHub}
   \begin{itemize}
-    \item \href{https://github.com/}{GitHub} is probably the most popular platform to host development of open-source projects -- plenty of R packages are there
+    \item \href{https://github.com/}{GitHub} is currently probably the most popular platform to host development of open-source projects -- plenty of R packages are there
     \item \href{https://git-scm.com/}{Git} is version controlling system -- it traces changes among all versions -- absolutely crucial for any software development
     \item Normal stable version of package is installed from repository as usual, but sometimes it can be useful to get latest developmental version (e.g. when it fixes some bug and new release is not available yet)
   \end{itemize}
@@ -4305,16 +4349,46 @@ Within working ``structure'' directory you need
     for (i in 1:5) { print(i) }
     # In every step modify value of variable "X"
     X <- 0
-    for (i in 10:1) { 
+    for (i in 10:1) {
+      print("Loop turn")
       print(i)
       X <- X+i
-      print(X)
+      print(paste("Variable value:", X))
       }
     # Work on each item of a list object
     for (L in 1:length(nothofagus.sequences)) {
       print(length(nothofagus.sequences[[L]])) }
+    # While loop - it is done while condition is valid
+    y=0
+    while (y < 5) { print(y <- y+1) }
   \end{spluscode}
 \end{frame}
+
+% ## If-else branching
+% XX <- seq(from=-3, to=6.5, by=0.1)
+% XX
+% YY <- c()
+% for (II in 1:length(XX)) {
+%   if(XX[II] <= 2) {
+%     YY[II] <- XX[II]^2
+%     } else if(XX[II] > 2) {
+%       YY[II] <- 6-XX[II]
+%       }
+%   }
+% YY
+% plot(XX, YY)
+% 
+% # Or
+% CC <- function(AA) {
+%   if(AA <= 2) {
+%     BB <- AA^2
+%   } else {
+%     BB <- 6-AA
+%   }
+%   return(BB)
+%   }
+% CC
+% plot(sapply(XX, CC))
 
 \begin{frame}[fragile]{Simple function}
   \begin{itemize}

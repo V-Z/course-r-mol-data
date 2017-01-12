@@ -58,7 +58,7 @@ getClassDef("genind") # Or select any other class name
 ## Packages and repositories
 # Set repositories
 #  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3).
-options(repos=c("https://cran.wu.ac.at", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
+options(repos=c("https://cran.wu.ac.at/", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
@@ -113,7 +113,7 @@ library(vegan)
 ## Data
 
 # Load training data
-hauss.loci <- read.loci("https://trapa.cz/sites/default/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
+hauss.loci <- read.loci("https://soubory.trapa.cz/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
 # Data control
 hauss.loci
 print(hauss.loci, details=TRUE)
@@ -128,7 +128,7 @@ hauss.genind$pop
 hauss.loci.cor <- genind2loci(hauss.genind)
 
 # Read coordinates
-hauss.coord <- read.csv("https://trapa.cz/sites/default/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
+hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
 hauss.coord
 
 # Add coordinates - note identification of slots within object
@@ -158,7 +158,7 @@ read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
 read.structure() # adegenet - reads *.str files, only haploid/diploid data
 
 # Import of triploid (polyploid) microsattelites
-tarax3n.table <- read.table("https://trapa.cz/sites/default/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
+tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
 # Check the data
 tarax3n.table
 class(tarax3n.table)
@@ -170,12 +170,12 @@ tarax3n.genind
 summary(tarax3n.genind)
 
 # Import of AFLP data
-amara.aflp <- read.table(file="https://trapa.cz/sites/default/rcourse/amara_aflp.txt", header=TRUE, sep="\t", quote="")
+amara.aflp <- read.table(file="https://soubory.trapa.cz/rcourse/amara_aflp.txt", header=TRUE, sep="\t", quote="")
 amara.aflp
 dim(amara.aflp)
 class(amara.aflp) # Must be matrix or data frame
 # Populations - just one column with population names for all inds
-amara.pop <- read.table(file="https://trapa.cz/sites/default/rcourse/amara_pop.txt", header=TRUE, sep="\t", quote="")
+amara.pop <- read.table(file="https://soubory.trapa.cz/rcourse/amara_pop.txt", header=TRUE, sep="\t", quote="")
 amara.pop
 dim(amara.pop)
 # Create genind object - ind.names and loc.names are taken from X
@@ -432,7 +432,6 @@ hauss.dist.nei
 hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
 hauss.dist.diss
 
-
 # Import custom distance matrix
 MyDistance <- read.csv("distances.txt", header=TRUE, sep="\t", dec=".", row.names=1)
 MyDistance <- as.dist(MyDistance)
@@ -444,36 +443,29 @@ MyDistance <- cailliez(MyDistance, print=TRUE, tol = 1e-10, cor.zero=TRUE)
 is.euclid(MyDistance, plot=TRUE, print=TRUE, tol = 1e-10)
 MyDistance
 
-vignette("algo", package = "poppr")
-
-Table: Distance measures and their respective assumptions
-Method Function Assumption Euclidean Citation
-Prevosti prevosti.dist - No (Prevosti et al., 1975)
-diss.dist
-Nei nei.dist Infinite Alleles No (Nei, 1972, 1978)
-Genetic Drift
-Edwards edwards.dist Genetic Drift Yes (Edwards, 1971)
-Reynolds reynolds.dist Genetic Drift Yes (Reynolds et al., 1983)
-Rogers rogers.dist - Yes (Rogers, 1972)
-Bruvo bruvo.dist Stepwise Mutation No (Bruvo et al., 2004)
-
-
+# Compare different distance matrices
+# List of functions to be parsed to respective dist.* function
 distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
-dists <- lapply(distances, function(x){
-  DISTFUN <- match.fun(paste(tolower(x), "dist", sep = "."))
+# Calculate the distance matrices
+dists <- lapply(distances, function(x) {
+  DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
   DISTFUN(hauss.genind.cor)
   })
+# Add names for the distance names
 names(dists) <- distances
-dists$Bruvo <- hauss.dist.bruvo
+# Add Bruvo distance
+dists[["Bruvo"]] <- hauss.dist.bruvo
 dists
-par(mfrow = c(2, 3))
-x <- lapply(names(dists), function(x){
-  plot(njs(dists[[x]]), main = x, type = "unrooted")
-  add.scale.bar(lcol = "red", length = 0.1)
+# Split graphical device into 2 lines, 3 panes each
+par(mfrow=c(2, 3))
+# Calculate NJ and plot all trees
+x <- lapply(names(dists), function(x) {
+  plot(njs(dists[[x]]), main=x, type="unrooted")
+  add.scale.bar(lcol="red", length=0.1)
   })
-
-
-
+dev.off() # Close graphical device to reset settings
+# See details of distance methods in package poppr
+vignette("algo", package="poppr")
 
 # DNA distances - there are various models available
 ?dist.dna
@@ -610,7 +602,7 @@ tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.
 # Populations
 hauss.nj.pop <- nj(hauss.dist.pop)
 # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
-source("https://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r")
+source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
 hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
 # Plot a tree
 plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3, main="Neighbor-Joining tree of populations")
@@ -924,7 +916,7 @@ hauss.geneland.coord
 dim(hauss.geneland.coord.utm)
 hauss.geneland.coord.utm # Final coordinates
 # Load data (only haploid or diploid data are supported) - only plain table with alleles
-hauss.geneland.data <- read.table(file="https://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt", na.string="-999", header=FALSE, sep="\t")
+hauss.geneland.data <- read.table(file="https://soubory.trapa.cz/rcourse/haussknechtii_geneland.txt", na.string="-999", header=FALSE, sep="\t")
 dim(hauss.geneland.data)
 hauss.geneland.data
 # Set number of independent runs
@@ -1025,7 +1017,7 @@ library(maptools)
 # Load SHP file
 # Data from http://download.geofabrik.de/europe/macedonia.html
 # Directory has to contain also respective DBF and SHX files (same name, only different extension)
-# Get from http://trapa.cz/sites/default/rcourse/macedonia.zip
+# Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
 macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
 plot(macedonia_building)
@@ -1057,7 +1049,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 
 # Inspiration: http://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
-# get input data from https://trapa.cz/sites/default/rcourse/hauss_stru.in and joblist https://trapa.cz/sites/default/rcourse/joblist.txt
+# get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
 # Set working directory
 setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
 getwd()
@@ -1076,11 +1068,11 @@ MPI_structure(...) # Same arguments as on previous slide
 # If this fails, look for some UNIX machine...
 
 # Postprocess results with Structure sum R script by Dorothee Ehrich
-source("https://trapa.cz/sites/default/rcourse/structure-sum-2011.r")
+source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
 # Create new directory with result files results_job_*_f and set working directory accordingly
 setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/structure_sum/")
 dir()
-# Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://trapa.cz/sites/default/rcourse/list_k.txt
+# Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://soubory.trapa.cz/rcourse/list_k.txt
 # See documentation for details. Functions take as an argument list_k file and number of populations
 Structure.table("list_k.txt", 5)
 Structure.simil("list_k.txt", 5)
@@ -1140,7 +1132,7 @@ image.DNAbin(x=usflu.dna.ng)
 ## Tree manipulations
 
 # Read trees in NEWICK format - single or multiple tree(s)
-oxalis.trees <- read.tree("https://trapa.cz/sites/default/rcourse/oxalis.nwk")
+oxalis.trees <- read.tree("https://soubory.trapa.cz/rcourse/oxalis.nwk")
 summary(oxalis.trees)
 length(oxalis.trees)
 names(oxalis.trees)
@@ -1461,7 +1453,7 @@ plot.correlogramList(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.
 
 # Prepare toy data
 # Load MrBayes tree in NEXUS format
-apiaceae.tree <- read.nexus("https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus")
+apiaceae.tree <- read.nexus("https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
 # See it
 print.phylo(apiaceae.tree)
 plot.phylo(apiaceae.tree)
@@ -1671,24 +1663,60 @@ install_github("thibautjombart/adegenet")
 dev_mode(on=FALSE)
 
 ## Loops
+
+# For loop
 # Simplest loop - print value of "i" in each step
 for (i in 1:5) { print(i) }
+
 # In every step modify value of variable "X"
 X <- 0
-for (i in 10:1) { 
+for (i in 10:1) {
+  print("Loop turn")
   print(i)
   X <- X+i
-  print(X)
+  print(paste("Variable value:", X))
   }
-# Work on each item of a list object
+
+  # Work on each item of a list object
 for (L in 1:length(nothofagus.sequences)) {
   print(length(nothofagus.sequences[[L]])) }
+
+# While loop - it is done while condition is valid
+Q <- 0
+while (Q < 5) { print(Q <- Q+1) }
+
+## If-else branching
+XX <- seq(from=-3, to=6.5, by=0.1)
+XX
+YY <- c()
+for (II in 1:length(XX)) {
+  if(XX[II] <= 2) {
+    YY[II] <- XX[II]^2
+    } else if(XX[II] > 2) {
+      YY[II] <- 6-XX[II]
+      }
+  }
+YY
+plot(XX, YY)
+
+# Or
+CC <- function(AA) {
+  if(AA <= 2) {
+    BB <- AA^2
+  } else {
+    BB <- 6-AA
+  }
+  return(BB)
+  }
+CC
+plot(sapply(XX, CC))
 
 ## Functions
 MyFunction <- function (x, y) {
   # Any commands can be here...
   x + y
   }
+
 # Use as usually:
 MyFunction(5, 8)
 MyFunction(1, 4)
@@ -1707,7 +1735,7 @@ axisGeo() # package phyloch - adds scale in geological time, has many options
 ## Polysat - microsattelites and mixed ploidies
 library(combinat)
 library(polysat)
-polysattest <- read.GeneMapper("http://trapa.cz/sites/default/rcourse/GeneMapperExample.txt")
+polysattest <- read.GeneMapper("http://soubory.trapa.cz/rcourse/GeneMapperExample.txt")
 # Basic information
 summary(polysattest)
 Loci(polysattest) # Information about loci
