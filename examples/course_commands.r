@@ -220,6 +220,8 @@ length(usflu.dna3) # How many sequences we have in the list
 usflu.dna3
 # Convert into DNAbin class (technically, DNAbin is a list)
 class(usflu.dna3) <- "DNAbin"
+# Read sequence data in NEXUS
+read.nexus.data(file="sequences.nex")
 
 # Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
 meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
@@ -280,7 +282,7 @@ ape::base.freq(x=meles.dna)
 # GC content
 ape::GC.content(x=meles.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
-seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
+seqinr::count(seq=meles.nogaps[["KJ161328.1"]], wordsize=3)
 # View sequences - all must be of the same length
 image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Function "image" requires as input matrix, so that sequences must be of same length

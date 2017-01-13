@@ -692,44 +692,67 @@ There are information about slots within that classes you can access.
   \end{block}
 \end{frame}
 
-\begin{frame}{Brief overview of molecular data types}
+\begin{frame}[allowframebreaks]{Brief overview of molecular data types}{Sorted with respect to usage in R}
   \begin{itemize}
+    \item Isozymes -- forms of proteins differing in electrophoresis by their weight and/or charge
+    \begin{itemize}
+      \item Typically coded as presence/absence (1/0) data
+    \end{itemize}
     \item Fragmentation data -- length polymorphism
     \begin{itemize}
-      \item Codominant data -- e.g. microsatellites (SSRs)
+      \item Codominant data -- e.g. microsatellites (SSRs -- Simple Sequence Repeats)
       \begin{itemize}
-	\item Variability in number of short (usually 1-3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 50-250 repeats)
-	\item Very variable, fast evolving
+	\item Variability in number of short (usually 1-3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 50-250 repeats) bordered by unique primer sequences
+	\item Very variable, fast evolving, species-specific primers needed
 	\item Mainly for population genetics, relationships among closely related species
+	\item Similarly ISSRs (Inter Simple Sequence Repeats)
       \end{itemize}
-      \item Presence/absence data -- AFLP, RFLP,~\ldots
+      \item Presence/absence (1/0) dominant data
       \begin{itemize}
 	\item The allele is or is not presented  -- it is impossible to distinguish heterozygots from dominant homozygots
-	\item AFLP is very variable, but nowadays bit expensive and outdated
+	\item AFLP (Amplified Fragment Length Polymorphism) -- very variable, technically complicated, nowadays bit expensive and outdated
+	\item Simpler methods RAPD (Random Amplified Polymorphic DNA) and PCR-RFLP (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
       \end{itemize}
     \end{itemize}
-    \item Nucleic acid sequences (in nearly any form)
+    \item Protein sequences -- not used in the course
     \begin{itemize}
-      \item Protein or DNA/RNA
+      \item Apart similar usage as with DNA/RNA (sequence analysis) it is possible to work with the structure and conformation of the proteins
+    \end{itemize}
+    \item Nucleic acid sequences (in nearly any form) -- DNA or RNA
+    \begin{itemize}
       \item From ``classical'' Sanger sequencing -- long individual reads
       \item From modern HTS (NGS) -- 454 pyrosequencing, Illumina,~\ldots
-      \item Whole sequences or SNPs (Single Nucleotide Polymorphism -- only polymorphic sites are retained
+	\begin{itemize}
+	  \item Probably most used are RADseq scanning whole genome, HybSeq using specific probes to sequence only single/low-copy nuclear markers, Genome Skimming getting the most abundant part of the genome (plastid and mitchodrial sequences and ITS1-5.8S rRNA-ITS2 region); and their variants
+	  \item There are special tools to process raw data from the machines -- not part of the course
+	\end{itemize}
+      \item Whole sequences (probes/loci or longer assembled regions) or SNPs (Single Nucleotide Polymorphism -- only polymorphic sites are retained)
     \end{itemize}
+    \item Most of methods are mathematically well defined for haploids and/or diploids, higher ploidies or mixing of ploidies is not always possible
+    \item Most of methods shown in the course work with more data types -- not everything is shown
+    \item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology}
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Notes about paths to import the data}
+\begin{frame}[allowframebreaks]{Notes about paths to import the data}{Wrong path is one of the most common user mistakes}
 \begin{itemize}
  \item Generally, R can accept nearly any local or web location
- \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}
+ \item If unsure where you are, open any file manager, go to the R working directory (verify with \texttt{getwd()} and \texttt{dir()}) and verify where everything is
+ \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
  \item Local paths (within one computer) can be absolute or relative
  \begin{itemize}
-  \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash}
-  \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:}) -- in the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename
-  \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace any filename parameter
+  \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+  \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
+  \begin{itemize}
+    \item In the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
+    \item For subdirectory start with its name (\textbf{no} with \texttt{/} or \texttt{C:}), e.g. \texttt{FileParameter="subdirectory/another/directory/file.txt"}
+    \item When going directory up, use one \texttt{..} for each level, e.g. \texttt{FileParameter="../upper/directory/file.txt"}
+    \item On UNIX (Mac OS~X, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
+  \end{itemize}
+  \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace nearly any filename parameter (e.g. \texttt{FileParameter="file.choose()"}
  \end{itemize}
  \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
- \item One of the most common source of errors -- when the command fails, double check paths (and Internet connection, if applicable)
+ \item One of the most common source of errors -- \textbf{when the command fails, double check paths} (and Internet connection, if applicable)
 \end{itemize}
 \end{frame}
 
@@ -799,8 +822,8 @@ Coordinates can be in any projection or scale -- according to aim\\
   \begin{spluscode}
     # Read coordinates
     hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/
-      haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="",
-      dec=".", row.names=1)
+      haussknechtii_coordinates.csv", header=TRUE, sep="\t",
+      quote="", dec=".", row.names=1)
     hauss.coord
   \end{spluscode}
 \begin{footnotesize}
@@ -978,7 +1001,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \subsection{DNA sequences, SNP}
 
-\begin{frame}[fragile]{Import of DNA data I}
+\begin{frame}[fragile]{Import of DNA sequence data I}
   \begin{spluscode}
     # Reading FASTA (read.dna() reads also another formats, see ?read.dna)
     # Sequences of flu viruses from various years (Adegenet toy data)
@@ -1000,7 +1023,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Import of DNA data II}
+\begin{frame}[fragile]{Import of DNA sequence data II}
   \begin{spluscode}
     # Convert DNAbin to genind - only polymorphic loci (SNPs) are retained
     # When converting DNAbin to genind, the sequences must be aligned!
@@ -1014,7 +1037,12 @@ Source data (two files -- AFLP data with individual names and populations)
     usflu.dna3
     # Convert into DNAbin class (technically, DNAbin is a list)
     class(usflu.dna3) <- "DNAbin"
+    # Read sequence data in NEXUS
+    read.nexus.data(file="sequences.nex")
   \end{spluscode}
+  \begin{itemize}
+    \item RNA or protein sequences can be handed in same way
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Import sequences from GenBank}
@@ -1092,8 +1120,8 @@ Source data (two files -- AFLP data with individual names and populations)
   \splus/read.PLINK(file="PLINKfile", ...) # See ?readPLINK/
   Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
   \begin{spluscode}
-    usflu.genlight <- fasta2genlight(file=
-      "http://adegenet.r-forge.r-project.org/files/usflu.fasta",
+    usflu.genlight <- fasta2genlight
+      (file="http://adegenet.r-forge.r-project.org/files/usflu.fasta",
       quiet=FALSE, saveNbAlleles=TRUE)
     ?fasta2genlight # Function has several options to speed up reading
     # If it crashes (on Windows), try add parameter "parallel=FALSE"
@@ -1118,7 +1146,8 @@ Source data (two files -- AFLP data with individual names and populations)
     # GC content
     ape::GC.content(x=meles.dna)
     # Number of times any dimer/trimer/etc oligomers occur in a sequence
-    seqinr::count(seq=meles.dna[["KJ161328.1"]], wordsize=3)
+    # Note: count() requires single sequence as DNAbin/character
+    seqinr::count(seq=meles.nogaps[["KJ161328.1"]], wordsize=3)
     # View sequences - all must be of the same length
     image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
     # Function "image" requires as input matrix
@@ -1138,8 +1167,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}{Notes about using genlight (vs. genind)}
 \begin{itemize}
  \item Genlight is ``just'' version of more common genind object to store large data sets with (nearly) complete multiple genomes
- \item ``Large'' is tricky -- there is no easy criterion -- try genind and when work fails because of not enough computer resources, go on with genlight
- \item Can be quickly converted to genind (not back)
+ \item ``Large'' is tricky -- there is no easy criterion (roughly, genind is inefficient since dozens or hundreds thousands of SNPs) -- try genind and when work fails because of not enough computer resources, go on with genlight
  \item Use is basically same as when working with genind -- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
  \item SNPbin is version of genind/genlight to store one large genome -- serves basically as storage, no need to deal with it
  \item genlight as well as genind allow varying ploidy level
@@ -1171,6 +1199,12 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \section{Basic analysis}
+
+\begin{frame}{Overview of descriptive statistics}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+\end{frame}
 
 \subsection{First look at the data}
 
@@ -1261,10 +1295,10 @@ It returns various population statistics. \texttt{png()} will produce set of fig
   \end{tiny}
 \end{frame}
 
-
-
-
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
+  \begin{itemize}
+    \item In theory, in large panmictic population can mate everyone with everyone (it is in equilibrium) -- in reality, environment, behavior, mutations, genetic drift, etc. is more or less structuring the population -- but how much?
+  \end{itemize}
   \begin{spluscode}
     # According to loci
     hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
@@ -1282,7 +1316,7 @@ It returns various population statistics. \texttt{png()} will produce set of fig
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Departure from HWE -- results}
+\begin{frame}[fragile]{Departure from HWE -- results per locus}
   \splus/hauss.hwe.test/
   \begin{tabular}{lllll}
     & chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
@@ -1290,15 +1324,11 @@ It returns various population statistics. \texttt{png()} will produce set of fig
     msta101 & 0.6927242 & 1 & 4.052393e-01 & 0.657\\
     msta102 & 83.0741964 & 10 & 1.250111e-13 & 0.000\\
     msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
-    msta105 & 282.3441356 & 66 & 0.000000e+00 & 0.000\\
-    msta131 & 175.8647805 & 36 & 0.000000e+00 & 0.000\\
-    msta143 & 155.4567196 & 45 & 4.474199e-14 & 0.000\\
-    msta44B & 112.6283892 & 28 & 4.149125e-12 & 0.000\\
-    msta53 & 110.2581985 & 55 & 1.436375e-05 & 0.002\\
-    msta61 & 70.7719907 & 66 & 3.215148e-01 & 0.070\\
-    msta73 & 310.9811293 & 153 & 7.842615e-13 & 0.000\\
-    msta78 & 4.4688908 & 10 & 9.237260e-01 & 0.569
+    ... & ... & ... & ... & ...
   \end{tabular}
+  \begin{itemize}
+    \item Pr.exact shows significance of the departure (i.e. non-equilibrial distribution of alleles within population)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{F-statistics and population theta I}
@@ -1480,44 +1510,53 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]{Different distances have different use case and outputs\ldots}
+  \begin{tabular}{llll}
+    \textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
+    Prevosti & \texttt{prevosti.dist}, & --- & No\\
+     & \texttt{diss.dist} & & \\
+    Nei & \texttt{nei.dist} & Infinite Alleles, & No\\
+     & & Genetic Drift & \\
+    Edwards & \texttt{edwards.dist} & Genetic Drift & Yes\\
+    Reynolds & \texttt{reynolds.dist} & Genetic Drift & Yes\\
+    Rogers & \texttt{rogers.dist} & --- &\\
+    Bruvo & \texttt{bruvo.dist} & Stepwise Mutation & No
+  \end{tabular}
+  \begin{spluscode}
+    # See details of distance methods in package poppr
+    vignette("algo", package="poppr")
+  \end{spluscode}
+\end{frame}
 
-% vignette("algo", package = "poppr")
-% 
-% Table: Distance measures and their respective assumptions
-% Method Function Assumption Euclidean Citation
-% Prevosti prevosti.dist - No (Prevosti et al., 1975)
-% diss.dist
-% Nei nei.dist Infinite Alleles No (Nei, 1972, 1978)
-% Genetic Drift
-% Edwards edwards.dist Genetic Drift Yes (Edwards, 1971)
-% Reynolds reynolds.dist Genetic Drift Yes (Reynolds et al., 1983)
-% Rogers rogers.dist - Yes (Rogers, 1972)
-% Bruvo bruvo.dist Stepwise Mutation No (Bruvo et al., 2004)
-% 
-% # Compare different distance matrices
-% # List of functions to be parsed to respective dist.* function
-% distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
-% # Calculate the distance matrices
-% dists <- lapply(distances, function(x) {
-%   DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
-%   DISTFUN(hauss.genind.cor)
-%   })
-% # Add names for the distance names
-% names(dists) <- distances
-% # Add Bruvo distance
-% dists[["Bruvo"]] <- hauss.dist.bruvo
-% dists
-% # Split graphical device into 2 lines, 3 panes each
-% par(mfrow=c(2, 3))
-% # Calculate NJ and plot all trees
-% x <- lapply(names(dists), function(x) {
-%   plot(njs(dists[[x]]), main=x, type="unrooted")
-%   add.scale.bar(lcol="red", length=0.1)
-%   })
-% dev.off() # Close graphical device to reset settings
-% # See details of distance methods in package poppr
-% vignette("algo", package="poppr")
+\begin{frame}[fragile]{Comparison of different matrices}
+  \begin{spluscode}
+    # Compare different distance matrices
+    # List of functions to be parsed to respective dist.* function
+    distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
+    # Calculate the distance matrices
+    dists <- lapply(distances, function(x) {
+      DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
+      DISTFUN(hauss.genind.cor) })
+    # Add names for the distance names
+    names(dists) <- distances
+    # Add Bruvo distance
+    dists[["Bruvo"]] <- hauss.dist.bruvo
+    dists
+    # Split graphical device into 2 lines, 3 panes each
+    par(mfrow=c(2, 3))
+    # Calculate NJ and plot all trees
+    x <- lapply(names(dists), function(x) {
+      plot(njs(dists[[x]]), main=x, type="unrooted")
+      add.scale.bar(lcol="red", length=0.1) })
+    dev.off() # Close graphical device to reset settings
+  \end{spluscode}
+\end{frame}
 
+\begin{frame}{Neigbor-Joining of same dataset under different matrices}{The results are very different\ldots}
+  \begin{center}
+    \includegraphics[width=\textwidth]{distances.png}
+  \end{center}
+\end{frame}
 
 \begin{frame}[fragile]{Distances among DNA sequences}
 \alert{The sequences must be aligned before calculating distances among them!}
@@ -2572,9 +2611,11 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{Plot of Mantel Correlogram Analysis}
-  \includegraphics[width=\textwidth]{mantel-cor.png}
+  \begin{center}
+    \includegraphics[width=\textwidth-1cm]{mantel-cor.png}
+  \end{center}
 
-  Correlation (genetic similarity) in several distance classes (positive [up] in short distance [left], negative [down] in long [right]; [full] -- significant, [empty] -- not significant) -- see \texttt{?mantel.correlog} for details of settings of distance classes
+  Correlation (genetic similarity) in several distance classes (positive \textbf{[up]} in short distance \textbf{[left]}, negative \textbf{[down]} in long \textbf{[right]}; \textbf{[full]} -- significant, \textbf{[empty]} -- not significant) -- see \texttt{?mantel.correlog} for details
 \end{frame}
 
 \subsection{Geneland}
