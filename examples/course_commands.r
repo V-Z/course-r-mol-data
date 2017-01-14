@@ -1668,22 +1668,25 @@ dev_mode(on=FALSE)
 
 # For loop
 # Simplest loop - print value of "i" in each step
+# "i" is commonly used for various indexing
 for (i in 1:5) { print(i) }
 
-# In every step modify value of variable "X"
-X <- 0
+# In every step modify value of variable "X" (add 1 to previous value)
+X <- 0 # Set initial value
 for (i in 10:1) {
-  print("Loop turn")
-  print(i)
-  X <- X+i
-  print(paste("Variable value:", X))
+  print("Loop turn") # Some message for user
+  print(i) # Print number of turn - note it is decreasing
+  X <- X+i # Rise value of "X" by current value of "i" (see previous line)
+  print(paste("Variable value:", X)) # Print current value of "X"
   }
 
-  # Work on each item of a list object
+# Work on each item of a list object
+# Print length of each sequence in nothofagus.sequences
 for (L in 1:length(nothofagus.sequences)) {
   print(length(nothofagus.sequences[[L]])) }
 
-# While loop - it is done while condition is valid
+# While loop - it is done while the condition is valid
+# While value of "Q" is < 5 (starting from 0), print it and add 1
 Q <- 0
 while (Q < 5) { print(Q <- Q+1) }
 
@@ -1692,26 +1695,26 @@ XX <- seq(from=-3, to=6.5, by=0.1)
 XX
 YY <- c()
 for (II in 1:length(XX)) {
-  if(XX[II] <= 2) {
+  if(XX[II] <= 2) { # Executed for XX <= 2
     YY[II] <- XX[II]^2
-    } else if(XX[II] > 2) {
+    } else if(XX[II] > 2) { # Executed for XX > 2
       YY[II] <- 6-XX[II]
       }
   }
 YY
-plot(XX, YY)
+plot(XX, YY) # See the result
 
-# Or
+# Or (different possibility to get very same result)
 CC <- function(AA) {
-  if(AA <= 2) {
+  if(AA <= 2) { # Executed for XX <= 2
     BB <- AA^2
-  } else {
+  } else { # Executed for XX > 2
     BB <- 6-AA
-  }
-  return(BB)
+    }
+  return(BB) # The output value
   }
 CC
-plot(sapply(XX, CC))
+plot(sapply(XX, CC)) # See the result
 
 ## Functions
 MyFunction <- function (x, y) {

@@ -669,7 +669,7 @@ There are information about slots within that classes you can access.
       \item User must install this software manually
     \end{itemize}
     \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
-%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/}
+%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} %TODO Rphylip
     \item MAFFT \url{http://mafft.cbrc.jp/alignment/software/}
     \item MUSCLE \url{http://www.drive5.com/muscle/}
     \item Clustal (W/X; Omega is not used in the course) \url{http://clustal.org/}
@@ -1170,7 +1170,8 @@ Source data (two files -- AFLP data with individual names and populations)
  \item ``Large'' is tricky -- there is no easy criterion (roughly, genind is inefficient since dozens or hundreds thousands of SNPs) -- try genind and when work fails because of not enough computer resources, go on with genlight
  \item Use is basically same as when working with genind -- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
  \item SNPbin is version of genind/genlight to store one large genome -- serves basically as storage, no need to deal with it
- \item genlight as well as genind allow varying ploidy level
+ \item Genlight as well as genind allow varying ploidy level
+ \item Functions working with genlight use to use parallelisation to speed up operations -- this commonly doesn't work properly on MS~Windows
 \end{itemize}
 \end{frame}
 
@@ -1200,7 +1201,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \section{Basic analysis}
 
-\begin{frame}{Overview of descriptive statistics}
+\begin{frame}{Overview of descriptive statistics} %TODO list of methods
   \begin{itemize}
     \item 
   \end{itemize}
@@ -1260,8 +1261,8 @@ Source data (two files -- AFLP data with individual names and populations)
   \includegraphics[width=\textwidth]{heterozygosity.png}
 \end{frame}
 
-\begin{frame}[fragile]{Population statistics by poppr}
-It returns various population statistics. \texttt{png()} will produce set of figures for each population. You can similarly use \texttt{svg()}, \texttt{pdf()}, \ldots
+\begin{frame}[fragile]{Population statistics by poppr} % FIXME graph(s), index descriptions
+  It returns various population statistics. \texttt{png()} will produce set of figures for each population. You can similarly use \texttt{svg()}, \texttt{pdf()}, \ldots
   \begin{spluscode}
     png(filename="poppr_%03d.png", width=720, height=720, bg="white")
       # Output figure(s) will be saved to the disk
@@ -1296,7 +1297,7 @@ It returns various population statistics. \texttt{png()} will produce set of fig
 \end{frame}
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
-  \begin{itemize}
+  \begin{itemize} % TODO  richer description
     \item In theory, in large panmictic population can mate everyone with everyone (it is in equilibrium) -- in reality, environment, behavior, mutations, genetic drift, etc. is more or less structuring the population -- but how much?
   \end{itemize}
   \begin{spluscode}
@@ -1326,7 +1327,7 @@ It returns various population statistics. \texttt{png()} will produce set of fig
     msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
     ... & ... & ... & ... & ...
   \end{tabular}
-  \begin{itemize}
+  \begin{itemize} %TODO details about tests
     \item Pr.exact shows significance of the departure (i.e. non-equilibrial distribution of alleles within population)
   \end{itemize}
 \end{frame}
@@ -1511,7 +1512,7 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{frame}
 
 \begin{frame}[fragile]{Different distances have different use case and outputs\ldots}
-  \begin{tabular}{llll}
+  \begin{tabular}{llll} % TODO links to methods references
     \textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
     Prevosti & \texttt{prevosti.dist}, & --- & No\\
      & \texttt{diss.dist} & & \\
@@ -1559,8 +1560,11 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{frame}
 
 \begin{frame}[fragile]{Distances among DNA sequences}
-\alert{The sequences must be aligned before calculating distances among them!}
-\vfill
+  \begin{itemize}
+    \item \alert{The sequences must be aligned before calculating distances among them!}
+    \item Selection of mutational model has significant impact to results\ldots
+  \end{itemize}
+  \vfill
   \begin{spluscode}
     # There are various models available
     ?dist.dna
@@ -1579,7 +1583,7 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Distances and genlight object}
+\begin{frame}[fragile]{Distances and genlight object} % FIXME
 Pairwise genetic distances for each data block (genlight objects with whole genome data) -- sensitive to missing data (not useful in every case):
 \vfill
   \begin{spluscode}
@@ -1596,7 +1600,7 @@ Pairwise genetic distances for each data block (genlight objects with whole geno
     usflu.distg <- dist(as.matrix(usflu.genlight))
   \end{spluscode}
 \vfill
-Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, nor for most of the cases
+Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for most of the cases
 \end{frame}
 
 \begin{frame}[fragile]{Visualize pairwise genetic similarities}
@@ -1700,7 +1704,7 @@ Rationale of this approach is to save resources when dividing whole data set int
 All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
-\subsection{AMOVA}
+\subsection{AMOVA} % TODO get percentage of variability
 
 \begin{frame}[fragile]{AMOVA}
   \begin{spluscode}
@@ -1853,7 +1857,7 @@ All points in the right graph should be clustered along the red line\ldots
 \includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
 \end{frame}
 
-% \begin{frame}[fragile]{NJ tree of populations}
+% \begin{frame}[fragile]{NJ tree of populations} FIXME rewrite the function
 %   \begin{spluscode}
 %     # NJ tree of populations
 %     hauss.nj.pop <- nj(hauss.dist.pop)
@@ -2201,7 +2205,7 @@ All points in the right graph should be clustered along the red line\ldots
 
 \section{SNP}
 
-\begin{frame}[fragile]{Some functions to work with huge SNP data sets}
+\begin{frame}[fragile]{Special functions to work with huge SNP data sets}
   \begin{spluscode}
     # Plot of missing data (white) and number of 2nd alleles
     glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
@@ -2296,7 +2300,7 @@ All points in the right graph should be clustered along the red line\ldots
   \item ``Only'' autocorrelation index -- no genetic/evolutionary model involved -- sometimes criticized as biologically irrelevant mechanism
   \item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology)
   \item Calculations are done according to connectivity network connecting individuals/populations (created by \texttt{chooseCN}) -- carefully check its options and try several parameters
-  \item Pay attention which hypothesis is tested (i.e. if lower, greater or two sided) -- similar to T-test
+  \item Pay attention which hypothesis is tested (i.e. if lower, greater or two-sided) -- similar to T-test
 \end{itemize}
 \end{frame}
 
@@ -2355,7 +2359,6 @@ All points in the right graph should be clustered along the red line\ldots
     \item If testing for hypothesis ``less'' -- significant \textbf{negative} autocorrelation -- individuals are significantly different
   \end{itemize}
 \end{frame}
-
 
 \begin{frame}[fragile]{Calculation of Moran's \textit{I} (2$^{nd}$ axis)}
   \begin{spluscode}
@@ -2428,9 +2431,9 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{sPCA outputs I}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{spca.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{spca.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Map of genetic clines}
@@ -2468,7 +2471,7 @@ All points in the right graph should be clustered along the red line\ldots
       score 1"), plot.title=hauss.spca.annot())
   \end{spluscode}
 
-\includegraphics[width=\textwidth]{spca-pc.png}
+  \includegraphics[width=\textwidth]{spca-pc.png}
 \end{frame}
 
 \begin{frame}[fragile]{Loading plots -- which alleles contribute the most?}
@@ -2482,19 +2485,19 @@ All points in the right graph should be clustered along the red line\ldots
       into the first global score", col="grey")
   \end{spluscode}
 
-\includegraphics[width=\textwidth]{spca-loading.png}
+  \includegraphics[width=\textwidth]{spca-loading.png}
 \end{frame}
 
 \subsection{Monmonier}
 
 \begin{frame}[fragile]{Monmonier's algorithm -- genetic boundaries}
-\begin{itemize}
- \item Finds boundaries of maximum differences between contiguous polygons of a~tessellation
- \item Detects genetic boundaries among georeferenced genotypes (or populations)
- \item For more information see \texttt{adegenetTutorial("basics")}
- \item Requires every point to have unique coordinates -- in case of population data it is better to work with populations, not individuals (but it is not ideal)
- \item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation}
-\end{itemize}
+  \begin{itemize}
+    \item Finds boundaries of maximum differences between contiguous polygons of a~tessellation
+    \item Detects genetic boundaries among georeferenced genotypes (or populations)
+    \item For more information see \texttt{adegenetTutorial("basics")}
+    \item Requires every point to have unique coordinates -- in case of population data it is better to work with populations, not individuals (but it is not ideal)
+    \item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation}
+  \end{itemize}
   \begin{spluscode}
     # Calculates Monmonier's function (for threshold use 'd')
     hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=
@@ -2536,30 +2539,30 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}[fragile]{Monmonier notes}
-\begin{itemize}
- \item Sometimes it is needed to get rid of random noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}):
-\end{itemize}
+  \begin{itemize}
+    \item Sometimes it is needed to get rid of random noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}):
+  \end{itemize}
   \begin{spluscode}
     monmonier(..., dist=dudi.pco(d=dist(x=GenindObject$tab),
       scannf=FALSE, nf=1)$li, ...)
   \end{spluscode}
-\begin{itemize}
- \item Generally (when dataset is bigger and more diverse) it is recommended to run it several times (parameter \texttt{nrun}) -- there will be several iterations
- \item See \texttt{?plot.monmonier} for various graphical parameters to customize the plot
- \item Use \texttt{points()} to add for example colored symbols of samples and/or \texttt{text()} to add text labels
-\end{itemize}
+  \begin{itemize}
+    \item Generally (when dataset is bigger and more diverse) it is recommended to run it several times (parameter \texttt{nrun}) -- there will be several iterations
+    \item See \texttt{?plot.monmonier} for various graphical parameters to customize the plot
+    \item Use \texttt{points()} to add for example colored symbols of samples and/or \texttt{text()} to add text labels
+  \end{itemize}
 \end{frame}
 
 \subsection{Mantel test}
 
 \begin{frame}{Mantel test}
-\begin{itemize}
-  \item Originally created for biomedicine to test correlation between treatment and diseases
-  \item ``Only'' correlation of two matrices -- no biologically relevant underlying model -- because of that it is heavily criticized (mainly in ecology)
-  \item It is universal method usable for plenty of tasks
-  \item Test of spatial and genetic relationships is probably one of few biologically relevant applications
-  \item Package vegan (set of ecological tools) has implementation to test genetic similarity in various distance classes -- not only overall result -- very useful
-\end{itemize}
+  \begin{itemize}
+    \item Originally created for biomedicine to test correlation between treatment and diseases
+    \item ``Only'' correlation of two matrices -- no biologically relevant underlying model -- because of that it is heavily criticized (mainly in ecology)
+    \item It is universal method usable for plenty of tasks
+    \item Test of spatial and genetic relationships is probably one of few biologically relevant applications
+    \item Package vegan (set of ecological tools) has implementation to test genetic similarity in various distance classes -- not only overall result -- very useful
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Mantel test -- isolation by distance}
@@ -2622,12 +2625,12 @@ All points in the right graph should be clustered along the red line\ldots
 
 \begin{frame}[fragile]{About Geneland}
 \begin{multicols}{2}
-\begin{itemize}
- \item Works with haploid and diploid codominant markers (microsatellites or SNPs)
- \item Spatially explicit Bayesian clustering
- \item Produces maps of distribution of inferred genetic clusters
- \item Relative complicated tool with various modeling options
-\end{itemize}
+  \begin{itemize}
+    \item Works with haploid and diploid codominant markers (microsatellites or SNPs)
+    \item Spatially explicit Bayesian clustering
+    \item Produces maps of distribution of inferred genetic clusters
+    \item Relative complicated tool with various modeling options
+  \end{itemize}
   \columnbreak
   \begin{spluscode}
     # Load needed libraries
@@ -2640,7 +2643,7 @@ All points in the right graph should be clustered along the red line\ldots
     library(tcltk)
     library(Geneland)
     # Graphical interface is available
-    # we will use only command line
+    # we will use only command line...
     Geneland.GUI()
   \end{spluscode}
 \end{multicols}
@@ -2812,13 +2815,13 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}{MCMC chain, number of clusters and their map}
-\includegraphics[width=\textwidth]{geneland1.png}
+  \includegraphics[width=\textwidth]{geneland1.png}
 \end{frame}
 
 \begin{frame}{Map of posterior probability of belonging into cluster 1}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{geneland2.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{geneland2.png}
+  \end{center}
 \end{frame}
 
 \subsection{Plotting maps}
@@ -2998,13 +3001,13 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{Running Structure from R}
 
 \begin{frame}[fragile]{Running Structure in parallel with R}
-\begin{itemize}
- \item Let's use modern multi-core CPUs and plenty of RAM in current computers -- parallelisation saves time
- \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
- \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
- \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
- \item Authors recommend to run it without GUI and not on Windows\ldots
-\end{itemize}
+  \begin{itemize}
+    \item Let's use modern multi-core CPUs and plenty of RAM in current computers -- parallelisation saves time
+    \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
+    \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
+    \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
+    \item Authors recommend to run it without GUI and not on Windows\ldots
+  \end{itemize}
   \begin{spluscode}
     # Prepare special new empty directory and set working directory
     setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
@@ -3018,25 +3021,25 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}{Preparing for ParallelStructure}
-Within working ``structure'' directory you need
-\begin{itemize}
- \item Subdirectory for results
- \item Text file describing jobs (``joblist'')
+  Within working ``structure'' directory you need
   \begin{itemize}
-    \item One row for one Structure run
-    \item Every line contains name of run, list of populations separated by comas (e.g. 1,2,3,4,5) -- you don't have to use all populations in all runs
-    \item K~for actual run
-    \item Length of burnin chain
-    \item Number of steps (in practice use much higher number than for the example -- also for length of burnin chain)
-    \item Columns are separated by spaces (or TABs)
+    \item Subdirectory for results
+    \item Text file describing jobs (``joblist'')
+      \begin{itemize}
+	\item One row for one Structure run
+	\item Every line contains name of run, list of populations separated by comas (e.g. 1,2,3,4,5) -- you don't have to use all populations in all runs
+	\item K~for actual run
+	\item Length of burnin chain
+	\item Number of steps (in practice use much higher number than for the example -- also for length of burnin chain)
+	\item Columns are separated by spaces (or TABs)
+      \end{itemize}
+    \item Data input file (see Structure manual)
+      \begin{itemize}
+	\item Make it as simple as possible -- remove all unneeded columns
+	\item For population names use subsequent numbers from 1~to number of populations
+	\item For individual names use only alphanumerical characters
+    \end{itemize}
   \end{itemize}
- \item Data input file (see Structure manual)
-  \begin{itemize}
-    \item Make it as simple as possible -- remove all unneeded columns
-    \item For population names use subsequent numbers from 1~to number of populations
-    \item For individual names use only alphanumerical characters
-  \end{itemize}
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Input files}
@@ -3069,23 +3072,23 @@ Within working ``structure'' directory you need
       printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0,
       linkage=0, locprior=0, inferalpha=1)
   \end{spluscode}
-\begin{itemize}
- \item Choose \texttt{n\_cpu} according to your computer
- \item \texttt{structure\_path} points to \alert{directory} containing Structure binary
- \item \texttt{outpath} should aim to \alert{empty} directory
- \item \texttt{plot\_output=1} will produce plots for all runs
- \item Check all other settings according to Structure manual and your needs
- \item Get toy input file \url{https://soubory.trapa.cz/rcourse/hauss_stru.in} and joblist \url{https://soubory.trapa.cz/rcourse/joblist.txt}
-\end{itemize}
+  \begin{itemize}
+    \item Choose \texttt{n\_cpu} according to your computer
+    \item \texttt{structure\_path} points to \alert{directory} containing Structure binary
+    \item \texttt{outpath} should aim to \alert{empty} directory
+    \item \texttt{plot\_output=1} will produce plots for all runs
+    \item Check all other settings according to Structure manual and your needs
+    \item Get toy input file \url{https://soubory.trapa.cz/rcourse/hauss_stru.in} and joblist \url{https://soubory.trapa.cz/rcourse/joblist.txt}
+  \end{itemize}
 \end{frame}
 
 \subsection{ParallelStructure on Windows}
 
 \begin{frame}[fragile]{ParallelStructure and Windows}
-\begin{itemize}
- \item Authors do not recommend to run ParallelStructure on Windows\ldots
- \item \texttt{parallel\_structure()} uses for parallelisation library which is not available on Windows, instead try
-\end{itemize}
+  \begin{itemize}
+    \item Authors do not recommend to run ParallelStructure on Windows\ldots
+    \item \texttt{parallel\_structure()} uses for parallelisation library which is not available on Windows, instead try
+  \end{itemize}
   \begin{spluscode}
     # Install Rmpi library required by ParallelStructure for
     # parallelisation on Windows (installation can be very problematic)
@@ -3095,18 +3098,18 @@ Within working ``structure'' directory you need
     # with same arguments
     MPI_structure(...) # Same arguments as on previous slide
   \end{spluscode}
-\begin{itemize}
- \item It may help to set \texttt{n\_cpu=1}, but it is only for testing then, not for real work...
- \item If this fails, look for some UNIX machine (Linux, Mac OS~X, BSD,~\ldots)\ldots
-\end{itemize}
+  \begin{itemize}
+    \item It may help to set \texttt{n\_cpu=1}, but it is only for testing then, not for real work...
+    \item If this fails, look for some UNIX machine (Linux, Mac OS~X, BSD,~\ldots)\ldots
+  \end{itemize}
 \end{frame}
 
 \subsection{Post processing}
 
 \begin{frame}[fragile]{Post process Structure results -- select the best K}
- \begin{itemize}
-  \item Using Structure-sum-2011 R script by \href{http://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
- \end{itemize}
+  \begin{itemize}
+    \item Using Structure-sum-2011 R script by \href{http://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
+  \end{itemize}
  \begin{spluscode}
     # Load the script
     source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
@@ -3115,11 +3118,11 @@ Within working ``structure'' directory you need
     setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/
       structure/structure_sum/")
   \end{spluscode}
- \begin{itemize}
-  \item When using it, cite \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1471-8286.2006.01380.x/abstract}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net)
-  \item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
-  \item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
- \end{itemize}
+  \begin{itemize}
+    \item When using it, cite \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1471-8286.2006.01380.x/abstract}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net)
+    \item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
+    \item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
+  \end{itemize}
   \begin{tabular}{ll}
     2 & results\_job\_S010\_f\\
     3 & results\_job\_S011\_f\\
@@ -3230,7 +3233,7 @@ Within working ``structure'' directory you need
 \subsection{Display and cleaning}
 
 \begin{frame}{Multiple sequence alignment with MUSCLE}
-\includegraphics[width=\textwidth]{muscle.png}
+  \includegraphics[width=\textwidth]{muscle.png}
 \end{frame}
 
 \begin{frame}[fragile]{Cleaning the alignment}
@@ -3332,7 +3335,7 @@ Within working ``structure'' directory you need
     # Root the tree
     plot.phylo(hauss.nj)
     print.phylo(hauss.nj)
-    # resolve.root=TRUE ensures root will be bifurcating
+    # resolve.root=TRUE ensures root will be bifurcating (needed here)
     # (without this parameter it soemtimes doesn't work)
     hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10)
     print.phylo(hauss.nj.rooted)
@@ -3460,6 +3463,8 @@ Within working ``structure'' directory you need
 \begin{frame}{Topographical distances among trees V -- the matrices}
 \includegraphics[width=\textwidth]{oxalis-dist.png}
 \end{frame}
+
+% TODO PCA from the distances
 
 \begin{frame}[fragile]{Consensus tree}
 \begin{multicols}{2}
@@ -3876,7 +3881,7 @@ Within working ``structure'' directory you need
 \end{frame}
 
 \begin{frame}{Correlograms of SW and SW+FW (in one or two graphs) depending on taxonomical level with marked significance}
-\includegraphics[width=\textwidth]{correlog.png}
+  \includegraphics[width=\textwidth]{correlog.png}
 \end{frame}
 
 \subsection{Decomposition}
@@ -4060,7 +4065,7 @@ Within working ``structure'' directory you need
   \end{spluscode}
 \end{frame}
 
-% \subsection{Partitioning}
+% \subsection{Partitioning} TODO
 %
 % \begin{frame}[fragile]{Variance partitioning}
 %   \begin{spluscode}
@@ -4143,7 +4148,7 @@ Within working ``structure'' directory you need
   \end{spluscode}
 \end{frame}
 
-\subsection{pPCA}
+\subsection{pPCA} % TODO theory
 
 \begin{frame}[fragile]{Phylogenetic principal component analysis}{PCA corrected for phylogeny}
   \begin{spluscode}
@@ -4347,7 +4352,7 @@ Within working ``structure'' directory you need
 \end{multicols}
 \end{frame}
 
-% \subsection{Disparity}
+% \subsection{Disparity} TODO
 %
 % \begin{frame}[fragile]{Disparity through time}
 %   \begin{spluscode}
@@ -4377,59 +4382,27 @@ Within working ``structure'' directory you need
   \end{spluscode}
 \end{frame}
 
-\subsection{Scripts, functions and loops}
+\subsection{Scripts}
 
-\begin{frame}[fragile]{Simple loop}
+\begin{frame}{R script and its running from command line}
   \begin{itemize}
-    \item Loops repeat one task given number of time
-    \item variable \texttt{i} has changing value for every repetition
-    \item It is possible to use variables or numeric output of functions in \texttt{from:to} expression
+    \item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension with list of R commands
+    \item Mark all user comments with \texttt{\#} on the beginning
+    \item In command line (Linux/Mac OS~X/Windows/\ldots) use
+    \begin{itemize}
+      \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
+      \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow
+    \end{itemize}
+    \item Script ends when there is some error or on the end of the file
+    \item When working on both Windows and Mac OS~X/Linux, take care about end of lines
+    \begin{itemize}
+      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for new line
+      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines
+    \end{itemize}
   \end{itemize}
-  \begin{spluscode}
-    # Simplest loop - print value of "i" in each step
-    for (i in 1:5) { print(i) }
-    # In every step modify value of variable "X"
-    X <- 0
-    for (i in 10:1) {
-      print("Loop turn")
-      print(i)
-      X <- X+i
-      print(paste("Variable value:", X))
-      }
-    # Work on each item of a list object
-    for (L in 1:length(nothofagus.sequences)) {
-      print(length(nothofagus.sequences[[L]])) }
-    # While loop - it is done while condition is valid
-    y=0
-    while (y < 5) { print(y <- y+1) }
-  \end{spluscode}
 \end{frame}
 
-% ## If-else branching
-% XX <- seq(from=-3, to=6.5, by=0.1)
-% XX
-% YY <- c()
-% for (II in 1:length(XX)) {
-%   if(XX[II] <= 2) {
-%     YY[II] <- XX[II]^2
-%     } else if(XX[II] > 2) {
-%       YY[II] <- 6-XX[II]
-%       }
-%   }
-% YY
-% plot(XX, YY)
-% 
-% # Or
-% CC <- function(AA) {
-%   if(AA <= 2) {
-%     BB <- AA^2
-%   } else {
-%     BB <- 6-AA
-%   }
-%   return(BB)
-%   }
-% CC
-% plot(sapply(XX, CC))
+\subsection{Functions}
 
 \begin{frame}[fragile]{Simple function}
   \begin{itemize}
@@ -4451,22 +4424,88 @@ Within working ``structure'' directory you need
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{R script and its running from command line}
+\subsection{Loops}
+
+\begin{frame}[fragile]{Simple loop -- for cycles}
   \begin{itemize}
-    \item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension with list of R commands
-    \item Mark all user comments with \texttt{\#} on the beginning
-    \item In command line (Linux/Mac OS~X/Windows/\ldots) use
-    \begin{itemize}
-      \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
-      \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow
-    \end{itemize}
-    \item Script ends when there is some error or on the end of the file
-    \item When working on both Windows and Mac OS~X/Linux, take care about end of lines
-    \begin{itemize}
-      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for new line
-      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines
-    \end{itemize}
+    \item Loops repeat one task given number of time
+    \item variable \texttt{i} has changing value for every repetition
+    \item It is possible to use variables or numeric output of functions in \texttt{from:to} expression
   \end{itemize}
+  \begin{spluscode}
+    # Simplest loop - print value of "i" in each step
+    # "i" is commonly used for various indexing
+    for (i in 1:5) { print(i) }
+    # In every step modify value of variable "X" (add 1 to previous value)
+    X <- 0 # Set initial value
+    for (i in 10:1) {
+      print("Loop turn") # Some message for user
+      print(i) # Print number of turn - note it is decreasing
+      X <- X+i # Rise value of "X" by current value of "i" (previous line)
+      print(paste("Variable value:", X)) # Print current value of "X"
+      }
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{For and while loops} % TODO one more example
+  \begin{spluscode}
+    # Work on each item of a list object
+    # Print length of each sequence in nothofagus.sequences
+    for (L in 1:length(nothofagus.sequences)) {
+      print(length(nothofagus.sequences[[L]])) }
+    # While loop - it is done while the condition is valid
+    # While value of "Q" is < 5 (starting from 0), print it and add 1
+    Q <- 0
+    while (Q < 5) { print(Q <- Q+1) }
+  \end{spluscode}
+\end{frame}
+
+\subsection{If-else branching}
+
+\begin{frame}[fragile]{If-else branching}
+  \begin{itemize}
+    \item Basic method of branching the code -- \textbf{if} the condition is met, one branch is followed, \textbf{else} -- in any other case -- the other branch of the code is executed
+    \item \texttt{else} part can be missing -- the code is executed \textbf{only if} the condition is met
+  \end{itemize}
+  \begin{spluscode}
+    XX <- seq(from=-3, to=6.5, by=0.1)
+    XX
+    YY <- c()
+    for (II in 1:length(XX)) {
+      if(XX[II] <= 2) { # Executed for XX <= 2
+        YY[II] <- XX[II]^2
+        } else if(XX[II] > 2) { # Executed for XX > 2
+          YY[II] <- 6-XX[II]
+          }
+      }
+    YY # See next two slides for the end of the example
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{If-else branching}
+  \begin{spluscode}
+    plot(XX, YY) # See the result
+    # Or (different possibility to get very same result)
+    # Note "XX" is reused from previous slide
+    CC <- function(AA) {
+      if(AA <= 2) { # Executed for XX <= 2
+        BB <- AA^2
+      } else { # Executed for XX > 2
+        BB <- 6-AA
+        }
+      return(BB) # The output value
+      }
+     CC # Previously, "YY" contained values to plot made by the for loop,
+        # here "CC" contains function to by used by sapply() when plotting
+     plot(sapply(XX, CC)) # See the result
+    # The plot (same for both ways how to do it) is on next slide
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{Output of the if-else branching example}
+  \begin{center}
+    \includegraphics[height=7cm]{if-else.png}
+  \end{center}
 \end{frame}
 
 \subsection{Resources}
@@ -4480,58 +4519,58 @@ Within working ``structure'' directory you need
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Where to look for the help}
-\begin{itemize}
- \item R homepage \url{https://www.r-project.org/} and packages \url{https://cran.r-project.org/web/packages/} (with documentation and links)
- \item List of R documentation \url{https://cran.r-project.org/manuals.html}
- \item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
- \item R genetics mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-genetics}
- \item Bioconductor home page \url{https://bioconductor.org/}
- \item Bioconductor support forum \url{https://support.bioconductor.org/} and Bioconductor help pages \url{https://master.bioconductor.org/help/}
- \item R phylo wiki \url{http://www.r-phylo.org/wiki/Main_Page}
- \item R phylogenetics at CRAN \url{https://cran.r-project.org/web/views/Phylogenetics.html}
- \item Integrated documentation search \url{http://www.rdocumentation.org/}
- \item RForge package repository \url{https://r-forge.r-project.org/} (with documentation)
- \item Little Book of R for Bioinformatics \url{https://a-little-book-of-r-for-bioinformatics.readthedocs.org/en/latest/}
- \item Little Book of R for Multivariate Analysis \url{https://little-book-of-r-for-multivariate-analysis.readthedocs.org/en/latest/}
- \item Little Book of R for Biomedical Statistics \url{https://a-little-book-of-r-for-biomedical-statistics.readthedocs.org/en/latest/}
- \item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/}
- \item Adegenet web \url{http://adegenet.r-forge.r-project.org/}, help mailing list \url{https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
- \item APE home page \url{http://ape-package.ird.fr/}
- \item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
- \item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
- \item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation} and forum \url{https://groups.google.com/forum/\#!forum/poppr}
- \item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
- \item Phangorn resources \url{http://cran.r-project.org/web/packages/phangorn/index.html}
- \item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
- \item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
- \item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
- \item Books about R \url{https://www.r-project.org/doc/bib/R-books.html}
- \item R at StackOverflow StackExchange \url{https://stackoverflow.com/questions/tagged/r}
- \item R at CrossValidated StackExchange \url{https://stats.stackexchange.com/questions/tagged/r}
- \item The R journal \url{https://journal.r-project.org/}
- \item R-bloggers -- aggregation of R blogs \url{http://www.r-bloggers.com/}
- \item R on The Molecular Ecologist \url{http://www.molecularecologist.com/category/software/r/}
- \item R tutorial \url{http://www.r-tutor.com/}
- \item Cookbook for R  \url{http://www.cookbook-r.com/}
- \item Spatial R \url{https://sites.google.com/site/spatialr/}
- \item R for open big data \url{http://ropensci.org/}
- \item Statistics with R \url{http://zoonek2.free.fr/UNIX/48_R/all.html}
- \item The R Inferno book \url{http://www.burns-stat.com/documents/books/the-r-inferno/}
- \item Springer R series \url{https://www.springer.com/series/6991?detailsPage=titles}
- \item ggplot2 (the most powerful graphical library used by many packages) information \url{http://ggplot2.org/}
- \item plyr documentation \url{http://plyr.had.co.nz/} -- manipulation with data
- \item Learning R \url{https://learnr.wordpress.com/}
- \item R for Community Ecologists \url{http://ecology.msu.montana.edu/labdsv/R/}
- \item Try R on-line course full of adventure anf heroic quests \url{http://tryr.codeschool.com/}
- \item Quick-R learning resource \url{http://statmethods.net/}
- \item R manual and help search \url{http://finzi.psych.upenn.edu/}
- \item Biostars -- general bioinformatics forum \url{https://www.biostars.org/}
- \item Biology -- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
- \item Do not hesitate to ask on the forum or contact author of package with which you have problem, preferably through some public forum or mailing list, they usually respond quickly and helpfully\ldots
- \item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
- \item R packages commonly contain vignettes (tutorials) -- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
- \item List available training datasets from various R packages by \texttt{data()} and load selected by \texttt{data(DatasetName)}
-\end{itemize}
+  \begin{itemize}
+    \item R homepage \url{https://www.r-project.org/} and packages \url{https://cran.r-project.org/web/packages/} (with documentation and links)
+    \item List of R documentation \url{https://cran.r-project.org/manuals.html}
+    \item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
+    \item R genetics mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-genetics}
+    \item Bioconductor home page \url{https://bioconductor.org/}
+    \item Bioconductor support forum \url{https://support.bioconductor.org/} and Bioconductor help pages \url{https://master.bioconductor.org/help/}
+    \item R phylo wiki \url{http://www.r-phylo.org/wiki/Main_Page}
+    \item R phylogenetics at CRAN \url{https://cran.r-project.org/web/views/Phylogenetics.html}
+    \item Integrated documentation search \url{http://www.rdocumentation.org/}
+    \item RForge package repository \url{https://r-forge.r-project.org/} (with documentation)
+    \item Little Book of R for Bioinformatics \url{https://a-little-book-of-r-for-bioinformatics.readthedocs.org/en/latest/}
+    \item Little Book of R for Multivariate Analysis \url{https://little-book-of-r-for-multivariate-analysis.readthedocs.org/en/latest/}
+    \item Little Book of R for Biomedical Statistics \url{https://a-little-book-of-r-for-biomedical-statistics.readthedocs.org/en/latest/}
+    \item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/}
+    \item Adegenet web \url{http://adegenet.r-forge.r-project.org/}, help mailing list \url{https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
+    \item APE home page \url{http://ape-package.ird.fr/}
+    \item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
+    \item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
+    \item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation} and forum \url{https://groups.google.com/forum/\#!forum/poppr}
+    \item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
+    \item Phangorn resources \url{http://cran.r-project.org/web/packages/phangorn/index.html}
+    \item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
+    \item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
+    \item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
+    \item Books about R \url{https://www.r-project.org/doc/bib/R-books.html}
+    \item R at StackOverflow StackExchange \url{https://stackoverflow.com/questions/tagged/r}
+    \item R at CrossValidated StackExchange \url{https://stats.stackexchange.com/questions/tagged/r}
+    \item The R journal \url{https://journal.r-project.org/}
+    \item R-bloggers -- aggregation of R blogs \url{http://www.r-bloggers.com/}
+    \item R on The Molecular Ecologist \url{http://www.molecularecologist.com/category/software/r/}
+    \item R tutorial \url{http://www.r-tutor.com/}
+    \item Cookbook for R  \url{http://www.cookbook-r.com/}
+    \item Spatial R \url{https://sites.google.com/site/spatialr/}
+    \item R for open big data \url{http://ropensci.org/}
+    \item Statistics with R \url{http://zoonek2.free.fr/UNIX/48_R/all.html}
+    \item The R Inferno book \url{http://www.burns-stat.com/documents/books/the-r-inferno/}
+    \item Springer R series \url{https://www.springer.com/series/6991?detailsPage=titles}
+    \item ggplot2 (the most powerful graphical library used by many packages) information \url{http://ggplot2.org/}
+    \item plyr documentation \url{http://plyr.had.co.nz/} -- manipulation with data
+    \item Learning R \url{https://learnr.wordpress.com/}
+    \item R for Community Ecologists \url{http://ecology.msu.montana.edu/labdsv/R/}
+    \item Try R on-line course full of adventure anf heroic quests \url{http://tryr.codeschool.com/}
+    \item Quick-R learning resource \url{http://statmethods.net/}
+    \item R manual and help search \url{http://finzi.psych.upenn.edu/}
+    \item Biostars -- general bioinformatics forum \url{https://www.biostars.org/}
+    \item Biology -- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
+    \item Do not hesitate to ask on the forum or contact author of package with which you have problem, preferably through some public forum or mailing list, they usually respond quickly and helpfully\ldots
+    \item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
+    \item R packages commonly contain vignettes (tutorials) -- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
+    \item List available training datasets from various R packages by \texttt{data()} and load selected by \texttt{data(DatasetName)}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{How to ask for help}
@@ -4562,21 +4601,21 @@ Within working ``structure'' directory you need
 \end{frame}
 
 \begin{frame}{Further reading}{The most important books for our topics}
-\begin{thebibliography}{1}
-  \bibitem[Paradis 2012]{Paradis2012}
-    Emmanuel Paradis
-    \newblock Analysis of Phylogenetics and Evolution with R, second edition
-    \newblock Springer, 2012
-    \newblock \url{http://ape-package.ird.fr/APER.html}
-  \bibitem[Crawley 2012]{Crawley2012}
-    Michael J. Crawley
-    \newblock The R Book, second edition
-    \newblock Wiley, 2012
-  \bibitem[Sinha 2014]{Sinha2014}
-    Paurush Praveen Sinha
-    \newblock Bioinformatics with R Cookbook
-    \newblock Packt Publishing, 2014
-\end{thebibliography}
+  \begin{thebibliography}{1}
+    \bibitem[Paradis 2012]{Paradis2012}
+      Emmanuel Paradis
+      \newblock Analysis of Phylogenetics and Evolution with R, second edition
+      \newblock Springer, 2012
+      \newblock \url{http://ape-package.ird.fr/APER.html}
+    \bibitem[Crawley 2012]{Crawley2012}
+      Michael J. Crawley
+      \newblock The R Book, second edition
+      \newblock Wiley, 2012
+    \bibitem[Sinha 2014]{Sinha2014}
+      Paurush Praveen Sinha
+      \newblock Bioinformatics with R Cookbook
+      \newblock Packt Publishing, 2014
+  \end{thebibliography}
 \end{frame}
 
 \subsection{Summary}
@@ -4767,8 +4806,8 @@ Within working ``structure'' directory you need
 
 \end{document}
 
-%% Missing topics:
-%% ----------------
+% TODO Missing topics:
+%
 % More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
 % coalescence based approach for creation of species tree from multiple gene trees - https://faculty.franklin.uga.edu/lliu/content/phybase
