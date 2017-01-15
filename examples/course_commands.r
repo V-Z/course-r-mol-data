@@ -193,6 +193,7 @@ clonecorrect() # poppr - corrects for clones
 informloci() # poppr - removes uninformative loci
 seppop() # adegenet - separates populations from genind or genlight object
 seploc() # adegenet - splits genind, genpop or genlight by markers
+alleles2loci() # pegas - transforms a matrix of alleles into "loci"
 # seppop and seploc return lists of objects - for further analysis
 # read manual pages (?...) of the functions before usage
 
@@ -311,10 +312,10 @@ hauss.summ <- summary(hauss.genind)
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
-# T-test of difference between observed and expected heterozygosity - strongly significant
-t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=TRUE)
 # Bartlett's K-squared of difference between observed and expected heterozygosity - not significant
 bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
+# T-test of difference between observed and expected heterozygosity - strongly significant
+t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=TRUE)
 # Create pane with some information
 par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
 # Plot alleles number vs. population sizes
@@ -367,7 +368,7 @@ fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
 pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
 
 # Estimates of population theta according to Kimmel et al. 1998
-theta.msat(hauss.loci)
+# theta.msat(hauss.loci)
 
 ## Multi locus genotypes
 # Total number of MLGs (simple value)
@@ -481,7 +482,9 @@ class(meles.dist)
 dim(as.matrix(meles.dist))
 
 # Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data
-usflu.dists <- lapply(X=usflu.genlight, FUN=function(DDD) dist(as.matrix(DDD)))
+usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
+class(usflu.dists.l)
+usflu.dists <- lapply(X=usflu.dists.l, FUN=function(DDD) dist(as.matrix(DDD)))
 class(usflu.dists)
 names(usflu.dists)
 class(usflu.dists[[1]])
@@ -524,7 +527,7 @@ abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), co
 
 ## AMOVA
 # From package pegas (doesn't directly show percentage of variance)
-hauss.pop <- hauss.genind$pop
+hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
 hauss.amova
 # Another possibility is poppr.amova - for more complicated hierarchy - see ?poppr.amova
@@ -602,15 +605,15 @@ nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
 # Populations
-hauss.nj.pop <- nj(hauss.dist.pop)
-# Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
-source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
-hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
-# Plot a tree
-plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3, main="Neighbor-Joining tree of populations")
-# Labels - bootstrap
-nodelabels(round(hauss.boot.pop/10), frame="none")
-print.phylo(hauss.nj.pop)
+# hauss.nj.pop <- nj(hauss.dist.pop)
+# # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
+# source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
+# hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
+# # Plot a tree
+# plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3, main="Neighbor-Joining tree of populations")
+# # Labels - bootstrap
+# nodelabels(round(hauss.boot.pop/10), frame="none")
+# print.phylo(hauss.nj.pop)
 
 # Make a tree based on DNA sequences
 usflu.tree <- nj(X=usflu.dist)
@@ -809,16 +812,17 @@ hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5, d1=0, d2=1, plo
 hauss.connectivity
 # Test of Moran's I for 1st PCoA axis
 moran.test(x=hauss.pcoa$li[,1], listw=hauss.connectivity, alternative="greater", randomisation=TRUE)
-hauss.pcoa1.mctest <- moran.mc(x=hauss.pcoa$li[,1], listw=hauss.connectivity, alternative="greater", nsim=1000)
+hauss.pcoa1.mctest <- moran.mc(x=hauss.pcoa[["li"]][,1], listw=hauss.connectivity, alternative="greater", nsim=1000)
 hauss.pcoa1.mctest
-plot(hauss.pcoa1.mctest)
-moran.plot(x=hauss.pcoa$li[,1], listw=hauss.connectivity)
+# Plot the results
+plot(hauss.pcoa1.mctest) # Plot of densitiy of permutations
+moran.plot(x=hauss.pcoa$li[,1], listw=hauss.connectivity) # PC plot
 # Test of Moran's I for 2nd PCoA axis
 moran.test(x=hauss.pcoa$li[,2], listw=hauss.connectivity, alternative="greater", randomisation=TRUE)
 hauss.pcoa2.mctest <- moran.mc(x=hauss.pcoa$li[,2], listw=hauss.connectivity, alternative="greater", nsim=1000)
 hauss.pcoa2.mctest
-plot(hauss.pcoa2.mctest)
-moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity)
+plot(hauss.pcoa2.mctest) # Plot of densitiy of permutations
+moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 
 ## sPCA
 
@@ -1705,6 +1709,7 @@ YY
 plot(XX, YY) # See the result
 
 # Or (different possibility to get very same result)
+# Note "XX" is reused from the previous variant
 CC <- function(AA) {
   if(AA <= 2) { # Executed for XX <= 2
     BB <- AA^2
@@ -1713,7 +1718,7 @@ CC <- function(AA) {
     }
   return(BB) # The output value
   }
-CC
+CC # Previously, "YY" contained values to plot made by the for loop, here "CC" contains function to by used by sapply() when plotting
 plot(sapply(XX, CC)) # See the result
 
 ## Functions

@@ -112,7 +112,7 @@
  \item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
  \begin{itemize}
   \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
-  \item The best is to open the script in e.g. RStudio or any other R GUI (see further) and directly work with it
+  \item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (see further) and directly work with it
   \item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*txt}}
   \item \alert{Never ever} open R script in software like MS~Word -- it destroys quotation marks and other things making script unusable
  \end{itemize}
@@ -196,6 +196,8 @@
  \item Most of packages are available as pre-compiled and can be immediately installed from R -- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
  \item Usually there are some problems every time new version of OS is released -- it takes time to modify and recompile packages for new version of OS
  \item You have to check for new version of R manually
+ \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+ \item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{Mac OS~X}, but it requires some work to install it
 \end{itemize}
 \end{frame}
 
@@ -211,10 +213,12 @@
 
 \begin{frame}{Linux -- Debian/Ubuntu and derivatives like Linux Mint or Kali Linux}
 \begin{itemize}
- \item Install package \texttt{build-essential}
+ \item Install package \texttt{build-essential} (general tools to compile software, including R packages)
  \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
  \item Ubuntu (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/ubuntu/}
  \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://cran.wu.ac.at/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
+ \item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
+ \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
 \end{itemize}
 \end{frame}
 
@@ -228,28 +232,31 @@
     \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/released/} (updated with new R release)
   \end{footnotesize}
  \end{itemize}
- \item Install packages \texttt{R-base} (the R) and \texttt{rstudio} and/or \texttt{rkward}
+ \item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} and optionally \texttt{rstudio} and/or \texttt{rkward}
  \item Install package \texttt{patterns-openSUSE-devel\_basis} for compilation of R packages when installing them from R (only some R packages are available in repositories)
+ \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- RedHat, Fedora and derivatives like CENTOS, Scientific Linux, etc.}
 \begin{itemize}
  \item See instructions at \url{https://cran.r-project.org/bin/linux/redhat/README}
- \item Install packages \texttt{R-core}, \texttt{R-core-devel} and \texttt{rkward}
+ \item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward}
+ \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
 \end{itemize}
 \end{frame}
 
 \begin{frame}{Sources of R packages}
-\begin{itemize}
- \item R CRAN \url{https://cran.r-project.org/} -- main and largest source of R packages (over 9500 packages + many orphaned and archived)
- \item Bioconductor \url{https://bioconductor.org/} -- mainly bioinformatics packages, genomic data ($\sim$1300 packages)
- \item R-Forge \url{https://r-forge.r-project.org/} (over 2000 packages)
- \item RForge \url{https://www.rforge.net/} (much smaller)
- \item And more\ldots
- \item Some packages are available from more resources
- \item Same name for function can be used in different packages (there is no central index) -- to distinguish them call functions like this: \texttt{muscle::read.fasta()} vs. \texttt{seqinr::read.fasta()} -- call function \texttt{read.fasta()} from package \texttt{muscle} \alert{or} \texttt{seqinr} (and their parameters can be different\ldots) -- see further
-\end{itemize}
+  \label{sources}
+  \begin{itemize}
+    \item R CRAN \url{https://cran.r-project.org/} -- main and largest source of R packages (almost 10000 packages + many orphaned and archived)
+    \item Bioconductor \url{https://bioconductor.org/} -- mainly bioinformatics packages, genomic data (over 1400 packages)
+    \item R-Forge \url{https://r-forge.r-project.org/} (over 2000 packages)
+    \item RForge \url{https://www.rforge.net/} (much smaller)
+    \item And more\ldots
+    \item Some packages are available from more resources
+    \item Same name for function can be used in different packages (there is no central index) -- to distinguish them call functions like this: \texttt{muscle::read.fasta()} vs. \texttt{seqinr::read.fasta()} -- call function \texttt{read.fasta()} from package \texttt{muscle} \alert{or} \texttt{seqinr} (and their parameters can be different\ldots) -- see further
+  \end{itemize}
 \end{frame}
 
 \subsection{Let's start with R}
@@ -509,7 +516,7 @@ There are information about slots within that classes you can access.
 
 \begin{frame}{Repositories}
   \begin{itemize}
-    \item Repositories (internet directories full of R packages) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
+    \item Repositories (internet directories full of R packages -- slide~\ref{sources}) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
     \item Repositories doesn't have to be set as global options, e.g. Bioconductor has its own way to manage packages
   \end{itemize}
   \begin{block}{Installation of packages in GUI}
@@ -520,7 +527,22 @@ There are information about slots within that classes you can access.
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile, label=repos]{Set repositories}
+\begin{frame}{Theory for packages and their management}
+  \begin{itemize}
+    \item Standalone plain R doesn't have enough tools for most of scientific disciplines -- only basic methods and tools for programmers, including for package management
+    \item Users/developers contribute by making extra packages extending computational possibilities -- one of biggest R advantages -- it then has unlimited possibilities
+    \item R has infrastructure for maintaining (for developers) and installing (for users) packages -- the \href{https://cran.r-project.org/}{CRAN} repository
+    \item For various reasons, some people build their own infrastructures to maintain and install R packages -- compatible with R, bud separated
+    \item User has basically two options
+    \begin{enumerate}
+      \item Set all repositories in R and use basic commands to install packages (slide~\ref{repos})
+      \item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff}) or use special tools (e.g. for \href{http://bioconductor.org/install/}{Bioconductor} -- slide~\ref{bioc})
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Set repositories}
+  \label{repos}
   \begin{spluscode}
     # Basic package installation
     install.packages("PackageName") # Case sensitive!
@@ -587,6 +609,7 @@ There are information about slots within that classes you can access.
 \end{frame}
 
 \begin{frame}[fragile]{Install phyloch package}{Example of installation of package not available in any repository}
+  \label{phyloch}
   \begin{itemize}
     \item Check \url{http://www.christophheibl.de/Rpackages.html} 
     \item Package phyloch is similar to \href{https://cran.r-project.org/web/packages/ips/}{ips} from same author (but some functions behave differently) -- both are great for usage of external applications within R
@@ -603,6 +626,7 @@ There are information about slots within that classes you can access.
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor}
+  \label{bioc}
   \begin{itemize}
     \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
     \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or \textbf{use Bioconductor's special function} (recommended by Bioconductor):
@@ -640,6 +664,7 @@ There are information about slots within that classes you can access.
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor and others -- differences from another repositories}
+  \label{sources-diff}
   \begin{spluscode}
     # Standard installation
     install.packages(pkgs=c("adegenet", "poppr", "phytools"))
@@ -702,14 +727,14 @@ There are information about slots within that classes you can access.
     \begin{itemize}
       \item Codominant data -- e.g. microsatellites (SSRs -- Simple Sequence Repeats)
       \begin{itemize}
-	\item Variability in number of short (usually 1-3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 50-250 repeats) bordered by unique primer sequences
+	\item Variability in number of short (usually 1-3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 25-250 repeats) bordered by unique primer sequences
 	\item Very variable, fast evolving, species-specific primers needed
 	\item Mainly for population genetics, relationships among closely related species
 	\item Similarly ISSRs (Inter Simple Sequence Repeats)
       \end{itemize}
       \item Presence/absence (1/0) dominant data
       \begin{itemize}
-	\item The allele is or is not presented  -- it is impossible to distinguish heterozygots from dominant homozygots
+	\item The allele \textbf{is} or \textbf{is not} present  -- it is impossible to distinguish heterozygots from dominant homozygots
 	\item AFLP (Amplified Fragment Length Polymorphism) -- very variable, technically complicated, nowadays bit expensive and outdated
 	\item Simpler methods RAPD (Random Amplified Polymorphic DNA) and PCR-RFLP (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
       \end{itemize}
@@ -717,6 +742,7 @@ There are information about slots within that classes you can access.
     \item Protein sequences -- not used in the course
     \begin{itemize}
       \item Apart similar usage as with DNA/RNA (sequence analysis) it is possible to work with the structure and conformation of the proteins
+      \item R has plenty of packages for specialized protein analyses
     \end{itemize}
     \item Nucleic acid sequences (in nearly any form) -- DNA or RNA
     \begin{itemize}
@@ -734,26 +760,27 @@ There are information about slots within that classes you can access.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Notes about paths to import the data}{Wrong path is one of the most common user mistakes}
-\begin{itemize}
- \item Generally, R can accept nearly any local or web location
- \item If unsure where you are, open any file manager, go to the R working directory (verify with \texttt{getwd()} and \texttt{dir()}) and verify where everything is
- \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
- \item Local paths (within one computer) can be absolute or relative
- \begin{itemize}
-  \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
-  \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
+\begin{frame}[allowframebreaks]{Notes about paths to import the data}
+  \label{path}
   \begin{itemize}
-    \item In the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
-    \item For subdirectory start with its name (\textbf{no} with \texttt{/} or \texttt{C:}), e.g. \texttt{FileParameter="subdirectory/another/directory/file.txt"}
-    \item When going directory up, use one \texttt{..} for each level, e.g. \texttt{FileParameter="../upper/directory/file.txt"}
-    \item On UNIX (Mac OS~X, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
+    \item Generally, R can accept nearly any local or web location
+    \item If unsure where you are, open any file manager, go to the R working directory (verify with \texttt{getwd()} and \texttt{dir()}) and verify where everything is
+    \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
+    \item Local paths (within one computer) can be absolute or relative
+    \begin{itemize}
+      \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+      \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
+      \begin{itemize}
+	\item In the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
+	\item For subdirectory start with its name (\textbf{no} with \texttt{/} or \texttt{C:}), e.g. \texttt{FileParameter="subdirectory/another/directory/file.txt"}
+	\item When going directory up, use one \texttt{..} for each level, e.g. \texttt{FileParameter="../upper/directory/file.txt"}
+	\item On UNIX (Mac OS~X, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
+      \end{itemize}
+      \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace nearly any filename parameter (e.g. \texttt{FileParameter="file.choose()"}
+    \end{itemize}
+    \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
+    \item One of the most common source of errors -- \textbf{when the command fails, double check paths} (and Internet connection, if applicable) -- for another common problems see slide~\ref{problems}
   \end{itemize}
-  \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace nearly any filename parameter (e.g. \texttt{FileParameter="file.choose()"}
- \end{itemize}
- \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
- \item One of the most common source of errors -- \textbf{when the command fails, double check paths} (and Internet connection, if applicable)
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
@@ -982,18 +1009,22 @@ Source data (two files -- AFLP data with individual names and populations)
     informloci() # poppr - removes uninformative loci
     seppop() # adegenet - separates populations from genind or genlight
     seploc() # adegenet - splits genind, genpop or genlight by markers
+    alleles2loci() # pegas - transforms a matrix of alleles into "loci"
     # seppop and seploc return lists of genind objects - for further
     # analysis using special functions to work on lists (see further)
     # read manual pages (?...) of the functions before usage
   \end{spluscode}
+  \begin{itemize}
+    \item \texttt{alleles2loci()} is very useful when each allele is in separated columns (not like in our case where one column contains one loci with all alleles) -- saves time needed to change input file formatting
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Notes about getting data into R}
 \begin{itemize}
  \item When importing fragmentation data, we somehow use function \texttt{read.table()} -- it is important to understand it
  \item I~recommend to use TAB (TSV -- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
- \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()}
- \item Do not use underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, letters or dots
+ \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
+ \item Do not use underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, Latin letters or dots
  \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
  \item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
 \end{itemize}
@@ -1201,7 +1232,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \section{Basic analysis}
 
-\begin{frame}{Overview of descriptive statistics} %TODO list of methods
+\begin{frame}[allowframebreaks]{Overview of descriptive statistics} %TODO list of methods
   \begin{itemize}
     \item 
   \end{itemize}
@@ -1223,16 +1254,38 @@ Source data (two files -- AFLP data with individual names and populations)
       main="Observed vs expected heterozygosity",
       xlab="Expected heterozygosity", ylab="Observed heterozygosity")
     abline(0, 1, col="red")
-    # T-test of difference between
-    # observed and expected heterozygosity - strongly significant
-    t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=T)
     # Bartlett's K-squared of difference
     # between observed and expected heterozygosity - not significant
-    bartlett.test(list(hauss.summ$Hexp,hauss.summ$Hobs))
+    bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
+                  Bartlett test of homogeneity of variances
+    data:  list(hauss.summ$Hexp, hauss.summ$Hobs)
+    Bartlett's K-squared = 0.069894, df = 1, p-value = 0.7915
   \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Descriptive statistics II}
+  \begin{itemize}
+    \item \texttt{t-test} and \texttt{bartlett.test} require data to have normal distribution -- if the condition is not met, it is necessary to use some weaker non-parametric test (\texttt{kruskal.test}, \texttt{wilcox.test},~\ldots)
+    \item See respective manual pages for details
+    \item \texttt{shapiro.test()} tests the normality of given vector
+  \end{itemize}
+  \begin{spluscode}
+    # T-test of difference between
+    # observed and expected heterozygosity - strongly significant
+    t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=T)
+                 Paired t-test
+    data:  hauss.summ$Hexp and hauss.summ$Hobs
+    t = 3.5622, df = 11, p-value = 0.004456
+    alternative hypothesis: true difference in means is not equal to 0
+    95 percent confidence interval:
+     0.06114303 0.25887357
+    sample estimates:
+    mean of the differences
+                  0.1600083
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Descriptive statistics III}
   \begin{spluscode}
     # Create pane with some information
     par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
@@ -1257,7 +1310,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \subsection{Statistics}
 
-\begin{frame}{Graphs from previous two slides}
+\begin{frame}{Graphs from previous slides}
   \includegraphics[width=\textwidth]{heterozygosity.png}
 \end{frame}
 
@@ -1297,8 +1350,8 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
-  \begin{itemize} % TODO  richer description
-    \item In theory, in large panmictic population can mate everyone with everyone (it is in equilibrium) -- in reality, environment, behavior, mutations, genetic drift, etc. is more or less structuring the population -- but how much?
+  \begin{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle}{In theory}, in large panmictic population without evolutionary influence everyone can mate with everyone (it is in equilibrium) and allele frequencies remain stable -- in reality, environment, behavior, mutations, genetic drift, etc. are structuring the population
   \end{itemize}
   \begin{spluscode}
     # According to loci
@@ -1318,6 +1371,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}[fragile]{Departure from HWE -- results per locus}
+  \vfill
   \splus/hauss.hwe.test/
   \begin{tabular}{lllll}
     & chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
@@ -1327,14 +1381,17 @@ Source data (two files -- AFLP data with individual names and populations)
     msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
     ... & ... & ... & ... & ...
   \end{tabular}
-  \begin{itemize} %TODO details about tests
-    \item Pr.exact shows significance of the departure (i.e. non-equilibrial distribution of alleles within population)
+  \vfill
+  \begin{itemize}
+    \item Pr.exact shows significance of the departure (i.e. non-equilibrial distribution of alleles within population -- calculated per loci)
+    \item $\chi^2$ \href{https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test}{test} (without or with the permutations) test the departure -- if it is significant or not -- not how much it is departing
   \end{itemize}
+  \vfill
 \end{frame}
 
-\begin{frame}[fragile]{F-statistics and population theta I}
+\begin{frame}[fragile]{F-statistics I}
   \begin{itemize}
-    \item Functions return tables of F-statistics/thetas values for populations/loci
+    \item Functions return tables of F-statistics values for populations/loci (roughly 0 -- no structure, 1 -- fully structured)
     \item The different \href{https://en.wikipedia.org/wiki/F-statistics}{F-statistics} look at different levels of population structure. F$_{IT}$ is the inbreeding coefficient of an individual relative to the total population; F$_{IS}$ is the inbreeding coefficient of an individual relative to the subpopulation and averaging them; and F$_{ST}$ is the effect of subpopulations compared to the total population
     \item For \texttt{Fst}, \texttt{fstat} and \texttt{theta.msat} the loci object \textbf{must} contain population column
   \end{itemize}
@@ -1348,9 +1405,9 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{F-statistics and population theta II}
+\begin{frame}[fragile]{F-statistics II}
   \begin{spluscode}
-    # multilocus estimators of variance components and F-statistics,
+    # Multilocus estimators of variance components and F-statistics,
     # alternative to Fst
     library(hierfstat)
     fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
@@ -1358,18 +1415,24 @@ Source data (two files -- AFLP data with individual names and populations)
     Total 0.1589501 0.2582641
     pop   0.0000000 0.1180834
     # Nei's pairwise Fst between all pairs of populations.
-    pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix", truenames=T)
+    # 0 = no structure; 1 = maximal difference
+    pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
                He         Ne         Oh         Pr         Sk
     He 0.00000000 0.19960826 0.11391904 0.09404571 0.11184561
-    ...       ...        ...        ...        ...        ...
-    # Estimates of population theta according to Kimmel et al. 1998
-    theta.msat(hauss.loci)
-               theta.v    theta.h theta.x
-    msta93  1287.09037 42.7450000  49.500
-    msta101  105.62800  0.6006928   0.000
-        ...        ...        ...     ...
+    Ne 0.19960826 0.00000000 0.07265306 0.19220430 0.10112859
+    Oh 0.11391904 0.07265306 0.00000000 0.05302854 0.06287497
+    Pr 0.09404571 0.19220430 0.05302854 0.00000000 0.10436469
+    Sk 0.11184561 0.10112859 0.06287497 0.10436469 0.00000000
   \end{spluscode}
 \end{frame}
+
+% TODO population theta
+%     # Estimates of population theta according to Kimmel et al. 1998
+%     theta.msat(hauss.loci)
+%                theta.v    theta.h theta.x
+%     msta93  1287.09037 42.7450000  49.500
+%     msta101  105.62800  0.6006928   0.000
+%         ...        ...        ...     ...
 
 \begin{frame}[fragile]{Multi locus genotypes}
   \begin{multicols}{2}
@@ -1396,7 +1459,7 @@ Functions from poppr package -- the best for microsatellites, although available
 
 \begin{frame}[fragile]{Inbreeding}
 \begin{multicols}{2}
-  \includegraphics[height=6cm]{inbreeding.png}
+  \includegraphics[height=5.5cm]{inbreeding.png}
   \begin{spluscode}
     # Load training data (cattle)
     data(microbov)
@@ -1441,7 +1504,7 @@ Functions from poppr package -- the best for microsatellites, although available
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
   \end{spluscode}
 
-Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean (non-negative) distances}. If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
+Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean distances} (non-negative, Pythagoeran theorem is valid, etc.). If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
 \end{frame}
 
 \begin{frame}[fragile]{Distances reflecting microsatellite repeats}
@@ -1512,21 +1575,24 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{frame}
 
 \begin{frame}[fragile]{Different distances have different use case and outputs\ldots}
-  \begin{tabular}{llll} % TODO links to methods references
+  \vfill
+  \begin{tabular}{llll}
     \textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
-    Prevosti & \texttt{prevosti.dist}, & --- & No\\
+    \href{http://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & No\\
      & \texttt{diss.dist} & & \\
-    Nei & \texttt{nei.dist} & Infinite Alleles, & No\\
+    \href{http://www.jstor.org/stable/2459777}{Nei 1972}, \href{http://www.genetics.org/content/89/3/583.short}{1978} & \texttt{nei.dist} & Infinite Alleles, & No\\
      & & Genetic Drift & \\
-    Edwards & \texttt{edwards.dist} & Genetic Drift & Yes\\
-    Reynolds & \texttt{reynolds.dist} & Genetic Drift & Yes\\
-    Rogers & \texttt{rogers.dist} & --- &\\
-    Bruvo & \texttt{bruvo.dist} & Stepwise Mutation & No
+    \href{http://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
+    \href{http://www.genetics.org/node/324318.full}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
+    Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- &\\
+    \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2004.02209.x/full}{Bruvo 2004} & \texttt{bruvo.dist} & Stepwise Mutation & No
   \end{tabular}
+  \vfill
   \begin{spluscode}
     # See details of distance methods in package poppr
     vignette("algo", package="poppr")
   \end{spluscode}
+  \vfill
 \end{frame}
 
 \begin{frame}[fragile]{Comparison of different matrices}
@@ -1583,11 +1649,13 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Distances and genlight object} % FIXME
+\begin{frame}[fragile]{Distances and genlight object}
 Pairwise genetic distances for each data block (genlight objects with whole genome data) -- sensitive to missing data (not useful in every case):
 \vfill
   \begin{spluscode}
-    usflu.dists <- lapply(X=usflu.genlight, FUN=function(DDD)
+    usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
+    class(usflu.dists.l)
+    usflu.dists <- lapply(X=usflu.dists.l, FUN=function(DDD)
       dist(as.matrix(DDD)))
     class(usflu.dists)
     names(usflu.dists)
@@ -1600,7 +1668,7 @@ Pairwise genetic distances for each data block (genlight objects with whole geno
     usflu.distg <- dist(as.matrix(usflu.genlight))
   \end{spluscode}
 \vfill
-Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for most of the cases
+Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for all of the cases
 \end{frame}
 
 \begin{frame}[fragile]{Visualize pairwise genetic similarities}
@@ -1709,19 +1777,20 @@ All points in the right graph should be clustered along the red line\ldots
 \begin{frame}[fragile]{AMOVA}
   \begin{spluscode}
     # From package pegas (doesn't directly show percentage of variance)
-    hauss.pop <- hauss.genind$pop
+    hauss.pop <- pop(hauss.genind)
     hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
       nperm=1000, is.squared=TRUE)
     hauss.amova
-    # Output:
-    $tab
-                   SSD      MSD df
-    hauss.pop 15.11916 3.779790 4
-    Error     59.62501 1.419643 42
-    Total     74.74417 1.624873 46
+    ...
+                    SSD      MSD df
+    hauss.pop  30.71923 7.679809  4
+    Error     119.58100 2.847167 42
+    Total     150.30023 3.267396 46
+    ...
   \end{spluscode}
 \begin{itemize}
  \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+ \item See \texttt{MSD} column for how much of the variance is on which level -- percentage can be calculated as percentage of each level from \texttt{Total}
  \item Another possibility is \texttt{poppr.amova} -- for more complicated hierarchy, see \texttt{?poppr.amova}
 \end{itemize}
 \end{frame}
@@ -2037,6 +2106,7 @@ All points in the right graph should be clustered along the red line\ldots
 \section{DAPC}
 
 \begin{frame}[fragile]{DAPC}
+  \label{DAPC}
   \begin{itemize}
     \item Discriminant Analysis of Principal components (\href{http://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94}{Jombart et al. 2010})
     \item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
@@ -2296,12 +2366,17 @@ All points in the right graph should be clustered along the red line\ldots
 \subsection{Moran's~I}
 
 \begin{frame}{Moran's~\textit{I}}
-\begin{itemize}
-  \item ``Only'' autocorrelation index -- no genetic/evolutionary model involved -- sometimes criticized as biologically irrelevant mechanism
-  \item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology)
-  \item Calculations are done according to connectivity network connecting individuals/populations (created by \texttt{chooseCN}) -- carefully check its options and try several parameters
-  \item Pay attention which hypothesis is tested (i.e. if lower, greater or two-sided) -- similar to T-test
-\end{itemize}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item ``Only'' autocorrelation index -- no genetic/evolutionary model involved -- sometimes criticized as biologically irrelevant mechanism
+      \item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology)
+      \item Calculations are done according to connectivity network connecting individuals/populations (created by \texttt{chooseCN}) -- carefully check its options and try several parameters
+      \item Pay attention which hypothesis is tested (i.e. if lower, greater or two-sided) -- similar to T-test
+    \end{itemize}
+    \begin{center}
+      \includegraphics[width=4.5cm]{choosecn.png}
+    \end{center}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Calculation of Moran's \textit{I} I}
@@ -2312,28 +2387,10 @@ All points in the right graph should be clustered along the red line\ldots
     hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5,
       d1=0, d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
     hauss.connectivity
-    # Output:
-    Characteristics of weights list object:
-    Neighbor list object:
-    Number of regions: 47
-    Number of nonzero links: 1120
-    Percentage nonzero weights: 50.70167
-    Average number of links: 23.82979
-    Weights style: W
-    Weights constants summary:
-       n   nn S0       S1      S2
-    W 47 2209 47 4.033607 207.037
-    ###
-  \end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Calculation of Moran's \textit{I} II}
-  \begin{spluscode}
     # Test of Moran's I for 1st PCoA axis
     # Results can be checked against permuted values of moran.mc()
-    moran.test(x=hauss.pcoa$li[,1], listw=hauss.connectivity,
+    moran.test(x=hauss.pcoa[["li"]][,1], listw=hauss.connectivity,
       alternative="greater", randomisation=TRUE)
-    # Output:
     Moran's I test under randomisation
     data:  hauss.pcoa$li[, 1]
     weights: hauss.connectivity
@@ -2342,9 +2399,23 @@ All points in the right graph should be clustered along the red line\ldots
     sample estimates:
     Moran I statistic       Expectation          Variance
         -0.5232003724     -0.0217391304      0.0007336276
+   \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Calculation of Moran's \textit{I} II}
+  \begin{spluscode}
+    # Test of Moran's I for 1st PCoA axis
     hauss.pcoa1.mctest <- moran.mc(x=hauss.pcoa$li[,1],
       listw=hauss.connectivity, alternative="greater", nsim=1000)
     hauss.pcoa1.mctest
+    # Output:
+      Monte-Carlo simulation of Moran I
+    data:  hauss.pcoa$li[, 1] 
+    weights: hauss.connectivity  
+    number of simulations + 1: 1001 
+    statistic = -0.5163, observed rank = 1, p-value = 0.999
+    alternative hypothesis: greater
+    # Plot the results
     plot(hauss.pcoa1.mctest) # Plot of densitiy of permutations
     moran.plot(x=hauss.pcoa$li[,1], listw=hauss.connectivity) # PC plot
   \end{spluscode}
@@ -2375,9 +2446,9 @@ All points in the right graph should be clustered along the red line\ldots
     number of simulations + 1: 1001 
     statistic = 0.0545, observed rank = 1001, p-value = 0.000999
     alternative hypothesis: greater
-    # Plots
-    plot(hauss.pcoa2.mctest)
-    moran.plot(x=hauss.pcoa$[,2], listw=hauss.connectivity)
+    # Plot the results
+    plot(hauss.pcoa2.mctest) # Plot of densitiy of permutations
+    moran.plot(x=hauss.pcoa$[,2], listw=hauss.connectivity) # PC plot
   \end{spluscode}
 \end{frame}
 
@@ -2621,6 +2692,29 @@ All points in the right graph should be clustered along the red line\ldots
   Correlation (genetic similarity) in several distance classes (positive \textbf{[up]} in short distance \textbf{[left]}, negative \textbf{[down]} in long \textbf{[right]}; \textbf{[full]} -- significant, \textbf{[empty]} -- not significant) -- see \texttt{?mantel.correlog} for details
 \end{frame}
 
+\begin{frame}[fragile]{Mantel correlogram -- text output}
+  \begin{spluscode}
+    hauss.mantel.cor # See the text output:
+    Mantel Correlogram Analysis
+    Call:
+    mantel.correlog(D.eco = hauss.dist, D.geo = hauss.gdist, XY = NULL,
+     n.class = 0, break.pts = NULL, cutoff = FALSE, r.type = "pearson",
+     nperm = 1000, mult = "holm", progressive = TRUE) 
+            class.index     n.dist Mantel.cor Pr(Mantel) Pr(corrected)
+    D.cl.1     0.054757 532.000000   0.409545     0.0010      0.000999 ***
+    D.cl.2     0.164271   0.000000         NA         NA            NA
+    D.cl.3     0.273784  52.000000   0.028055     0.2797      0.279720
+    D.cl.4     0.383298   0.000000         NA         NA            NA
+    D.cl.5     0.492812 466.000000  -0.097214     0.0160      0.031968 *
+    D.cl.6     0.602325  36.000000  -0.086288     0.0140      0.041958 *
+    D.cl.7     0.711839 108.000000  -0.044109     0.1568      0.313686
+    D.cl.8     0.821353 458.000000  -0.095780     0.0100      0.049950 *
+    ...        ...      ...         ...           ...         ...
+    ---
+    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+  \end{spluscode}
+\end{frame}
+
 \subsection{Geneland}
 
 \begin{frame}[fragile]{About Geneland}
@@ -2684,6 +2778,22 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
+\begin{frame}[fragile]{Before running MCMC}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Monte Carlo Markov Chains (MCMC) require usually millions of generations (iterations, \texttt{nit)} to find optimal solution
+      \item Beginning ($\sim$10-20\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analyses and it is discarded
+      \item Geneland allows to set density of sampling among generations (\texttt{thinning}) -- it is not necessary to sample every generation
+      \item Within millions of generations we can sample every 1000-10000$^{th}$ generation
+      \item Denser sampling produces smoother data, but can consume too much disk space\ldots
+    \end{itemize}
+    Directory structure for Geneland:
+    \begin{center}
+      \includegraphics[width=2cm]{genelad_dirs.png}
+    \end{center}
+  \end{multicols}
+\end{frame}
+
 \begin{frame}[fragile]{Settings and running MCMC}
   \begin{spluscode}
     hauss.geneland.nrun <- 5 # Set number of independent runs
@@ -2711,6 +2821,8 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \begin{frame}[fragile]{Running MCMC}
   \begin{spluscode}
       # Start of FOR loop is on previous page
+      # In practice set much higher number of iterations (nit),
+      # appropriate sampling (thinning) and longer burnin
       # Post-process chains
       PostProcessChain(coordinates=hauss.geneland.coord.utm,
         path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500,
@@ -2802,19 +2914,21 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
       hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,
         "log.posterior.density.txt", sep="")
       hauss.geneland.lpd[hauss.geneland.irun] <- 
-        mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)])
-      }
+        mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)]) }
     # Sorts runs according to decreasing posterior probability
     # the first one is the best
     order(hauss.geneland.lpd, decreasing=TRUE)
-    hauss.geneland.lpd
+    [1] 5 1 4 3 2 # Run 5 is the best here
+    hauss.geneland.lpd # Here the runs are unsorted
+    [1] -645.0238 -782.7912 -676.9559 -664.9947 -601.7902 # Run 5 wins
   \end{spluscode}
   \begin{itemize}
     \item We will use figures and F$_{ST}$ outputs only from the best run
+    \item It is useful to keep all runs especially for comparison if there are different solutions with similar posterior probability
   \end{itemize}
 \end{frame}
 
-\begin{frame}{MCMC chain, number of clusters and their map}
+\begin{frame}{MCMC chain, number of clusters and their map}{MCMC did not converge yet -- too few generations, the most likely solution is K=4 followed by K=5}
   \includegraphics[width=\textwidth]{geneland1.png}
 \end{frame}
 
@@ -2885,7 +2999,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # Plot on datasets from mapproj package
     library(maps) # Various maping tools (plotting, ...)
     library(mapdata) # More detailed maps, but political boundaries often
-           # outdatet, see https://cran.r-project.org/web/packages/mapdata/
+           # outdated, see https://cran.r-project.org/web/packages/mapdata/
     library(mapproj) # Convert latitude/longitude into projected coordinates
     # Plot a map, check parameters
     # Check among others "projection" and ?mapproject for its details
@@ -2966,7 +3080,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \begin{itemize}
       \item User must run it repeatedly for several Ks to find the best division
       \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm)
-      \item Finally there can be hundreds of runs\ldots
+      \item Finally there use to be hundreds of runs\ldots
       \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python)
     \end{itemize}
     \item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
@@ -3007,6 +3121,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
     \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
     \item Authors recommend to run it without GUI and not on Windows\ldots
+    \item For this chapter start new R project in new working directory
   \end{itemize}
   \begin{spluscode}
     # Prepare special new empty directory and set working directory
@@ -3043,15 +3158,18 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}[fragile]{Input files}
+  \vfil
   \textbf{Joblist file:}\\
+  \vfil
   \begin{tabular}{lllll}
     S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
     S06 & 1,2,3,4,5 & 2 & 500 & 10000\\
     S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
-    ... & ... & ... & ... & ...\\
+    ... & ... & ... & ... & ...
   \end{tabular}
   \vfill
   \textbf{Input file:}\\
+  \vfil
   \begin{tabular}{lllllllllll}
     & & & msta93 & msta101 & msta102 & msta103 & ...\\
     H01 & 1 & 0 & 269 & 198 & 221 & 419 & ...\\
@@ -3060,6 +3178,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
     ... & ... & ... & ... & ... & ... & ... & ...
   \end{tabular}
+  \vfil
 \end{frame}
 
 \begin{frame}[fragile]{Running ParallelStructure}
@@ -4148,9 +4267,20 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
-\subsection{pPCA} % TODO theory
+\subsection{pPCA}
 
-\begin{frame}[fragile]{Phylogenetic principal component analysis}{PCA corrected for phylogeny}
+\begin{frame}{Phylogenetic principal component analysis}{PCA corrected for phylogeny}
+  \begin{itemize}
+    \item It requires as input phylogenetic tree and respective comparative data
+    \item Phylogenetic component is removed from the data, then classical PCA is calculated
+    \item Together with nodes (taxa), PCA scores for PC axes are plotted -- not the taxa -- it shows trends of character evolution on the tree, not positions of taxa in PC space
+    \item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
+    \item From package \href{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btq292}{adephylo} by \href{http://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
+    \item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Phylogenetic principal component analysis -- the code}
   \begin{spluscode}
     # Library needed to create phylo4d object required by ppca
     library(phylobase)
@@ -4428,14 +4558,20 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 
 \begin{frame}[fragile]{Simple loop -- for cycles}
   \begin{itemize}
-    \item Loops repeat one task given number of time
-    \item variable \texttt{i} has changing value for every repetition
-    \item It is possible to use variables or numeric output of functions in \texttt{from:to} expression
+    \item Loops repeat one task given number of times
+    \item Variable \texttt{i} has changing value for every repetition -- useful for working with indexes (within lists, matrices,~\ldots)
+    \item It is possible to use variables or numeric output of functions in \texttt{from:to} expression -- this is very variable
+    \item In \texttt{for} loop we know in advance the number of repetitions (cycles), in \texttt{while} loop (next slide) we don't
   \end{itemize}
   \begin{spluscode}
     # Simplest loop - print value of "i" in each step
     # "i" is commonly used for various indexing
     for (i in 1:5) { print(i) }
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{For and while loops}
+  \begin{spluscode}
     # In every step modify value of variable "X" (add 1 to previous value)
     X <- 0 # Set initial value
     for (i in 10:1) {
@@ -4444,11 +4580,6 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
       X <- X+i # Rise value of "X" by current value of "i" (previous line)
       print(paste("Variable value:", X)) # Print current value of "X"
       }
-  \end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{For and while loops} % TODO one more example
-  \begin{spluscode}
     # Work on each item of a list object
     # Print length of each sequence in nothofagus.sequences
     for (L in 1:length(nothofagus.sequences)) {
@@ -4462,7 +4593,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 
 \subsection{If-else branching}
 
-\begin{frame}[fragile]{If-else branching}
+\begin{frame}[fragile]{If-else branching I}
   \begin{itemize}
     \item Basic method of branching the code -- \textbf{if} the condition is met, one branch is followed, \textbf{else} -- in any other case -- the other branch of the code is executed
     \item \texttt{else} part can be missing -- the code is executed \textbf{only if} the condition is met
@@ -4482,11 +4613,11 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{If-else branching}
+\begin{frame}[fragile]{If-else branching II}
   \begin{spluscode}
     plot(XX, YY) # See the result
     # Or (different possibility to get very same result)
-    # Note "XX" is reused from previous slide
+    # Note "XX" is reused from the previous slide
     CC <- function(AA) {
       if(AA <= 2) { # Executed for XX <= 2
         BB <- AA^2
@@ -4508,6 +4639,73 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{center}
 \end{frame}
 
+\subsection{Solving problems}
+
+\begin{frame}[allowframebreaks]{Most common problems and their solutions}
+  \label{problems}
+  \begin{itemize}
+    \item Something was not found
+    \begin{itemize}
+      \item Check spelling of all methods, parameters, etc.
+      \item Check all paths (slide~\ref{path})
+      \item Check if all required objects were correctly created in previous steps
+    \end{itemize}
+    \item Unknown parameter, method, etc
+    \begin{itemize}
+      \item Check spelling of all parameters, consult manual pages
+    \end{itemize}
+    \item Graphics is not plotted correctly
+    \begin{itemize}
+      \item Graphical window is too small (common problem with RStudio on screen with low resolution) -- try to enlarge plotting window/pane
+      \item Reset graphical settings from some previous plot(s) by (repeated) calling of \texttt{dev.off()}
+    \end{itemize}
+    \item R does nothing (but CPU is not extensively used)
+    \begin{itemize}
+      \item R is waiting for some user input
+      \item If command line starts with \texttt{+}, previous line was not completed correctly (e.g. missing closing bracket \texttt{)}) -- check syntax, add it and hit \texttt{Enter}
+      \item Some functions show plots and ask user for decision what to do (e.g DAPC, slide~\ref{DAPC}) -- write the answer into command line or special window and hit \texttt{Enter}
+    \end{itemize}
+    \item Some functions are not (without extra work) usable on all operating systems, some don't work correctly in GUI
+    \begin{itemize}
+      \item Check manual and/or some on-line forum (slide~\ref{help} and onward)
+    \end{itemize}
+    \item R and packages are more or less changing from version to version
+    \begin{itemize}
+      \item Old methods can became outdated and not working anymore
+      \item Check release notes and change logs for new versions, manual pages and on-line forums (slide~\ref{help} and onward)
+      \item Generally, follow news for your topic (appropriate mailing list,~\ldots)
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{How to ask for help}
+  \label{howtoask}
+  \begin{itemize}
+    \item \alert{Never ever} ask simple silly lazy questions you can quickly find in manual or web
+    \item People on mailing lists and forums respond volunteerly in their spare free time -- do not waste it -- be polite, brief and informative
+    \item Be as specific and exact as possible
+    \begin{itemize}
+      \item Write \alert{exactly} what you did (``It doesn't work!'' is useless\ldots)
+      \item Copy/paste your commands and their output, especially error messages -- they are keys to solve the problem
+      \item Try to search web for the error messages (or their parts)
+      \item Try to provide minimal working example -- add at least part of your data (if applicable) so that the problem is reproducible
+      \item Specify version(s) of R/packages, operating system and/or another important details -- authors will commonly insist on newest versions: add outputs of \texttt{sessionInfo()} and \texttt{packageVersion("PackageName")}
+    \end{itemize}
+    \item \textbf{R is free as freedom of speech -- not as free beer!}
+    \begin{itemize}
+      \item As soon as you don't pay for support, you can't blame anyone for lack of responses
+      \item There are plenty of reasons some package/function doesn't work -- usage/data author didn't expect, unsupported operating system, author's mistake, user's mistake, \ldots
+      \item Authors wish their software to be useful -- constructive feedback, reporting bugs and wishes is welcomed, but it must be provided in the way useful for the developer
+    \end{itemize}
+    \item R functions commonly lack control of input data -- error messages are returned by internal functions
+    \begin{itemize}
+      \item They are not straightforward
+      \item It requires some training and experience to be quickly able to find what is going on
+      \item Always carefully read error messages and think about them
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
 \subsection{Resources}
 
 \begin{frame}{Citations}
@@ -4518,7 +4716,27 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Further reading}{The most important books for our topics}
+  \begin{thebibliography}{1}
+    \bibitem[Paradis 2012]{Paradis2012}
+      Emmanuel Paradis
+      \newblock Analysis of Phylogenetics and Evolution with R, second edition
+      \newblock Springer, 2012
+      \newblock \url{http://ape-package.ird.fr/APER.html}
+    \bibitem[Crawley 2012]{Crawley2012}
+      Michael J. Crawley
+      \newblock The R Book, second edition
+      \newblock Wiley, 2012
+    \bibitem[Sinha 2014]{Sinha2014}
+      Paurush Praveen Sinha
+      \newblock Bioinformatics with R Cookbook
+      \newblock Packt Publishing, 2014
+  \end{thebibliography}
+\end{frame}
+
 \begin{frame}[allowframebreaks]{Where to look for the help}
+  \label{help}
+  Before asking, \alert{ensure your question is in answerable form} -- slide~\ref{howtoask}.
   \begin{itemize}
     \item R homepage \url{https://www.r-project.org/} and packages \url{https://cran.r-project.org/web/packages/} (with documentation and links)
     \item List of R documentation \url{https://cran.r-project.org/manuals.html}
@@ -4571,51 +4789,6 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item R packages commonly contain vignettes (tutorials) -- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
     \item List available training datasets from various R packages by \texttt{data()} and load selected by \texttt{data(DatasetName)}
   \end{itemize}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{How to ask for help}
-  \begin{itemize}
-    \item \alert{Never ever} ask simple silly lazy questions you can quickly find in manual or web
-    \item People on mailing lists and forums respond volunteerly in their spare free time -- do not waste it -- be polite, brief and informative
-    \item Be as specific and exact as possible
-    \begin{itemize}
-      \item Write \alert{exactly} what you did (``It doesn't work!'' is useless\ldots)
-      \item Copy/paste your commands and their output, especially error messages -- they are keys to solve the problem
-      \item Try to search web for the error messages (or their parts)
-      \item Try to provide minimal working example -- add at least part of your data (if applicable) so that the problem is reproducible
-      \item Specify version(s) of R/packages, operating system and/or another important details -- authors will commonly insist on newest versions
-    \end{itemize}
-    \item \textbf{R is free as freedom of speech -- not as free beer!}
-    \begin{itemize}
-      \item As soon as you don't pay for support, you can't blame anyone for lack of responses
-      \item There are plenty of reasons some package/function doesn't work -- usage/data author didn't expect, unsupported operating system, author's mistake, user's mistake, \ldots
-      \item Authors wish their software to be useful -- constructive feedback, reporting bugs and wishes is welcomed, but it must be provided in the way useful for the developer
-    \end{itemize}
-    \item R functions commonly lack control of input data -- error messages are returned by internal functions
-    \begin{itemize}
-      \item They are not straightforward
-      \item It requires some training and experience to be quickly able to find what is going on
-      \item Always carefully read error messages and think about them
-    \end{itemize}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Further reading}{The most important books for our topics}
-  \begin{thebibliography}{1}
-    \bibitem[Paradis 2012]{Paradis2012}
-      Emmanuel Paradis
-      \newblock Analysis of Phylogenetics and Evolution with R, second edition
-      \newblock Springer, 2012
-      \newblock \url{http://ape-package.ird.fr/APER.html}
-    \bibitem[Crawley 2012]{Crawley2012}
-      Michael J. Crawley
-      \newblock The R Book, second edition
-      \newblock Wiley, 2012
-    \bibitem[Sinha 2014]{Sinha2014}
-      Paurush Praveen Sinha
-      \newblock Bioinformatics with R Cookbook
-      \newblock Packt Publishing, 2014
-  \end{thebibliography}
 \end{frame}
 
 \subsection{Summary}
