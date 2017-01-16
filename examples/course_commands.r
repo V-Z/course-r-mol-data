@@ -328,21 +328,9 @@ barplot(height=hauss.summ$Hexp-hauss.summ$Hobs, main="Heterozygosity: expected-o
 barplot(height=hauss.summ[["n.by.pop"]], main="Sample sizes per population", ylab="Number of genotypes", las=3)
 dev.off() # Closes graphical device - otherwise following graphs would still be divided into 4 parts
 
-# poppr returns various population statistics for populations - png() will produce set of figures for each population
-png(filename="poppr_%03d.png", width=720, height=720, bg="white") # Output figures will be saved to the disk
-poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4, missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE, hist=TRUE, minsamp=1, legend=TRUE)
-dev.off() # Closes graphical device - needed after use of functions like png(), svg(), pdf(), ... to write the file(s) to the disk
-# Pop - Population name (Note that “Total” also means “Pooled”)
-# N - Number of individuals observed
-# MLG - Number of multilocus genotypes (MLG) observed
-# eMLG - The number of expected MLG at the smallest sample size ≥ 10 based on rarefaction.
-# SE - Standard error based on eMLG
-# H - Shannon-Wiener Index of MLG diversity
-# G - Stoddart and Taylor’s Index of MLG diversity
-# Hexp - Nei’s 1978 genotypic diversity (corrected for sample size), or Expected Heterozygosity
-# E.5 - Evenness, E5
-# Ia - The index of association, IA
-# rbarD - The standardized index of association
+# poppr returns various population statistics for populations
+?poppr # See details
+poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4, missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE, plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
 
 # Departure from HWE
 # According to loci
@@ -1097,7 +1085,7 @@ Structure.order("list_k_07.txt", 5)
 
 ## Multiple sequence alignment
 
-# Libraries 
+# Libraries
 library(colorspace)
 library(XML)
 library(phyloch) # Alignment with mafft, you can also try package ips
@@ -1678,6 +1666,7 @@ for (i in 1:5) { print(i) }
 # In every step modify value of variable "X" (add 1 to previous value)
 X <- 0 # Set initial value
 for (i in 10:1) {
+  # Any commands can be here...
   print("Loop turn") # Some message for user
   print(i) # Print number of turn - note it is decreasing
   X <- X+i # Rise value of "X" by current value of "i" (see previous line)
@@ -1687,7 +1676,8 @@ for (i in 10:1) {
 # Work on each item of a list object
 # Print length of each sequence in nothofagus.sequences
 for (L in 1:length(nothofagus.sequences)) {
-  print(length(nothofagus.sequences[[L]])) }
+  print(length(nothofagus.sequences[[L]]))
+  }
 
 # While loop - it is done while the condition is valid
 # While value of "Q" is < 5 (starting from 0), print it and add 1

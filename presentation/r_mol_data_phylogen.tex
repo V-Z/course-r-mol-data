@@ -694,7 +694,7 @@ There are information about slots within that classes you can access.
       \item User must install this software manually
     \end{itemize}
     \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
-%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} %TODO Rphylip
+%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} % TODO Rphylip
     \item MAFFT \url{http://mafft.cbrc.jp/alignment/software/}
     \item MUSCLE \url{http://www.drive5.com/muscle/}
     \item Clustal (W/X; Omega is not used in the course) \url{http://clustal.org/}
@@ -1232,7 +1232,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \section{Basic analysis}
 
-\begin{frame}[allowframebreaks]{Overview of descriptive statistics} %TODO list of methods
+\begin{frame}[allowframebreaks]{Overview of descriptive statistics} % TODO list of methods
   \begin{itemize}
     \item 
   \end{itemize}
@@ -1308,45 +1308,76 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
-\subsection{Statistics}
-
 \begin{frame}{Graphs from previous slides}
   \includegraphics[width=\textwidth]{heterozygosity.png}
 \end{frame}
 
-\begin{frame}[fragile]{Population statistics by poppr} % FIXME graph(s), index descriptions
-  It returns various population statistics. \texttt{png()} will produce set of figures for each population. You can similarly use \texttt{svg()}, \texttt{pdf()}, \ldots
+\subsection{Statistics}
+
+\begin{frame}[fragile]{Population statistics by poppr()}
+  \vfill
+  \begin{itemize}
+    \item \texttt{poppr()} is central function of \texttt{poppr} package calculating plenty of population genetic indices
+  \end{itemize}
+  \vfill
   \begin{spluscode}
-    png(filename="poppr_%03d.png", width=720, height=720, bg="white")
-      # Output figure(s) will be saved to the disk
+    ?poppr # See details
     poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4,
       missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE,
-      hist=TRUE, minsamp=1, legend=TRUE)
-    dev.off() # Closes graphical device - needed after use of functions
-              # png(), svg(), pdf(), ... to write the file(s) to the disk
+      plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
+    ... # Output table with indices:
+      Pop  N MLG eMLG       SE     H     G lambda   E.5  Hexp   Ia # More...
+       He 13  11 1.97 1.58e-01 2.352  9.94  0.899 0.941 0.503 1.42 ...
+       Ne  6   5 1.93 2.49e-01 1.561  4.50  0.778 0.930 0.604 3.44 ...
+      ...... ...  ...      ...   ...   ...    ...   ...   ...  ... ...
+    Total 47  43 2.00 6.07e-02 3.732 40.16  0.975 0.961 0.742 1.88 ...
   \end{spluscode}
-  \begin{tiny}
-    \begin{multicols}{2}
-      \begin{itemize}
-	\item Pop -- A vector indicating the population factor
-	\item N -- An integer vector indicating the number of individuals/isolates in the specified population
-	\item MLG -- An integer vector indicating the number of multilocus genotypes found in the specified population (see ?mlg)
-	\item eMLG -- The expected number of MLG at the lowest common sample size (set by the parameter minsamp)
-	\item SE -- The standard error for the rarefaction analysis
-	\item H -- Shannon-Weiner Diversity index
-	\item G -- Stoddard and Taylor's Index
-	\item lambda -- Simpson's index
-	\item E.5 -- Evenness
-	\item Hexp -- Nei's gene diversity (expected heterozygosity)
-	\item Ia -- A numeric vector giving the value of the Index of Association for each population factor (see ?ia)
-	\item p.Ia -- A numeric vector indicating the p-value for Ia from the number of reshuffling indicated in sample (lowest value is 1/n where n is the number of observed values)
-	\item rbarD -- A numeric vector giving the value of the Standardized Index of Association for each population factor (see ?ia)
-	\item p.rD -- A numeric vector indicating the p-value for rbarD from the number of reshuffles indicated in sample (lowest value is 1/n where n is the number of observed values)
-	\item See \href{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation}{poppr's manual} for details
-	\item The outputs are as table in R console and images saved to disk
-      \end{itemize}
-    \end{multicols}
-  \end{tiny}
+  \vfill
+  \begin{itemize}
+    \item If \texttt{plot=TRUE}, histogram of simulations (\texttt{sample} must be > 1) is plotted for each population for \texttt{rbarD} or \texttt{Ia} (according to selected \texttt{index} -- see following slides for details)
+  \end{itemize}
+  \vfill
+\end{frame}
+
+\begin{frame}{Histograms of simulations of rbarD for each population}{The populations are significantly far from being clonal}
+  \begin{center}
+    \includegraphics[height=7cm]{poppr.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
+  \begin{block}{Too much to choose from?}
+    Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages -- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
+  \end{block}
+  \begin{itemize}
+    \item \texttt{Pop} -- Population analyzed
+    \begin{itemize}
+      \item If \texttt{total=TRUE}, there are also statistics for whole dataset
+    \end{itemize}
+    \item \texttt{N} -- Number of individuals/isolates in the specified population
+    \item \texttt{MLG} -- Number of multilocus genotypes found in the specified population (see \texttt{?mlg})
+    \item \texttt{eMLG} -- The expected number of MLG at the lowest common sample size (set by \texttt{minsamp})
+    \item \texttt{SE} -- The standard error for the rarefaction analysis (assets species richness -- how it grows with growing sample size)
+    \begin{itemize}
+      \item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
+    \end{itemize}
+    \item \texttt{H} -- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} -- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size
+    \item \texttt{G} -- \href{http://www.genetics.org/content/118/4/705}{Stoddard and Taylor's Index} -- roughly, similar approach as the previous one, highly enhanced
+    \item \texttt{lambda} -- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$ = 1 minus the sum of squared genotype frequencies -- estimation of the probability that two randomly selected genotypes are different and scales from 0 (no genotypes are different) to 1 (all genotypes are different)
+    \item \texttt{E.5} -- Evenness -- measure of the distribution of genotype abundances, wherein a population with equally abundant genotypes yields a value equal to 1 and a population dominated by a single genotype is closer to 0
+    \item \texttt{Hexp} -- \href{http://www.genetics.org/content/89/3/583}{Nei's gene diversity} (expected heterozygosity) -- unbiased gene diversity (from 0 = no diversity to 1 = highest diversity)
+    \item \texttt{Ia} -- Index of Association (\texttt{?ia}) -- widely used to detect clonal reproduction within populations
+    \begin{itemize}
+      \item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a chance to shuffle alleles in the next generation
+      \item Populations whose members are undergoing clonal reproduction generally do so via mitosis -- most likely mechanism for a change in genotype is via mutation -- the rate of mutation varies from species to species, but it is rarely sufficiently high to approximate a random shuffling of alleles
+      \item The index of association is a calculation based on the ratio of the variance of the raw number of differences between individuals and the sum of those variances over each locus
+      \item It as the observed variance over the expected variance -- if they are the same, then the index is zero (=prevailing clonal reproduction) after subtracting one -- it rises with with increasing differences
+    \end{itemize}
+    \item \texttt{p.Ia} -- P-value for \texttt{Ia} from the number of reshuffling indicated in \texttt{sample}
+    \item \texttt{rbarD} -- Standardized Index of Association for each population (see \texttt{?ia}) -- corrected for higher number of loci not to rise so steeply
+    \item \texttt{p.rD} -- P-value for \texttt{rbarD} from the number of reshuffles indicated in \texttt{sample}
+    \item See \href{https://grunwaldlab.github.io/Population_Genetics_in_R/index.html}{poppr's manual} and \texttt{vignette("algo", package="poppr")} for details
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
@@ -1926,7 +1957,7 @@ All points in the right graph should be clustered along the red line\ldots
 \includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
 \end{frame}
 
-% \begin{frame}[fragile]{NJ tree of populations} FIXME rewrite the function
+% \begin{frame}[fragile]{NJ tree of populations} % FIXME rewrite the function for new version of APE
 %   \begin{spluscode}
 %     # NJ tree of populations
 %     hauss.nj.pop <- nj(hauss.dist.pop)
@@ -3304,7 +3335,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{itemize}
 \end{frame}
 
-\subsection{MAFFT and others}
+\subsection{Overview and MAFFT}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
 \begin{itemize}
@@ -3324,7 +3355,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
-\subsection{Clustal, MUSCLE and T-Coffee from ape}
+\subsection{MAFFT, Clustal, MUSCLE and T-Coffee}
 
 \begin{frame}[fragile]{Clustal, MUSCLE and T-Coffee from ape}
   \begin{spluscode}
@@ -3713,7 +3744,17 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 
 \subsection{MP}
 
-\begin{frame}[fragile]{Maximum parsimony}
+\begin{frame}{Maximum parsimony -- theory}
+  \begin{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
+    \item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
+    \item Very simple criterion, easy to score the tree, but not to find it -- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed -- it doesn't always guarantee to find the most probable tree
+    \item To speed up calculations, initial tree (usually NJ -- slide~\ref{NJ}) is used to start the search
+    \item With rising performance of computers, it use to replaced my maximum likelihood or Bayesian methods
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Maximum parsimony -- code and result}
 \begin{multicols}{2}
   \includegraphics[height=6cm]{parsimony.png}
   \splus/?parsimony # Parsimony details/
@@ -3822,6 +3863,12 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \section{Evolution}
+
+% \begin{frame}{} % TODO Introduction to methods
+%   \begin{itemize}
+%     \item 
+%   \end{itemize}
+% \end{frame}
 
 \subsection{PIC}
 
@@ -4184,7 +4231,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
-% \subsection{Partitioning} TODO
+% \subsection{Partitioning} % TODO
 %
 % \begin{frame}[fragile]{Variance partitioning}
 %   \begin{spluscode}
@@ -4482,7 +4529,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{multicols}
 \end{frame}
 
-% \subsection{Disparity} TODO
+% \subsection{Disparity} % TODO
 %
 % \begin{frame}[fragile]{Disparity through time}
 %   \begin{spluscode}
@@ -4491,6 +4538,46 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 % \end{frame}
 
 \section{The end}
+
+\subsection{Graphics}
+
+\begin{frame}[fragile]{Direct saving of plots to disk}{Useful e.g. if plot should be bigger than screen, requires special settings, if done in batch, script, etc.}
+  \begin{spluscode}
+    # Output figure(s) will be saved to the disk
+    png(filename="OutputFile.png", width=720, height=720, bg="white")
+    # Here can go any number of functions making plots...
+    plot(...) # Whatever...
+    # When using plotting commands, nothing is shown on the screen
+    # The final plot(s) will be saved by:
+    dev.off() # Closes graphical device - needed after use of plotting
+              # functions png(), svg(), pdf(), ... followed by any
+              # function like plot() to write the file(s) to the disk
+    filename="OutFiles_%03d.png" # Returns list of files named 
+                                 # OutFiles_001.png, OutFiles_002.png, ...
+                                 # Useful for functions returning more
+                                 # graphs.
+    ?png # These functions have various possibilities to set size, whatever.
+    ?svg # Exact possibilities of all 3 functions vary from system to system
+    ?pdf # according to graphical libraries available in the computer.
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{Graphical packages}
+  \begin{itemize}
+    \item Basic plotting functions in R are very limited\ldots
+    \begin{itemize}
+      \item The usage is simple, but anything more complicated requires extensive coding (plenty of examples were shown in the course)\ldots
+      \item It can be tricky to get desired figure -- some magic use to be needed\ldots
+    \end{itemize}
+    \item There are \href{https://cran.r-project.org/web/views/Graphics.html}{plenty of graphical packages}
+    \item Advanced functions we used internally by used packages are \href{https://cran.r-project.org/web/packages/lattice/index.html}{lattice} (\href{http://lattice.r-forge.r-project.org/}{web}), \href{https://cran.r-project.org/web/packages/gplots/index.html}{gplot} and \href{https://cran.r-project.org/web/packages/ggplot2/index.html}{ggplot2} (\href{http://ggplot2.org/}{web1}, \href{http://ggplot2.tidyverse.org/}{web2})
+    \begin{itemize}
+      \item They have enormous possibilities, but it is large topic for another long course\ldots
+    \end{itemize}
+    \item \texttt{par()} sets graphical parameters for following plots (splitting into panes, style of lines, points, text -- see \texttt{pch}, \texttt{lwd}, \texttt{lty}, \texttt{cex}, \texttt{mai}, \texttt{mar}, \texttt{mfcol}, \texttt{mfrow},~\ldots) -- see help pages\ldots
+    \item Most important low-level functions are \texttt{points}, \texttt{lines}, \texttt{text}, \texttt{abline}, \texttt{legend}, \texttt{axis}, \texttt{axes}, \texttt{arrows}, \texttt{box} -- see help pages\ldots
+  \end{itemize}
+\end{frame}
 
 \subsection{GitHub}
 
@@ -4521,13 +4608,13 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item In command line (Linux/Mac OS~X/Windows/\ldots) use
     \begin{itemize}
       \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
-      \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow
+      \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow -- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum}
     \end{itemize}
     \item Script ends when there is some error or on the end of the file
     \item When working on both Windows and Mac OS~X/Linux, take care about end of lines
     \begin{itemize}
-      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for new line
-      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines
+      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
+      \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines for target system
     \end{itemize}
   \end{itemize}
 \end{frame}
@@ -4575,6 +4662,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # In every step modify value of variable "X" (add 1 to previous value)
     X <- 0 # Set initial value
     for (i in 10:1) {
+      # Any commands can be here...
       print("Loop turn") # Some message for user
       print(i) # Print number of turn - note it is decreasing
       X <- X+i # Rise value of "X" by current value of "i" (previous line)
@@ -4583,7 +4671,8 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # Work on each item of a list object
     # Print length of each sequence in nothofagus.sequences
     for (L in 1:length(nothofagus.sequences)) {
-      print(length(nothofagus.sequences[[L]])) }
+      print(length(nothofagus.sequences[[L]]))
+      }
     # While loop - it is done while the condition is valid
     # While value of "Q" is < 5 (starting from 0), print it and add 1
     Q <- 0
@@ -4644,15 +4733,17 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \begin{frame}[allowframebreaks]{Most common problems and their solutions}
   \label{problems}
   \begin{itemize}
-    \item Something was not found
+    \item Something was not found (object, function file,~\ldots)
     \begin{itemize}
       \item Check spelling of all methods, parameters, etc.
       \item Check all paths (slide~\ref{path})
       \item Check if all required objects were correctly created in previous steps
+      \item Check if all required libraries are loaded
     \end{itemize}
-    \item Unknown parameter, method, etc
+    \item Unknown parameter, method, etc.
     \begin{itemize}
       \item Check spelling of all parameters, consult manual pages
+      \item Check if all required libraries are loaded
     \end{itemize}
     \item Graphics is not plotted correctly
     \begin{itemize}
@@ -4703,6 +4794,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
       \item It requires some training and experience to be quickly able to find what is going on
       \item Always carefully read error messages and think about them
     \end{itemize}
+    \item Imagine you should answer -- which information do you need?
   \end{itemize}
 \end{frame}
 
