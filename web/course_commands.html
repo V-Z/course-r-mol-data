@@ -4,7 +4,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="Generator" content="Kate, the KDE Advanced Text Editor" />
-<title>course_commands.r (2)</title>
+<title>course_commands.r</title>
 </head>
 <!-- Highlighting: "R Script" -->
 <body>
@@ -68,16 +68,19 @@ y<b>$</b>B <b><span style='color:#54ffff;'># Gets variable B of data frame y ($ 
 
 <b><span style='color:#b00000;'>## Packages and repositories</span></b>
 <b><span style='color:#54ffff;'># Set repositories</span></b>
-<b><span style='color:#54ffff;'>#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (3.3 in this case).</span></b>
-<b><span style='color:#dede49;'>options</span></b><b>(</b><b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;http://cran.at.r-project.org&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;http://r-forge.r-project.org/&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;http://www.rforge.net/&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.3/bioc&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/annotation&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.3/data/experiment&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.3/extra&quot;</span></b><b>))</b>
+<b><span style='color:#54ffff;'>#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3, see https://bioconductor.org/).</span></b>
+<b><span style='color:#dede49;'>options</span></b><b>(</b><b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://cran.wu.ac.at/&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://r-forge.r-project.org/&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://rforge.net/&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra&quot;</span></b><b>))</b>
 <b><span style='color:#dede49;'>getOption</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;repos&quot;</span></b><b>)</b> <b><span style='color:#54ffff;'># Shows actual repositories</span></b>
 <b><span style='color:#54ffff;'># Install packages</span></b>
 <b><span style='color:#54ffff;'># Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;BiocGenerics&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Biostrings&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Geneland&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;IRanges&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;MASS&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;PBSmapping&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ParallelStructure&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RandomFields&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RandomFieldsUtils&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RgoogleMaps&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Rmpi&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;S4Vectors&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;TeachingDemos&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;XML&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;XVector&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ade4&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;adegenet&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;adephylo&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;akima&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ape&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;brew&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;caper&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;colorspace&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;combinat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;corrplot&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;diveRsity&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;fields&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;geiger&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ggplot2&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;gplots&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;hierfstat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;lattice&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mapdata&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mapproj&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;maps&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;maptools&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;muscle&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mvtnorm&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;nlme&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;pegas&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;permute&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phangorn&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phylobase&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phytools&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;picante&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;plotrix&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;polysat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;poppr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;rworldmap&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;seqinr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;shiny&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;sos&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;sp&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;spdep&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;spam&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;vegan&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#dede49;'>getOption</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;repos&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>dependencies=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+?install.packages <b><span style='color:#54ffff;'># See for more options</span></b>
+<b><span style='color:#dede49;'>update.packages</span></b><b>(</b><b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#dede49;'>getOption</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;repos&quot;</span></b><b>))</b> <b><span style='color:#54ffff;'># Updates installed packages</span></b>
 
 <b><span style='color:#54ffff;'># Install packages without setting the repositories</span></b>
 <b><span style='color:#54ffff;'># If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Geneland&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;MASS&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;PBSmapping&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RandomFields&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RandomFieldsUtils&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;RgoogleMaps&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Rmpi&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;TeachingDemos&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;XML&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ade4&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;adegenet&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;adephylo&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;akima&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ape&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;brew&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;caper&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;colorspace&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;combinat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;corrplot&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;diveRsity&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;fields&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;geiger&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;ggplot2&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;gplots&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;hierfstat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;lattice&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mapdata&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mapproj&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;maps&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;maptools&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;mvtnorm&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;nlme&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;pegas&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;permute&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phangorn&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phylobase&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phytools&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;picante&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;plotrix&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;polysat&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;poppr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;rworldmap&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;seqinr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;shiny&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;sos&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;sp&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;spdep&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;spam&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;vegan&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>dependencies=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#dede49;'>update.packages</span></b><b>(</b><b><span style='color:#54ff54;'>ask=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b> <b><span style='color:#54ffff;'># Update installed (CRAN by default) packages</span></b>
 
 <b><span style='color:#54ffff;'># Install package phyloch not available in any repository</span></b>
 <b><span style='color:#54ffff;'># If not done already, install required packages first</span></b>
@@ -86,15 +89,13 @@ y<b>$</b>B <b><span style='color:#54ffff;'># Gets variable B of data frame y ($ 
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#ff54ff;'>&quot;http://www.christophheibl.de/phyloch_1.5-3.tar.gz&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;source&quot;</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># We will load packages by library(package) one by one when needed and plugins\ldots</span></b>
-<b><span style='color:#54ffff;'># Update packages</span></b>
-<b><span style='color:#dede49;'>update.packages</span></b><b>(</b><b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#dede49;'>getOption</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;repos&quot;</span></b><b>))</b>
 
 <b><span style='color:#54ffff;'># Standard installation</span></b>
 <b><span style='color:#dede49;'>install.pacakges</span></b><b>(</b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;adegenet&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;poppr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;phytools&quot;</span></b><b>))</b>
 <b><span style='color:#dede49;'>update.packages</span></b><b>()</b> <b><span style='color:#54ffff;'># Update packages</span></b>
 
 <b><span style='color:#54ffff;'># Installation from custom repository</span></b>
-<b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;ParallelStructure&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#ff54ff;'>&quot;http://R-Forge.R-project.org&quot;</span></b><b>)</b>
+<b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;ParallelStructure&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#ff54ff;'>&quot;https://r-forge.r-project.org&quot;</span></b><b>)</b>
 ?install.packages <b><span style='color:#54ffff;'># See help for details</span></b>
 
 <b><span style='color:#b00000;'>## Bioconductor</span></b>
@@ -111,7 +112,7 @@ y<b>$</b>B <b><span style='color:#54ffff;'># Gets variable B of data frame y ($ 
 <b><span style='color:#54ffff;'># Upgrades installed Bioconductor packages to new R release (e.g. from 3.2 to 3.3)</span></b>
 <b><span style='color:#dede49;'>biocLite</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;BiocUpgrade&quot;</span></b><b>)</b>
 
-<b><span style='color:#b00000;'>## Libraries for population - genetic analysis</span></b>
+<b><span style='color:#b00000;'>## Libraries for population genetic analysis</span></b>
 
 <b><span style='color:#54ffff;'># Load needed libraries</span></b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>ape<b>)</b>
@@ -124,7 +125,7 @@ y<b>$</b>B <b><span style='color:#54ffff;'># Gets variable B of data frame y ($ 
 <b><span style='color:#b00000;'>## Data</span></b>
 
 <b><span style='color:#54ffff;'># Load training data</span></b>
-hauss.loci <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.loci</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/haussknechtii_ssrs.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>loci.sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>allele.sep=</span></b><b><span style='color:#ff54ff;'>&quot;/&quot;</span></b>, <b><span style='color:#54ff54;'>col.pop=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>col.loci=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>:</b><b><span style='color:#ff54ff;'>14</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
+hauss.loci <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.loci</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/haussknechtii_ssrs.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>loci.sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>allele.sep=</span></b><b><span style='color:#ff54ff;'>&quot;/&quot;</span></b>, <b><span style='color:#54ff54;'>col.pop=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>col.loci=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>:</b><b><span style='color:#ff54ff;'>14</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Data control</span></b>
 hauss.loci
 <b><span style='color:#dede49;'>print</span></b><b>(</b>hauss.loci, <b><span style='color:#54ff54;'>details=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
@@ -139,7 +140,7 @@ hauss.genind<b>$</b>pop
 hauss.loci.cor <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>genind2loci</span></b><b>(</b>hauss.genind<b>)</b>
 
 <b><span style='color:#54ffff;'># Read coordinates</span></b>
-hauss.coord <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.csv</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/haussknechtii_coordinates.csv&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b>, <b><span style='color:#54ff54;'>dec=</span></b><b><span style='color:#ff54ff;'>&quot;.&quot;</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
+hauss.coord <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.csv</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/haussknechtii_coordinates.csv&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b>, <b><span style='color:#54ff54;'>dec=</span></b><b><span style='color:#ff54ff;'>&quot;.&quot;</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
 hauss.coord
 
 <b><span style='color:#54ffff;'># Add coordinates - note identification of slots within object</span></b>
@@ -169,7 +170,7 @@ hauss.loci.cor <b><span style='color:#336366;'>&lt;-</span></b><b><span style='c
 <b><span style='color:#dede49;'>read.structure</span></b><b>()</b> <b><span style='color:#54ffff;'># adegenet - reads *.str files, only haploid/diploid data</span></b>
 
 <b><span style='color:#54ffff;'># Import of triploid (polyploid) microsattelites</span></b>
-tarax3n.table <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/tarax3n.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
+tarax3n.table <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/tarax3n.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b>, <b><span style='color:#54ff54;'>row.names=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Check the data</span></b>
 tarax3n.table
 <b><span style='color:#dede49;'>class</span></b><b>(</b>tarax3n.table<b>)</b>
@@ -181,12 +182,12 @@ tarax3n.genind
 <b><span style='color:#dede49;'>summary</span></b><b>(</b>tarax3n.genind<b>)</b>
 
 <b><span style='color:#54ffff;'># Import of AFLP data</span></b>
-amara.aflp <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/amara_aflp.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b><b>)</b>
+amara.aflp <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/amara_aflp.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b><b>)</b>
 amara.aflp
 <b><span style='color:#dede49;'>dim</span></b><b>(</b>amara.aflp<b>)</b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>amara.aflp<b>)</b> <b><span style='color:#54ffff;'># Must be matrix or data frame</span></b>
 <b><span style='color:#54ffff;'># Populations - just one column with population names for all inds</span></b>
-amara.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/amara_pop.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b><b>)</b>
+amara.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/amara_pop.txt&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b>, <b><span style='color:#54ff54;'>quote=</span></b><b><span style='color:#ff54ff;'>&quot;&quot;</span></b><b>)</b>
 amara.pop
 <b><span style='color:#dede49;'>dim</span></b><b>(</b>amara.pop<b>)</b>
 <b><span style='color:#54ffff;'># Create genind object - ind.names and loc.names are taken from X</span></b>
@@ -204,10 +205,11 @@ aflp.genind
 <b><span style='color:#dede49;'>informloci</span></b><b>()</b> <b><span style='color:#54ffff;'># poppr - removes uninformative loci</span></b>
 <b><span style='color:#dede49;'>seppop</span></b><b>()</b> <b><span style='color:#54ffff;'># adegenet - separates populations from genind or genlight object</span></b>
 <b><span style='color:#dede49;'>seploc</span></b><b>()</b> <b><span style='color:#54ffff;'># adegenet - splits genind, genpop or genlight by markers</span></b>
+<b><span style='color:#dede49;'>alleles2loci</span></b><b>()</b> <b><span style='color:#54ffff;'># pegas - transforms a matrix of alleles into &quot;loci&quot;</span></b>
 <b><span style='color:#54ffff;'># seppop and seploc return lists of objects - for further analysis</span></b>
 <b><span style='color:#54ffff;'># read manual pages (?...) of the functions before usage</span></b>
 
-<b><span style='color:#54ffff;'># Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years</span></b>
+<b><span style='color:#54ffff;'># Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years from USA (Adegenet toy data)</span></b>
 usflu.dna <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.dna</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;http://adegenet.r-forge.r-project.org/files/usflu.fasta&quot;</span></b>, <b><span style='color:#54ff54;'>format=</span></b><b><span style='color:#ff54ff;'>&quot;fasta&quot;</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Check the object</span></b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dna<b>)</b>
@@ -215,7 +217,7 @@ usflu.dna
 <b><span style='color:#54ffff;'># Another possibility (only for FASTA alignments, same result):</span></b>
 usflu.dna2 <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>fasta2DNAbin</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;http://adegenet.r-forge.r-project.org/files/usflu.fasta&quot;</span></b><b>)</b> <b><span style='color:#54ffff;'># Normally keeps only SNP - see ?fasta2DNAbin</span></b>
 <b><span style='color:#54ffff;'># Check the object</span></b>
-<b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dna<b>)</b>
+<b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dna2<b>)</b>
 usflu.dna2
 <b><span style='color:#dede49;'>as.character</span></b><b>(</b>usflu.dna2<b>)[</b><b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>5</span></b>,<b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>10</span></b><b>]</b>
 <b><span style='color:#dede49;'>dim</span></b><b>(</b>usflu.dna2<b>)</b> <b><span style='color:#54ffff;'># Does it have correct size?</span></b>
@@ -227,10 +229,12 @@ usflu.genind <b><span style='color:#336366;'>&lt;-</span></b><b><span style='col
 <b><span style='color:#54ffff;'># read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)</span></b>
 usflu.dna3 <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>seqinr<b>::</b><b><span style='color:#dede49;'>read.fasta</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;http://adegenet.r-forge.r-project.org/files/usflu.fasta&quot;</span></b>, <b><span style='color:#54ff54;'>seqtype=</span></b><b><span style='color:#ff54ff;'>&quot;DNA&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dna3<b>)</b>
-<b><span style='color:#dede49;'>length</span></b><b>(</b>usfl.dna3<b>)</b> <b><span style='color:#54ffff;'># How many sequences we have in the list</span></b>
+<b><span style='color:#dede49;'>length</span></b><b>(</b>usflu.dna3<b>)</b> <b><span style='color:#54ffff;'># How many sequences we have in the list</span></b>
 usflu.dna3
 <b><span style='color:#54ffff;'># Convert into DNAbin class (technically, DNAbin is a list)</span></b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dna3<b>)</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> &quot;DNAbin&quot;</span></b>
+<b><span style='color:#54ffff;'># Read sequence data in NEXUS</span></b>
+<b><span style='color:#dede49;'>read.nexus.data</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;sequences.nex&quot;</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125</span></b>
 meles.dna <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.GenBank</span></b><b>(</b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;KJ161355.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161354.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161353.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161352.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161351.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161350.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161349.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161348.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161347.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161346.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161345.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161344.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161343.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161342.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161341.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161340.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161339.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161338.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161337.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161336.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161335.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161334.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161333.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161332.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161331.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161330.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161329.1&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;KJ161328.1&quot;</span></b><b>))</b>
@@ -261,6 +265,18 @@ nothofagus.annot
 nothofagus.dna <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>as.DNAbin.list</span></b><b>(</b>nothofagus.sequences<b>)</b>
 nothofagus.dna <b><span style='color:#54ffff;'># See it</span></b>
 
+<b><span style='color:#54ffff;'># Importing SNP</span></b>
+<b><span style='color:#dede49;'>read.PLINK</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;PLINKfile&quot;</span></b>, ...<b>)</b>
+?readPLINK <b><span style='color:#54ffff;'># See it for available options</span></b>
+<b><span style='color:#54ffff;'># Extract SNP from FASTA alignment</span></b>
+usflu.genlight <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>fasta2genlight</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;http://adegenet.r-forge.r-project.org/files/usflu.fasta&quot;</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>saveNbAlleles=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#54ffff;'># If it crashes (on Windows), try add parameter &quot;parallel=FALSE&quot;</span></b>
+<b><span style='color:#54ffff;'># Function has several options to speed up reading</span></b>
+?fasta2genlight
+
+<b><span style='color:#54ffff;'># Read SNP in Adegent format - check Adegenet tutorial first</span></b>
+?read.snp
+
 <b><span style='color:#54ffff;'># Checking SNPs</span></b>
 <b><span style='color:#54ffff;'># Position of polymorphism within alignment - snpposi.plot() requires input data in form of matrix</span></b>
 <b><span style='color:#dede49;'>snpposi.plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>as.matrix</span></b><b>(</b>meles.dna<b>)</b>, <b><span style='color:#54ff54;'>codon=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
@@ -271,18 +287,6 @@ meles.genind <b><span style='color:#336366;'>&lt;-</span></b><b><span style='col
 <b><span style='color:#54ffff;'># Test of random distribution of SNP</span></b>
 <b><span style='color:#dede49;'>snpposi.test</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>as.matrix</span></b><b>(</b>meles.dna<b>))</b>
 
-<b><span style='color:#54ffff;'># Importing SNP</span></b>
-<b><span style='color:#dede49;'>read.PLINK</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;PLINKfile&quot;</span></b>, ...<b>)</b>
-?readPLINK <b><span style='color:#54ffff;'># See it for available options</span></b>
-<b><span style='color:#54ffff;'># Extract SNP from FASTA alignment</span></b>
-usflu.genlight <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>fasta2genlight</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;http://adegenet.r-forge.r-project.org/files/usflu.fasta&quot;</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>saveNbAlleles=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
-<b><span style='color:#54ffff;'># If it crashes (on Windows), try add parameter &quot;parallel=FALSE&quot;</span></b>
-<b><span style='color:#54ffff;'># Function has several options to speed up reading</span></b>
-?fasta2genlight
-<b><span style='color:#54ffff;'># Convert genlight to genind (usually not necessary)</span></b>
-genind <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>df2genind</span></b><b>(</b><b><span style='color:#dede49;'>as.data.frame</span></b><b>(</b>genlight<b>))</b> <b><span style='color:#54ffff;'># Check settings!</span></b>
-<b><span style='color:#54ffff;'># Resulting data matrix might be slightly different than when using DNAbin2genind - depends on used settings</span></b>
-
 <b><span style='color:#b00000;'>## Check sequences</span></b>
 <b><span style='color:#54ffff;'># Nucleotide diversity</span></b>
 pegas<b>::</b><b><span style='color:#dede49;'>nuc.div</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna<b>)</b>
@@ -290,8 +294,8 @@ pegas<b>::</b><b><span style='color:#dede49;'>nuc.div</span></b><b>(</b><b><span
 ape<b>::</b><b><span style='color:#dede49;'>base.freq</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna<b>)</b>
 <b><span style='color:#54ffff;'># GC content</span></b>
 ape<b>::</b><b><span style='color:#dede49;'>GC.content</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna<b>)</b>
-<b><span style='color:#54ffff;'># umber of times dimer/trimer/etc oligomers occur in a sequence</span></b>
-seqinr<b>::</b><b><span style='color:#dede49;'>count</span></b><b>(</b><b><span style='color:#54ff54;'>seq=</span></b>meles.dna<b>[[</b><b><span style='color:#ff54ff;'>&quot;KJ161328.1&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>wordsize=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Number of times any dimer/trimer/etc oligomers occur in a sequence</span></b>
+seqinr<b>::</b><b><span style='color:#dede49;'>count</span></b><b>(</b><b><span style='color:#54ff54;'>seq=</span></b>meles.nogaps<b>[[</b><b><span style='color:#ff54ff;'>&quot;KJ161328.1&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>wordsize=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
 <b><span style='color:#54ffff;'># View sequences - all must be of the same length</span></b>
 <b><span style='color:#dede49;'>image</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>usflu.dna, <b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;a&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;t&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;c&quot;</span></b> ,<b><span style='color:#ff54ff;'>&quot;g&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;n&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>rainbow</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b><b>))</b>
 <b><span style='color:#54ffff;'># Function &quot;image&quot; requires as input matrix, so that sequences must be of same length</span></b>
@@ -320,10 +324,10 @@ hauss.summ <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#54ffff;'># Plot expected vs. observed heterozygosity - it looks like big difference</span></b>
 <b><span style='color:#dede49;'>plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.summ<b>$</b>Hexp, <b><span style='color:#54ff54;'>y=</span></b>hauss.summ<b>$</b>Hobs, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Observed vs expected heterozygosity&quot;</span></b>, <b><span style='color:#54ff54;'>xlab=</span></b><b><span style='color:#ff54ff;'>&quot;Expected heterozygosity&quot;</span></b>, <b><span style='color:#54ff54;'>ylab=</span></b><b><span style='color:#ff54ff;'>&quot;Observed heterozygosity&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>abline</span></b><b>(</b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#ff54ff;'>&quot;red&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Bartlett's K-squared of difference between observed and expected heterozygosity - not significant</span></b>
+<b><span style='color:#dede49;'>bartlett.test</span></b><b>(</b><b><span style='color:#dede49;'>list</span></b><b>(</b>hauss.summ<b>$</b>Hexp, hauss.summ<b>$</b>Hobs<b>))</b>
 <b><span style='color:#54ffff;'># T-test of difference between observed and expected heterozygosity - strongly significant</span></b>
 <b><span style='color:#dede49;'>t.test</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.summ<b>$</b>Hexp, <b><span style='color:#54ff54;'>y=</span></b>hauss.summ<b>$</b>Hobs, <b><span style='color:#54ff54;'>paired=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>var.equal=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
-<b><span style='color:#54ffff;'># Bartlett's K-squared of difference between observed and expected heterozygosity - not significant</span></b>
-<b><span style='color:#dede49;'>bartlett.test</span></b><b>(</b><b><span style='color:#dede49;'>list</span></b><b>(</b>hauss.summ<b>$</b>Hexp,hauss.summ<b>$</b>Hobs<b>))</b>
 <b><span style='color:#54ffff;'># Create pane with some information</span></b>
 <b><span style='color:#dede49;'>par</span></b><b>(</b><b><span style='color:#54ff54;'>mfrow=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>2</span></b>,<b><span style='color:#ff54ff;'>2</span></b><b>))</b> <b><span style='color:#54ffff;'># Divide graphical devices into 4 smaller spaces</span></b>
 <b><span style='color:#54ffff;'># Plot alleles number vs. population sizes</span></b>
@@ -336,21 +340,9 @@ hauss.summ <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#dede49;'>barplot</span></b><b>(</b><b><span style='color:#54ff54;'>height=</span></b>hauss.summ<b>[[</b><b><span style='color:#ff54ff;'>&quot;n.by.pop&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Sample sizes per population&quot;</span></b>, <b><span style='color:#54ff54;'>ylab=</span></b><b><span style='color:#ff54ff;'>&quot;Number of genotypes&quot;</span></b>, <b><span style='color:#54ff54;'>las=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
 <b><span style='color:#dede49;'>dev.off</span></b><b>()</b> <b><span style='color:#54ffff;'># Closes graphical device - otherwise following graphs would still be divided into 4 parts</span></b>
 
-<b><span style='color:#54ffff;'># poppr returns various population statistics for populations - png() will produce set of figures for each population</span></b>
-<b><span style='color:#dede49;'>png</span></b><b>(</b><b><span style='color:#54ff54;'>filename=</span></b><b><span style='color:#ff54ff;'>&quot;poppr_%03d.png&quot;</span></b>, <b><span style='color:#54ff54;'>width=</span></b><b><span style='color:#ff54ff;'>720</span></b>, <b><span style='color:#54ff54;'>height=</span></b><b><span style='color:#ff54ff;'>720</span></b>, <b><span style='color:#54ff54;'>bg=</span></b><b><span style='color:#ff54ff;'>&quot;white&quot;</span></b><b>)</b> <b><span style='color:#54ffff;'># Output figures will be saved to the disk</span></b>
-<b><span style='color:#dede49;'>poppr</span></b><b>(</b><b><span style='color:#54ff54;'>dat=</span></b>hauss.genind, <b><span style='color:#54ff54;'>total=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sample=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>missing=</span></b><b><span style='color:#ff54ff;'>&quot;geno&quot;</span></b>, <b><span style='color:#54ff54;'>cutoff=</span></b><b><span style='color:#ff54ff;'>0.15</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>clonecorrect=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>hist=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>minsamp=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>legend=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
-<b><span style='color:#dede49;'>dev.off</span></b><b>()</b> <b><span style='color:#54ffff;'># Closes graphical device - needed after use of functions like png(), svg(), pdf(), ... to write the file(s) to the disk</span></b>
-<b><span style='color:#54ffff;'># Pop - Population name (Note that “Total” also means “Pooled”)</span></b>
-<b><span style='color:#54ffff;'># N - Number of individuals observed</span></b>
-<b><span style='color:#54ffff;'># MLG - Number of multilocus genotypes (MLG) observed</span></b>
-<b><span style='color:#54ffff;'># eMLG - The number of expected MLG at the smallest sample size ≥ 10 based on rarefaction.</span></b>
-<b><span style='color:#54ffff;'># SE - Standard error based on eMLG</span></b>
-<b><span style='color:#54ffff;'># H - Shannon-Wiener Index of MLG diversity</span></b>
-<b><span style='color:#54ffff;'># G - Stoddart and Taylor’s Index of MLG diversity</span></b>
-<b><span style='color:#54ffff;'># Hexp - Nei’s 1978 genotypic diversity (corrected for sample size), or Expected Heterozygosity</span></b>
-<b><span style='color:#54ffff;'># E.5 - Evenness, E5</span></b>
-<b><span style='color:#54ffff;'># Ia - The index of association, IA</span></b>
-<b><span style='color:#54ffff;'># rbarD - The standardized index of association</span></b>
+<b><span style='color:#54ffff;'># poppr returns various population statistics for populations</span></b>
+?poppr <b><span style='color:#54ffff;'># See details</span></b>
+<b><span style='color:#dede49;'>poppr</span></b><b>(</b><b><span style='color:#54ff54;'>dat=</span></b>hauss.genind, <b><span style='color:#54ff54;'>total=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>sample=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>missing=</span></b><b><span style='color:#ff54ff;'>&quot;geno&quot;</span></b>, <b><span style='color:#54ff54;'>cutoff=</span></b><b><span style='color:#ff54ff;'>0.15</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>clonecorrect=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>plot=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>index=</span></b><b><span style='color:#ff54ff;'>&quot;rbarD&quot;</span></b>, <b><span style='color:#54ff54;'>minsamp=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>legend=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># Departure from HWE</span></b>
 <b><span style='color:#54ffff;'># According to loci</span></b>
@@ -374,9 +366,6 @@ hauss.pops.loci <b><span style='color:#336366;'>&lt;-</span></b><b><span style='
 <b><span style='color:#dede49;'>fstat</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind, <b><span style='color:#54ff54;'>pop=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>fstonly=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Nei's pairwise Fst between all pairs of populations. Difference in res.type=&quot;dist&quot;/&quot;matrix&quot; is only in format of output</span></b>
 <b><span style='color:#dede49;'>pairwise.fst</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind, <b><span style='color:#54ff54;'>pop=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>res.type=</span></b><b><span style='color:#ff54ff;'>&quot;matrix&quot;</span></b><b>)</b>
-
-<b><span style='color:#54ffff;'># Estimates of population theta according to Kimmel et al. 1998</span></b>
-<b><span style='color:#dede49;'>theta.msat</span></b><b>(</b>hauss.loci<b>)</b>
 
 <b><span style='color:#b00000;'>## Multi locus genotypes</span></b>
 <b><span style='color:#54ffff;'># Total number of MLGs (simple value)</span></b>
@@ -454,6 +443,30 @@ MyDistance <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#dede49;'>is.euclid</span></b><b>(</b>MyDistance, <b><span style='color:#54ff54;'>plot=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>print=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>tol =</span></b> <b><span style='color:#ff54ff;'>1e-10</span></b><b>)</b>
 MyDistance
 
+<b><span style='color:#54ffff;'># Compare different distance matrices</span></b>
+<b><span style='color:#54ffff;'># List of functions to be parsed to respective dist.* function</span></b>
+distances <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Nei&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Rogers&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Edwards&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Reynolds&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Prevosti&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Calculate the distance matrices</span></b>
+dists <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>lapply</span></b><b>(</b>distances, <b><span style='color:#ffff54;'>function</span></b><b>(</b>x<b>)</b> <b>{</b>
+  DISTFUN <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>match.fun</span></b><b>(</b><b><span style='color:#dede49;'>paste</span></b><b>(</b><b><span style='color:#dede49;'>tolower</span></b><b>(</b>x<b>)</b>, <b><span style='color:#ff54ff;'>&quot;dist&quot;</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;.&quot;</span></b><b>))</b>
+  <b><span style='color:#dede49;'>DISTFUN</span></b><b>(</b>hauss.genind.cor<b>)</b>
+  <b>}</b><b>)</b>
+<b><span style='color:#54ffff;'># Add names for the distance names</span></b>
+<b><span style='color:#dede49;'>names</span></b><b>(</b>dists<b>)</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>distances
+<b><span style='color:#54ffff;'># Add Bruvo distance</span></b>
+dists<b>[[</b><b><span style='color:#ff54ff;'>&quot;Bruvo&quot;</span></b><b>]]</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>hauss.dist.bruvo
+dists
+<b><span style='color:#54ffff;'># Split graphical device into 2 lines, 3 panes each</span></b>
+<b><span style='color:#dede49;'>par</span></b><b>(</b><b><span style='color:#54ff54;'>mfrow=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#ff54ff;'>3</span></b><b>))</b>
+<b><span style='color:#54ffff;'># Calculate NJ and plot all trees</span></b>
+x <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>lapply</span></b><b>(</b><b><span style='color:#dede49;'>names</span></b><b>(</b>dists<b>)</b>, <b><span style='color:#ffff54;'>function</span></b><b>(</b>x<b>)</b> <b>{</b>
+  <b><span style='color:#dede49;'>plot</span></b><b>(</b><b><span style='color:#dede49;'>njs</span></b><b>(</b>dists<b>[[</b>x<b>]])</b>, <b><span style='color:#54ff54;'>main=</span></b>x, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;unrooted&quot;</span></b><b>)</b>
+  <b><span style='color:#dede49;'>add.scale.bar</span></b><b>(</b><b><span style='color:#54ff54;'>lcol=</span></b><b><span style='color:#ff54ff;'>&quot;red&quot;</span></b>, <b><span style='color:#54ff54;'>length=</span></b><b><span style='color:#ff54ff;'>0.1</span></b><b>)</b>
+  <b>}</b><b>)</b>
+<b><span style='color:#dede49;'>dev.off</span></b><b>()</b> <b><span style='color:#54ffff;'># Close graphical device to reset settings</span></b>
+<b><span style='color:#54ffff;'># See details of distance methods in package poppr</span></b>
+<b><span style='color:#dede49;'>vignette</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;algo&quot;</span></b>, <b><span style='color:#54ff54;'>package=</span></b><b><span style='color:#ff54ff;'>&quot;poppr&quot;</span></b><b>)</b>
+
 <b><span style='color:#54ffff;'># DNA distances - there are various models available</span></b>
 ?dist.dna
 usflu.dist <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>dist.dna</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>usflu.dna, <b><span style='color:#54ff54;'>model=</span></b><b><span style='color:#ff54ff;'>&quot;TN93&quot;</span></b><b>)</b>
@@ -465,8 +478,10 @@ meles.dist
 <b><span style='color:#dede49;'>class</span></b><b>(</b>meles.dist<b>)</b>
 <b><span style='color:#dede49;'>dim</span></b><b>(</b><b><span style='color:#dede49;'>as.matrix</span></b><b>(</b>meles.dist<b>))</b>
 
-<b><span style='color:#54ffff;'># Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data</span></b>
-usflu.dists <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>lapply</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>usflu.genlight, <b><span style='color:#54ff54;'>FUN=</span></b><b><span style='color:#ffff54;'>function</span></b><b>(</b>DDD<b>)</b> <b><span style='color:#dede49;'>dist</span></b><b>(</b><b><span style='color:#dede49;'>as.matrix</span></b><b>(</b>DDD<b>)))</b>
+<b><span style='color:#54ffff;'># Distances and genlight object. Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data</span></b>
+usflu.dists.l <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>seploc</span></b><b>(</b>usflu.genlight, <b><span style='color:#54ff54;'>n.block=</span></b><b><span style='color:#ff54ff;'>10</span></b>, <b><span style='color:#54ff54;'>parallel=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
+<b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dists.l<b>)</b>
+usflu.dists <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>lapply</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>usflu.dists.l, <b><span style='color:#54ff54;'>FUN=</span></b><b><span style='color:#ffff54;'>function</span></b><b>(</b>DDD<b>)</b> <b><span style='color:#dede49;'>dist</span></b><b>(</b><b><span style='color:#dede49;'>as.matrix</span></b><b>(</b>DDD<b>)))</b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dists<b>)</b>
 <b><span style='color:#dede49;'>names</span></b><b>(</b>usflu.dists<b>)</b>
 <b><span style='color:#dede49;'>class</span></b><b>(</b>usflu.dists<b>[[</b><b><span style='color:#ff54ff;'>1</span></b><b>]])</b>
@@ -509,14 +524,16 @@ usflu.upgma <b><span style='color:#336366;'>&lt;-</span></b><b><span style='colo
 
 <b><span style='color:#b00000;'>## AMOVA</span></b>
 <b><span style='color:#54ffff;'># From package pegas (doesn't directly show percentage of variance)</span></b>
-hauss.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>hauss.genind<b>$</b>pop
+hauss.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>pop</span></b><b>(</b>hauss.genind<b>)</b>
 hauss.amova <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>pegas<b>::</b><b><span style='color:#dede49;'>amova</span></b><b>(</b>hauss.dist<b>~</b>hauss.pop, <b><span style='color:#54ff54;'>data=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>nperm=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>is.squared=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
 hauss.amova
 <b><span style='color:#54ffff;'># Another possibility is poppr.amova - for more complicated hierarchy - see ?poppr.amova</span></b>
 
 <b><span style='color:#b00000;'>## MSN based on Bruvo's distance</span></b>
 <b><span style='color:#dede49;'>bruvo.msn</span></b><b>(</b><b><span style='color:#54ff54;'>gid=</span></b>hauss.genind, <b><span style='color:#54ff54;'>replen=</span></b><b><span style='color:#dede49;'>rep</span></b><b>(</b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#ff54ff;'>12</span></b><b>)</b>, <b><span style='color:#54ff54;'>loss=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>palette=</span></b>rainbow, <b><span style='color:#54ff54;'>vertex.label=</span></b><b><span style='color:#ff54ff;'>&quot;inds&quot;</span></b>, <b><span style='color:#54ff54;'>gscale=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>wscale=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>showplot=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
-?bruvo.msn
+?bruvo.msn <b><span style='color:#54ffff;'># See details...</span></b>
+?msn.poppr <b><span style='color:#54ffff;'># For another data types</span></b>
+?imsn <b><span style='color:#54ffff;'># Interactive creation of MSN</span></b>
 
 <b><span style='color:#b00000;'>## NJ</span></b>
 
@@ -547,6 +564,9 @@ hauss.boot <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#dede49;'>nodelabels</span></b><b>(</b><b><span style='color:#54ff54;'>text=</span></b><b><span style='color:#dede49;'>round</span></b><b>(</b>hauss.boot<b>/</b><b><span style='color:#ff54ff;'>10</span></b><b>))</b>
 
 <b><span style='color:#54ffff;'># Another bootstrap possibility</span></b>
+hauss.aboot <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>aboot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind, <b><span style='color:#54ff54;'>tree=</span></b>nj, <b><span style='color:#54ff54;'>distance=</span></b>nei.dist, <b><span style='color:#54ff54;'>sample=</span></b><b><span style='color:#ff54ff;'>100</span></b><b>)</b> <b><span style='color:#54ffff;'># Bootstrap values are in slot node.label</span></b>
+<b><span style='color:#54ffff;'># Plot the tree, explicitly display node labels</span></b>
+<b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.aboot, <b><span style='color:#54ff54;'>show.node.label=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
 ?aboot <b><span style='color:#54ffff;'># See details...</span></b>
 ??plot.phylo
 
@@ -571,28 +591,17 @@ nj.rainbow <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#dede49;'>legend</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#ff54ff;'>&quot;topleft&quot;</span></b>, <b><span style='color:#54ff54;'>legend=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;He&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Oh&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Pr&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Ne&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;Sk&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>border=</span></b><b><span style='color:#ff54ff;'>&quot;black&quot;</span></b>, <b><span style='color:#54ff54;'>pch=</span></b><b><span style='color:#ff54ff;'>0</span></b><b>:</b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>pt.lwd=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>pt.cex=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>bty=</span></b><b><span style='color:#ff54ff;'>&quot;o&quot;</span></b>, <b><span style='color:#54ff54;'>bg=</span></b><b><span style='color:#ff54ff;'>&quot;lightgrey&quot;</span></b>, <b><span style='color:#54ff54;'>box.lwd=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>cex=</span></b><b><span style='color:#ff54ff;'>1.2</span></b>, <b><span style='color:#54ff54;'>title=</span></b><b><span style='color:#ff54ff;'>&quot;Populations&quot;</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># Bruvo's distance - NJ</span></b>
-<b><span style='color:#54ffff;'># hauss.nj.bruvo &lt;- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree=&quot;nj&quot;, showtree=TRUE, cutoff=1, quiet=FALSE)</span></b>
-<b><span style='color:#54ffff;'># plot.phylo(x=hauss.nj.bruvo, type=&quot;unrooted&quot;, show.tip=FALSE, lwd=3, main=&quot;Neighbor-Joining tree.&quot;)</span></b>
-<b><span style='color:#54ffff;'># # bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function</span></b>
-<b><span style='color:#54ffff;'># nodelabels(hauss.nj.bruvo[[&quot;node.labels&quot;]]) # Note you can call node labels from phylo object as phylo$node.labels or phylo[[&quot;node.labels&quot;]]</span></b>
-<b><span style='color:#54ffff;'># tiplabels(hauss.nj.bruvo[[&quot;tip.label&quot;]], bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))</span></b>
+hauss.nj.bruvo <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>bruvo.boot</span></b><b>(</b><b><span style='color:#54ff54;'>pop=</span></b>hauss.genind, <b><span style='color:#54ff54;'>replen=</span></b><b><span style='color:#dede49;'>rep</span></b><b>(</b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#ff54ff;'>12</span></b><b>)</b>, <b><span style='color:#54ff54;'>sample=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>tree=</span></b><b><span style='color:#ff54ff;'>&quot;nj&quot;</span></b>, <b><span style='color:#54ff54;'>showtree=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>cutoff=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
+<b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.nj.bruvo, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;unrooted&quot;</span></b>, <b><span style='color:#54ff54;'>show.tip=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>lwd=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Neighbor-Joining tree.&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function</span></b>
+<b><span style='color:#dede49;'>nodelabels</span></b><b>(</b>hauss.nj.bruvo<b>[[</b><b><span style='color:#ff54ff;'>&quot;node.labels&quot;</span></b><b>]])</b> <b><span style='color:#54ffff;'># Note you can call node labels from phylo object as phylo$node.labels or phylo[[&quot;node.labels&quot;]]</span></b>
+<b><span style='color:#dede49;'>tiplabels</span></b><b>(</b>hauss.nj.bruvo<b>[[</b><b><span style='color:#ff54ff;'>&quot;tip.label&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>bg=</span></b><b><span style='color:#dede49;'>fac2col</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind<b>$</b>pop, <b><span style='color:#54ff54;'>col.pal=</span></b>nj.rainbow<b>))</b>
 
 <b><span style='color:#54ffff;'># Bruvo's distance - UPGMA</span></b>
-<b><span style='color:#54ffff;'># hauss.upgma &lt;- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree=&quot;upgma&quot;, showtree=TRUE, cutoff=1, quiet=FALSE)</span></b>
-<b><span style='color:#54ffff;'># plot.phylo(hauss.upgma, type=&quot;unrooted&quot;, show.tip=FALSE, lwd=3, main=&quot;UPGMA tree&quot;)</span></b>
-<b><span style='color:#54ffff;'># nodelabels(hauss.upgma[[&quot;node.labels&quot;]])</span></b>
-<b><span style='color:#54ffff;'># tiplabels(hauss.upgma[[&quot;tip.label&quot;]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))</span></b>
-
-<b><span style='color:#54ffff;'># Populations</span></b>
-hauss.nj.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>nj</span></b><b>(</b>hauss.dist.pop<b>)</b>
-<b><span style='color:#54ffff;'># Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)</span></b>
-<b><span style='color:#dede49;'>source</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/boot_phylo_nj_pop.r&quot;</span></b><b>)</b>
-hauss.boot.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>boot.phylo.nj.pop</span></b><b>(</b>hauss.nj.pop, hauss.genind, <b><span style='color:#ff54ff;'>1000</span></b><b>)</b>
-<b><span style='color:#54ffff;'># Plot a tree</span></b>
-<b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.nj.pop, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;radial&quot;</span></b>, <b><span style='color:#54ff54;'>cex=</span></b><b><span style='color:#ff54ff;'>1.2</span></b>, <b><span style='color:#54ff54;'>lwd=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Neighbor-Joining tree of populations&quot;</span></b><b>)</b>
-<b><span style='color:#54ffff;'># Labels - bootstrap</span></b>
-<b><span style='color:#dede49;'>nodelabels</span></b><b>(</b><b><span style='color:#dede49;'>round</span></b><b>(</b>hauss.boot.pop<b>/</b><b><span style='color:#ff54ff;'>10</span></b><b>)</b>, <b><span style='color:#54ff54;'>frame=</span></b><b><span style='color:#ff54ff;'>&quot;none&quot;</span></b><b>)</b>
-<b><span style='color:#dede49;'>print.phylo</span></b><b>(</b>hauss.nj.pop<b>)</b>
+hauss.upgma <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>bruvo.boot</span></b><b>(</b><b><span style='color:#54ff54;'>pop=</span></b>hauss.genind, <b><span style='color:#54ff54;'>replen=</span></b><b><span style='color:#dede49;'>rep</span></b><b>(</b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#ff54ff;'>12</span></b><b>)</b>, <b><span style='color:#54ff54;'>sample=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>tree=</span></b><b><span style='color:#ff54ff;'>&quot;upgma&quot;</span></b>, <b><span style='color:#54ff54;'>showtree=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>cutoff=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
+<b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b>hauss.upgma, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;unrooted&quot;</span></b>, <b><span style='color:#54ff54;'>show.tip=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>lwd=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;UPGMA tree&quot;</span></b><b>)</b>
+<b><span style='color:#dede49;'>nodelabels</span></b><b>(</b>hauss.upgma<b>[[</b><b><span style='color:#ff54ff;'>&quot;node.labels&quot;</span></b><b>]])</b>
+<b><span style='color:#dede49;'>tiplabels</span></b><b>(</b>hauss.upgma<b>[[</b><b><span style='color:#ff54ff;'>&quot;tip.label&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>bg=</span></b><b><span style='color:#dede49;'>fac2col</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind<b>@</b>pop, <b><span style='color:#54ff54;'>col.pal=</span></b>nj.rainbow<b>))</b>
 
 <b><span style='color:#54ffff;'># Make a tree based on DNA sequences</span></b>
 usflu.tree <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>nj</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>usflu.dist<b>)</b>
@@ -791,16 +800,17 @@ hauss.connectivity <b><span style='color:#336366;'>&lt;-</span></b><b><span styl
 hauss.connectivity
 <b><span style='color:#54ffff;'># Test of Moran's I for 1st PCoA axis</span></b>
 <b><span style='color:#dede49;'>moran.test</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>1</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity, <b><span style='color:#54ff54;'>alternative=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b>, <b><span style='color:#54ff54;'>randomisation=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
-hauss.pcoa1.mctest <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>moran.mc</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>1</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity, <b><span style='color:#54ff54;'>alternative=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b>, <b><span style='color:#54ff54;'>nsim=</span></b><b><span style='color:#ff54ff;'>1000</span></b><b>)</b>
+hauss.pcoa1.mctest <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>moran.mc</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>[[</b><b><span style='color:#ff54ff;'>&quot;li&quot;</span></b><b>]][</b>,<b><span style='color:#ff54ff;'>1</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity, <b><span style='color:#54ff54;'>alternative=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b>, <b><span style='color:#54ff54;'>nsim=</span></b><b><span style='color:#ff54ff;'>1000</span></b><b>)</b>
 hauss.pcoa1.mctest
-<b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.pcoa1.mctest<b>)</b>
-<b><span style='color:#dede49;'>moran.plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>1</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity<b>)</b>
+<b><span style='color:#54ffff;'># Plot the results</span></b>
+<b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.pcoa1.mctest<b>)</b> <b><span style='color:#54ffff;'># Plot of densitiy of permutations</span></b>
+<b><span style='color:#dede49;'>moran.plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>1</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity<b>)</b> <b><span style='color:#54ffff;'># PC plot</span></b>
 <b><span style='color:#54ffff;'># Test of Moran's I for 2nd PCoA axis</span></b>
 <b><span style='color:#dede49;'>moran.test</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>2</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity, <b><span style='color:#54ff54;'>alternative=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b>, <b><span style='color:#54ff54;'>randomisation=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
 hauss.pcoa2.mctest <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>moran.mc</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>$</b>li<b>[</b>,<b><span style='color:#ff54ff;'>2</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity, <b><span style='color:#54ff54;'>alternative=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b>, <b><span style='color:#54ff54;'>nsim=</span></b><b><span style='color:#ff54ff;'>1000</span></b><b>)</b>
 hauss.pcoa2.mctest
-<b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.pcoa2.mctest<b>)</b>
-<b><span style='color:#dede49;'>moran.plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>[[</b><b><span style='color:#ff54ff;'>&quot;li&quot;</span></b><b>]][</b>,<b><span style='color:#ff54ff;'>2</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity<b>)</b>
+<b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.pcoa2.mctest<b>)</b> <b><span style='color:#54ffff;'># Plot of densitiy of permutations</span></b>
+<b><span style='color:#dede49;'>moran.plot</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.pcoa<b>[[</b><b><span style='color:#ff54ff;'>&quot;li&quot;</span></b><b>]][</b>,<b><span style='color:#ff54ff;'>2</span></b><b>]</b>, <b><span style='color:#54ff54;'>listw=</span></b>hauss.connectivity<b>)</b> <b><span style='color:#54ffff;'># PC plot</span></b>
 
 <b><span style='color:#b00000;'>## sPCA</span></b>
 
@@ -900,7 +910,7 @@ hauss.geneland.coord
 <b><span style='color:#dede49;'>dim</span></b><b>(</b>hauss.geneland.coord.utm<b>)</b>
 hauss.geneland.coord.utm <b><span style='color:#54ffff;'># Final coordinates</span></b>
 <b><span style='color:#54ffff;'># Load data (only haploid or diploid data are supported) - only plain table with alleles</span></b>
-hauss.geneland.data <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/haussknechtii_geneland.txt&quot;</span></b>, <b><span style='color:#54ff54;'>na.string=</span></b><b><span style='color:#ff54ff;'>&quot;-999&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b>)</b>
+hauss.geneland.data <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.table</span></b><b>(</b><b><span style='color:#54ff54;'>file=</span></b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/haussknechtii_geneland.txt&quot;</span></b>, <b><span style='color:#54ff54;'>na.string=</span></b><b><span style='color:#ff54ff;'>&quot;-999&quot;</span></b>, <b><span style='color:#54ff54;'>header=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>sep=</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\t</span></b><b><span style='color:#ff54ff;'>&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>dim</span></b><b>(</b>hauss.geneland.data<b>)</b>
 hauss.geneland.data
 <b><span style='color:#54ffff;'># Set number of independent runs</span></b>
@@ -1001,7 +1011,7 @@ hauss.gmap <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 <b><span style='color:#54ffff;'># Load SHP file</span></b>
 <b><span style='color:#54ffff;'># Data from http://download.geofabrik.de/europe/macedonia.html</span></b>
 <b><span style='color:#54ffff;'># Directory has to contain also respective DBF and SHX files (same name, only different extension)</span></b>
-<b><span style='color:#54ffff;'># Get from http://trapa.cz/sites/default/rcourse/macedonia.zip</span></b>
+<b><span style='color:#54ffff;'># Get from https://soubory.trapa.cz/rcourse/macedonia.zip</span></b>
 <b><span style='color:#54ffff;'># There are several functions readShape* - select appropriate according to data stored in respective SHP file</span></b>
 macedonia_building <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>readShapeLines</span></b><b>(</b><b><span style='color:#54ff54;'>fn=</span></b><b><span style='color:#ff54ff;'>&quot;macedonia_buildings.shp&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>plot</span></b><b>(</b>macedonia_building<b>)</b>
@@ -1033,7 +1043,7 @@ macedonia_waterways <b><span style='color:#336366;'>&lt;-</span></b><b><span sty
 
 <b><span style='color:#54ffff;'># Inspiration: http://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/</span></b>
 <b><span style='color:#54ffff;'># Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651</span></b>
-<b><span style='color:#54ffff;'># get input data from https://trapa.cz/sites/default/rcourse/hauss_stru.in and joblist https://trapa.cz/sites/default/rcourse/joblist.txt</span></b>
+<b><span style='color:#54ffff;'># get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt</span></b>
 <b><span style='color:#54ffff;'># Set working directory</span></b>
 <b><span style='color:#dede49;'>setwd</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>getwd</span></b><b>()</b>
@@ -1042,7 +1052,7 @@ macedonia_waterways <b><span style='color:#336366;'>&lt;-</span></b><b><span sty
 <b><span style='color:#54ffff;'># See manual for the R package and Structure http://pritchardlab.stanford.edu/structure.html</span></b>
 ?parallel_structure
 <b><span style='color:#54ffff;'># Run Structure</span></b>
-<b><span style='color:#dede49;'>parallel_structure</span></b><b>(</b><b><span style='color:#54ff54;'>joblist=</span></b><b><span style='color:#ff54ff;'>&quot;joblist.txt&quot;</span></b>, <b><span style='color:#54ff54;'>n_cpu=</span></b><b><span style='color:#ff54ff;'>7</span></b>, <b><span style='color:#54ff54;'>structure_path=</span></b><b><span style='color:#ff54ff;'>&quot;~/bin/&quot;</span></b>, <b><span style='color:#54ff54;'>infile=</span></b><b><span style='color:#ff54ff;'>&quot;hauss_stru.in&quot;</span></b>, <b><span style='color:#54ff54;'>outpath=</span></b><b><span style='color:#ff54ff;'>&quot;results/&quot;</span></b>, <b><span style='color:#54ff54;'>numinds=</span></b><b><span style='color:#ff54ff;'>47</span></b>, <b><span style='color:#54ff54;'>numloci=</span></b><b><span style='color:#ff54ff;'>12</span></b>, <b><span style='color:#54ff54;'>plot_output=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>label=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>popdata=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>popflag=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>phenotypes=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>markernames=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>mapdist=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>onerowperind=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>phaseinfo=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>extracol=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>missing=</span></b><b>-</b><b><span style='color:#ff54ff;'>9</span></b>, <b><span style='color:#54ff54;'>ploidy=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>usepopinfo=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>revert_convert=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>printqhat=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>locdata=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>recessivealleles=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>phased=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>noadmix=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>linkage=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>locprior=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>inferalpha=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
+<b><span style='color:#dede49;'>parallel_structure</span></b><b>(</b><b><span style='color:#54ff54;'>joblist=</span></b><b><span style='color:#ff54ff;'>&quot;joblist.txt&quot;</span></b>, <b><span style='color:#54ff54;'>n_cpu=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>structure_path=</span></b><b><span style='color:#ff54ff;'>&quot;~/bin/&quot;</span></b>, <b><span style='color:#54ff54;'>infile=</span></b><b><span style='color:#ff54ff;'>&quot;hauss_stru.in&quot;</span></b>, <b><span style='color:#54ff54;'>outpath=</span></b><b><span style='color:#ff54ff;'>&quot;results/&quot;</span></b>, <b><span style='color:#54ff54;'>numinds=</span></b><b><span style='color:#ff54ff;'>47</span></b>, <b><span style='color:#54ff54;'>numloci=</span></b><b><span style='color:#ff54ff;'>12</span></b>, <b><span style='color:#54ff54;'>plot_output=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>label=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>popdata=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>popflag=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>phenotypes=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>markernames=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>mapdist=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>onerowperind=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>phaseinfo=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>extracol=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>missing=</span></b><b>-</b><b><span style='color:#ff54ff;'>9</span></b>, <b><span style='color:#54ff54;'>ploidy=</span></b><b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>usepopinfo=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>revert_convert=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>printqhat=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>locdata=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>recessivealleles=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>phased=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>noadmix=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>linkage=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>locprior=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>inferalpha=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># When running on Windows, parallel support may be missing - install Rmpi library required by ParallelStructure for parallelisation on Windows</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Rmpi&quot;</span></b><b>)</b>
@@ -1052,11 +1062,11 @@ macedonia_waterways <b><span style='color:#336366;'>&lt;-</span></b><b><span sty
 <b><span style='color:#54ffff;'># If this fails, look for some UNIX machine...</span></b>
 
 <b><span style='color:#54ffff;'># Postprocess results with Structure sum R script by Dorothee Ehrich</span></b>
-<b><span style='color:#dede49;'>source</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/structure-sum-2011.r&quot;</span></b><b>)</b>
+<b><span style='color:#dede49;'>source</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/structure-sum-2011.r&quot;</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Create new directory with result files results_job_*_f and set working directory accordingly</span></b>
 <b><span style='color:#dede49;'>setwd</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/structure_sum/&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>dir</span></b><b>()</b>
-<b><span style='color:#54ffff;'># Prepare file list_k.txt containing on each line K and name of output &quot;_f&quot; file - get it from https://trapa.cz/sites/default/rcourse/list_k.txt</span></b>
+<b><span style='color:#54ffff;'># Prepare file list_k.txt containing on each line K and name of output &quot;_f&quot; file - get it from https://soubory.trapa.cz/rcourse/list_k.txt</span></b>
 <b><span style='color:#54ffff;'># See documentation for details. Functions take as an argument list_k file and number of populations</span></b>
 <b><span style='color:#dede49;'>Structure.table</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;list_k.txt&quot;</span></b>, <b><span style='color:#ff54ff;'>5</span></b><b>)</b>
 <b><span style='color:#dede49;'>Structure.simil</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;list_k.txt&quot;</span></b>, <b><span style='color:#ff54ff;'>5</span></b><b>)</b>
@@ -1075,21 +1085,23 @@ macedonia_waterways <b><span style='color:#336366;'>&lt;-</span></b><b><span sty
 
 <b><span style='color:#b00000;'>## Multiple sequence alignment</span></b>
 
-<b><span style='color:#54ffff;'># Libraries </span></b>
+<b><span style='color:#54ffff;'># Libraries</span></b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>colorspace<b>)</b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>XML<b>)</b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>phyloch<b>)</b> <b><span style='color:#54ffff;'># Alignment with mafft, you can also try package ips</span></b>
-<b><span style='color:#54ffff;'># Requires mafft binary on specific location - might be needed to copy it or make symlink</span></b>
-<b><span style='color:#54ffff;'># read ?mafft and mafft's documentation</span></b>
+<b><span style='color:#54ffff;'># Requires path to MAFFT binary - set it according to your installation</span></b>
+<b><span style='color:#54ffff;'># Read ?mafft and mafft's documentation</span></b>
 meles.mafft <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>mafft</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;localpair&quot;</span></b>, <b><span style='color:#54ff54;'>maxiterate=</span></b><b><span style='color:#ff54ff;'>100</span></b>, <b><span style='color:#54ff54;'>path=</span></b><b><span style='color:#ff54ff;'>&quot;/usr/bin/mafft&quot;</span></b><b>)</b> <b><span style='color:#54ffff;'># Change &quot;path&quot; to fit your path to mafft!</span></b>
 meles.mafft
 <b><span style='color:#dede49;'>class</span></b><b>(</b>meles.mafft<b>)</b>
+
 <b><span style='color:#54ffff;'># Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape</span></b>
 <b><span style='color:#54ffff;'># read ?clustal and documentation of Clustal and Muscle to set correct parameters</span></b>
 meles.clustal <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>ape<b>::</b><b><span style='color:#dede49;'>clustal</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna, <b><span style='color:#54ff54;'>pw.gapopen=</span></b><b><span style='color:#ff54ff;'>10</span></b>, <b><span style='color:#54ff54;'>pw.gapext=</span></b><b><span style='color:#ff54ff;'>0.1</span></b>, <b><span style='color:#54ff54;'>gapopen=</span></b><b><span style='color:#ff54ff;'>10</span></b>, <b><span style='color:#54ff54;'>gapext=</span></b><b><span style='color:#ff54ff;'>0.2</span></b>, <b><span style='color:#54ff54;'>exec=</span></b><b><span style='color:#ff54ff;'>&quot;/usr/bin/clustalw2&quot;</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>original.ordering=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b> <b><span style='color:#54ffff;'># Change &quot;exec&quot; to fit your path to clustal!</span></b>
 meles.muscle <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>ape<b>::</b><b><span style='color:#dede49;'>muscle</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna, <b><span style='color:#54ff54;'>exec=</span></b><b><span style='color:#ff54ff;'>&quot;muscle&quot;</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>original.ordering=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b> <b><span style='color:#54ffff;'># Change &quot;exec&quot; to fit your path to muscle!</span></b>
 meles.muscle
 <b><span style='color:#dede49;'>class</span></b><b>(</b>meles.muscle<b>)</b>
+
 <b><span style='color:#54ffff;'># Plot the alignment - you can select which bases to plot and/or modify colours</span></b>
 <b><span style='color:#dede49;'>image</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.muscle, <b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;a&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;t&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;c&quot;</span></b> ,<b><span style='color:#ff54ff;'>&quot;g&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;n&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>rainbow</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b><b>))</b>
 <b><span style='color:#54ffff;'># Add grey dotted grid</span></b>
@@ -1097,11 +1109,11 @@ meles.muscle
 <b><span style='color:#54ffff;'># Remove gaps from alignment - destroy it</span></b>
 meles.nogaps <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>del.gaps</span></b><b>(</b>meles.muscle<b>)</b> <b><span style='color:#54ffff;'># See ?del.gaps for details!</span></b>
 
-<b><span style='color:#54ffff;'># Cleaning the alignment</span></b>
 <b><span style='color:#54ffff;'># Shortcut for plotting alignment</span></b>
 <b><span style='color:#dede49;'>image.DNAbin</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.mafft<b>)</b>
 <b><span style='color:#54ffff;'># Display aligned sequences with gaps</span></b>
 <b><span style='color:#dede49;'>image.DNAbin</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>usflu.dna<b>)</b>
+
 <b><span style='color:#54ffff;'># Delete all columns containing any gap</span></b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>ips<b>)</b>
 usflu.dna.ng <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>deleteGaps</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>usflu.dna, <b><span style='color:#54ff54;'>nmax=</span></b><b><span style='color:#ff54ff;'>0</span></b><b>)</b>
@@ -1116,7 +1128,7 @@ usflu.dna.ng <b><span style='color:#336366;'>&lt;-</span></b><b><span style='col
 <b><span style='color:#b00000;'>## Tree manipulations</span></b>
 
 <b><span style='color:#54ffff;'># Read trees in NEWICK format - single or multiple tree(s)</span></b>
-oxalis.trees <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.tree</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/oxalis.nwk&quot;</span></b><b>)</b>
+oxalis.trees <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.tree</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/oxalis.nwk&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>summary</span></b><b>(</b>oxalis.trees<b>)</b>
 <b><span style='color:#dede49;'>length</span></b><b>(</b>oxalis.trees<b>)</b>
 <b><span style='color:#dede49;'>names</span></b><b>(</b>oxalis.trees<b>)</b>
@@ -1179,7 +1191,7 @@ hauss.nj.ladderized <b><span style='color:#336366;'>&lt;-</span></b><b><span sty
 <b><span style='color:#54ffff;'># Root the tree</span></b>
 <b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b>hauss.nj<b>)</b>
 <b><span style='color:#dede49;'>print.phylo</span></b><b>(</b>hauss.nj<b>)</b>
-hauss.nj.rooted <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>root</span></b><b>(</b><b><span style='color:#54ff54;'>phy=</span></b>hauss.nj, <b><span style='color:#54ff54;'>outgroup=</span></b><b><span style='color:#ff54ff;'>10</span></b><b>)</b>
+hauss.nj.rooted <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>root</span></b><b>(</b><b><span style='color:#54ff54;'>phy=</span></b>hauss.nj, <b><span style='color:#54ff54;'>resolve.root=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>outgroup=</span></b><b><span style='color:#ff54ff;'>10</span></b><b>)</b> <b><span style='color:#54ffff;'># resolve.root=TRUE ensures root will be bifurcating (without this parameter it soemtimes doesn't work)</span></b>
 <b><span style='color:#dede49;'>print.phylo</span></b><b>(</b>hauss.nj.rooted<b>)</b>
 <b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b>hauss.nj.rooted<b>)</b>
 <b><span style='color:#54ffff;'># Root the tree interactive</span></b>
@@ -1247,6 +1259,22 @@ oxalis.trees.d.rf <b><span style='color:#336366;'>&lt;-</span></b><b><span style
 <b><span style='color:#dede49;'>corrplot</span></b><b>(</b><b><span style='color:#54ff54;'>corr=</span></b>oxalis.trees.d.rf, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;circle&quot;</span></b>, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;upper&quot;</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>rainbow</span></b><b>(</b><b><span style='color:#ff54ff;'>15</span></b><b>)</b>, <b><span style='color:#54ff54;'>title=</span></b><b><span style='color:#ff54ff;'>&quot;Correlation matrix of topographical distances&quot;</span></b>, <b><span style='color:#54ff54;'>is.corr=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>diag=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>outline=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>order=</span></b><b><span style='color:#ff54ff;'>&quot;alphabet&quot;</span></b>, <b><span style='color:#54ff54;'>tl.pos=</span></b><b><span style='color:#ff54ff;'>&quot;lt&quot;</span></b>, <b><span style='color:#54ff54;'>tl.col=</span></b><b><span style='color:#ff54ff;'>&quot;black&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>corrplot</span></b><b>(</b><b><span style='color:#54ff54;'>corr=</span></b>oxalis.trees.d.rf, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;number&quot;</span></b>, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;lower&quot;</span></b>, <b><span style='color:#54ff54;'>add=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>rainbow</span></b><b>(</b><b><span style='color:#ff54ff;'>15</span></b><b>)</b>, <b><span style='color:#54ff54;'>title=</span></b><b><span style='color:#ff54ff;'>&quot;Correlation matrix of topographical distances&quot;</span></b>, <b><span style='color:#54ff54;'>is.corr=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>diag=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>outline=</span></b><b><span style='color:#00ff00;'>FALSE</span></b>, <b><span style='color:#54ff54;'>order=</span></b><b><span style='color:#ff54ff;'>&quot;alphabet&quot;</span></b>, <b><span style='color:#54ff54;'>tl.pos=</span></b><b><span style='color:#ff54ff;'>&quot;ld&quot;</span></b>, <b><span style='color:#54ff54;'>cl.pos=</span></b><b><span style='color:#ff54ff;'>&quot;n&quot;</span></b><b>)</b>
 
+<b><span style='color:#54ffff;'># PCoA from distance matrices of topographical differences among trees</span></b>
+<b><span style='color:#54ffff;'># Test if the distance matrix is Euclidean or not</span></b>
+<b><span style='color:#dede49;'>is.euclid</span></b><b>(</b><b><span style='color:#54ff54;'>distmat=</span></b><b><span style='color:#dede49;'>as.dist</span></b><b>(</b>oxalis.trees.d<b>)</b>, <b><span style='color:#54ff54;'>plot=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Calculate the PCoA</span></b>
+oxalis.trees.pcoa <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>dudi.pco</span></b><b>(</b><b><span style='color:#54ff54;'>d=</span></b><b><span style='color:#dede49;'>as.dist</span></b><b>(</b>oxalis.trees.d<b>)</b>, <b><span style='color:#54ff54;'>scannf=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>full=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Plot PCoA</span></b>
+<b><span style='color:#dede49;'>s.label</span></b><b>(</b><b><span style='color:#54ff54;'>dfxy=</span></b>oxalis.trees.pcoa<b>$</b>li<b>)</b>
+<b><span style='color:#54ffff;'># Add kernel densities</span></b>
+<b><span style='color:#dede49;'>s.kde2d</span></b><b>(</b><b><span style='color:#54ff54;'>dfxy=</span></b>oxalis.trees.pcoa<b>$</b>li, <b><span style='color:#54ff54;'>cpoint=</span></b><b><span style='color:#ff54ff;'>0</span></b>, <b><span style='color:#54ff54;'>add.plot=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Add histogram of eigenvalues</span></b>
+<b><span style='color:#dede49;'>add.scatter.eig</span></b><b>(</b>oxalis.trees.pcoa<b>[[</b><b><span style='color:#ff54ff;'>&quot;eig&quot;</span></b><b>]]</b>, <b><span style='color:#ff54ff;'>3</span></b>,<b><span style='color:#ff54ff;'>1</span></b>,<b><span style='color:#ff54ff;'>2</span></b>, <b><span style='color:#54ff54;'>posi=</span></b><b><span style='color:#ff54ff;'>&quot;topleft&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Add title to the plot</span></b>
+<b><span style='color:#dede49;'>title</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;</span></b><b><span style='color:#ff54ff;'>\n</span></b><b><span style='color:#ff54ff;'>PCoA of matrix of pairwise trees distances&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Alternative function to plot PCA plot</span></b>
+<b><span style='color:#dede49;'>scatter</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>oxalis.trees.pcoa, <b><span style='color:#54ff54;'>posieig=</span></b><b><span style='color:#ff54ff;'>&quot;topleft&quot;</span></b><b>)</b>
+
 <b><span style='color:#b00000;'>## Seeing trees in the forest</span></b>
 
 <b><span style='color:#54ffff;'># Root all trees</span></b>
@@ -1307,7 +1335,6 @@ meles.tre.pars <b><span style='color:#336366;'>&lt;-</span></b><b><span style='c
 <b><span style='color:#dede49;'>title</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Maximum-parsimony tree of Meles&quot;</span></b><b>)</b>
 
 <b><span style='color:#b00000;'>## Compare two trees</span></b>
-
 <b><span style='color:#54ffff;'># Compare topology of the species trees - basically outputs TRUE/FALSE</span></b>
 <b><span style='color:#dede49;'>all.equal.phylo</span></b><b>(</b>oxalis.tree.sp, oxalis.tree.sp.mean, <b><span style='color:#54ff54;'>use.edge.length=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
 ?all.equal.phylo <b><span style='color:#54ffff;'># Use to see comparison possibilities</span></b>
@@ -1437,7 +1464,7 @@ carnivora.correlogram2
 
 <b><span style='color:#54ffff;'># Prepare toy data</span></b>
 <b><span style='color:#54ffff;'># Load MrBayes tree in NEXUS format</span></b>
-apiaceae.tree <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.nexus</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://trapa.cz/sites/default/rcourse/apiaceae_mrbayes.nexus&quot;</span></b><b>)</b>
+apiaceae.tree <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>read.nexus</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus&quot;</span></b><b>)</b>
 <b><span style='color:#54ffff;'># See it</span></b>
 <b><span style='color:#dede49;'>print.phylo</span></b><b>(</b>apiaceae.tree<b>)</b>
 <b><span style='color:#dede49;'>plot.phylo</span></b><b>(</b>apiaceae.tree<b>)</b>
@@ -1602,8 +1629,20 @@ primates.contmap <b><span style='color:#336366;'>&lt;-</span></b><b><span style=
 ?setMap
 ?par
 
-<b><span style='color:#b00000;'>## Install pacakges from GitHub</span></b>
+<b><span style='color:#b00000;'>## Graphics</span></b>
+<b><span style='color:#54ffff;'># Output figure will be saved to the disk as OutputFile.png</span></b>
+<b><span style='color:#dede49;'>png</span></b><b>(</b><b><span style='color:#54ff54;'>filename=</span></b><b><span style='color:#ff54ff;'>&quot;OutputFile.png&quot;</span></b>, <b><span style='color:#54ff54;'>width=</span></b><b><span style='color:#ff54ff;'>720</span></b>, <b><span style='color:#54ff54;'>height=</span></b><b><span style='color:#ff54ff;'>720</span></b>, <b><span style='color:#54ff54;'>bg=</span></b><b><span style='color:#ff54ff;'>&quot;white&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># Here can go any number of functions making plots...</span></b>
+<b><span style='color:#dede49;'>plot</span></b><b>(</b>...<b>)</b> <b><span style='color:#54ffff;'># Whatever...</span></b>
+<b><span style='color:#54ffff;'># When using plotting commands, nothing is shown on the screen</span></b>
+<b><span style='color:#54ffff;'># The final plot(s) will be saved by:</span></b>
+<b><span style='color:#dede49;'>dev.off</span></b><b>()</b> <b><span style='color:#54ffff;'># Closes graphical device - needed after use of plotting functions png(), svg(), pdf(), ... followed by any function like plot() to write the file(s) to the disk</span></b>
+<b><span style='color:#54ffff;'># filename=&quot;OutFiles_%03d.png&quot; # Returns list of files named OutFiles_001.png, OutFiles_002.png, ... Useful for functions returning more graphs.</span></b>
+?png <b><span style='color:#54ffff;'># These functions have various possibilities to set size, whatever.</span></b>
+?svg <b><span style='color:#54ffff;'># Exact possibilities of all 3 functions vary from system to system</span></b>
+?pdf <b><span style='color:#54ffff;'># according to graphical libraries available in the computer.</span></b>
 
+<b><span style='color:#b00000;'>## Install pacakges from GitHub</span></b>
 <b><span style='color:#54ffff;'># Needed library</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;devtools&quot;</span></b><b>)</b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>devtools<b>)</b>
@@ -1614,28 +1653,72 @@ primates.contmap <b><span style='color:#336366;'>&lt;-</span></b><b><span style=
 <b><span style='color:#dede49;'>dev_mode</span></b><b>(</b><b><span style='color:#54ff54;'>on=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
 
 <b><span style='color:#b00000;'>## Loops</span></b>
+
+<b><span style='color:#54ffff;'># For loop</span></b>
 <b><span style='color:#54ffff;'># Simplest loop - print value of &quot;i&quot; in each step</span></b>
+<b><span style='color:#54ffff;'># &quot;i&quot; is commonly used for various indexing</span></b>
 <b><span style='color:#ffff54;'>for</span></b> <b>(</b>i <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>5</span></b><b>)</b> <b>{</b> <b><span style='color:#dede49;'>print</span></b><b>(</b>i<b>)</b> <b>}</b>
-<b><span style='color:#54ffff;'># In every step modify value of variable &quot;X&quot;</span></b>
-X <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>0</span></b>
-<b><span style='color:#ffff54;'>for</span></b> <b>(</b>i <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>10</span></b><b>:</b><b><span style='color:#ff54ff;'>1</span></b><b>)</b> <b>{</b> 
-  <b><span style='color:#dede49;'>print</span></b><b>(</b>i<b>)</b>
-  X <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>X<b>+</b>i
-  <b><span style='color:#dede49;'>print</span></b><b>(</b>X<b>)</b>
+
+<b><span style='color:#54ffff;'># In every step modify value of variable &quot;X&quot; (add 1 to previous value)</span></b>
+X <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>0</span></b> <b><span style='color:#54ffff;'># Set initial value</span></b>
+<b><span style='color:#ffff54;'>for</span></b> <b>(</b>i <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>10</span></b><b>:</b><b><span style='color:#ff54ff;'>1</span></b><b>)</b> <b>{</b>
+  <b><span style='color:#54ffff;'># Any commands can be here...</span></b>
+  <b><span style='color:#dede49;'>print</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Loop turn&quot;</span></b><b>)</b> <b><span style='color:#54ffff;'># Some message for user</span></b>
+  <b><span style='color:#dede49;'>print</span></b><b>(</b>i<b>)</b> <b><span style='color:#54ffff;'># Print number of turn - note it is decreasing</span></b>
+  X <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>X<b>+</b>i <b><span style='color:#54ffff;'># Rise value of &quot;X&quot; by current value of &quot;i&quot; (see previous line)</span></b>
+  <b><span style='color:#dede49;'>print</span></b><b>(</b><b><span style='color:#dede49;'>paste</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;Variable value:&quot;</span></b>, X<b>))</b> <b><span style='color:#54ffff;'># Print current value of &quot;X&quot;</span></b>
   <b>}</b>
+
 <b><span style='color:#54ffff;'># Work on each item of a list object</span></b>
+<b><span style='color:#54ffff;'># Print length of each sequence in nothofagus.sequences</span></b>
 <b><span style='color:#ffff54;'>for</span></b> <b>(</b>L <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#dede49;'>length</span></b><b>(</b>nothofagus.sequences<b>))</b> <b>{</b>
-  <b><span style='color:#dede49;'>print</span></b><b>(</b><b><span style='color:#dede49;'>length</span></b><b>(</b>nothofagus.sequences<b>[[</b>L<b>]]))</b> <b>}</b>
+  <b><span style='color:#dede49;'>print</span></b><b>(</b><b><span style='color:#dede49;'>length</span></b><b>(</b>nothofagus.sequences<b>[[</b>L<b>]]))</b>
+  <b>}</b>
+
+<b><span style='color:#54ffff;'># While loop - it is done while the condition is valid</span></b>
+<b><span style='color:#54ffff;'># While value of &quot;Q&quot; is &lt; 5 (starting from 0), print it and add 1</span></b>
+Q <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>0</span></b>
+<b><span style='color:#ffff54;'>while</span></b> <b>(</b>Q <b>&lt;</b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>5</span></b><b>)</b> <b>{</b> <b><span style='color:#dede49;'>print</span></b><b>(</b>Q <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>Q<b>+</b><b><span style='color:#ff54ff;'>1</span></b><b>)</b> <b>}</b>
+
+<b><span style='color:#b00000;'>## If-else branching</span></b>
+XX <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>seq</span></b><b>(</b><b><span style='color:#54ff54;'>from=</span></b><b>-</b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>to=</span></b><b><span style='color:#ff54ff;'>6.5</span></b>, <b><span style='color:#54ff54;'>by=</span></b><b><span style='color:#ff54ff;'>0.1</span></b><b>)</b>
+XX
+YY <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>c</span></b><b>()</b>
+<b><span style='color:#ffff54;'>for</span></b> <b>(</b>II <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#dede49;'>length</span></b><b>(</b>XX<b>))</b> <b>{</b>
+  <b><span style='color:#ffff54;'>if</span></b><b>(</b>XX<b>[</b>II<b>]</b> <b>&lt;=</b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>2</span></b><b>)</b> <b>{</b> <b><span style='color:#54ffff;'># Executed for XX &lt;= 2</span></b>
+    YY<b>[</b>II<b>]</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>XX<b>[</b>II<b>]</b><b>^</b><b><span style='color:#ff54ff;'>2</span></b>
+    <b>}</b> <b><span style='color:#ffff54;'>else</span></b> <b><span style='color:#ffff54;'>if</span></b><b>(</b>XX<b>[</b>II<b>]</b> <b>&gt;</b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>2</span></b><b>)</b> <b>{</b> <b><span style='color:#54ffff;'># Executed for XX &gt; 2</span></b>
+      YY<b>[</b>II<b>]</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>6</span></b><b>-</b>XX<b>[</b>II<b>]</b>
+      <b>}</b>
+  <b>}</b>
+YY
+<b><span style='color:#dede49;'>plot</span></b><b>(</b>XX, YY<b>)</b> <b><span style='color:#54ffff;'># See the result</span></b>
+
+<b><span style='color:#54ffff;'># Or (different possibility to get very same result)</span></b>
+<b><span style='color:#54ffff;'># Note &quot;XX&quot; is reused from the previous variant</span></b>
+CC <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ffff54;'>function</span></b><b>(</b>AA<b>)</b> <b>{</b>
+  <b><span style='color:#ffff54;'>if</span></b><b>(</b>AA <b>&lt;=</b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>2</span></b><b>)</b> <b>{</b> <b><span style='color:#54ffff;'># Executed for XX &lt;= 2</span></b>
+    BB <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>AA<b>^</b><b><span style='color:#ff54ff;'>2</span></b>
+  <b>}</b> <b><span style='color:#ffff54;'>else</span></b> <b>{</b> <b><span style='color:#54ffff;'># Executed for XX &gt; 2</span></b>
+    BB <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>6</span></b><b>-</b>AA
+    <b>}</b>
+  <b><span style='color:#dede49;'>return</span></b><b>(</b>BB<b>)</b> <b><span style='color:#54ffff;'># The output value</span></b>
+  <b>}</b>
+CC <b><span style='color:#54ffff;'># Previously, &quot;YY&quot; contained values to plot made by the for loop, here &quot;CC&quot; contains function to by used by sapply() when plotting</span></b>
+<b><span style='color:#dede49;'>plot</span></b><b>(</b><b><span style='color:#dede49;'>sapply</span></b><b>(</b>XX, CC<b>))</b> <b><span style='color:#54ffff;'># See the result</span></b>
 
 <b><span style='color:#b00000;'>## Functions</span></b>
 MyFunction <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ffff54;'>function</span></b> <b>(</b>x, y<b>)</b> <b>{</b>
   <b><span style='color:#54ffff;'># Any commands can be here...</span></b>
   x <b>+</b><b><span style='color:#ff54ff;'> </span></b>y
   <b>}</b>
+
 <b><span style='color:#54ffff;'># Use as usually:</span></b>
 <b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b>, <b><span style='color:#ff54ff;'>8</span></b><b>)</b>
 <b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#ff54ff;'>4</span></b><b>)</b>
 <b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>y=</span></b><b><span style='color:#ff54ff;'>7</span></b><b>)</b>
+MF <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>9</span></b>, <b><span style='color:#ff54ff;'>15</span></b><b>)</b>
+MF <b><span style='color:#54ffff;'># See it works</span></b>
 </pre>
 </body>
 </html>

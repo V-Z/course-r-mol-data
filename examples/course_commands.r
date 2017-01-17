@@ -57,16 +57,19 @@ getClassDef("genind") # Or select any other class name
 
 ## Packages and repositories
 # Set repositories
-#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3).
+#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3, see https://bioconductor.org/).
 options(repos=c("https://cran.wu.ac.at/", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
 getOption("repos") # Shows actual repositories
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
 install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+?install.packages # See for more options
+update.packages(repos=getOption("repos")) # Updates installed packages
 
 # Install packages without setting the repositories
 # If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
 install.packages(pkgs=c("Geneland", "MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
@@ -75,8 +78,6 @@ install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
 
 # We will load packages by library(package) one by one when needed and plugins\ldots
-# Update packages
-update.packages(repos=getOption("repos"))
 
 # Standard installation
 install.pacakges(c("adegenet", "poppr", "phytools"))
@@ -100,7 +101,7 @@ biocLite() # Update Bioconductor packages
 # Upgrades installed Bioconductor packages to new R release (e.g. from 3.2 to 3.3)
 biocLite("BiocUpgrade")
 
-## Libraries for population - genetic analysis
+## Libraries for population genetic analysis
 
 # Load needed libraries
 library(ape)
@@ -197,7 +198,7 @@ alleles2loci() # pegas - transforms a matrix of alleles into "loci"
 # seppop and seploc return lists of objects - for further analysis
 # read manual pages (?...) of the functions before usage
 
-# Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years
+# Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years from USA (Adegenet toy data)
 usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
 # Check the object
 class(usflu.dna)
@@ -253,6 +254,18 @@ closebank()
 nothofagus.dna <- as.DNAbin.list(nothofagus.sequences)
 nothofagus.dna # See it
 
+# Importing SNP
+read.PLINK(file="PLINKfile", ...)
+?readPLINK # See it for available options
+# Extract SNP from FASTA alignment
+usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
+# If it crashes (on Windows), try add parameter "parallel=FALSE"
+# Function has several options to speed up reading
+?fasta2genlight
+
+# Read SNP in Adegent format - check Adegenet tutorial first
+?read.snp
+
 # Checking SNPs
 # Position of polymorphism within alignment - snpposi.plot() requires input data in form of matrix
 snpposi.plot(x=as.matrix(meles.dna), codon=FALSE)
@@ -262,18 +275,6 @@ snpposi.plot(as.matrix(meles.dna))
 meles.genind <- DNAbin2genind(x=meles.dna, polyThres=0.01)
 # Test of random distribution of SNP
 snpposi.test(x=as.matrix(meles.dna))
-
-# Importing SNP
-read.PLINK(file="PLINKfile", ...)
-?readPLINK # See it for available options
-# Extract SNP from FASTA alignment
-usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
-# If it crashes (on Windows), try add parameter "parallel=FALSE"
-# Function has several options to speed up reading
-?fasta2genlight
-# Convert genlight to genind (usually not necessary)
-genind <- df2genind(as.data.frame(genlight)) # Check settings!
-# Resulting data matrix might be slightly different than when using DNAbin2genind - depends on used settings
 
 ## Check sequences
 # Nucleotide diversity
@@ -469,7 +470,7 @@ meles.dist
 class(meles.dist)
 dim(as.matrix(meles.dist))
 
-# Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data
+# Distances and genlight object. Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data
 usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
 class(usflu.dists.l)
 usflu.dists <- lapply(X=usflu.dists.l, FUN=function(DDD) dist(as.matrix(DDD)))
@@ -522,7 +523,9 @@ hauss.amova
 
 ## MSN based on Bruvo's distance
 bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
-?bruvo.msn
+?bruvo.msn # See details...
+?msn.poppr # For another data types
+?imsn # Interactive creation of MSN
 
 ## NJ
 
@@ -1089,17 +1092,19 @@ Structure.order("list_k_07.txt", 5)
 library(colorspace)
 library(XML)
 library(phyloch) # Alignment with mafft, you can also try package ips
-# Requires mafft binary on specific location - might be needed to copy it or make symlink
-# read ?mafft and mafft's documentation
+# Requires path to MAFFT binary - set it according to your installation
+# Read ?mafft and mafft's documentation
 meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
 meles.mafft
 class(meles.mafft)
+
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
 meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
+
 # Plot the alignment - you can select which bases to plot and/or modify colours
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
@@ -1107,11 +1112,11 @@ grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
 # Remove gaps from alignment - destroy it
 meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
 
-# Cleaning the alignment
 # Shortcut for plotting alignment
 image.DNAbin(x=meles.mafft)
 # Display aligned sequences with gaps
 image.DNAbin(x=usflu.dna)
+
 # Delete all columns containing any gap
 library(ips)
 usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
@@ -1257,6 +1262,22 @@ rownames(oxalis.trees.d.rf) <- names(oxalis.trees)
 corrplot(corr=oxalis.trees.d.rf, method="circle", type="upper", col=rainbow(15), title="Correlation matrix of topographical distances", is.corr=FALSE, diag=FALSE, outline=TRUE, order="alphabet", tl.pos="lt", tl.col="black")
 corrplot(corr=oxalis.trees.d.rf, method="number", type="lower", add=TRUE, col=rainbow(15), title="Correlation matrix of topographical distances", is.corr=FALSE, diag=FALSE, outline=FALSE, order="alphabet", tl.pos="ld", cl.pos="n")
 
+# PCoA from distance matrices of topographical differences among trees
+# Test if the distance matrix is Euclidean or not
+is.euclid(distmat=as.dist(oxalis.trees.d), plot=TRUE)
+# Calculate the PCoA
+oxalis.trees.pcoa <- dudi.pco(d=as.dist(oxalis.trees.d), scannf=TRUE, full=TRUE)
+# Plot PCoA
+s.label(dfxy=oxalis.trees.pcoa$li)
+# Add kernel densities
+s.kde2d(dfxy=oxalis.trees.pcoa$li, cpoint=0, add.plot=TRUE)
+# Add histogram of eigenvalues
+add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
+# Add title to the plot
+title("\nPCoA of matrix of pairwise trees distances")
+# Alternative function to plot PCA plot
+scatter(x=oxalis.trees.pcoa, posieig="topleft")
+
 ## Seeing trees in the forest
 
 # Root all trees
@@ -1317,7 +1338,6 @@ plot.phylo(x=meles.tre.pars, type="cladogram", edge.width=2)
 title("Maximum-parsimony tree of Meles")
 
 ## Compare two trees
-
 # Compare topology of the species trees - basically outputs TRUE/FALSE
 all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean, use.edge.length=FALSE)
 ?all.equal.phylo # Use to see comparison possibilities
@@ -1645,8 +1665,20 @@ fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primate
 # # lineage-through-time plot
 # ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
 
-## Install pacakges from GitHub
+## Graphics
+# Output figure will be saved to the disk as OutputFile.png
+png(filename="OutputFile.png", width=720, height=720, bg="white")
+# Here can go any number of functions making plots...
+plot(...) # Whatever...
+# When using plotting commands, nothing is shown on the screen
+# The final plot(s) will be saved by:
+dev.off() # Closes graphical device - needed after use of plotting functions png(), svg(), pdf(), ... followed by any function like plot() to write the file(s) to the disk
+# filename="OutFiles_%03d.png" # Returns list of files named OutFiles_001.png, OutFiles_002.png, ... Useful for functions returning more graphs.
+?png # These functions have various possibilities to set size, whatever.
+?svg # Exact possibilities of all 3 functions vary from system to system
+?pdf # according to graphical libraries available in the computer.
 
+## Install pacakges from GitHub
 # Needed library
 install.packages("devtools")
 library(devtools)
@@ -1728,6 +1760,7 @@ MF # See it works
 
 ## RAxML
 meles.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
+meles.raxml <- phyloch::raxml(x=meles.nogaps, runs=10, file="meles.raxml", path="/home/vojta/bin/")
 
 ## Extra
 axisGeo() # package phyloch - adds scale in geological time, has many options
