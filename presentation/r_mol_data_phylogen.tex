@@ -33,8 +33,7 @@
 \useinnertheme{circles}
 
 % Basic packages
-\usepackage{xltxtra} % Loads following 4 packages for processing with XeLaTeX
-% \usepackage{fixltx2e} % fixltx2e is not required with released after 2015, all files are now in the LaTeX kernel
+\usepackage{xltxtra} % Loads following 3 packages for processing with XeLaTeX
 \usepackage{metalogo}
 \usepackage{xunicode}
 \usepackage{fontspec}
@@ -81,7 +80,7 @@
 \begin{document}
 
 \begin{frame}
-\titlepage
+  \titlepage
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Outline}
@@ -106,144 +105,144 @@
 \end{frame}
 
 \begin{frame}{Materials to help you\ldots}
-\begin{itemize}
- \item Download the presentation from \url{https://soubory.trapa.cz/rcourse/r_mol_data_phylogen.pdf}
- \item Follow all code we will use at \url{https://soubory.trapa.cz/rcourse/course_commands.html}
- \item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
- \begin{itemize}
-  \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
-  \item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (see further) and directly work with it
-  \item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*txt}}
-  \item \alert{Never ever} open R script in software like MS~Word -- it destroys quotation marks and other things making script unusable
- \end{itemize}
-\end{itemize}
+  \begin{itemize}
+    \item Download the presentation from \url{https://soubory.trapa.cz/rcourse/r_mol_data_phylogen.pdf}
+    \item Follow all code we will use at \url{https://soubory.trapa.cz/rcourse/course_commands.html}
+    \item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
+    \begin{itemize}
+      \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
+      \item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (see further) and directly work with it
+      \item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*txt}}
+      \item \alert{Never ever} open R script in software like MS~Word -- it destroys quotation marks and other things making script unusable
+    \end{itemize}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{What we will and what we will not do\ldots}
-\begin{multicols}{2}
-  \textbf{We will go through\ldots}
-  \begin{itemize}
-    \item Basic introduction into R
-    \item Analyzing phylogeny and evolution and basic theory
+  \begin{multicols}{2}
+    \textbf{We will go through\ldots}
     \begin{itemize}
-      \item DNA sequences, SNP, SSRs, AFLP, \ldots
-      \item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony, \ldots
-      \item Character evolution, ancestral state reconstructions, \ldots
-      \item Alignments
-      \item Manipulations with trees
+      \item Basic introduction into R
+      \item Analyzing phylogeny and evolution and basic theory
+      \begin{itemize}
+	\item DNA sequences, SNP, SSRs, AFLP, \ldots
+	\item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony, \ldots
+	\item Character evolution, ancestral state reconstructions, \ldots
+	\item Alignments
+	\item Manipulations with trees
+      \end{itemize}
+      \item Plotting
+    \columnbreak
+      \item Maps, spatial analysis, \ldots
+      \item Basic creation of scripts
+      \item And more\ldots
     \end{itemize}
-    \item Plotting
-  \columnbreak
-    \item Maps, spatial analysis, \ldots
-    \item Basic creation of scripts
-    \item And more\ldots
-  \end{itemize}
-  \textbf{We will not dig deep into\ldots}
-  \begin{itemize}
-    \item Detailed theory behind used methods
-    \item Programming in~R
-    \item Other software related to the methods used (with exceptions of applications called from R)
-    \item Other areas of R usage (ecology, biomedicine, \ldots)
-  \end{itemize}
-\end{multicols}
+    \textbf{We will not dig deep into\ldots}
+    \begin{itemize}
+      \item Detailed theory behind used methods
+      \item Programming in~R
+      \item Other software related to the methods used (with exceptions of applications called from R)
+      \item Other areas of R usage (ecology, biomedicine, \ldots)
+    \end{itemize}
+  \end{multicols}
 \end{frame}
 
 \section{R}
 
 \begin{frame}{About R}
-\begin{itemize}
- \item Project for Statistical Computing
- \item Open-source -- freely available with source code -- anyone can use it and contribute its development
- \item Development is organized by non-governmental non-profit organization from Vienna
- \item Thousands of packages extending its functionality are available -- all fields of computations in any scientific discipline
- \item Provides only command line interface -- full control over the analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis etc.
- \item Several projects provide convenient graphical user interfaces (GUI)
- \item More details: \url{https://www.r-project.org/}
-\end{itemize}
+  \begin{itemize}
+    \item Project for Statistical Computing
+    \item Open-source -- freely available with source code -- anyone can use it and contribute its development
+    \item Development is organized by non-governmental non-profit organization from Vienna
+    \item Thousands of packages extending its functionality are available -- all fields of computations in any scientific discipline
+    \item Provides only command line interface -- full control over the analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis etc.
+    \item Several projects provide convenient graphical user interfaces (GUI)
+    \item More details: \url{https://www.r-project.org/}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Graphical user interfaces (GUI)}
-\begin{itemize}
- \item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures, \ldots
- \item RStudio \url{https://www.rstudio.com/} -- probably the most common, multiplatform, very powerful
- \item RKWard \url{https://rkward.kde.org/} -- feature very rich, developed mainly for Linux, available also for another operating systems
- \item R commander (Rcmdr) \url{http://www.rcommander.com/} -- multiplatform, not so rich as previous
- \item Java GUI for R \url{http://rforge.net/JGR/} -- Java (multiplatform, but with all Java issues like memory consumption)
- \item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
- \item Pick one you like (from above list or any else) and install it\ldots
-\end{itemize}
+  \begin{itemize}
+    \item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures, \ldots
+    \item RStudio \url{https://www.rstudio.com/} -- probably the most common, multiplatform, very powerful
+    \item RKWard \url{https://rkward.kde.org/} -- feature very rich, developed mainly for Linux, available also for another operating systems
+    \item R commander (Rcmdr) \url{http://www.rcommander.com/} -- multiplatform, not so rich as previous
+    \item Java GUI for R \url{http://rforge.net/JGR/} -- Java (multiplatform, but with all Java issues like memory consumption)
+    \item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
+    \item Pick one you like (from above list or any else) and install it\ldots
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{RKWard}
-\begin{center}
-  \includegraphics[width=\textwidth]{rkward.jpg}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth]{rkward.jpg}
+  \end{center}
 \end{frame}
 
 \begin{frame}{RStudio}
-\begin{center}
-  \includegraphics[width=\textwidth]{rstudio.jpg}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth]{rstudio.jpg}
+  \end{center}
 \end{frame}
 
 \subsection{Installation}
 
 \begin{frame}{MS Windows \& Apple Mac OS~X}
-\begin{itemize}
- \item Got to \url{https://cran.r-project.org/}
- \item Download appropriate version and install as usual
- \item Download and install selected GUI (not required, but highly recommended)
- \item Most of packages are available as pre-compiled and can be immediately installed from R -- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
- \item Usually there are some problems every time new version of OS is released -- it takes time to modify and recompile packages for new version of OS
- \item You have to check for new version of R manually
- \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
- \item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{Mac OS~X}, but it requires some work to install it
-\end{itemize}
+  \begin{itemize}
+    \item Got to \url{https://cran.r-project.org/}
+    \item Download appropriate version and install as usual
+    \item Download and install selected GUI (not required, but highly recommended)
+    \item Most of packages are available as pre-compiled and can be immediately installed from R -- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
+    \item Usually there are some problems every time new version of OS is released -- it takes time to modify and recompile packages for new version of OS
+    \item You have to check for new version of R manually
+    \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+    \item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{Mac OS~X}, but it requires some work to install it
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- general}
-\begin{itemize}
- \item R, and usually also GUI, is available in repositories -- use standard package management according to distribution
- \item Linux repositories provide automatic updates
- \item Packages are also partially available in repositories and can be installed and updated as usual application or from R
- \item Packages commonly have to be compiled -- R will do it automatically, but install basic Linux packages for building of C, C++, Fortran,~\ldots
- \item Compilation takes longer time and there are sometimes issues with missing dependencies (tools required by particular packages), but it can then provide higher performance\ldots
-\end{itemize}
+  \begin{itemize}
+    \item R, and usually also GUI, is available in repositories -- use standard package management according to distribution
+    \item Linux repositories provide automatic updates
+    \item Packages are also partially available in repositories and can be installed and updated as usual application or from R
+    \item Packages commonly have to be compiled -- R will do it automatically, but install basic Linux packages for building of C, C++, Fortran,~\ldots
+    \item Compilation takes longer time and there are sometimes issues with missing dependencies (tools required by particular packages), but it can then provide higher performance\ldots
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- Debian/Ubuntu and derivatives like Linux Mint or Kali Linux}
-\begin{itemize}
- \item Install package \texttt{build-essential} (general tools to compile software, including R packages)
- \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
- \item Ubuntu (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/ubuntu/}
- \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://cran.wu.ac.at/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
- \item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
- \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
-\end{itemize}
+  \begin{itemize}
+    \item Install package \texttt{build-essential} (general tools to compile software, including R packages)
+    \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
+    \item Ubuntu (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/ubuntu/}
+    \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://cran.wu.ac.at/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
+    \item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
+    \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- openSUSE and SUSE Linux Enterprise}
-\begin{itemize}
- \item See instructions at \url{https://cran.r-project.org/bin/linux/suse/}
- \item Add repository/ies for appropriate version of your distribution
- \begin{itemize}
-  \begin{footnotesize}
-    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/patched/} (daily updated) or/and
-    \item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/released/} (updated with new R release)
-  \end{footnotesize}
- \end{itemize}
- \item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
- \item Install package \texttt{patterns-openSUSE-devel\_basis} for compilation of R packages when installing them from R (only some R packages are available in repositories)
- \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
-\end{itemize}
+  \begin{itemize}
+    \item See instructions at \url{https://cran.r-project.org/bin/linux/suse/}
+    \item Add repository/ies for appropriate version of your distribution
+    \begin{itemize}
+      \begin{footnotesize}
+	\item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/patched/} (daily updated) or/and
+	\item \url{http://download.opensuse.org/repositories/devel:/languages:/R:/released/} (updated with new R release)
+      \end{footnotesize}
+    \end{itemize}
+    \item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
+    \item Install package \texttt{patterns-openSUSE-devel\_basis} for compilation of R packages when installing them from R (only some R packages are available in repositories)
+    \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Linux -- RedHat, Fedora and derivatives like CENTOS, Scientific Linux, etc.}
-\begin{itemize}
- \item See instructions at \url{https://cran.r-project.org/bin/linux/redhat/README}
- \item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward}
- \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
-\end{itemize}
+  \begin{itemize}
+    \item See instructions at \url{https://cran.r-project.org/bin/linux/redhat/README}
+    \item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward}
+    \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Sources of R packages}
@@ -262,35 +261,35 @@
 \subsection{Let's start with R}
 
 \begin{frame}{First steps in R}{Recommended is usage of GUI (RKWard or RStudio)}
-\begin{multicols}{2}
-  \begin{itemize}
-    \item Linux (UNIX): open any terminal, type \texttt{R} and hit Enter
-    \item Windows and Mac: find it as normal application in menu
-    \item Type commands to work\ldots
-    \item \alert{Ever wished to be Harry Potter? Secret spells make magic operations~:-)}
-    \item Use arrows up and down to navigate in history
-    \item \texttt{Ctrl+R} works as reverse search -- searches text in history
-  \end{itemize}
-  \columnbreak
-  \begin{center}
-    \includegraphics[width=4.5cm]{rkonsole.png}
-  \end{center}
-\end{multicols}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Linux (UNIX): open any terminal, type \texttt{R} and hit Enter
+      \item Windows and Mac: find it as normal application in menu
+      \item Type commands to work\ldots
+      \item \alert{Ever wished to be Harry Potter? Secret spells make magic operations~:-)}
+      \item Use arrows up and down to navigate in history
+      \item \texttt{Ctrl+R} works as reverse search -- searches text in history
+    \end{itemize}
+    \columnbreak
+    \begin{center}
+      \includegraphics[width=4.5cm]{rkonsole.png}
+    \end{center}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}{How it works}
-\begin{itemize}
- \item General look of R commands:
- \item \splus/function(argument1="SomeName", argument2=SomeVariable, argument3=8)/
- \item \splus/ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)/
- \item New/modified object (with data,~\ldots) is on the left: ``\texttt{<-}'' says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
- \item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
- \item Arguments are named -- if you keep order, no need to name them:
- \item \splus/SomeFunction(MyData, TRUE, 123, "SomeName")/
- \item When only some of the arguments are in use, use the names (order doesn't matter any more)
- \item \splus/SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)/
- \item Some arguments are required, some optional
-\end{itemize}
+  \begin{itemize}
+    \item General look of R commands:
+    \item \splus/function(argument1="SomeName", argument2=SomeVariable, argument3=8)/
+    \item \splus/ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)/
+    \item New/modified object (with data,~\ldots) is on the left: ``\texttt{<-}'' says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
+    \item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
+    \item Arguments are named -- if you keep order, no need to name them:
+    \item \splus/SomeFunction(MyData, TRUE, 123, "SomeName")/
+    \item When only some of the arguments are in use, use the names (order doesn't matter any more)
+    \item \splus/SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)/
+    \item Some arguments are required, some optional
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Get help in R}
@@ -306,40 +305,40 @@
     library(sos)
     findFn("function") # Search for function name
   \end{spluscode}
-
-\alert{\texttt{?}} shows help for questioned function (in console type \texttt{q} to close it):
-\begin{multicols}{2}
-  \begin{itemize}
-    \item Name of the package (top left)
-    \item Function name (headline)
-    \item Description
-    \item Usage
-    \item Comments on arguments
-    \item Details
-    \item About author(s)
-    \item References to cite
-    \item Example code
-  \end{itemize}
-\end{multicols}
+  \vfil
+  \alert{\texttt{?}} shows help for questioned function (in console type \texttt{q} to close it):
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Name of the package (top left)
+      \item Function name (headline)
+      \item Description
+      \item Usage
+      \item Comments on arguments
+      \item Details
+      \item About author(s)
+      \item References to cite
+      \item Example code
+    \end{itemize}
+  \end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Where we are?}
-\begin{itemize}
- \item In Linux/UNIX, R starts in current directory (use \texttt{cd} to change it before launching R)
- \item \alert{Set and check working directory} in R:
-\end{itemize}
+  \begin{itemize}
+    \item In Linux/UNIX, R starts in current directory (use \texttt{cd} to change it before launching R)
+    \item \alert{Set and check working directory} in R:
+  \end{itemize}
   \begin{spluscode}
     setwd("/some/path/") # Or "~/...". In Windows "C:\..."
     getwd() # Verifies where we are
     dir() # Lists files and folders on the disk
     ls() # Lists currently available R objects
   \end{spluscode}
-\begin{itemize}
- \item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
- \item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac OS~X)
- \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time
- \item RStudio and RKWard help with this very much
-\end{itemize}
+  \begin{itemize}
+    \item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
+    \item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac OS~X)
+    \item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time
+    \item RStudio and RKWard help with this very much
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Importance of working directory}
@@ -359,55 +358,55 @@
 \subsection{Basic operations in R}
 
 \begin{frame}{Types of objects}
-\begin{itemize}
- \item \textbf{Vectors} -- numbers or characters
- \item \textbf{Matrices} -- columns are of same type (numeric, character, etc.) and the same length
- \item \textbf{Arrays} -- like matrices, but with possibly more dimensions
- \item \textbf{Data frames} -- more general -- columns can be of different type
- \item \textbf{Lists} -- ordered collections of objects (vectors, matrices, \ldots) -- not necessarily of the same type
- \item \textbf{Factors} -- a~vector of levels, e.g. populations, colors, etc.
- \item More ``advanced'' objects to store plots, genetic data, \ldots
- \begin{itemize}
-  \item Commonly called ``\textbf{S3}'' and ``\textbf{S4}'' objects in R terminology
-  \item Technically commonly just lists putting together various information
-  \item We will meet many of them\ldots
- \end{itemize}
- \item Functions require particular object types -- take care about it
-\end{itemize}
+  \begin{itemize}
+    \item \textbf{Vectors} -- numbers or characters
+    \item \textbf{Matrices} -- columns are of same type (numeric, character, etc.) and the same length
+    \item \textbf{Arrays} -- like matrices, but with possibly more dimensions
+    \item \textbf{Data frames} -- more general -- columns can be of different type
+    \item \textbf{Lists} -- ordered collections of objects (vectors, matrices, \ldots) -- not necessarily of the same type
+    \item \textbf{Factors} -- a~vector of levels, e.g. populations, colors, etc.
+    \item More ``advanced'' objects to store plots, genetic data, \ldots
+    \begin{itemize}
+      \item Commonly called ``\textbf{S3}'' and ``\textbf{S4}'' objects in R terminology
+      \item Technically commonly just lists putting together various information
+      \item We will meet many of them\ldots
+    \end{itemize}
+  \item Functions require particular object types -- take care about it
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Popular object classes (we are going to use) I}
-\begin{itemize}
- \item \texttt{dist} -- distance matrices
- \item \texttt{genind} -- stores various genetic information for individuals
- \item \texttt{genpop} -- like genind, but on population level
- \item \texttt{genlight} -- variant of genind to store large multiple genomes
- \item \texttt{SNPbin} -- stores large SNP data for single genome
- \item \texttt{DNAbin} -- stores DNA sequences (aligned or not)
- \item \texttt{haplotype} -- unique sequences from DNAbin
- \item \texttt{alignment} -- aligned sequences (seqinr)
- \item \texttt{phyDat} -- ``preparation'' of data for some phylogenetic analysis
- \item \texttt{loci} -- extension of data frame (DF), stores information about loci
- \item \texttt{hclust} -- output of hierarchical clustering, can be converted to phylo
- \item \texttt{treeshape} -- derived from hclust
-\end{itemize}
+  \begin{itemize}
+    \item \texttt{dist} -- distance matrices
+    \item \texttt{genind} -- stores various genetic information for individuals
+    \item \texttt{genpop} -- like genind, but on population level
+    \item \texttt{genlight} -- variant of genind to store large multiple genomes
+    \item \texttt{SNPbin} -- stores large SNP data for single genome
+    \item \texttt{DNAbin} -- stores DNA sequences (aligned or not)
+    \item \texttt{haplotype} -- unique sequences from DNAbin
+    \item \texttt{alignment} -- aligned sequences (seqinr)
+    \item \texttt{phyDat} -- ``preparation'' of data for some phylogenetic analysis
+    \item \texttt{loci} -- extension of data frame (DF), stores information about loci
+    \item \texttt{hclust} -- output of hierarchical clustering, can be converted to phylo
+    \item \texttt{treeshape} -- derived from hclust
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Popular object classes (we are going to use) II}
-\begin{itemize}
- \item \texttt{phylo} -- phylogenetic information, typically trees
- \item \texttt{phylo4} -- derived from phylo (more data), S4 instead of S3
- \item \texttt{matching} -- binary phylogenetic trees
- \item \texttt{haplonet} -- networks without reticulation
- \item \texttt{spca} -- results of sPCA
- \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA, \ldots
- \item \texttt{dapc} -- results of DAPC
- \item and more\ldots~common task is converting among formats\ldots
- \item \ldots not all formats are (easily) convertible among each other\ldots
-\end{itemize}
-To get information about content of each data type see
-\splus/getClassDef("genind") # Or any other class name (of loaded package)/
-There are information about slots within that classes you can access.
+  \begin{itemize}
+    \item \texttt{phylo} -- phylogenetic information, typically trees
+    \item \texttt{phylo4} -- derived from phylo (more data), S4 instead of S3
+    \item \texttt{matching} -- binary phylogenetic trees
+    \item \texttt{haplonet} -- networks without reticulation
+    \item \texttt{spca} -- results of sPCA
+    \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA, \ldots
+    \item \texttt{dapc} -- results of DAPC
+    \item and more\ldots~common task is converting among formats\ldots
+    \item \ldots not all formats are (easily) convertible among each other\ldots
+  \end{itemize}
+  To get information about content of each data type see
+  \splus/getClassDef("genind") # Or any other class name (of loaded package)/
+  There are information about slots within that classes you can access.
 \end{frame}
 
 \begin{frame}{Conversions among data types I}
@@ -562,10 +561,10 @@ There are information about slots within that classes you can access.
     options() # Generic function to modify various settings
     ?options # Gives details
   \end{spluscode}
-\begin{itemize}
- \item \alert{Keep newest version of R and and newest versions of packages!}
- \item Installation of multiple packages may sometimes fail -- install then packages in smaller groups or one by one
-\end{itemize}
+  \begin{itemize}
+    \item \alert{Keep newest version of R and and newest versions of packages!}
+    \item Installation of multiple packages may sometimes fail -- install then packages in smaller groups or one by one
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Install needed packages}
@@ -643,9 +642,9 @@ There are information about slots within that classes you can access.
     # Upgrades installed Bioconductor packages to new R release
     biocLite("BiocUpgrade") # E.g. from R 3.2 to 3.3
   \end{spluscode}
-\begin{itemize}
- \item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
-\end{itemize}
+  \begin{itemize}
+    \item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor packages for the course}
@@ -786,23 +785,23 @@ There are information about slots within that classes you can access.
 \end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
-\begin{multicols}{2}
-  \begin{itemize}
-    \item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{http://grunwaldlab.cgrb.oregonstate.edu/poppr-r-package-population-genetics}{poppr}
-    \item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{http://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
-    \item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
-    \item Most of methods are available for polyploids (although not all)
-    \item Some methods are unavailable for dominant (presence/absence) data
-    \item Mixing of ploidy levels is tricky (but possible) -- it doesn't matter when data are encoded as PA, otherwise it is mathematically problematic
-  \end{itemize}
-  \begin{spluscode}
-    library(ape)
-    library(ade4)
-    library(adegenet)
-    library(pegas)
-    library(poppr)
-  \end{spluscode}
-\end{multicols}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{http://grunwaldlab.cgrb.oregonstate.edu/poppr-r-package-population-genetics}{poppr}
+      \item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{http://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
+      \item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
+      \item Most of methods are available for polyploids (although not all)
+      \item Some methods are unavailable for dominant (presence/absence) data
+      \item Mixing of ploidy levels is tricky (but possible) -- it doesn't matter when data are encoded as PA, otherwise it is mathematically problematic
+    \end{itemize}
+    \begin{spluscode}
+      library(ape)
+      library(ade4)
+      library(adegenet)
+      library(pegas)
+      library(poppr)
+    \end{spluscode}
+  \end{multicols}
 \end{frame}
 
 \subsection{Microsatellites}
@@ -846,10 +845,8 @@ There are information about slots within that classes you can access.
     hauss.genind$pop # "$" separates extra slots within object
   \end{spluscode}
   \vfill
-  Coordinates can be in any projection or scale -- according to aim\\
-  \vfill
   \textbf{Source data:}
-  \vfill
+  \vfil
   \begin{spluscode}
     Ind  lon      lat
     H01  21.3333  41.1
@@ -865,10 +862,11 @@ There are information about slots within that classes you can access.
       quote="", dec=".", row.names=1)
     hauss.coord
   \end{spluscode}
-  \vfill
-  \begin{footnotesize}
-    Take care about parameters of \texttt{read.csv()}! See \texttt{?read.csv} for details.
-  \end{footnotesize}
+  \vfil
+  \begin{itemize}
+    \item Coordinates can be in any projection or scale -- according to aim
+    \item Take care about parameters of \texttt{read.csv()}! See \texttt{?read.csv} for details
+  \end{itemize}
   \vfill
 \end{frame}
 
@@ -904,9 +902,9 @@ There are information about slots within that classes you can access.
     read.structure() # adegenet - reads *.str files, only ha/diploids
     import2genind() # adegenet - more automated version of above functions
   \end{spluscode}
-\begin{block}{One function rules them all\ldots}
-  All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
-\end{block}
+  \begin{block}{One function rules them all\ldots}
+    All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Import of polyploid microsatellites}
@@ -914,12 +912,11 @@ There are information about slots within that classes you can access.
   \begin{itemize}
     \item \texttt{adegent}, \texttt{poppr} and related packages can for most of functions handle any ploidy level (including mixing of ploidy levels, but not for all analysis)
     \item \texttt{polysat} package can handle mixed ploidy levels for microsatellites, but range of methods is limited
+    \item As for AFLP, we need two files: the data matrix and individual's populations (it can be combined in one file -- next slide)
   \end{itemize}
   \vfill
-  As for AFLP, we need two files: the data matrix and individual's populations (it can be combined in one file -- next slide)\\
-  \vfill
   \textbf{Triploid microsatellite data:}
-  \vfill
+  \vfil
   \begin{spluscode}
            msat58      msat31      msat78      msat61      ...
     ala1   124/124/124 237/237/237 164/164/172 136/136/138 ...
@@ -927,7 +924,7 @@ There are information about slots within that classes you can access.
     ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
     ...    ...         ...         ...         ...         ...
   \end{spluscode}
-  \vfill
+  \vfil
   \begin{footnotesize}
     Triploid species of \textit{Taraxacum} sect. \textit{Taraxacum}
   \end{footnotesize}
@@ -1040,14 +1037,14 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}{Notes about getting data into R}
-\begin{itemize}
- \item When importing fragmentation data, we somehow use function \texttt{read.table()} -- it is important to understand it
- \item I~recommend to use TAB (TSV -- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
- \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
- \item \textbf{Do not use} underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, Latin letters or dots
- \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
- \item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
-\end{itemize}
+  \begin{itemize}
+    \item When importing fragmentation data, we somehow use function \texttt{read.table()} -- it is important to understand it
+    \item I~recommend to use TAB (TSV -- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
+    \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
+    \item \textbf{Do not use} underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, Latin letters or dots
+    \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
+    \item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
+  \end{itemize}
 \end{frame}
 
 \subsection{DNA sequences, SNP}
@@ -1216,14 +1213,14 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}{Notes about using genlight (vs. genind)}
-\begin{itemize}
- \item Genlight is ``just'' version of more common genind object to store large data sets with (nearly) complete multiple genomes
- \item ``Large'' is tricky -- there is no easy criterion (roughly, genind is inefficient since dozens or hundreds thousands of SNPs) -- try genind and when work fails because of not enough computer resources, go on with genlight
- \item Use is basically same as when working with genind -- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
- \item SNPbin is version of genind/genlight to store one large genome -- serves basically as storage, no need to deal with it
- \item Genlight as well as genind allow varying ploidy level
- \item Functions working with genlight use to use parallelisation to speed up operations -- this commonly doesn't work properly on MS~Windows
-\end{itemize}
+  \begin{itemize}
+    \item Genlight is ``just'' version of more common genind object to store large data sets with (nearly) complete multiple genomes
+    \item ``Large'' is tricky -- there is no easy criterion (roughly, genind is inefficient since dozens or hundreds thousands of SNPs) -- try genind and when work fails because of not enough computer resources, go on with genlight
+    \item Use is basically same as when working with genind -- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
+    \item SNPbin is version of genind/genlight to store one large genome -- serves basically as storage, no need to deal with it
+    \item Genlight as well as genind allow varying ploidy level
+    \item Functions working with genlight use to use parallelisation to speed up operations -- this commonly doesn't work properly on MS~Windows
+  \end{itemize}
 \end{frame}
 
 \subsection{Export}
@@ -1283,11 +1280,6 @@ Source data (two files -- AFLP data with individual names and populations)
 	\item (Un)weighted per-group mean average (\textbf{U/WPGMA}) and others
 	\item Used more in ecology, in genetic data not so much anymore (following methods use to produce better results)
       \end{itemize}
-      \item \textbf{Minimum Spanning Network (MSN)} -- slide~\ref{MSN}
-      \begin{itemize}
-	\item Simple network connecting the most similar genotypes/haplotypes
-	\item Useful for clones, cpDNA, mtDNA,~\ldots
-      \end{itemize}
       \item \textbf{Neighbor-Joining (NJ)} -- from slide~\ref{NJ}
       \begin{itemize}
 	\item A tree starting from the two most similar individuals and connecting in the next steps next and next the most similar individual
@@ -1300,6 +1292,11 @@ Source data (two files -- AFLP data with individual names and populations)
 	\item Shows individuals in 2D scatter plot to retain maximum variability (by finding correlations among loci)
       \end{itemize}
     \end{itemize}
+    \item \textbf{Minimum Spanning Network (MSN)} -- slide~\ref{MSN}
+    \begin{itemize}
+      \item Simple network connecting the most similar genotypes/haplotypes
+      \item Useful for clones, cpDNA, mtDNA,~\ldots
+      \end{itemize}
     \item \textbf{Multivariate statistics}
     \begin{itemize}
       \item Two variables are easily displayable in 2D xy-scatter plot (we can calculate correlation, whatever)
@@ -1312,10 +1309,12 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \textbf{Maximum Parsimony (MP)} -- from slide~\ref{MP}
     \begin{itemize}
       \item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of changes
+      \item It is easy to score how good the solution is, but computationally demanding to find it
     \end{itemize}
     \item \textbf{Maximum Likelihood (ML)}
     \begin{itemize}
       \item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely tree under given mutational model
+      \item It is easy to score how good the solution is, but computationally demanding to find it
     \end{itemize}
     \item \textbf{Bayesian statistics}
     \begin{itemize}
@@ -1328,7 +1327,7 @@ Source data (two files -- AFLP data with individual names and populations)
 	\item Beginning use to be very unstable -- it is discarded as burn-in (``heating'' of Markov Chain Monte Carlo (MCMC) doing the exploration and optimization of models), usually $\sim$10-25\%~of steps
       \end{itemize}
     \end{itemize}
-    \item MP, ML and Bayesian statistics contain (evolutionary) \textbf{models} -- they are not based on similarity (as matrix-based methods), so that they are supposed to reveal real structure in the data (clustering, phylogenetic relationships, etc.)
+    \item MP, ML and Bayesian statistics contain (evolutionary) \textbf{models} -- they are not based on similarity (as matrix-based methods), so that they are supposed to reveal real structure in the data
     \item \textbf{Permutations}, \textbf{bootstraps} and another tests
     \begin{itemize}
       \item It is necessary to test statistical significance of the obtained results
@@ -1338,7 +1337,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \end{itemize}
   \end{itemize}
 \end{frame}
-
+  
 \subsection{First look at the data}
 
 \begin{frame}[fragile]{Descriptive statistics I}
@@ -1587,7 +1586,7 @@ Source data (two files -- AFLP data with individual names and populations)
     mlg.id(hauss.genind)
   \end{spluscode}
   \end{multicols}
-Functions from poppr package -- the best for microsatellites, although available also from another data types
+  Functions from poppr package -- the best for microsatellites, although available also from another data types
 \end{frame}
 
 \begin{frame}[fragile]{Inbreeding}
@@ -1637,8 +1636,9 @@ Functions from poppr package -- the best for microsatellites, although available
     # Test if it is Euclidean
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
   \end{spluscode}
-
-Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean distances} (non-negative, Pythagoeran theorem is valid, etc.). If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
+  \vfil
+  Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean distances} (non-negative, Pythagoeran theorem is valid, etc.). If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
+  \vfill
 \end{frame}
 
 \begin{frame}[fragile]{Distances reflecting microsatellite repeats}
@@ -1664,12 +1664,12 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{frame}
 
 \begin{frame}{Turning distance matrix into Euclidean is controversial\ldots}
-\begin{footnotesize}
-  How to deal with zero distances in original matrix? There is no really good solution\ldots\\ Histograms of Bruvo distance before and after transformation:
-\end{footnotesize}
-\begin{center}
-  \includegraphics[width=\textwidth]{bruvodist.png}
-\end{center}
+  \begin{footnotesize}
+    How to deal with zero distances in original matrix? There is no really good solution\ldots\\ Histograms of Bruvo distance before and after transformation:
+  \end{footnotesize}
+  \begin{center}
+    \includegraphics[width=\textwidth]{bruvodist.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{More distances\ldots}
@@ -1784,8 +1784,9 @@ Most of analysis based on distances more or less require \href{https://en.wikipe
 \end{frame}
 
 \begin{frame}[fragile]{Distances and genlight object}
-Pairwise genetic distances for each data block (genlight objects with whole genome data) -- sensitive to missing data (not useful in every case):
-\vfill
+  \vfill
+  Pairwise genetic distances for each data block (genlight objects with whole genome data) -- sensitive to missing data (not useful in every case):
+  \vfill
   \begin{spluscode}
     usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
     class(usflu.dists.l)
@@ -1801,8 +1802,9 @@ Pairwise genetic distances for each data block (genlight objects with whole geno
     # genlight object (might require a lot of RAM)
     usflu.distg <- dist(as.matrix(usflu.genlight))
   \end{spluscode}
-\vfill
-Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for all of the cases
+  \vfil
+  Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for all of the cases
+  \vfill
 \end{frame}
 
 \begin{frame}[fragile]{Visualize pairwise genetic similarities}
@@ -1905,9 +1907,10 @@ Rationale of this approach is to save resources when dividing whole data set int
 \end{frame}
 
 \begin{frame}{UPGMA is not the best choice here\ldots}
-\includegraphics[width=\textwidth]{upgma.png}
-
-All points in the right graph should be clustered along the red line\ldots
+  \includegraphics[width=\textwidth]{upgma.png}
+  \vfil
+  All points in the right graph should be clustered along the red line\ldots
+  \vfill
 \end{frame}
 
 \subsection{AMOVA} % TODO get percentage of variability
@@ -1926,11 +1929,11 @@ All points in the right graph should be clustered along the red line\ldots
     Total     150.30023 3.267396 46
     ...
   \end{spluscode}
-\begin{itemize}
- \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
-% \item See \texttt{MSD} column for how much of the variance is on which level -- percentage can be calculated as percentage of each level from \texttt{Total}
- \item Another possibility is \texttt{poppr.amova} -- for more complicated hierarchy, see \texttt{?poppr.amova}
-\end{itemize}
+  \begin{itemize}
+    \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+%     \item See \texttt{MSD} column for how much of the variance is on which level -- percentage can be calculated as percentage of each level from \texttt{Total}
+    \item Another possibility is \texttt{poppr.amova} -- for more complicated hierarchy, see \texttt{?poppr.amova}
+  \end{itemize}
 \end{frame}
 
 \subsection{MSN}
@@ -2041,7 +2044,7 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
-\includegraphics[width=\textwidth]{nj2.png}
+  \includegraphics[width=\textwidth]{nj2.png}
 \end{frame}
 
 \begin{frame}[fragile]{Trees based on Bruvo's distance}{Package poppr (bootstrap is incorporated within the function)}
@@ -2068,7 +2071,7 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
-\includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
+  \includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
 \end{frame}
 
 % \begin{frame}[fragile]{NJ tree of populations} % FIXME rewrite the function for new version of APE
@@ -2268,9 +2271,9 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{Principal difference between PCA and DA}
-\begin{center}
-  \includegraphics[height=6cm]{dapc-da-pca.png}
-\end{center}
+  \begin{center}
+    \includegraphics[height=6cm]{dapc-da-pca.png}
+  \end{center}
 \end{frame}
 
 \subsection{Bayesian clustering}
@@ -2353,9 +2356,9 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{DAPC for K=2}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{dapc2.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{dapc2.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{DAPC code II}
@@ -2383,7 +2386,7 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{DAPC for K=3}
-\includegraphics[width=\textwidth]{dapc3.png}
+  \includegraphics[width=\textwidth]{dapc3.png}
 \end{frame}
 
 \begin{frame}[fragile]{DAPC code III}
@@ -2409,15 +2412,15 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{DAPC for K=3, extra information}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{dapc3-extra.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{dapc3-extra.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}{Another DAPC example}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{dapc.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{dapc.png}
+  \end{center}
 \end{frame}
 
 \section{SNP}
@@ -2467,7 +2470,7 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
-\includegraphics[width=\textwidth]{flu_alleles.png}
+  \includegraphics[width=\textwidth]{flu_alleles.png}
 \end{frame}
 
 \subsection{PCA and NJ}
@@ -2496,18 +2499,18 @@ All points in the right graph should be clustered along the red line\ldots
 \end{frame}
 
 \begin{frame}{PCA, NJ and genlight objects}
-\includegraphics[width=\textwidth]{flu_pcoa_nj.png}
+  \includegraphics[width=\textwidth]{flu_pcoa_nj.png}
 \end{frame}
 
 \section{Spatial analysis}
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
-\begin{itemize}
-  \item Moran's~\textit{I} -- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
-  \item Mantel test -- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
-  \item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
-  \item There are unlimited possibilities with connections with GIS software -- check specialized courses and literature
-\end{itemize}
+  \begin{itemize}
+    \item Moran's~\textit{I} -- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
+    \item Mantel test -- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
+    \item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
+    \item There are unlimited possibilities with connections with GIS software -- check specialized courses and literature
+  \end{itemize}
 \end{frame}
 
 \subsection{Moran's~I}
@@ -2609,12 +2612,12 @@ All points in the right graph should be clustered along the red line\ldots
 \subsection{sPCA}
 
 \begin{frame}[fragile]{Spatial Analysis of Principal Components (sPCA)}
-\begin{itemize}
- \item Implemented in adegenet, see \texttt{adegenetTutorial("spca")}
- \item Analyzes matrix of relative allele frequencies of genotypes/populations and spatial weighting matrix
- \item The geographical matrix is usually (as for Moran's~\textit{I}) created by \texttt{chooseCN()} -- creates connectivity network among entities (genotypes/populations) -- spatial coordinates are not directly used
- \item When using \texttt{chooseCN()}, look at the documentation and try various methods with changing settings to see differences
-\end{itemize}
+  \begin{itemize}
+    \item Implemented in adegenet, see \texttt{adegenetTutorial("spca")}
+    \item Analyzes matrix of relative allele frequencies of genotypes/populations and spatial weighting matrix
+    \item The geographical matrix is usually (as for Moran's~\textit{I}) created by \texttt{chooseCN()} -- creates connectivity network among entities (genotypes/populations) -- spatial coordinates are not directly used
+    \item When using \texttt{chooseCN()}, look at the documentation and try various methods with changing settings to see differences
+  \end{itemize}
   \begin{spluscode}
     data(rupica) # Loads adegenet's training dataset
                  # Rupicapra rupicapra from French Alps
@@ -2702,8 +2705,9 @@ All points in the right graph should be clustered along the red line\ldots
       ylab="Contribution", xlab="Marker", main="Contribution by markers
       into the first global score", col="grey")
   \end{spluscode}
-
+  \vfil
   \includegraphics[width=\textwidth]{spca-loading.png}
+  \vfill
 \end{frame}
 
 \subsection{Monmonier}
@@ -3464,11 +3468,11 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{Overview and MAFFT}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
-\begin{itemize}
- \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``\texttt{*StringSet}'' class R objects and writes ``\texttt{*MultipleAlignment}'' R objects; the latter reads and writes object of class ``\texttt{DNAbin}''
- \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write \texttt{DNAbin}
- \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write \texttt{DNAbin}
-\end{itemize}
+  \begin{itemize}
+    \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``\texttt{*StringSet}'' class R objects and writes ``\texttt{*MultipleAlignment}'' R objects; the latter reads and writes object of class ``\texttt{DNAbin}''
+    \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write \texttt{DNAbin}
+    \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write \texttt{DNAbin}
+  \end{itemize}
   \begin{spluscode}
     library(colorspace) # Libraries needed by phyloch/ips
     library(XML)
@@ -3649,19 +3653,19 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{Seeing trees in the forest}
 
 \begin{frame}{Topographical distances among matrices I -- implementations}
-\begin{itemize}
-  \item Robinsons-Foulds distance in \texttt{phytools::multiRF}
   \begin{itemize}
-    \item The index adds 1 for each difference between pair of trees
-    \item Well defined only for fully bifurcating trees -- if not fulfilled, some results might be misleading
-    \item Allow comparison of trees created by different methods
+    \item Robinsons-Foulds distance in \texttt{phytools::multiRF}
+    \begin{itemize}
+      \item The index adds 1 for each difference between pair of trees
+      \item Well defined only for fully bifurcating trees -- if not fulfilled, some results might be misleading
+      \item Allow comparison of trees created by different methods
+    \end{itemize}
+    \item Methods implemented in \texttt{ape::dist.topo} allow comparison of trees with polytomies (\texttt{method="PH85"}) or use of squared lengths of internal branches (\texttt{method="score"})
+    \item Final matrices are commonly not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} -- may be problematic for usage in methods like PCA
+    \begin{itemize}
+      \item Test it with \texttt{ade4::is.euclid}, can be scaled (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} -- carefully, it can damage meaning of the data
+    \end{itemize}
   \end{itemize}
-  \item Methods implemented in \texttt{ape::dist.topo} allow comparison of trees with polytomies (\texttt{method="PH85"}) or use of squared lengths of internal branches (\texttt{method="score"})
-  \item Final matrices are commonly not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} -- may be problematic for usage in methods like PCA
-  \begin{itemize}
-    \item Test it with \texttt{ade4::is.euclid}, can be scaled (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} -- carefully, it can damage meaning of the data
-  \end{itemize}
-\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees II}{We have plenty of trees. How much are their topologies different?}
@@ -3709,9 +3713,9 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees IV}{Calculate Robinsons-Foulds distance matrix among trees and plot it}
-\begin{itemize}
-  \item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects and directly create matrices (no need to create loops)
-\end{itemize}
+  \begin{itemize}
+    \item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects and directly create matrices (no need to create loops)
+  \end{itemize}
   \begin{spluscode}
     # Robinsons-Foulds distance
     oxalis.trees.d.rf <- multiRF(oxalis.trees)
@@ -3833,9 +3837,9 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
       consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black",
       "green", "blue", "red"), cex=1.5)
   \end{spluscode}
-\begin{center}
-  \includegraphics[width=\textwidth-1.5cm]{oxalis_density_good.png}
-\end{center}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.5cm]{oxalis_density_good.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Networks}
@@ -4069,7 +4073,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}{Plot of PIC (on the tree)}
-\includegraphics[width=\textwidth]{pic.png}
+  \includegraphics[width=\textwidth]{pic.png}
 \end{frame}
 
 \begin{frame}[fragile]{Test it}
@@ -4140,10 +4144,10 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{Autocorrelation}
 
 \begin{frame}[fragile]{Phylogenetic autocorrelation}
-\begin{itemize}
- \item Autocorrelation coefficient to quantify whether the distribution of a~trait among a~set of species is affected or not by their phylogenetic relationships
- \item In the absence of phylogenetic autocorrelation, the mean expected value of I~and its variance are known - it is thus possible to test the null hypothesis of the absence of dependence among observations
-\end{itemize}
+  \begin{itemize}
+    \item Autocorrelation coefficient to quantify whether the distribution of a~trait among a~set of species is affected or not by their phylogenetic relationships
+    \item In the absence of phylogenetic autocorrelation, the mean expected value of I~and its variance are known - it is thus possible to test the null hypothesis of the absence of dependence among observations
+  \end{itemize}
   \begin{spluscode}
     # Let's choose weights as wij = 1/dij, where the d’s is the distances
     # measured on the tree - cophenetic() calculates cophenetic distances
@@ -4173,7 +4177,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     # phylogenetic proximity between tips
     library(adephylo)
     abouheif.moran(x=cbind(primates.body, primates.longevity),
-      W=primates.weights, method="oriAbouheif", a=1, nrepet=1000,
+      W=primates.weights, method="oriAbouheif", nrepet=1000,
       alter="greater")
   \end{spluscode}
 \end{frame}
@@ -4390,7 +4394,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{spluscode}
 \end{frame}
 
-% \subsection{Partitioning} % TODO
+% \subsection{Partitioning} % TODO Partitioning
 %
 % \begin{frame}[fragile]{Variance partitioning}
 %   \begin{spluscode}
@@ -4404,7 +4408,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \begin{itemize}
     \item Direct consequence of the evolution of trait depends on evolution -- if trait variation is driven by environment, phylogenetic signal is 0
   \end{itemize}
-\begin{spluscode}
+  \begin{spluscode}
     library(picante)
     # Test for Bloomberg's K statistics
     Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
@@ -4489,23 +4493,23 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \begin{frame}[fragile]{Phylogenetic principal component analysis -- the code}
   \begin{spluscode}
     # Library needed to create phylo4d object required by ppca
-    library(phylobase)
+    library(adephylo)
     # Calculate pPCA
     primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(
       primates.body, primates.longevity)), method="patristic",
-      a=1, center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
+      center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
     # Print results
-    print.ppca(primates.ppca)
+    print(primates.ppca)
     # See summary information
-    summary.ppca(primates.ppca)
+    summary(primates.ppca)
     # See PCA scores for variables on phylogenetic tree
-    scatter.ppca(primates.ppca)
+    scatter(primates.ppca)
     # See decomposition of pPCA eigenvalues
-    screeplot.ppca(primates.ppca)
+    screeplot(primates.ppca)
     # Plot pPCA results - global vs. local structure, decomposition
     # of pPCA eigenvalues, PCA plot of variables and PCA scores
     # for variables on phylogenetic tree
-    plot.ppca(primates.ppca)
+    plot(primates.ppca)
   \end{spluscode}
 \end{frame}
 
@@ -4694,7 +4698,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{multicols}
 \end{frame}
 
-% \subsection{Disparity} % TODO
+% \subsection{Disparity} % TODO Disparity
 %
 % \begin{frame}[fragile]{Disparity through time}
 %   \begin{spluscode}
@@ -4971,11 +4975,11 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{Resources}
 
 \begin{frame}{Citations}
-\begin{itemize}
-  \item To correctly cite R launch \texttt{citation()} and see information there -- it is slightly different for every version of R
-  \item Cite used packages -- launch \texttt{citation("PackageName")} -- if this information is missing, go to its manual page and/or homepage and find the information there
-  \item Packages/functions commonly provide various methods to calculate desired task -- check function's help page (\texttt{\textbf{?}FunctionName}) and find references there and cite them accordingly
-\end{itemize}
+  \begin{itemize}
+    \item To correctly cite R launch \texttt{citation()} and see information there -- it is slightly different for every version of R
+    \item Cite used packages -- launch \texttt{citation("PackageName")} -- if this information is missing, go to its manual page and/or homepage and find the information there
+    \item Packages/functions commonly provide various methods to calculate desired task -- check function's help page (\texttt{\textbf{?}FunctionName}) and find references there and cite them accordingly
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Further reading}{The most important books for our topics}
@@ -5148,6 +5152,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item \href{https://cran.r-project.org/package=markophylo}{markophylo}: markov chain models for phylogenetic trees
     \item \href{https://cran.r-project.org/package=MCMCglmm}{MCMCglmm}: MCMC generalised linear mixed models
     \item \href{https://github.com/NESCent/MINOTAUR}{MINOTAUR}: multivariate visualisation and outlier analysis
+    \item \href{https://cran.r-project.org/web/packages/MonoPhy/vignettes/MonoPhyVignette.html}{MonoPhy}: Visualization of monophyletic clades on a tree
     \item \href{https://cran.r-project.org/package=MPSEM}{MPSEM}: modeling phylogenetic signals using eigenvector maps
     \item \href{https://cran.r-project.org/package=mvMORPH}{mvMORPH}: multivariate comparative tools for fitting evolutionary models to morphometric data
     \item \href{https://cran.r-project.org/package=ouch}{ouch}: Ornstein-Uhlenbeck models for evolution along a phylogenetic tree
@@ -5222,21 +5227,21 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \subsection{The end}
 
 \begin{frame}{The end}{Our course is over\ldots}
-\begin{center}
-  \ldots I~hope it was helpful for You\ldots\\
-  \vfill
-  \ldots any feedback is welcomed\ldots
-  \vfill
-  \ldots happy \textbf{\textit{R}} hacking\ldots
-  \vfill
-\end{center}
-\begin{flushright}
-  \ldots~any final questions?
-  \vfill
-  \begin{tiny}
-   \href{https://en.wikipedia.org/wiki/XeTeX}{Typesetting} using \XeLaTeX~on \href{https://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}, \today.
-  \end{tiny}
-\end{flushright}
+  \begin{center}
+    \ldots I~hope it was helpful for You\ldots\\
+    \vfill
+    \ldots any feedback is welcomed\ldots
+    \vfill
+    \ldots happy \textbf{\textit{R}} hacking\ldots
+    \vfill
+  \end{center}
+  \begin{flushright}
+    \ldots~any final questions?
+    \vfill
+    \begin{tiny}
+    \href{https://en.wikipedia.org/wiki/XeTeX}{Typesetting} using \XeLaTeX~on \href{https://www.opensuse.org/}{openSUSE} \href{https://en.wikipedia.org/wiki/GNU}{GNU}/\href{https://en.wikipedia.org/wiki/Linux}{Linux}, \today.
+    \end{tiny}
+  \end{flushright}
 \end{frame}
 
 \end{document}
@@ -5254,3 +5259,4 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 % http://www.molecularecologist.com/2016/02/quick-and-dirty-tree-building-in-r/
 % http://www.molecularecologist.com/2016/03/geographical-heat-maps-in-r/
 % Jaccard index
+% https://cran.r-project.org/web/packages/MonoPhy/vignettes/MonoPhyVignette.html
