@@ -1437,7 +1437,7 @@ primates.weights
 
 <b><span style='color:#54ffff;'># Test of Abouheif designed to detect phylogenetic autocorrelation in a quantitative trait - in fact Moran's I test using a particular phylogenetic proximity between tips</span></b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>adephylo<b>)</b>
-<b><span style='color:#dede49;'>abouheif.moran</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>cbind</span></b><b>(</b>primates.body, primates.longevity<b>)</b>, <b><span style='color:#54ff54;'>W=</span></b>primates.weights, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;oriAbouheif&quot;</span></b>, <b><span style='color:#54ff54;'>a=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>nrepet=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>alter=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b><b>)</b>
+<b><span style='color:#dede49;'>abouheif.moran</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>cbind</span></b><b>(</b>primates.body, primates.longevity<b>)</b>, <b><span style='color:#54ff54;'>W=</span></b>primates.weights, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;oriAbouheif&quot;</span></b>, <b><span style='color:#54ff54;'>nrepet=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>alter=</span></b><b><span style='color:#ff54ff;'>&quot;greater&quot;</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># correlogram can be used to visualize the results of phylogenetic autocorrelative analysis</span></b>
 <b><span style='color:#54ffff;'># Loads training data set</span></b>
@@ -1551,19 +1551,19 @@ shorebird.pgls <b><span style='color:#336366;'>&lt;-</span></b><b><span style='c
 <b><span style='color:#dede49;'>summary</span></b><b>(</b><b><span style='color:#dede49;'>pgls</span></b><b>(</b><b><span style='color:#54ff54;'>formula=</span></b>shorebird.data<b>[[</b><b><span style='color:#ff54ff;'>&quot;M.Mass&quot;</span></b><b>]]</b> <b>~</b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>data=</span></b><b><span style='color:#dede49;'>comparative.data</span></b><b>(</b><b><span style='color:#54ff54;'>phy=</span></b>shorebird.tree, <b><span style='color:#54ff54;'>data=</span></b><b><span style='color:#dede49;'>as.data.frame</span></b><b>(</b><b><span style='color:#dede49;'>cbind</span></b><b>(</b>shorebird.data<b>[[</b><b><span style='color:#ff54ff;'>&quot;M.Mass&quot;</span></b><b>]]</b>, shorebird.data<b>[[</b><b><span style='color:#ff54ff;'>&quot;Species&quot;</span></b><b>]]))</b>, <b><span style='color:#54ff54;'>names.col=</span></b>V2, <b><span style='color:#54ff54;'>vcv=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)))</b>
 
 <b><span style='color:#b00000;'>## phylogenetic PCA</span></b>
-<b><span style='color:#dede49;'>library</span></b><b>(</b>phylobase<b>)</b> <b><span style='color:#54ffff;'># Library needed to create phylo4d object required by ppca</span></b>
+<b><span style='color:#dede49;'>library</span></b><b>(</b>adephylo<b>)</b> <b><span style='color:#54ffff;'># Library needed to create phylo4d object required by ppca</span></b>
 <b><span style='color:#54ffff;'># Calculate pPCA</span></b>
-primates.ppca <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>ppca</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>phylo4d</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>primates.tree, <b><span style='color:#dede49;'>cbind</span></b><b>(</b>primates.body, primates.longevity<b>))</b>, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;patristic&quot;</span></b>, <b><span style='color:#54ff54;'>a=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>center=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>scale=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>scannf=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>nfposi=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>nfnega=</span></b><b><span style='color:#ff54ff;'>0</span></b><b>)</b>
+primates.ppca <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>ppca</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>phylo4d</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>primates.tree, <b><span style='color:#dede49;'>cbind</span></b><b>(</b>primates.body, primates.longevity<b>))</b>, <b><span style='color:#54ff54;'>method=</span></b><b><span style='color:#ff54ff;'>&quot;patristic&quot;</span></b>, <b><span style='color:#54ff54;'>center=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>scale=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>scannf=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>nfposi=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>nfnega=</span></b><b><span style='color:#ff54ff;'>0</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Print results</span></b>
-<b><span style='color:#dede49;'>print.ppca</span></b><b>(</b>primates.ppca<b>)</b>
+<b><span style='color:#dede49;'>print</span></b><b>(</b>primates.ppca<b>)</b>
 <b><span style='color:#54ffff;'># See summary information</span></b>
-<b><span style='color:#dede49;'>summary.ppca</span></b><b>(</b>primates.ppca<b>)</b>
+<b><span style='color:#dede49;'>summary</span></b><b>(</b>primates.ppca<b>)</b>
 <b><span style='color:#54ffff;'># See PCA scores for variables on phylogenetic tree</span></b>
-<b><span style='color:#dede49;'>scatter.ppca</span></b><b>(</b>primates.ppca<b>)</b>
+<b><span style='color:#dede49;'>scatter</span></b><b>(</b>primates.ppca<b>)</b>
 <b><span style='color:#54ffff;'># See decomposition of pPCA eigenvalues</span></b>
-<b><span style='color:#dede49;'>screeplot.ppca</span></b><b>(</b>primates.ppca<b>)</b>
+<b><span style='color:#dede49;'>screeplot</span></b><b>(</b>primates.ppca<b>)</b>
 <b><span style='color:#54ffff;'># Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree</span></b>
-<b><span style='color:#dede49;'>plot.ppca</span></b><b>(</b>primates.ppca<b>)</b>
+<b><span style='color:#dede49;'>plot</span></b><b>(</b>primates.ppca<b>)</b>
 
 <b><span style='color:#b00000;'>## Ancestral state reconstruction</span></b>
 
@@ -1652,6 +1652,19 @@ primates.contmap <b><span style='color:#336366;'>&lt;-</span></b><b><span style=
 <b><span style='color:#54ffff;'># when finished go back to normal version</span></b>
 <b><span style='color:#dede49;'>dev_mode</span></b><b>(</b><b><span style='color:#54ff54;'>on=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
 
+<b><span style='color:#b00000;'>## Functions</span></b>
+MyFunction <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ffff54;'>function</span></b> <b>(</b>x, y<b>)</b> <b>{</b>
+  <b><span style='color:#54ffff;'># Any commands can be here...</span></b>
+  x <b>+</b><b><span style='color:#ff54ff;'> </span></b>y
+  <b>}</b>
+
+<b><span style='color:#54ffff;'># Use as usually:</span></b>
+<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b>, <b><span style='color:#ff54ff;'>8</span></b><b>)</b>
+<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#ff54ff;'>4</span></b><b>)</b>
+<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>y=</span></b><b><span style='color:#ff54ff;'>7</span></b><b>)</b>
+MF <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>9</span></b>, <b><span style='color:#ff54ff;'>15</span></b><b>)</b>
+MF <b><span style='color:#54ffff;'># See it works</span></b>
+
 <b><span style='color:#b00000;'>## Loops</span></b>
 
 <b><span style='color:#54ffff;'># For loop</span></b>
@@ -1706,19 +1719,6 @@ CC <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff
   <b>}</b>
 CC <b><span style='color:#54ffff;'># Previously, &quot;YY&quot; contained values to plot made by the for loop, here &quot;CC&quot; contains function to by used by sapply() when plotting</span></b>
 <b><span style='color:#dede49;'>plot</span></b><b>(</b><b><span style='color:#dede49;'>sapply</span></b><b>(</b>XX, CC<b>))</b> <b><span style='color:#54ffff;'># See the result</span></b>
-
-<b><span style='color:#b00000;'>## Functions</span></b>
-MyFunction <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#ffff54;'>function</span></b> <b>(</b>x, y<b>)</b> <b>{</b>
-  <b><span style='color:#54ffff;'># Any commands can be here...</span></b>
-  x <b>+</b><b><span style='color:#ff54ff;'> </span></b>y
-  <b>}</b>
-
-<b><span style='color:#54ffff;'># Use as usually:</span></b>
-<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b>, <b><span style='color:#ff54ff;'>8</span></b><b>)</b>
-<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#ff54ff;'>4</span></b><b>)</b>
-<b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#ff54ff;'>4</span></b>, <b><span style='color:#54ff54;'>y=</span></b><b><span style='color:#ff54ff;'>7</span></b><b>)</b>
-MF <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>MyFunction</span></b><b>(</b><b><span style='color:#ff54ff;'>9</span></b>, <b><span style='color:#ff54ff;'>15</span></b><b>)</b>
-MF <b><span style='color:#54ffff;'># See it works</span></b>
 </pre>
 </body>
 </html>

@@ -1426,7 +1426,7 @@ gearymoran(bilis=primates.weights, X=data.frame(primates.body, primates.longevit
 
 # Test of Abouheif designed to detect phylogenetic autocorrelation in a quantitative trait - in fact Moran's I test using a particular phylogenetic proximity between tips
 library(adephylo)
-abouheif.moran(x=cbind(primates.body, primates.longevity), W=primates.weights, method="oriAbouheif", a=1, nrepet=1000, alter="greater")
+abouheif.moran(x=cbind(primates.body, primates.longevity), W=primates.weights, method="oriAbouheif", nrepet=1000, alter="greater")
 
 # correlogram can be used to visualize the results of phylogenetic autocorrelative analysis
 # Loads training data set
@@ -1540,19 +1540,19 @@ summary(gls(model=primates.longevity ~ 1, data=as.data.frame (primates.longevity
 summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 
 ## phylogenetic PCA
-library(phylobase) # Library needed to create phylo4d object required by ppca
+library(adephylo) # Library needed to create phylo4d object required by ppca
 # Calculate pPCA
-primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body, primates.longevity)), method="patristic", a=1, center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
+primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body, primates.longevity)), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
 # Print results
-print.ppca(primates.ppca)
+print(primates.ppca)
 # See summary information
-summary.ppca(primates.ppca)
+summary(primates.ppca)
 # See PCA scores for variables on phylogenetic tree
-scatter.ppca(primates.ppca)
+scatter(primates.ppca)
 # See decomposition of pPCA eigenvalues
-screeplot.ppca(primates.ppca)
+screeplot(primates.ppca)
 # Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree
-plot.ppca(primates.ppca)
+plot(primates.ppca)
 
 ## Ancestral state reconstruction
 
@@ -1641,6 +1641,19 @@ install_github("thibautjombart/adegenet")
 # when finished go back to normal version
 dev_mode(on=FALSE)
 
+## Functions
+MyFunction <- function (x, y) {
+  # Any commands can be here...
+  x + y
+  }
+
+# Use as usually:
+MyFunction(5, 8)
+MyFunction(1, 4)
+MyFunction(x=4, y=7)
+MF <- MyFunction(9, 15)
+MF # See it works
+
 ## Loops
 
 # For loop
@@ -1695,16 +1708,3 @@ CC <- function(AA) {
   }
 CC # Previously, "YY" contained values to plot made by the for loop, here "CC" contains function to by used by sapply() when plotting
 plot(sapply(XX, CC)) # See the result
-
-## Functions
-MyFunction <- function (x, y) {
-  # Any commands can be here...
-  x + y
-  }
-
-# Use as usually:
-MyFunction(5, 8)
-MyFunction(1, 4)
-MyFunction(x=4, y=7)
-MF <- MyFunction(9, 15)
-MF # See it works
