@@ -125,15 +125,15 @@
       \item Basic introduction into R
       \item Analyzing phylogeny and evolution and basic theory
       \begin{itemize}
-	\item DNA sequences, SNP, SSRs, AFLP, \ldots
-	\item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony, \ldots
-	\item Character evolution, ancestral state reconstructions, \ldots
+	\item DNA sequences, SNP, SSRs, AFLP,~\ldots
+	\item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony,~\ldots
+	\item Character evolution, ancestral state reconstructions,~\ldots
 	\item Alignments
 	\item Manipulations with trees
       \end{itemize}
       \item Plotting
     \columnbreak
-      \item Maps, spatial analysis, \ldots
+      \item Maps, spatial analysis,~\ldots
       \item Basic creation of scripts
       \item And more\ldots
     \end{itemize}
@@ -142,7 +142,7 @@
       \item Detailed theory behind used methods
       \item Programming in~R
       \item Other software related to the methods used (with exceptions of applications called from R)
-      \item Other areas of R usage (ecology, biomedicine, \ldots)
+      \item Other areas of R usage (ecology, biomedicine,~\ldots)
     \end{itemize}
   \end{multicols}
 \end{frame}
@@ -163,7 +163,7 @@
 
 \begin{frame}{Graphical user interfaces (GUI)}
   \begin{itemize}
-    \item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures, \ldots
+    \item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures,~\ldots
     \item RStudio \url{https://www.rstudio.com/} -- probably the most common, multiplatform, very powerful
     \item RKWard \url{https://rkward.kde.org/} -- feature very rich, developed mainly for Linux, available also for another operating systems
     \item R commander (Rcmdr) \url{http://www.rcommander.com/} -- multiplatform, not so rich as previous
@@ -363,9 +363,9 @@
     \item \textbf{Matrices} -- columns are of same type (numeric, character, etc.) and the same length
     \item \textbf{Arrays} -- like matrices, but with possibly more dimensions
     \item \textbf{Data frames} -- more general -- columns can be of different type
-    \item \textbf{Lists} -- ordered collections of objects (vectors, matrices, \ldots) -- not necessarily of the same type
+    \item \textbf{Lists} -- ordered collections of objects (vectors, matrices,~\ldots) -- not necessarily of the same type
     \item \textbf{Factors} -- a~vector of levels, e.g. populations, colors, etc.
-    \item More ``advanced'' objects to store plots, genetic data, \ldots
+    \item More ``advanced'' objects to store plots, genetic data,~\ldots
     \begin{itemize}
       \item Commonly called ``\textbf{S3}'' and ``\textbf{S4}'' objects in R terminology
       \item Technically commonly just lists putting together various information
@@ -399,7 +399,7 @@
     \item \texttt{matching} -- binary phylogenetic trees
     \item \texttt{haplonet} -- networks without reticulation
     \item \texttt{spca} -- results of sPCA
-    \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA, \ldots
+    \item \texttt{pco}; \texttt{dudi} -- results of PCA, PCoA,~\ldots
     \item \texttt{dapc} -- results of DAPC
     \item and more\ldots~common task is converting among formats\ldots
     \item \ldots not all formats are (easily) convertible among each other\ldots
@@ -710,7 +710,7 @@
     \begin{itemize}
       \item Examples are shown mainly with microsatellites, but AFLP and another presence-absence (1/0) data are used in same way -- try it
     \end{itemize}
-    \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences, \ldots)
+    \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
     \item Extraction of SNP from DNA is useful in case of huge datasets -- for smaller datasets it is not necessary
   \end{itemize}
   \begin{block}{Always save your work!}
@@ -769,7 +769,7 @@
     \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
     \item Local paths (within one computer) can be absolute or relative
     \begin{itemize}
-      \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X, \ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+      \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
       \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
       \begin{itemize}
 	\item In the easiest case the input file is in same directory as is R's working directory -- verify by \texttt{getwd()} and \texttt{dir()} -- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
@@ -1859,7 +1859,7 @@ Source data (two files -- AFLP data with individual names and populations)
       diss), symm=TRUE)
   \end{spluscode}
   \begin{footnotesize}
-  There are various settings -- colors, dendrogram, \ldots See~\texttt{?heatmap}.
+  There are various settings -- colors, dendrogram,~\ldots See~\texttt{?heatmap}.
   \end{footnotesize}
 \end{multicols}
 \end{frame}
@@ -2187,7 +2187,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}{NJ is death. Long live NJ!}
   \label{NJ-replacement}
   \begin{itemize}
-  \item ``Basic'' NJ has many limitations (problems with missing data, chaining of individuals, \ldots) -- there are several tries to overcome them
+  \item ``Basic'' NJ has many limitations (problems with missing data, chaining of individuals,~\ldots) -- there are several tries to overcome them
   \item Package \texttt{phangorn} has functions \texttt{NJ()} and unweighted version \texttt{UNJ()}
   \item Package \texttt{ape} has functions \texttt{njs()} and \texttt{bionjs()} which are designed to perform well on distances with (more) missing values
   \item Function \texttt{bionj()} from \texttt{ape} implements BIONJ algorithm
@@ -3458,7 +3458,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \begin{itemize}
       \item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python -- only matters what user likes, knows and wish to do with the results\ldots
     \end{itemize}
-    \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal}, \ldots
+    \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal},~\ldots
     \begin{itemize}
       \item User must install this software manually -- R is just using external applications (in the examples shown)
     \end{itemize}
@@ -3977,7 +3977,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 
 \begin{frame}[fragile]{Change orientation of plots}
   \begin{itemize}
-    \item \alert{\texttt{plot.phylo()} has plenty of possibilities to influence -- check \texttt{?plot.phylo}, \texttt{?par}, \texttt{?points}, \ldots}
+    \item \alert{\texttt{plot.phylo()} has plenty of possibilities to influence -- check \texttt{?plot.phylo}, \texttt{?par}, \texttt{?points},~\ldots}
   \end{itemize}
   \begin{spluscode}
     ?plot.phylo # check it for various possibilities what to influence
@@ -4776,13 +4776,13 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item Mark all user comments with \texttt{\#} on the beginning
     \item In command line (Linux/Mac OS~X/Windows/\ldots) use
     \begin{itemize}
-      \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values, \ldots
+      \item \texttt{Rscript myscript.r} to work \textbf{interactively} -- all output is written to the terminal (as usual), user can be asked for some values,~\ldots
       \item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} -- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow -- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum}
     \end{itemize}
     \item Script ends when there is some error or on the end of the file
     \item When working on both Windows and Mac OS~X/Linux, take care about end of lines
     \begin{itemize}
-      \item Windows and UNIX (Linux, Mac OS~X, \ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
+      \item Windows and UNIX (Linux, Mac OS~X,~\ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
       \item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines for target system
     \end{itemize}
   \end{itemize}
@@ -4959,7 +4959,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item \textbf{R is free as freedom of speech -- not as free beer!}
     \begin{itemize}
       \item As soon as you don't pay for support, you can't blame anyone for lack of responses
-      \item There are plenty of reasons some package/function doesn't work -- usage/data author didn't expect, unsupported operating system, author's mistake, user's mistake, \ldots
+      \item There are plenty of reasons some package/function doesn't work -- usage/data author didn't expect, unsupported operating system, author's mistake, user's mistake,~\ldots
       \item Authors wish their software to be useful -- constructive feedback, reporting bugs and wishes is welcomed, but it must be provided in the way useful for the developer
     \end{itemize}
     \item R functions commonly lack control of input data -- error messages are returned by internal functions
