@@ -42,6 +42,4 @@ presentation/*.nlo
 *.bak
 *.backup
 examples/*.RData.rkworkplace
-web/*.pdf
-web/*.zip
-web/structure-sum*
+rcourse/structure-sum*
