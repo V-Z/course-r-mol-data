@@ -41,5 +41,14 @@ presentation/*.nlo
 *~
 *.bak
 *.backup
+examples/geneland/*
+examples/structure/results/*
+examples/structure/structure_sum/*
 examples/*.RData.rkworkplace
+examples/*.fasta
+examples/*.nexus
+examples/*.nwk
+examples/*.rda
+examples/*.txt
+examples/test.RData
 rcourse/structure-sum*
