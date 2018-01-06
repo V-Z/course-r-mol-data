@@ -1,3 +1,0 @@
-nit : 10000
-thinning : 10
-npop : 4

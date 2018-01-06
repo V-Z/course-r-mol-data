@@ -1,5 +1,0 @@
-5	results_job_S21_f
-5	results_job_S22_f
-5	results_job_S23_f
-5	results_job_S24_f
-5	results_job_S25_f
