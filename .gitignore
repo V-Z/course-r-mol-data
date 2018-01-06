@@ -17,10 +17,6 @@ presentation/*.snm
 presentation/*.vrb
 # hyperref
 presentation/*.brf
-# knitr
-presentation/*-concordance.tex
-presentation/*.tikz
-presentation/*-tikzDictionary
 # listings
 presentation/*.lol
 # makeidx
@@ -55,4 +51,5 @@ examples/*.rda
 examples/*.txt
 examples/macedonia_*
 examples/test.RData
+rcourse/macedonia.zip
 rcourse/structure-sum*
