@@ -51,7 +51,7 @@
 % Syntax higlight
 \usepackage{minted}
 \usemintedstyle{vim} % Styles are listed by pygmentize -L styles; languages are listed by pygmentize -L lexers
-\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Beige, fontfamily=tt, gobble=4, numbersep=-3pt}
+\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Beige, fontfamily=tt, gobble=4, numbersep=-6pt}
 % Change line number style
 \renewcommand{\theFancyVerbLine}{
   \sffamily
@@ -62,8 +62,18 @@
       }
     }
   }
-% Inline source code
-\newmint{splus}{fontsize=\footnotesize, bgcolor=Beige}
+
+% Fixing space before and after block of code higlight
+\BeforeBeginEnvironment{spluscode}{\vspace{-1em}}
+\AfterEndEnvironment{spluscode}{\par\vspace{-1em}}
+
+% Fixing space before and after multicols region
+\BeforeBeginEnvironment{multicols}{\vspace{-1.5em}}
+\AfterEndEnvironment{multicols}{\par\vspace{-1.5em}}
+
+% Fixing space before itemize region
+\BeforeBeginEnvironment{itemize}{\vspace{-0.25em}}
+\AfterEndEnvironment{itemize}{\vspace{-0.25em}}
 
 % Title page
 \author{Vojtěch Zeisek}
@@ -277,17 +287,29 @@
   \end{multicols}
 \end{frame}
 
-\begin{frame}{How it works}
+\begin{frame}[fragile]{How it works}
   \begin{itemize}
     \item General look of R commands:
-    \item \splus/function(argument1="SomeName", argument2=SomeVariable, argument3=8)/
-    \item \splus/ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)/
+  \end{itemize}
+  \begin{spluscode}
+    function(argument1="SomeName", argument2=SomeVariable, argument3=8)
+    ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)
+  \end{spluscode}
+  \begin{itemize}
     \item New/modified object (with data,~\ldots) is on the left: ``\texttt{<-}'' says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
     \item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
     \item Arguments are named -- if you keep order, no need to name them:
-    \item \splus/SomeFunction(MyData, TRUE, 123, "SomeName")/
+  \end{itemize}
+  \begin{spluscode}
+    SomeFunction(MyData, TRUE, 123, "SomeName")
+  \end{spluscode}
+  \begin{itemize}
     \item When only some of the arguments are in use, use the names (order doesn't matter any more)
-    \item \splus/SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)/
+  \end{itemize}
+  \begin{spluscode}
+    SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)
+  \end{spluscode}
+  \begin{itemize}
     \item Some arguments are required, some optional
   \end{itemize}
 \end{frame}
@@ -405,7 +427,9 @@
     \item \ldots not all formats are (easily) convertible among each other\ldots
   \end{itemize}
   To get information about content of each data type see
-  \splus/getClassDef("genind") # Or any other class name (of loaded package)/
+  \begin{spluscode}
+    getClassDef("genind") # Or any other class name (of loaded package)
+  \end{spluscode}
   There are information about slots within that classes you can access.
 \end{frame}
 
@@ -1143,7 +1167,11 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}[fragile]{Importing SNP}
   \begin{itemize}
     \item Import from \href{http://pngu.mgh.harvard.edu/~purcell/plink/}{PLINK} requires saving of data with option \href{http://pngu.mgh.harvard.edu/~purcell/plink/dataman.shtml#recode}{``-recodeA''}
-    \item \splus/read.PLINK(file="PLINKfile", ...) # See ?readPLINK/
+  \end{itemize}
+  \begin{spluscode}
+    read.PLINK(file="PLINKfile", ...) # See ?readPLINK
+  \end{spluscode}
+  \begin{itemize}
     \item Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
   \end{itemize}
   \begin{spluscode}
@@ -1504,7 +1532,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Departure from HWE -- results per locus}
   \vfill
-  \splus/hauss.hwe.test/
+  \texttt{hauss.hwe.test}
   \begin{tabular}{lllll}
     & chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
     msta93 & 383.5519728 & 190 & 3.552714e-15 & 0.000\\
@@ -3913,9 +3941,8 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \vfil
   \includegraphics[height=6cm]{parsimony.png}
   \vfil
-  \splus/?parsimony # Parsimony details/
-  \vfil
   \begin{spluscode}
+    ?parsimony # Parsimony details
     # Conversion to phyDat
     meles.phydat <-
       as.phyDat(meles.dna)
