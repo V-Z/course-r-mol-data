@@ -50,5 +50,6 @@ examples/*.nexus
 examples/*.nwk
 examples/*.rda
 examples/*.txt
+examples/macedonia_*
 examples/test.RData
 rcourse/structure-sum*
