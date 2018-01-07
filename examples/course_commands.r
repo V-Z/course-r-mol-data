@@ -13,6 +13,9 @@ getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
 
+## Get information about object classes
+getClassDef("genind") # Or select any other class name
+
 ## Basic operations
 x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
 x # Print "x" content
@@ -23,7 +26,7 @@ mode(x) # Gets type of storage mode of the object
 class(x) # Shows class of the object
 x[2] # Shows second element of the object
 x <- x[-5] # Removes fifth element
-x
+x # See modified object
 y <- matrix(data=5:20, nrow=4, ncol=4) # Creates a matrix
 is.matrix(y) # Is it matrix? Try is.<TAB><TAB> TAB key shows available functions and objects starting by typed text
 y # Prints the matrix
@@ -31,13 +34,13 @@ y[,2] # Prints second column
 y[3,] # Prints third row
 y[4,3] # Prints element from fourth row and third column
 x <- y[2,] # Replaces "x" by second row of "y" (no warning) - R doesn't ask neither notifies when overwriting objects! Be careful!
-x
+x # See modified object
 rm(x) # Deletes x
 y[,1:3] # Prints first through third column of the matrix
 y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
-y
+y # See modified object
 y[y==20] <- 10 # If value of y's element is 20, replace it by 10
-y
+y # See modified object
 summary(y) # Basic statistics - according to columns
 colnames(y) <- c("A", "B", "C", "D") # Set column names - Objects and functions are without quotation marks; files, text with
 colnames(y) # Prints column names, use rownames() in same way
@@ -45,22 +48,22 @@ y[,"C"] # Prints column C (R is case sensitive!)
 t(y) # Transposes the matrix
 y <- as.data.frame(y) # Turns into DF (see other functions as.*)
 y[y==17] <- "NA" # Removes values of 17
-y
+y # See modified object
 y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
 save(list=ls(), file="test.RData") # Saves all objects during the work
 load("test.RData") # Loads saved R environment with all objects
 # When loading saved project, you have to load again libraries and scripts (see further), data objects are restored
 rm(y)
 
-## Get information about object classes
-getClassDef("genind") # Or select any other class name
-
 ## Packages and repositories
+
 # Set repositories
 #  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3, see https://bioconductor.org/).
-options(repos=c("https://cran.wu.ac.at/", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
+options(repos=c("https://mirrors.nic.cz/R/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/experiment", "https://r-forge.r-project.org/", "https://rforge.net/"))
 getOption("repos") # Shows actual repositories
-# Install packages
+options() # Generic function to modify various settings
+?options # Gives details
+# Install packages FIXME check packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
 install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
 ?install.packages # See for more options
@@ -84,11 +87,10 @@ install.pacakges(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
 
 # Installation from custom repository
-install.packages("ParallelStructure", repos="https://r-forge.r-project.org")
+install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
 ## Bioconductor
-
 # Bioconductor - if https fails, use http
 source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
@@ -98,7 +100,7 @@ biocLite(c("Biostrings", "seqinr"))
 # Install Bioconductor packages used during the course
 biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors", "XVector", "muscle"))
 biocLite() # Update Bioconductor packages
-# Upgrades installed Bioconductor packages to new R release (e.g. from 3.2 to 3.3)
+# Upgrades installed Bioconductor packages to new R release (e.g. from 3.3 to 3.4)
 biocLite("BiocUpgrade")
 
 ## Libraries for population genetic analysis
@@ -125,9 +127,6 @@ hauss.genind <- loci2genind(hauss.loci)
 pop(hauss.genind)
 hauss.genind$pop
 
-# Convert corrected genind to loci
-hauss.loci.cor <- genind2loci(hauss.genind)
-
 # Read coordinates
 hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
 hauss.coord
@@ -145,6 +144,7 @@ hauss.genpop
 
 # Removes missing data - see ?missingno for types of dealing with them
 hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1, quiet=FALSE) # Use with caution! It modifies original data!
+?missing # See other options of handling missing data
 # Convert corrected genind to loci
 hauss.loci.cor <- genind2loci(hauss.genind.cor)
 
@@ -157,6 +157,7 @@ read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
 read.genetix() # adegenet - reads *.gtx files, only haploid/diploid data
 read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
 read.structure() # adegenet - reads *.str files, only haploid/diploid data
+import2genind() # adegenet - more automated version of above functions
 
 # Import of triploid (polyploid) microsattelites
 tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
@@ -165,6 +166,7 @@ tarax3n.table
 class(tarax3n.table)
 dim(tarax3n.table)
 
+# Convert to genind
 tarax3n.genind <- df2genind(X=tarax3n.table[,1:6], sep="/", ncode=3, pop=tarax3n.table[["pop"]], ploidy=3, type="codom")
 # See resulting genind object
 tarax3n.genind
@@ -215,11 +217,12 @@ usflu.annot <- read.csv("http://adegenet.r-forge.r-project.org/files/usflu.annot
 head(usflu.annot)
 # Convert DNAbin to genind - only polymorphic loci are retained
 usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
+usflu.genind # Check it
 # read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)
 usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
 class(usflu.dna3)
 length(usflu.dna3) # How many sequences we have in the list
-usflu.dna3
+usflu.dna3 # Check it
 # Convert into DNAbin class (technically, DNAbin is a list)
 class(usflu.dna3) <- "DNAbin"
 # Read sequence data in NEXUS
@@ -231,6 +234,7 @@ meles.dna
 class(meles.dna)
 # Converts DNAbin to genind - extracts SNP - for large datasets can be computationally very intensive
 meles.genind <- DNAbin2genind(meles.dna)
+meles.genind # Check it
 
 # Query on-line sequence databases
 library(seqinr)
@@ -271,9 +275,10 @@ usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/fil
 snpposi.plot(x=as.matrix(meles.dna), codon=FALSE)
 # Position of polymorphism within alignment - differentiating codons
 snpposi.plot(as.matrix(meles.dna))
-# When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary
+# When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary (polyThres=...)
 meles.genind <- DNAbin2genind(x=meles.dna, polyThres=0.01)
-# Test of random distribution of SNP
+meles.genind # See it
+# Test is distribution of SNP is random (1000 permutations)
 snpposi.test(x=as.matrix(meles.dna))
 
 ## Check sequences
@@ -296,6 +301,7 @@ image.DNAbin(x=as.matrix(meles.dna))
 ## Exporting data
 # Convert genind into DF using genind2df()
 hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerAll=FALSE)
+# Save microsatellites to disk - check settings of write.table
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
 # Export of DNA sequences into FASTA format
 write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6)
@@ -310,6 +316,7 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 
 # Get summary - names and sizes of populations, heterozygosity, some info about loci
 hauss.summ <- summary(hauss.genind)
+hauss.summ
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
@@ -332,6 +339,8 @@ dev.off() # Closes graphical device - otherwise following graphs would still be 
 # poppr returns various population statistics for populations
 ?poppr # See details
 poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4, missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE, plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
+# Algorithms and equations utilized in poppr
+vignette("algo", package="poppr")
 
 # Departure from HWE
 # According to loci
@@ -375,6 +384,7 @@ mlg.id(hauss.genind)
 data(microbov)
 # Separate populations of Salers cattle
 microbov.pops <- seppop(microbov)[["Salers"]]
+microbov.pops # See it
 # Calculate the inbreeding
 ?inbreeding # Check for more settings
 microbov.inbr <- inbreeding(x=microbov.pops, N=100)
@@ -387,6 +397,7 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles
 
 # See ?dist.gene for details about methods of this distance constructions
 hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
+hauss.dist.g
 
 # Euclidean distance for individuals (plain ordinary distance matrix)
 hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
@@ -394,6 +405,7 @@ hauss.dist
 
 # Nei's distance (not Euclidean) for populations (other methods are available, see ?dist.genpop)
 hauss.dist.pop <- dist.genpop(x=hauss.genpop, method=1, diag=TRUE, upper=TRUE)
+hauss.dist.pop
 # Test if it is Euclidean
 is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10)
 # Turns to be Euclidean
@@ -416,12 +428,16 @@ hauss.dist.bruvo
 
 # Nei's distance (not Euclidean) for individuals (other methods are available, see ?nei.dist from poppr package)
 hauss.dist.nei <- poppr::nei.dist(x=hauss.genind, warning=TRUE)
-is.euclid(hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10) # It has so much NAs, so it it impossible to check it and convert into Euclidean distance
+# Test if it is Euclidean
+is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
 # Show it
 hauss.dist.nei
 
 # Dissimilarity matrix returns a distance reflecting the number of allelic differences between two individuals
 hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
+# Test if it is Euclidean
+is.euclid(distmat=as.dist(m=hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
+# Show it
 hauss.dist.diss
 
 # Import custom distance matrix
@@ -440,9 +456,9 @@ MyDistance
 distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
 # Calculate the distance matrices
 dists <- lapply(distances, function(x) {
-  DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
-  DISTFUN(hauss.genind.cor)
-  })
+	DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
+	DISTFUN(hauss.genind.cor)
+	})
 # Add names for the distance names
 names(dists) <- distances
 # Add Bruvo distance
@@ -452,9 +468,9 @@ dists
 par(mfrow=c(2, 3))
 # Calculate NJ and plot all trees
 x <- lapply(names(dists), function(x) {
-  plot(njs(dists[[x]]), main=x, type="unrooted")
-  add.scale.bar(lcol="red", length=0.1)
-  })
+	plot(njs(dists[[x]]), main=x, type="unrooted")
+	add.scale.bar(lcol="red", length=0.1)
+	})
 dev.off() # Close graphical device to reset settings
 # See details of distance methods in package poppr
 vignette("algo", package="poppr")
@@ -497,6 +513,7 @@ heatmap(as.matrix(hauss.dist), symm=TRUE, labRow=rownames(as.matrix(hauss.dist.b
 heatmap(as.matrix(hauss.dist.pop), symm=TRUE)
 heatmap(as.matrix(hauss.dist.bruvo), symm=TRUE)
 heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
+?heatmap # Other options
 
 ## Hierarchical clustering
 # According to distance used - see ?hclust for available methods
@@ -526,6 +543,7 @@ bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, verte
 ?bruvo.msn # See details...
 ?msn.poppr # For another data types
 ?imsn # Interactive creation of MSN
+msn() # Try it
 
 ## NJ
 
@@ -560,7 +578,7 @@ hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist, sample=100) # B
 # Plot the tree, explicitly display node labels
 plot.phylo(x=hauss.aboot, show.node.label=TRUE)
 ?aboot # See details...
-??plot.phylo
+?plot.phylo
 
 # Plot a nice tree with colored tips
 plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
@@ -569,7 +587,7 @@ nodelabels(text=round(hauss.boot/10))
 # Coloured labels - creates vector of colors according to population information in genind object
 nj.rainbow <- colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
 # Colored tips
-tiplabels(text=indNames(hauss.genind), bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
+tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), col.pal=nj.rainbow))
 
 # Plot BW tree with tip symbols and legend
 plot.phylo(x=hauss.nj, type="cladogram", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
@@ -584,7 +602,7 @@ legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=
 
 # Bruvo's distance - NJ
 hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
-plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbor-Joining tree.")
+plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbor-Joining tree")
 # bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function
 nodelabels(hauss.nj.bruvo[["node.labels"]]) # Note you can call node labels from phylo object as phylo$node.labels or phylo[["node.labels"]]
 tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
@@ -595,7 +613,7 @@ plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3, main="UPGMA tree
 nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
-# Populations
+# Populations FIXME update for newest ape
 # hauss.nj.pop <- nj(hauss.dist.pop)
 # # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
 # source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
@@ -794,6 +812,8 @@ usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
 plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
 tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
 title("NJ tree of the US influenza data")
+# Add legend
+legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 ## Moran's I
 # Load required library

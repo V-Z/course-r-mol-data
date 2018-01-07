@@ -225,7 +225,7 @@
     \item Install package \texttt{build-essential} (general tools to compile software, including R packages)
     \item Debian (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/debian/}
     \item Ubuntu (and derivatives): follow instructions at \url{https://cran.r-project.org/bin/linux/ubuntu/}
-    \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://cran.wu.ac.at/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
+    \item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://mirrors.nic.cz/R/}}, see \alert{CRAN Mirrors} at \url{https://cran.r-project.org/mirrors.html}
     \item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
     \item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
   \end{itemize}
@@ -258,7 +258,7 @@
 \begin{frame}{Sources of R packages}
   \label{sources}
   \begin{itemize}
-    \item R CRAN \url{https://cran.r-project.org/} -- main and largest source of R packages (almost 10,000 packages + many orphaned and archived -- abandoned by developers, might be working)
+    \item R CRAN \url{https://cran.r-project.org/} -- main and largest source of R packages (over 12,000 packages + many orphaned and archived -- abandoned by developers, might be working)
     \item Bioconductor \url{https://bioconductor.org/} -- mainly bioinformatics packages, genomic data (over 1,400 packages)
     \item R-Forge \url{https://r-forge.r-project.org/} (over 2,000 packages)
     \item RForge \url{https://www.rforge.net/} (much smaller)
@@ -327,8 +327,9 @@
     library(sos)
     findFn("function") # Search for function name
   \end{spluscode}
-  \vfil
+  \vfill
   \alert{\texttt{?}} shows help for questioned function (in console type \texttt{q} to close it):
+  \vfill
   \begin{multicols}{2}
     \begin{itemize}
       \item Name of the package (top left)
@@ -573,14 +574,12 @@
     install.packages("PackageName") # Case sensitive!
     ?install.packages # Shows all available parameters (options)
     # We will need extra repositories. For Bioconductor keep version for
-    # your R version (BioC 3.4 for R 3.4, see https://bioconductor.org/).
-    options(repos=c("https://cran.wu.ac.at/", "https:/rforge.net/",
-      "https://r-forge.r-project.org/", "https://bioconductor.
-      statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.
-      statistik.tu-dortmund.de/packages/3.4/data/annotation", 
-      "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/
-      experiment", "https://bioconductor.statistik.tu-dortmund.de/
-      packages/3.4/extra"))
+    # your R version (BioC 3.6 for R 3.4, see https://bioconductor.org/).
+    options(repos=c("https://mirrors.nic.cz/R/", "https://bioconductor.
+      statistik.tu-dortmund.de/packages/3.6/bioc", "https://bioconductor.
+      statistik.tu-dortmund.de/packages/3.6/data/annotation", "https://
+      bioconductor.statistik.tu-dortmund.de/packages/3.6/data/experiment", 
+      "https://r-forge.r-project.org/", "https://rforge.net/"))
     getOption("repos") # Shows actual repositories
     options() # Generic function to modify various settings
     ?options # Gives details
@@ -591,7 +590,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Install needed packages}
+\begin{frame}[fragile]{Install needed packages} % FIXME update package list
   \begin{spluscode}
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
@@ -614,7 +613,7 @@
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Install packages without setting the repositories}
+\begin{frame}[fragile]{Install packages without setting the repositories} % FIXME update package list
   \begin{itemize}
    \item If repositories from slide~\ref{repos} are not set (for any reason), it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
    \item This is the basic and default the most common usage
@@ -650,44 +649,6 @@
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Bioconductor}
-  \label{bioc}
-  \begin{itemize}
-    \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
-    \item To install it, add appropriate repositories (repository use to have same version number as R -- change them accordingly when upgrading R) or \textbf{use Bioconductor's special function} (recommended by Bioconductor):
-  \end{itemize}
-  \begin{spluscode}
-    # Load basic Bioconductor function
-    source("https://bioconductor.org/biocLite.R")
-    ?biocLite # Get help how to use it
-    # Install packages
-    biocLite(c("package1", "package2", "..."))
-    biocLite() # Update Bioconductor packages (within same R version)
-    # Upgrades installed Bioconductor packages to new R release
-    biocLite("BiocUpgrade") # E.g. from R 3.2 to 3.3
-  \end{spluscode}
-  \begin{itemize}
-    \item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
-  \end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Bioconductor packages for the course}
-  \begin{itemize}
-    \item If repositories are not set via command on slide~\ref{repos}, it is possible to use Bioconductor's own installation method using function \texttt{biocLite}
-    \item If Bioconductor repositories are set manually, user must select correct version number
-    \item List of available Bioconductor mirrors is at \url{https://bioconductor.org/about/mirrors/}% -- for us, \href{https://bioconductor.statistik.tu-dortmund.de/}{Technische Universität Dortmund} is the closest
-  \end{itemize}
-  \begin{spluscode}
-    # Install needed Bioconductor packages
-    biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors",
-      "XVector", "muscle"))
-    # From time to time update Bioconductor packages
-    biocLite()
-    # When upgrading to new version of R (e.g. from 3.2 to 3.3) upgrade by
-    biocLite("BiocUpgrade")
-  \end{spluscode}
-\end{frame}
-
 \begin{frame}[fragile]{Bioconductor and others -- differences from another repositories}
   \label{sources-diff}
   \begin{spluscode}
@@ -696,7 +657,7 @@
     update.packages(ask=FALSE) # Update packages
     # Installation from custom repository (example for our course)
     install.packages(pkgs="ParallelStructure",
-      repos="https://r-forge.r-project.org")
+      repos="https://r-forge.r-project.org/")
     ?install.packages # See help for details
     # Bioconductor - if https fails, use http
     source("https://bioconductor.org/biocLite.R")
@@ -710,6 +671,44 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Bioconductor}
+  \label{bioc}
+  \begin{itemize}
+    \item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
+    \item To install it, add appropriate repositories (repository its own version number not strictly following R -- change them accordingly when upgrading R, see \href{https://bioconductor.org/install/#bioc-version}{web}) or \textbf{use Bioconductor's special function} (recommended by Bioconductor):
+  \end{itemize}
+  \begin{spluscode}
+    # Load basic Bioconductor function
+    source("https://bioconductor.org/biocLite.R")
+    ?biocLite # Get help how to use it
+    # Install packages
+    biocLite(c("package1", "package2", "..."))
+    biocLite() # Update Bioconductor packages (within same R version)
+    # Upgrades installed Bioconductor packages to new R release
+    biocLite("BiocUpgrade") # E.g. from R 3.3 to 3.4
+  \end{spluscode}
+  \begin{itemize}
+    \item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Bioconductor packages for the course}
+  \begin{itemize}
+    \item If repositories are not set via command on slide~\ref{repos}, it is possible to use Bioconductor's own installation method using function \texttt{biocLite}
+    \item If Bioconductor repositories are set manually, user must select \href{https://bioconductor.org/install/#bioc-version}{correct version number}
+    \item List of available Bioconductor mirrors is at \url{https://bioconductor.org/about/mirrors/} -- for us, \href{https://bioconductor.statistik.tu-dortmund.de/}{Technische Universität Dortmund} is the closest (fastest)
+  \end{itemize}
+  \begin{spluscode}
+    # Install needed Bioconductor packages
+    biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors",
+      "XVector", "muscle"))
+    # From time to time update Bioconductor packages
+    biocLite()
+    # When upgrading to new version of R (e.g. from 3.3 to 3.4) upgrade by
+    biocLite("BiocUpgrade")
+  \end{spluscode}
+\end{frame}
+
 \begin{frame}{Non-R software}
   \begin{itemize}
     \item We use several software packages outside R
@@ -718,17 +717,17 @@
       \item External software can be used (depending on R package) to create/modify R object, or just as different method for (batch) usage of the software
       \item User must install this software manually
     \end{itemize}
-    \item Structure \url{http://pritchardlab.stanford.edu/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
+    \item Structure \url{https://web.stanford.edu/group/pritchardlab/software.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
 %     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} % TODO Rphylip
-    \item MAFFT \url{http://mafft.cbrc.jp/alignment/software/}
-    \item MUSCLE \url{http://www.drive5.com/muscle/}
+    \item MAFFT \url{https://mafft.cbrc.jp/alignment/software/}
+    \item MUSCLE \url{https://www.drive5.com/muscle/}
     \item Clustal (W/X; Omega is not used in the course) \url{http://clustal.org/}
   \end{itemize}
 \end{frame}
 
 \section{Data}
 
-\begin{frame}[allowframebreaks]{Our data\ldots}
+\begin{frame}{Our data\ldots}
   \begin{itemize}
     \item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
     \begin{itemize}
@@ -781,7 +780,7 @@
     \end{itemize}
     \item Most of methods are mathematically well defined for haploids and/or diploids, higher ploidies or mixing of ploidies is not always possible
     \item Most of methods shown in the course work with more data types -- not everything is shown
-    \item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology}
+    \item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology}
   \end{itemize}
 \end{frame}
 
@@ -801,9 +800,9 @@
 	\item When going directory up, use one \texttt{..} for each level, e.g. \texttt{FileParameter="../upper/directory/file.txt"}
 	\item On UNIX (Mac OS~X, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
       \end{itemize}
-      \item If loading data from computer, carefully check the paths or use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer -- it can replace nearly any filename parameter (e.g. \texttt{FileParameter="file.choose()"}
+      \item If loading data from computer, carefully check the paths or \textbf{use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer} -- it can replace nearly any filename parameter (e.g. \alert{\texttt{FileParameter=file.choose()}})
     \end{itemize}
-    \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- try to avoid them
+    \item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters -- Avoid them!
     \item One of the most common source of errors -- \textbf{when the command fails, double check paths} (and Internet connection, if applicable) -- for another common problems see slide~\ref{problems}
   \end{itemize}
 \end{frame}
@@ -824,6 +823,7 @@
       library(adegenet)
       library(pegas)
       library(poppr)
+      library(vegan)
     \end{spluscode}
   \end{multicols}
 \end{frame}
@@ -836,9 +836,9 @@
   \vfill
   \begin{spluscode}
         pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
-    H01 He  269/269 198/198 221/223 419/419 197/197 196/196 ...
-    H02 He  275/283 198/198 221/223 419/419 193/193 168/190 ...
-    ... ... ...     ...     ...     ...     ...     ...     ...
+    H01  He 269/269 198/198 221/223 419/419 197/197 196/196 ...
+    H02  He 275/283 198/198 221/223 419/419 193/193 168/190 ...
+    ... ...     ...     ...     ...     ...     ...     ... ...
   \end{spluscode}
   \vfill
   \textbf{Loading the data:}
@@ -872,15 +872,14 @@
   \textbf{Source data:}
   \vfil
   \begin{spluscode}
-    Ind  lon      lat
+    Ind      lon   lat
     H01  21.3333  41.1
-    ...  ...      ...
+    ...      ...   ...
   \end{spluscode}
   \vfill
-  \hrule
-  \vfill
+  \textbf{Read coordinates:}
+  \vfil
   \begin{spluscode}
-    # Read coordinates
     hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/
       haussknechtii_coordinates.csv", header=TRUE, sep="\t",
       quote="", dec=".", row.names=1)
@@ -907,8 +906,9 @@
     hauss.genpop
     # Removes missing data - see ?missingno for types of dealing them
     # Use with caution! It modifies original data!
-    hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1,
-      quiet=FALSE)
+    hauss.genind.cor <- missingno(pop=hauss.genind, type="mean",
+      cutoff=0.1, quiet=FALSE)
+    ?missing # See other options of handling missing data
     # Convert corrected genind to loci
     hauss.loci.cor <- genind2loci(hauss.genind.cor)
     # Writes loci file to the disk
@@ -942,13 +942,13 @@
   \textbf{Triploid microsatellite data:}
   \vfil
   \begin{spluscode}
-           msat58      msat31      msat78      msat61      ...
-    ala1   124/124/124 237/237/237 164/164/172 136/136/138 ...
-    ala2   124/124/124 237/237/237 164/164/172 136/136/138 ...
-    ala4-1 124/124/124 237/237/237 164/164/172 136/136/138 ...
-    ...    ...         ...         ...         ...         ...
+              msat58      msat31      msat78      msat61 ...
+    ala1 124/124/124 237/237/237 164/164/172 136/136/138 ...
+    ala2 124/124/124 237/237/237 164/164/172 136/136/138 ...
+    ala4 124/124/124 237/237/237 164/164/172 136/136/138 ...
+     ...         ...         ...         ...         ... ...
   \end{spluscode}
-  \vfil
+  \vfill
   \begin{footnotesize}
     Triploid species of \textit{Taraxacum} sect. \textit{Taraxacum}
   \end{footnotesize}
@@ -984,9 +984,9 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{multicols}{2}
   \textbf{AFLP or any other presence/absence data:}
   \begin{spluscode}
-        L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
-    Ind1 0 0 1 1 1 0 0 0 1 ...
-    IndG 0 0 1 1 0 0 0 0 0 ...
+         L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
+    Ind1  0  0  1  1  1  0  0  0  1 ...
+    IndG  0  0  1  1  0  0  0  0  0 ...
     ...  ...  ...
   \end{spluscode}
   \begin{footnotesize}
@@ -1065,7 +1065,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item When importing fragmentation data, we somehow use function \texttt{read.table()} -- it is important to understand it
     \item I~recommend to use TAB (TSV -- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
     \item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by ``\texttt{/}'', ``\texttt{|}'' or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
-    \item \textbf{Do not use} underscores (``\texttt{\_}'') or minuses to name objects in R -- only numbers, Latin letters or dots
+    \item \textbf{Do not use} underscores (``\texttt{\_}'') or minuses (``\texttt{-}'') to name objects in R -- only numbers, Latin letters or dots
     \item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites -- try \texttt{read.table()} instead\ldots
     \item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis are able to handle that\ldots
   \end{itemize}
@@ -1101,13 +1101,14 @@ Source data (two files -- AFLP data with individual names and populations)
     # Convert DNAbin to genind - only polymorphic loci (SNPs) are retained
     # When converting DNAbin to genind, the sequences must be aligned!
     usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
+    usflu.genind # Check it
     # read.fasta() from seqinr package reads DNA or AA in FASTA format and
     # returns a list (DNAbin is for us now better choice)
     usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.
       r-project.org/files/usflu.fasta", seqtype="DNA")
     class(usflu.dna3)
     length(usflu.dna3) # How many sequences we have in the list
-    usflu.dna3
+    usflu.dna3 # Check it
     # Convert into DNAbin class (technically, DNAbin is a list)
     class(usflu.dna3) <- "DNAbin"
     # Read sequence data in NEXUS
@@ -1135,6 +1136,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # Converts DNAbin to genind - extracts SNP - for large datasets can be
     # computationally very intensive
     meles.genind <- DNAbin2genind(meles.dna)
+    meles.genind # Check it
   \end{spluscode}
   \begin{itemize}
     \item To query on-line database as through web we use \href{https://cran.r-project.org/web/packages/seqinr/index.html}{seqinr} (next slide)
@@ -1166,7 +1168,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Importing SNP}
   \begin{itemize}
-    \item Import from \href{http://pngu.mgh.harvard.edu/~purcell/plink/}{PLINK} requires saving of data with option \href{http://pngu.mgh.harvard.edu/~purcell/plink/dataman.shtml#recode}{``-recodeA''}
+    \item Import from \href{http://zzz.bwh.harvard.edu/plink/}{PLINK} requires saving of data with option \href{http://zzz.bwh.harvard.edu/plink/dataman.shtml#recode}{``-recodeA''}
   \end{itemize}
   \begin{spluscode}
     read.PLINK(file="PLINKfile", ...) # See ?readPLINK
@@ -1191,20 +1193,22 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{multicols}{2}
   \begin{spluscode}
     # Position of polymorphism within
-    # alignment - snpposi.plot requires
-    # input data in form of matrix
+    # alignment - snpposi.plot requi-
+    # res input data in form of matrix
     snpposi.plot(x=as.matrix(
       meles.dna), codon=FALSE)
     # Position of polymorphism within
     # alignment - differentiating codons
     snpposi.plot(as.matrix(meles.dna))
-    # When converting to genind object,
-    # only polymorphic loci are kept - 
+    # When converting DNAbin to genind,
+    # only polymorphic loci are kept -
     # threshold for polymorphism can
-    # be arbitrary
+    # be arbitrary (polyThres=...)
     meles.genind <- DNAbin2genind(x=
       meles.dna, polyThres=0.01)
-    # Test of random distribution of SNP
+    meles.genind # See it
+    # Test is distribution of SNPs
+    # is random (1000 permutations)
     snpposi.test(as.matrix(meles.dna))
   \end{spluscode}
   \begin{flushright}
@@ -1258,12 +1262,13 @@ Source data (two files -- AFLP data with individual names and populations)
     # Convert genind into DF using genind2df()
     hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/",
       usepop=TRUE, oneColPerAll=FALSE)
+    # Save microsatellites to disk - check settings of write.table
     write.table(x=hauss.df, file="haussdata.txt", quote=FALSE,
       sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
     # Export of DNA sequences into FASTA format
     write.dna(x=usflu.dna, file="usflu.fasta", format="fasta",
       append=FALSE, nbcol=6)
-    write.fasta(sequences=meles.dna, names=names(meles.dna),
+    seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna),
       file.out="meles.fasta", open="w")
     # Export DNA sequnces as NEXUS
     write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
@@ -1306,7 +1311,7 @@ Source data (two files -- AFLP data with individual names and populations)
       \begin{itemize}
 	\item Several methods clustering individuals according to their (dis)similarity from top or down into clusters
 	\item (Un)weighted per-group mean average (\textbf{U/WPGMA}) and others
-	\item Used more in ecology, in genetic data not so much anymore (following methods use to produce better results)
+	\item Used more in ecology, for genetic data not so much anymore (following methods use to produce better results)
       \end{itemize}
       \item \textbf{Neighbor-Joining (NJ)} -- from slide~\ref{NJ}
       \begin{itemize}
@@ -1337,16 +1342,16 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \textbf{Maximum Parsimony (MP)} -- from slide~\ref{MP}
     \begin{itemize}
       \item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of changes
-      \item It is easy to score how good the solution is, but computationally demanding to find it
+      \item It is easy to score how good the solution is, but computationally demanding to find the best one
     \end{itemize}
     \item \textbf{Maximum Likelihood (ML)}
     \begin{itemize}
       \item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely tree under given mutational model
-      \item It is easy to score how good the solution is, but computationally demanding to find it
+      \item It is easy to score how good the solution is, but computationally demanding to find the best one
     \end{itemize}
     \item \textbf{Bayesian statistics}
     \begin{itemize}
-      \item Based on Bayesian theorem -- probability of model under given data
+      \item Based on \href{https://en.wikipedia.org/wiki/Bayes_theorem}{Bayesian theorem} -- probability of model under given data
       \item Methods are looking for the best (e.g. evolutionary) \textbf{model} (e.g. phylogenetic tree) \textbf{explainig the data} (e.g. DNA sequences)
       \item Algorithm exploring possible models and approaching the best runs in steps (generations)
       \begin{itemize}
@@ -1365,13 +1370,13 @@ Source data (two files -- AFLP data with individual names and populations)
     \end{itemize}
   \end{itemize}
 \end{frame}
-  
+
 \subsection{First look at the data}
 
 \begin{frame}[fragile]{Descriptive statistics I}
   \label{popgenindx}
   \begin{itemize}
-    \item We will now work mainly with diploid SSRs for \textit{Taraxacum haussknechtii}, you can try other data examples by yourselves
+    \item We will now work mainly with diploid SSRs of \textit{Taraxacum haussknechtii}, you can try other data examples by yourselves
   \end{itemize}
   \begin{spluscode}
     # Get summary - names and sizes of populations,
@@ -1469,9 +1474,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}{Histograms of simulations of rbarD for each population}{The populations are significantly far from being clonal}
-  \begin{center}
-    \includegraphics[height=6.5cm]{poppr.png}
-  \end{center}
+  \includegraphics[width=\textwidth]{poppr.png}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
@@ -1626,6 +1629,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # Separate populations of Salers
     microbov.pops <- seppop(microbov)
       [["Salers"]]
+    microbov.pops # See it
     # Calculate the inbreeding
     microbov.inbr <- inbreeding(x=
       microbov.pops, N=100)
@@ -1705,10 +1709,12 @@ Source data (two files -- AFLP data with individual names and populations)
     # Nei's distance (not Euclidean) for individuals
     # (other methods are available, see ?nei.dist from poppr package)
     hauss.dist.nei <- nei.dist(x=hauss.genind, warning=TRUE)
+    is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
     hauss.dist.nei
     # Dissimilarity matrix returns a distance reflecting the number of
     # allelic differences between two individuals
     hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
+    is.euclid(as.dist(hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
     hauss.dist.diss
   \end{spluscode}
 \vfill
@@ -1736,17 +1742,17 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{Different distances have different use case and outputs\ldots}
+\begin{frame}[fragile]{Different distances have different use case and outputs\ldots}{Different distances available in package poppr}
   \vfill
   \begin{tabular}{llll}
     \textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
-    \href{http://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & \alert{No}\\
+    \href{https://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & \alert{No}\\
      & \texttt{diss.dist} & & \\
-    \href{http://www.jstor.org/stable/2459777}{Nei 1972}, \href{http://www.genetics.org/content/89/3/583.short}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
+    \href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{http://www.genetics.org/content/89/3/583.short}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
      & & Genetic Drift & \\
-    \href{http://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
+    \href{https://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
     \href{http://www.genetics.org/node/324318.full}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
-    Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- &\\
+    Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- & Yes\\
     \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2004.02209.x/full}{Bruvo 2004} & \texttt{bruvo.dist} & Stepwise Mutation & \alert{No}
   \end{tabular}
   \vfill
@@ -1801,10 +1807,10 @@ Source data (two files -- AFLP data with individual names and populations)
     # Check the resulting distance matrix
     usflu.dist
     class(usflu.dist)
-    # Create another distance matrix
     dim(as.matrix(usflu.dist))
-    # Check it
+    # Create another distance matrix
     meles.dist <- dist.dna(x=meles.dna, model="F81")
+    # Check it
     meles.dist
     class(meles.dist)
     dim(as.matrix(meles.dist))
@@ -2054,7 +2060,7 @@ Source data (two files -- AFLP data with individual names and populations)
     nodelabels(text=round(hauss.boot/10))
     # Colored labels - creates vector of colors according to populations
     nj.rainbow<-colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
-    tiplabels(text=hauss.genind$ind.names, bg=fac2col(x=hauss.genind$pop,
+    tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), 
       col.pal=nj.rainbow)) # Colored tips
     ## Plot BW tree with tip symbols and legend
     plot.phylo(x=hauss.nj, type="cladogram", show.tip=F, lwd=3, main="NJ")
@@ -2079,16 +2085,16 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{spluscode}
     # There are currently problems with compatibility with newest ape...
     # NJ
-    hauss.nj.bruvo <- bruvo.boot(gid=hauss.genind, replen=rep(2, 12),
+    hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE,
-      lwd=3, main="Neighbor-Joining tree.")
+      lwd=3, main="Neighbor-Joining tree")
     # Call node labels as phylo$node.labels or phylo[["node.labels"]]
     nodelabels(hauss.nj.bruvo[["node.labels"]]) 
     tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop,
       col.pal=nj.rainbow))
     # UPGMA
-    hauss.upgma <- bruvo.boot(gid=hauss.genind, replen=rep(2, 12),
+    hauss.upgma <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="upgma", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3,
       main="UPGMA tree")
@@ -2185,15 +2191,16 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Collapse branches with low bootstrap support}
   \begin{spluscode}
-    usflu.tree.temp <- usflu.tree.rooted
+    usflu.tree.usflu.na.density <- usflu.tree.rooted
     # Determine branches with low support - note BS values are in raw
     # numbers - use desired percentage with respect to number of bootstraps
-    usflu.tocollapse <- match(x=which(usflu.boot < 700)+
-      length(usflu.tree.rooted$tip.label), table=usflu.tree.temp$edge[,2])
+    usflu.tocollapse <- match(x=which(usflu.boot < 700)+length(usflu.tree.
+      rooted$tip.label), table=usflu.tree.usflu.na.density$edge[,2])
     # Set length of bad branches to zero
-    usflu.tree.temp$edge.length[usflu.tocollapse] <- 0
+    usflu.tree.usflu.na.density$edge.length[usflu.tocollapse] <- 0
     # Create new tree
-    usflu.tree.collapsed <- di2multi(phy=usflu.tree.temp, tol=0.00001)
+    usflu.tree.collapsed <- di2multi(phy=usflu.tree.usflu.na.density,
+      tol=0.00001)
     # Plot the consensus tree
     plot.phylo(x=usflu.tree.collapsed, show.tip=FALSE, edge.width=2)
     title("NJ tree after collapsing weak nodes")
@@ -2257,6 +2264,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{center}
   \columnbreak
   \begin{spluscode}
+    # Based on Bruvo's distance
     hauss.pcoa.bruvo <- dudi.pco(d=	
       bruvo.dist(pop=hauss.genind,
       replen=rep(2, 12)), scannf=F,
@@ -2286,7 +2294,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}[fragile]{DAPC}
   \label{DAPC}
   \begin{itemize}
-    \item Discriminant Analysis of Principal components (\href{http://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94}{Jombart et al. 2010})
+    \item Discriminant Analysis of Principal components (\href{https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94}{Jombart et al. 2010})
     \item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
     \item Finally it runs discriminant analysis (DA) to maximize differences among groups
     \item Various modes of displaying of results -- ``Structure-like'', ``PCA-like'' and more
