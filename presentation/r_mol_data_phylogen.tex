@@ -44,7 +44,7 @@
 % In-line higlighting
 \usepackage{soul}
 
-% Add background for \texttt{} (using pacakge soul)
+% Add background for \texttt{} (using package soul)
 \sethlcolor{Beige}
 \renewcommand{\texttt}[1]{\hl{\ttfamily #1}}
 
@@ -595,12 +595,12 @@
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
     # Install packages needed for the course
-    install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland",
+    install.packages(pkgs=c("BiocGenerics", "Biostrings",
       "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields",
       "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors",
       "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo",
       "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot",
-      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat",
+      "fields", "geiger", "ggplot2", "gplots", "hierfstat",
       "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle",
       "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase",
       "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap",
@@ -619,11 +619,11 @@
    \item This is the basic and default the most common usage
   \end{itemize}
   \begin{spluscode}
-    install.packages(pkgs=c("Geneland", "MASS", "PBSmapping",
+    install.packages(pkgs=c("MASS", "PBSmapping",
       "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi",
       "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima",
       "ape", "brew", "caper", "colorspace", "combinat", "corrplot",
-      "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat",
+      "fields", "geiger", "ggplot2", "gplots", "hierfstat",
       "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm",
       "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools",
       "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr",
@@ -646,6 +646,32 @@
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/
       phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Install phyloch Geneland}
+  \label{Geneland}
+  \begin{itemize}
+    \item Check \url{https://www2.imm.dtu.dk/~gigu/Geneland/} and \href{https://www2.imm.dtu.dk/~gigu/Geneland/Geneland-Doc.pdf}{manual}
+    \item Since version 4, Geneland is not available in CRAN anymore
+    \item Will be used from slide~\ref{GenelandUse}
+  \end{itemize}
+  \begin{spluscode}
+    # Install package Geneland (since version 4 not availble in CRAN)
+    # If not done already, install required package first
+    install.packages(pkgs="tcltk", dependencies=TRUE)
+    # It is possible to specify direct path to package source
+    install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/
+      Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+    # Other packages used when using Geneland
+    # Needed is PBSmapping or mapproj for conversion of coordinates
+    # GUI uses for parallelisation snow and Rmpi
+    # RgoogleMaps (requires rgdal) can be used to plot Geneland output
+    # on top of Google map, maptools (requires rgeos and sp), shapefiles
+    # (requires foreign) and tripack on GIS layer
+    install.packages(pkgs=c("PBSmapping", "rgdal", "RgoogleMaps", "Rmpi",
+      "foreign", "mapproj", "maptools", "rgeos", "shapefiles", "snow", "sp",
+      "tripack"), dependencies=TRUE)
   \end{spluscode}
 \end{frame}
 
@@ -709,7 +735,7 @@
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{Non-R software}
+\begin{frame}[allowframebreaks]{Non-R software}
   \begin{itemize}
     \item We use several software packages outside R
     \begin{itemize}
@@ -717,11 +743,47 @@
       \item External software can be used (depending on R package) to create/modify R object, or just as different method for (batch) usage of the software
       \item User must install this software manually
     \end{itemize}
-    \item Structure \url{https://web.stanford.edu/group/pritchardlab/software.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
-%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} % TODO Rphylip
-    \item MAFFT \url{https://mafft.cbrc.jp/alignment/software/}
-    \item MUSCLE \url{https://www.drive5.com/muscle/}
     \item Clustal (W/X; Omega is not used in the course) \url{http://clustal.org/}
+    \begin{itemize}
+      \item Aligner of sequences (from slide~\ref{alignment})
+    \end{itemize}
+    \item Gdal \url{https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries}
+    \begin{itemize}
+      \item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+    \end{itemize}
+    \item GIMP \url{https://www.gimp.org/}
+    \begin{itemize}
+      \item Image manipulation, free open-source alternative to products of Adobe or Corel
+      \item Optional, one of possibilities to view and edit output graphics from R
+    \end{itemize}
+    \item Inkscape \url{https://inkscape.org/}
+    \begin{itemize}
+      \item Vector drawing, free open-source alternative to products of Adobe or Corel
+      \item Optional, one of possibilities to view and edit output graphics from R
+    \end{itemize}
+    \item MAFFT \url{https://mafft.cbrc.jp/alignment/software/}
+    \begin{itemize}
+      \item Aligner of sequences (from slide~\ref{alignment})
+    \end{itemize}
+    \item MPI \url{http://www.stats.uwo.ca/faculty/yu/Rmpi/}
+    \begin{itemize}
+      \item Library for parallelisation used by Rmpi package (optional, recommended)
+      \item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
+    \end{itemize}
+    \item MUSCLE \url{https://www.drive5.com/muscle/}
+    \begin{itemize}
+      \item Aligner of sequences (from slide~\ref{alignment})
+    \end{itemize}
+%     \item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} % TODO Rphylip
+    \item proj \url{http://proj4.org/download.html}
+    \begin{itemize}
+      \item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+    \end{itemize}
+    \item Structure \url{https://web.stanford.edu/group/pritchardlab/software.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} -- not part of the course)
+    \begin{itemize}
+      \item De facto standard for analysis of population genetic structure (from slide~\ref{structure})
+      \item Its outputs are usually post-processed in other software (not part of the course, see \href{https://trapa.cz/en/structure-r-linux}{web})
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -823,7 +885,6 @@
       library(adegenet)
       library(pegas)
       library(poppr)
-      library(vegan)
     \end{spluscode}
   \end{multicols}
 \end{frame}
@@ -2674,7 +2735,7 @@ Source data (two files -- AFLP data with individual names and populations)
       col=spectral(length(hauss.spca$eig)))
     legend("topright", fill=spectral(2), leg=c("Global structures",
       "Local structures")) # Add legend
-    abline(h=0,col="grey") # Add line showing zero
+    abline(h=0, col="grey") # Add line showing zero
     print.spca(hauss.spca) # Information about sPCA
     summary.spca(hauss.spca) # Summary of sPCA results
     # Shows connectivity network, 3 different scores
@@ -2691,6 +2752,19 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{center}
     \includegraphics[width=\textwidth-1.5cm]{spca.png}
   \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Test if global/local structure is significant}
+  \begin{spluscode}
+    hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw,
+      nperm=999)
+    plot(hauss.spca.glo)
+    hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw,
+      nperm=999)
+    plot(hauss.spca.loc)
+  \end{spluscode}
+  \vfill
+  \includegraphics[width=\textwidth]{spca-glob-loc.png}
 \end{frame}
 
 \begin{frame}[fragile]{Map of genetic clines}
@@ -2741,9 +2815,8 @@ Source data (two files -- AFLP data with individual names and populations)
       ylab="Contribution", xlab="Marker", main="Contribution by markers
       into the first global score", col="grey")
   \end{spluscode}
-  \vfil
-  \includegraphics[width=\textwidth]{spca-loading.png}
   \vfill
+  \includegraphics[width=\textwidth]{spca-loading.png}
 \end{frame}
 
 \subsection{Monmonier}
@@ -2898,7 +2971,7 @@ Source data (two files -- AFLP data with individual names and populations)
     D.cl.6     0.602325  36.000000  -0.086288     0.0140      0.041958 *
     D.cl.7     0.711839 108.000000  -0.044109     0.1568      0.313686
     D.cl.8     0.821353 458.000000  -0.095780     0.0100      0.049950 *
-    ...        ...      ...         ...           ...         ...
+       ...          ...        ...        ...        ...           ...
     ---
     Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
   \end{spluscode}
@@ -2908,14 +2981,17 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{About Geneland}
 \begin{multicols}{2}
+  \label{GenelandUse}
   \begin{itemize}
+    \item For installation see slide~\ref{Geneland}
     \item Works with haploid and diploid codominant markers (microsatellites or SNPs)
     \item Spatially explicit Bayesian clustering
     \item Produces maps of distribution of inferred genetic clusters
     \item Relative complicated tool with various modeling options
+    \item For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{itemize}
   \columnbreak
-  \begin{spluscode}
+  \begin{spluscode} % FIXME check required libraries
     # Load needed libraries
     library(PBSmapping)
     library(RandomFields)
@@ -2930,7 +3006,6 @@ Source data (two files -- AFLP data with individual names and populations)
     Geneland.GUI()
   \end{spluscode}
 \end{multicols}
-For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \end{frame}
 
 \begin{frame}{Geneland GUI}
@@ -2998,7 +3073,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
       hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun,
         "/", sep="") # paste is good especially for joining several texts
       # On Windows, remove following line and create subdirectories from
-      # 1 to max K manually (creating subdirs in Windows is complicated)
+      # 1 to max K manually (creating subdirs in Windows in R is complicated)
       system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirs
       # Inference - MCMC chain - see ?MCMC for details
       MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
@@ -3013,8 +3088,8 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \begin{frame}[fragile]{Running MCMC}
   \begin{spluscode}
       # Start of FOR loop is on previous page
-      # In practice set much higher number of iterations (nit),
-      # appropriate sampling (thinning) and longer burnin
+      # In practice set much higher number of iterations (nit, millions),
+      # appropriate sampling (thinning, thousands) and longer burnin
       # Post-process chains
       PostProcessChain(coordinates=hauss.geneland.coord.utm,
         path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500,
@@ -3063,7 +3138,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
         "admixture", "/", sep="")
       # On Windows, remove following line of code and create in each
       # result directory (from 1 to max K) new subdirectory "admixture"
-      # (creating subdirs in Windows is complicated)
+      # (creating subdirs in Windows in R is complicated)
       system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
       HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
         hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc,
@@ -3093,6 +3168,24 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
     \item Maps are produced as PS (PostScript) files in output directories
     \item Not every graphical software can handle PS (try for example \href{https://www.gimp.org/}{GIMP})
     \item There are as many plots as was maximal K, but only those up to inferred number of clusters have some content (the others are empty)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Estimate frequencies of null alleles}
+  \begin{spluscode}
+    hauss.geneland.fna <- list()
+    for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
+      hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, 
+        "/", sep="")
+      # Estimation
+      hauss.geneland.fna[[hauss.geneland.irun]] <- 
+        EstimateFreqNA(path.mcmc=hauss.geneland.path.mcmc)
+      }
+    # See output
+    hauss.geneland.fna
+  \end{spluscode}
+  \begin{itemize}
+    \item Each item of the \texttt{list} object \texttt{hauss.geneland.fna} (from 1 to number of runs) contains vector of estimated frequencies of null alleles for every locus
   \end{itemize}
 \end{frame}
 
@@ -3128,6 +3221,18 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \begin{center}
     \includegraphics[width=\textwidth-1.5cm]{geneland2.png}
   \end{center}
+\end{frame}
+
+\begin{frame}{When using Geneland, remember\ldots}
+  \begin{itemize}
+    \item Within \texttt{MCMC()}, there must be at least hundreds thousands or millions of generations (\texttt{nit}) and apropriate sampling (thousands or higher, \texttt{thinning} -- not to fill whole disk)
+    \item To analyse geo-referenced data with a non-spatial prior set in \texttt{MCMC()} \texttt{spatial=FALSE}
+    \item To analyse non-spatial data remove parameter \texttt{coordinates} from \texttt{MCMC()} function
+    \item To obtain structure-like plots, file \texttt{proba.pop.membership.indiv.txt} in Geneland output directory can be used as input file for \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct}
+    \item To use SNPs, ATCG bases must be recoded as \texttt{1, 2, 3, 4}, fixed alleles must be removed
+    \item Geneland can handle only haploids and diploids (no ploidy mixing)
+    \item When unsure, consult \href{https://www2.imm.dtu.dk/~gigu/Geneland/Geneland-Doc.pdf}{manual}
+  \end{itemize}
 \end{frame}
 
 \subsection{Plotting maps}
@@ -3270,6 +3375,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \section{Structure}
 
 \begin{frame}{Structure}
+  \label{structure}
   \begin{itemize}
     \item Population genetic software for Bayesian clustering, \url{http://pritchardlab.stanford.edu/structure.html}
     \item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
@@ -3487,6 +3593,7 @@ For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
 \section{Alignment}
 
 \begin{frame}{Multiple sequence alignment}
+  \label{alignment}
   \begin{itemize}
     \item Good alignment is basic condition for any analysis of DNA sequences
     \item R doesn't have any possibility for visual editing (use rather software like \href{http://www.geneious.com/}{Geneious}, \href{http://www.clcbio.com/products/clc-sequence-viewer/}{CLC Sequence Viewer} or \href{http://www.mbio.ncsu.edu/bioedit/bioedit.html}{BioEdit})

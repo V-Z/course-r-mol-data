@@ -65,13 +65,13 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages FIXME check packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 
 # Install packages without setting the repositories
 # If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
-install.packages(pkgs=c("Geneland", "MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+install.packages(pkgs=c("MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
 update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 
 # Install package phyloch not available in any repository
@@ -79,6 +79,17 @@ update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+
+# Install package Geneland (since version 4 not availble in CRAN anymore)
+# If not done already, install required package first
+install.packages(pkgs="tcltk", dependencies=TRUE)
+# It is possible to specify direct path (local or web URL) to package source
+install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+# Other packages used when using Geneland
+# Needed is PBSmapping or mapproj for conversion of coordinates
+# GUI uses for parallelisation snow and Rmpi
+# RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools (requires rgeos and sp), shapefiles (requires foreign) and tripack on GIS layer
+install.packages(pkgs=c("PBSmapping", "rgdal", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
 
 # We will load packages by library(package) one by one when needed and plugins\ldots
 
@@ -111,7 +122,6 @@ library(ade4)
 library(adegenet)
 library(pegas)
 library(poppr)
-library(vegan)
 
 ## Data
 
@@ -842,20 +852,26 @@ hauss.spca <- spca(obj=hauss.genind, cn=hauss.connectivity, scale=TRUE, scannf=T
 # Plot eigenvalues of sPCA - gobal vs. local structure
 barplot(height=hauss.spca$eig, main="Eigenvalues of sPCA", col=spectral(length(hauss.spca[["eig"]])))
 legend("topright", fill=spectral(2), leg=c("Global structures", "Local structures")) # Add legend
-abline(h=0,col="grey") # Add line showing zero
+abline(h=0, col="grey") # Add line showing zero
 # Information about sPCA
 print.spca(hauss.spca)
 # Summary of sPCA results
-summary.spca(hauss.spca)
+summary.spca(hauss.spca) # TODO replace by adespatial::multispati
 # Shows connectivity network, 3 different scores, barplot of eigenvalues and eigenvalues decomposition
 plot.spca(hauss.spca)
 # Display of scores in color canals (two analogous variants)
-colorplot.spca(hauss.spca, cex=4)
+colorplot.spca(hauss.spca, cex=3)
 title("sPCA - colorplot of PC 1 and 2 (lagged scores)", line=1, cex=1.5)
-colorplot(x=hauss.genind$other$xy, hauss.spca$ls, axes=1:ncol(hauss.spca$li), cex=4)
+colorplot(x=hauss.genind$other$xy, hauss.spca$ls, axes=1:ncol(hauss.spca$li), cex=3)
 title("sPCA - colorplot of PC 1 and 2 (lagged scores)", line=1, cex=1.5)
 # Spatial and variance components of the eigenvalues
 screeplot.spca(x=hauss.spca, main=NULL)
+
+# Test if global/local structure is significant
+hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+plot(hauss.spca.glo)
+hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+plot(hauss.spca.loc)
 
 # Map of genetic clines
 library(akima) # This library is needed for some manipulation with coordinates
@@ -868,9 +884,9 @@ image(x=hauss.spca.temp, col=spectral(100))
 s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
 # Interpolated lagged score on a map
 hauss.spca.annot <- function() {
-    title("sPCA - interpolated map of individual scores")
-    points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
-  }
+	title("sPCA - interpolated map of individual scores")
+	points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
+	}
 filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
 
 # Loading plots - which alleles contribute the most?
@@ -909,7 +925,7 @@ summary(hauss.mantel.cor)
 # Plot it
 plot(hauss.mantel.cor)
 
-## Geneland
+## Geneland FIXME check required libraries (required PBSmapping, tcltk, Geneland)
 # Haploid and diploid codominant markers (microsattelites or SNPs)
 # Load needed libraries
 library(PBSmapping)
@@ -944,53 +960,63 @@ hauss.geneland.burnin <- 100
 hauss.geneland.maxpop <- 10
 # FOR loop will run several independent runs and produce output maps of genetic clusters - outputs are written into subdirectory within geneland directory
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
-  # On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows is complicated)
-  system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
-  # Inferrence - MCMC chain - see ?MCMC for details
-  MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
-  # Post-process chains
-  PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
-  # Output
-  # Simulated number of populations
-  Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, file=paste(hauss.geneland.path.mcmc, "/geneland-number_of_clusters.pdf", sep=""), format="pdf", burnin=hauss.geneland.burnin)
-  dev.off() # We must close graphical device manually
-  # Map of estimated population membership
-  PosteriorMode(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, format="pdf", file=paste(hauss.geneland.path.mcmc,"/geneland-map.pdf", sep=""))
-  dev.off() # We must close graphical device manually
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
+	# On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows in R is complicated)
+	system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
+	# Inferrence - MCMC chain - see ?MCMC for details
+	# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
+	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
+	# Post-process chains
+	PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
+	# Output
+	# Simulated number of populations
+	Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, file=paste(hauss.geneland.path.mcmc, "/geneland-number_of_clusters.pdf", sep=""), format="pdf", burnin=hauss.geneland.burnin)
+	dev.off() # We must close graphical device manually
+	# Map of estimated population membership
+	PosteriorMode(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, format="pdf", file=paste(hauss.geneland.path.mcmc,"/geneland-map.pdf", sep=""))
+	dev.off() # We must close graphical device manually
+	}
 # Prepare list to record values of Fst for all runs
 hauss.geneland.fstat <- list()
 # Estimate Fst
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  # F-statistics - Fis and Fst
-  hauss.geneland.fstat[[hauss.geneland.irun]] <- Fstat.output(coordinates=hauss.geneland.coord.utm, genotypes=hauss.geneland.data, burnin=hauss.geneland.burnin, ploidy=2, path.mcmc=hauss.geneland.path.mcmc)
-  }
-  # Print Fst output
-  hauss.geneland.fstat
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# F-statistics - Fis and Fst
+	hauss.geneland.fstat[[hauss.geneland.irun]] <- Fstat.output(coordinates=hauss.geneland.coord.utm, genotypes=hauss.geneland.data, burnin=hauss.geneland.burnin, ploidy=2, path.mcmc=hauss.geneland.path.mcmc)
+	}
+# Print Fst output
+hauss.geneland.fstat
 # MCMC inference under the admixture model
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
-  # On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows is complicated)
-  system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-  HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
-  }
-# Produce maps of respective inferred clusters  
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
+	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
+	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
+	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+	}
+# Produce maps of respective inferred clusters
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  # Maps - tesselations
-  PlotTessellation(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, path=hauss.geneland.path.mcmc)
-  for (hauss.geneland.irun.img in 1:hauss.geneland.maxpop) { dev.off() } # We must close graphical device manually
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# Maps - tesselations
+	PlotTessellation(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, path=hauss.geneland.path.mcmc)
+	for (hauss.geneland.irun.img in 1:hauss.geneland.maxpop) { dev.off() } # We must close graphical device manually
+	}
+# Estimate frequencies of null alleles
+hauss.geneland.fna <- list()
+for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# Estimation
+	hauss.geneland.fna[[hauss.geneland.irun]] <- EstimateFreqNA(path.mcmc=hauss.geneland.path.mcmc)
+	}
+# See output
+hauss.geneland.fna
 # Calculate average posterior probability
 hauss.geneland.lpd <- rep(NA, hauss.geneland.nrun)
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,"log.posterior.density.txt",sep="")
-  hauss.geneland.lpd[hauss.geneland.irun] <- mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)])
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,"log.posterior.density.txt",sep="")
+	hauss.geneland.lpd[hauss.geneland.irun] <- mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)])
+	}
 # Sorts runs according to decreasing posterior probability - the first one is the best
 order(hauss.geneland.lpd, decreasing=TRUE)
 hauss.geneland.lpd
@@ -1017,6 +1043,12 @@ hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
 ?PlotOnStaticMap # See all options
+
+# NOTE Geneland version of usage of Google Maps
+MyMap.zoom8 <- GetMap(center=apply(coord[,2:1],2,mean), # center of area (needs Lat/Lon not Lon/Lat!)
+                                               zoom =8, # resolution
+                                 maptype = "satellite")
+PlotOnStaticMap(MyMap.zoom8, lat=coord[,2] , lon= coord[,1] ,col=’red’)
 
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
