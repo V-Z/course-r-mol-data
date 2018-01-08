@@ -1043,12 +1043,12 @@ hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
 ?PlotOnStaticMap # See all options
-
-# NOTE Geneland version of usage of Google Maps
-MyMap.zoom8 <- GetMap(center=apply(coord[,2:1],2,mean), # center of area (needs Lat/Lon not Lon/Lat!)
-                                               zoom =8, # resolution
-                                 maptype = "satellite")
-PlotOnStaticMap(MyMap.zoom8, lat=coord[,2] , lon= coord[,1] ,col=’red’)
+# Other option of adding points and labels
+hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite")
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3)
+# Google maps have their own internal scaling, adding of points by standard functions will not work correctly
 
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
@@ -1087,6 +1087,9 @@ plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
 plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
 plot(macedonia_roads, add=TRUE, col="orange")
 plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+# Add state boundaries
+plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=5, add=TRUE) # Or e.g.
+map(database="worldHires", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
 # Add sampling points
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
 # Add description of psampling points
