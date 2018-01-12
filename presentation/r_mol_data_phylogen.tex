@@ -3286,6 +3286,41 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]{More options for Google map} % FIXME finish GMap
+\begin{multicols}{2}
+  \begin{spluscode}
+    hauss.gmap2 <- GetMap(center=c(
+      lat=41, lon=21), size=c(640,
+      640), destfile="gmap2.png",
+      zoom=8, maptype="satellite")
+    PlotOnStaticMap(MyMap=hauss.gmap2,
+      lat=hauss.genpop@other$xy[["lat"
+      ]], lon=hauss.genpop@other$xy
+      [["lon"]], FUN=points, pch=19,
+      col="blue", cex=5)
+    PlotOnStaticMap(MyMap=hauss.gmap2,
+      lat=hauss.genpop@other$xy[["lat"
+      ]], lon=hauss.genpop@other$xy
+      [["lon"]], add=TRUE, FUN=points,
+      pch=19, col="red", cex=3)
+    PlotOnStaticMap(MyMap=hauss.gmap2,
+      lat=hauss.genpop@other$xy[["lat"
+      ]], lon=hauss.genpop@other$xy
+      [["lon"]], add=TRUE, FUN=text,
+      labels=as.vector(popNames(
+      hauss.genind)), pos=4, cex=3,
+      col="white")
+    # Google maps have their own
+    # internal scaling, adding of
+    # points by standard functions
+    # will not work correctly
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=6.5cm]{gmap.png}
+  \end{center}
+\end{multicols}
+\end{frame}
+
 \begin{frame}[fragile]{OpenStreetMaps and datasets from mapproj}
   \begin{spluscode}
     # Plot on OpenStreetMaps - server is commonly overloaded and does not
@@ -3336,7 +3371,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \vfil
 \end{frame}
 
-\begin{frame}[fragile]{Plotting on SHP files II}
+\begin{frame}[fragile]{Plotting on SHP files II} % FIXME finish (adding extra content)
   \begin{spluscode}
     plot(macedonia_roads)
     macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
@@ -3348,6 +3383,11 @@ Source data (two files -- AFLP data with individual names and populations)
     plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
     plot(macedonia_roads, add=TRUE, col="orange")
     plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+    # Add state boundaries
+    plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
+      lwd=5, add=TRUE) # Or e.g.
+    map(database="worldHires", boundary=TRUE, interior=TRUE, fill=FALSE,
+      col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
     # Add sampling points
     points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
       xy[["lat"]], pch=15:19, col="red", cex=4)
@@ -3359,7 +3399,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Plotting on SHP files III}
+\begin{frame}[fragile]{Plotting on SHP files III} % FIXME finish (adding extra content)
   \vfil
   \begin{spluscode}
     # Add legend
@@ -3369,7 +3409,6 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
   \vfill
   \includegraphics[width=\textwidth]{mapy.png}
-  \vfil
 \end{frame}
 
 \section{Structure}
