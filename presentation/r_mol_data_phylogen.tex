@@ -657,9 +657,7 @@
     \item Will be used from slide~\ref{GenelandUse}
   \end{itemize}
   \begin{spluscode}
-    # Install package Geneland (since version 4 not availble in CRAN)
-    # If not done already, install required package first
-    install.packages(pkgs="tcltk", dependencies=TRUE)
+    # Install package Geneland (since version 4 not available in CRAN)
     # It is possible to specify direct path to package source
     install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/
       Geneland_4.0.8.tar.gz", repos=NULL, type="source")
@@ -669,9 +667,9 @@
     # RgoogleMaps (requires rgdal) can be used to plot Geneland output
     # on top of Google map, maptools (requires rgeos and sp), shapefiles
     # (requires foreign) and tripack on GIS layer
-    install.packages(pkgs=c("PBSmapping", "rgdal", "RgoogleMaps", "Rmpi",
-      "foreign", "mapproj", "maptools", "rgeos", "shapefiles", "snow", "sp",
-      "tripack"), dependencies=TRUE)
+    install.packages(pkgs=c("PBSmapping", "RgoogleMaps", "Rmpi", "foreign",
+     "mapproj", "maptools", "rgdal", "rgeos", "shapefiles", "snow", "sp",
+     "tripack"), dependencies=TRUE)
   \end{spluscode}
 \end{frame}
 
@@ -2980,7 +2978,6 @@ Source data (two files -- AFLP data with individual names and populations)
 \subsection{Geneland}
 
 \begin{frame}[fragile]{About Geneland}
-\begin{multicols}{2}
   \label{GenelandUse}
   \begin{itemize}
     \item For installation see slide~\ref{Geneland}
@@ -2990,22 +2987,14 @@ Source data (two files -- AFLP data with individual names and populations)
     \item Relative complicated tool with various modeling options
     \item For more information see \url{https://www2.imm.dtu.dk/~gigu/Geneland/}
   \end{itemize}
-  \columnbreak
-  \begin{spluscode} % FIXME check required libraries
+  \vfill
+  \begin{spluscode}
     # Load needed libraries
-    library(PBSmapping)
-    library(RandomFields)
-    library(fields)
-    library(spam)
-    library(grid)
-    library(maps)
-    library(tcltk)
+    library(PBSmapping) # Required to transform coordinates
     library(Geneland)
-    # Graphical interface is available
-    # we will use only command line...
+    # Graphical interface is available, we will use only command line...
     Geneland.GUI()
   \end{spluscode}
-\end{multicols}
 \end{frame}
 
 \begin{frame}{Geneland GUI}
@@ -3784,7 +3773,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{spluscode}
     # Read trees in NEWICK format - single or multiple tree(s)
     oxalis.trees <- read.tree
-      ("https://soubory.trapa.cz/rcourse/oxalis.nwk")
+      (file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
     summary(oxalis.trees)
     length(oxalis.trees)
     names(oxalis.trees)

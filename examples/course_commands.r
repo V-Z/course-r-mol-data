@@ -81,15 +81,13 @@ install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
 
 # Install package Geneland (since version 4 not availble in CRAN anymore)
-# If not done already, install required package first
-install.packages(pkgs="tcltk", dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelisation snow and Rmpi
 # RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools (requires rgeos and sp), shapefiles (requires foreign) and tripack on GIS layer
-install.packages(pkgs=c("PBSmapping", "rgdal", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
+install.packages(pkgs=c("PBSmapping", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgdal", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
 
 # We will load packages by library(package) one by one when needed and plugins\ldots
 
@@ -925,16 +923,10 @@ summary(hauss.mantel.cor)
 # Plot it
 plot(hauss.mantel.cor)
 
-## Geneland FIXME check required libraries (required PBSmapping, tcltk, Geneland)
+## Geneland
 # Haploid and diploid codominant markers (microsattelites or SNPs)
 # Load needed libraries
-library(PBSmapping)
-library(RandomFields)
-library(fields)
-library(spam)
-library(grid)
-library(maps)
-library(tcltk)
+library(PBSmapping) # Required to transform coordinates
 library(Geneland)
 # Graphical interface available for Geneland - we will use only command line
 Geneland.GUI()
@@ -1219,7 +1211,7 @@ lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 ## Tree manipulations
 
 # Read trees in NEWICK format - single or multiple tree(s)
-oxalis.trees <- read.tree("https://soubory.trapa.cz/rcourse/oxalis.nwk")
+oxalis.trees <- read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
 summary(oxalis.trees)
 length(oxalis.trees)
 names(oxalis.trees)
@@ -1319,11 +1311,11 @@ oxalis.trees.d <- matrix(nrow=length(oxalis.trees), ncol=length(oxalis.trees))
 
 # Calculate pairwise topographic distances
 for (i in 1:length(oxalis.trees)) {
-  for (j in i:length(oxalis.trees)) {
-    print(c(i,j))
-    oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]], oxalis.trees[[j]])
-   }
- }
+	for (j in i:length(oxalis.trees)) {
+		print(c(i,j))
+		oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]], oxalis.trees[[j]])
+		}
+	}
 
 # Basic information about the distance matrix
 dim(oxalis.trees.d)
