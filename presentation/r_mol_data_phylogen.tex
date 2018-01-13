@@ -3286,7 +3286,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{More options for Google map} % FIXME finish GMap
+\begin{frame}[fragile]{More options for Google map}
 \begin{multicols}{2}
   \begin{spluscode}
     hauss.gmap2 <- GetMap(center=c(
@@ -3307,6 +3307,8 @@ Source data (two files -- AFLP data with individual names and populations)
       lat=hauss.genpop@other$xy[["lat"
       ]], lon=hauss.genpop@other$xy
       [["lon"]], add=TRUE, FUN=text,
+  \end{spluscode}
+  \begin{spluscode}
       labels=as.vector(popNames(
       hauss.genind)), pos=4, cex=3,
       col="white")
@@ -3316,7 +3318,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # will not work correctly
   \end{spluscode}
   \begin{center}
-    \includegraphics[height=6.5cm]{gmap.png}
+%    \includegraphics[height=6.5cm]{gmap.png} % FIXME Finish GMap (add file)
   \end{center}
 \end{multicols}
 \end{frame}
@@ -3345,21 +3347,25 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}[fragile]{Plotting on SHP files I}
-  \vfil
-  \begin{scriptsize}
-    Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip}
-  \end{scriptsize}
-  \vfill
+  \begin{itemize}
+    \item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} and unpack them into R working directory
+    \item Data were originally downloaded from \url{http://download.geofabrik.de/europe/macedonia.html}
+    \item R working directory has to contain also respective DBF and SHX files (same name, only different extension)
+  \end{itemize}
   \begin{spluscode}
     library(maptools)
     # Load SHP file
-    # Data from http://download.geofabrik.de/europe/macedonia.html
-    # Directory has to contain also respective DBF and SHX files
-    # (same name, only different extension)
+    dir() # Verify required files are unpacked in the working directory
     # There are several functions readShape* - select appropriate
     # according to data stored in respective SHP file
+    # Check correct import by plotting all layers
     macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
-    plot(macedonia_building)
+    plot(macedonia_building) # Continues on next slide...
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Plotting on SHP files II}
+  \begin{spluscode}
     macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
     plot(macedonia_landuse)
     macedonia_natural <- readShapeLines(fn="macedonia_natural.shp")
@@ -3367,22 +3373,22 @@ Source data (two files -- AFLP data with individual names and populations)
     macedonia_railways <- readShapeLines(fn="macedonia_railways.shp")
     plot(macedonia_railways)
     macedonia_roads <- readShapeLines(fn="macedonia_roads.shp")
-  \end{spluscode}
-  \vfil
-\end{frame}
-
-\begin{frame}[fragile]{Plotting on SHP files II} % FIXME finish (adding extra content)
-  \begin{spluscode}
     plot(macedonia_roads)
     macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
     plot(macedonia_waterways)
-    # Plot all layers into single image
+    # Plot all layers into single image, add more information
     plot(macedonia_building)
     plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
     plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
     plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
     plot(macedonia_roads, add=TRUE, col="orange")
     plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+    # Ends on next slide...
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Plotting on SHP files III}
+  \begin{spluscode}
     # Add state boundaries
     plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
       lwd=5, add=TRUE) # Or e.g.
@@ -3396,36 +3402,36 @@ Source data (two files -- AFLP data with individual names and populations)
       xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
       bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
-  \end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Plotting on SHP files III} % FIXME finish (adding extra content)
-  \vfil
-  \begin{spluscode}
     # Add legend
     legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne",
       "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o",
       bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
+    # Results on next slide...
   \end{spluscode}
-  \vfill
-  \includegraphics[width=\textwidth]{mapy.png}
+\end{frame}
+
+\begin{frame}{Plotting on SHP files IV and maps from mapproj}
+  \includegraphics[width=\textwidth]{mapy.png} % FIXME Newer map imgae
 \end{frame}
 
 \section{Structure}
 
-\begin{frame}{Structure}
+\begin{frame}[allowframebreaks]{Structure}
   \label{structure}
   \begin{itemize}
-    \item Population genetic software for Bayesian clustering, \url{http://pritchardlab.stanford.edu/structure.html}
+    \item Population genetic software for Bayesian clustering, \url{https://web.stanford.edu/group/pritchardlab/structure.html}
+    \item De facto standard for population genetics, one of the most usage software tools
     \item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
     \item One Structure run tests one selected K
     \begin{itemize}
-      \item User must run it repeatedly for several Ks to find the best division
-      \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm)
-      \item Finally there use to be hundreds of runs\ldots
-      \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python)
+      \item User must run it repeatedly for several Ks to find the best division, eg. from K=1 to K=10 (grouping into 1, 2, 3, \ldots, 10 clusters)
+      \item User must run it repeatedly for each K to see if the result is stable (because of stochasticity of the computational algorithm), e.g. 10 times each
+      \item Finally there use to be hundreds of runs\ldots{ } (e.g. 100 like in this example)
+      \item The best grouping into K groups is selected according to posterior probability of each run (different groupings have different probability of being correct, we need to select the best one) and stability of runs (independent runs for a given same K return same results)
+      \item Structure has Java GUI to set up repeated runs -- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python, depending on user's preference and knowledge)
     \end{itemize}
     \item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
+    \item Relatively complicated tool requiring plenty of work\ldots
   \end{itemize}
 \end{frame}
 
@@ -3461,7 +3467,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item Let's use modern multi-core CPUs and plenty of RAM in current computers -- parallelisation saves time
     \item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
     \item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
-    \item I~show slightly modified way from \href{http://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
+    \item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
     \item Authors recommend to run it without GUI and not on Windows\ldots
     \item For this chapter start new R project in new working directory
   \end{itemize}
@@ -3506,18 +3512,18 @@ Source data (two files -- AFLP data with individual names and populations)
     S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
     S06 & 1,2,3,4,5 & 2 & 500 & 10000\\
     S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
-    ... & ... & ... & ... & ...
+    \ldots & \ldots & \ldots & \ldots & \ldots
   \end{tabular}
   \vfill
   \textbf{Input file:}
   \vfil
   \begin{tabular}{lllllllllll}
-    & & & msta93 & msta101 & msta102 & msta103 & ...\\
-    H01 & 1 & 0 & 269 & 198 & 221 & 419 & ...\\
-    H01 & 1 & 0 & 269 & 198 & 223 & 419 & ...\\
-    H02 & 1 & 0 & 275 & 198 & 221 & 419 & ...\\
-    H02 & 1 & 0 & 283 & 198 & 223 & 419 & ...\\
-    ... & ... & ... & ... & ... & ... & ... & ...
+    & & & msta93 & msta101 & msta102 & msta103 & \ldots\\
+    H01 & 1 & 0 & 269 & 198 & 221 & 419 & \ldots\\
+    H01 & 1 & 0 & 269 & 198 & 223 & 419 & \ldots\\
+    H02 & 1 & 0 & 275 & 198 & 221 & 419 & \ldots\\
+    H02 & 1 & 0 & 283 & 198 & 223 & 419 & \ldots\\
+    \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots
   \end{tabular}
   \vfil
 \end{frame}
@@ -3568,7 +3574,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Post process Structure results -- select the best K}
   \begin{itemize}
-    \item Using Structure-sum-2011 R script by \href{http://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
+    \item Using Structure-sum-2011 R script by \href{https://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
   \end{itemize}
  \begin{spluscode}
     # Load the script
@@ -3602,6 +3608,7 @@ Source data (two files -- AFLP data with individual names and populations)
     Structure.cluster("list_k.txt", 5)
     # Reordering ("alignment") of runs to get same clusters in same
     # columns (prepare respective list_k files - one for each K)
+    # Preparing data for CLUMPP
     Structure.order("list_k_02.txt", 5)
     Structure.order("list_k_03.txt", 5)
     Structure.order("list_k_04.txt", 5)

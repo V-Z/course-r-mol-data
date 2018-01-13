@@ -1065,9 +1065,11 @@ points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=1
 library(maptools)
 # Load SHP file
 # Data from http://download.geofabrik.de/europe/macedonia.html
-# Directory has to contain also respective DBF and SHX files (same name, only different extension)
+# R working directory has to contain also respective DBF and SHX files (same name, only different extension)
+dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
+# Check correct import by plotting all layers
 macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
 plot(macedonia_building)
 macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
@@ -1080,7 +1082,7 @@ macedonia_roads <- readShapeLines(fn="macedonia_roads.shp")
 plot(macedonia_roads)
 macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
 plot(macedonia_waterways)
-# Plot all layers into single image
+# Plot all layers into single image, add more information
 plot(macedonia_building)
 plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
 plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
@@ -1099,7 +1101,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 
 ## Structure
 
-# Inspiration: http://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
+# Inspiration: https://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
 # get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
 # Set working directory
