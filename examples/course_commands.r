@@ -1134,6 +1134,7 @@ Structure.deltaK("list_k.txt", 5)
 graphics.off() # Close graphics
 Structure.cluster("list_k.txt", 5)
 # Reordering ("alignment") of runs to get same clusters in same columns (prepare respective list_k files - one for each K)
+# Preparing data for CLUMPP
 Structure.order("list_k_02.txt", 5)
 Structure.order("list_k_03.txt", 5)
 Structure.order("list_k_04.txt", 5)
@@ -1158,30 +1159,60 @@ class(meles.mafft)
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
 meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+meles.clustal
+class(meles.clustal)
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
+
+# Remove gaps from alignment - destroy it
+meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
 
 # Plot the alignment - you can select which bases to plot and/or modify colours
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
 grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
-# Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
 
 # Shortcut for plotting alignment
 image.DNAbin(x=meles.mafft)
 # Display aligned sequences with gaps
 image.DNAbin(x=usflu.dna)
 
+# Align multiple genes
+# Create a list of DNAbin objects to process
+multialign <- list(meles.dna, usflu.dna, usflu.dna2, usflu.dna3)
+# See it
+multialign
+class(multialign)
+lapply(X=multialign, FUN=class)
+# Do the alignment
+multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+# See result
+multialign.aln
+multialign.aln[[1]]
+lapply(X=multialign.aln, FUN=class)
+# Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
+library(parallel)
+multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
+# mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
+# See result
+multialign.aln2
+lapply(X=multialign.aln2, FUN=class)
+?mclapply # See more options
+?clusterApply # See more options (parLapply should work on Windows)
+
 # Delete all columns containing any gap
 library(ips)
 usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+usflu.dna.ng
 # See of settings of "nmax" value - threshold for gap deletion
 ?deleteGaps # "nmax=0" deletes all columns with any gap
+multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
+multialign.aln.ng
 # Do not confuse with function delete.gaps() from phyloch package
 # Display the result
 image.DNAbin(x=usflu.dna.ng)
+lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 # Delete positions in alignment containing only missing data/N
 ?deleteEmptyCells # See help page for details
 

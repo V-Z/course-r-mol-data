@@ -3642,12 +3642,13 @@ Source data (two files -- AFLP data with individual names and populations)
   \label{alignment}
   \begin{itemize}
     \item Good alignment is basic condition for any analysis of DNA sequences
-    \item R doesn't have any possibility for visual editing (use rather software like \href{http://www.geneious.com/}{Geneious}, \href{http://www.clcbio.com/products/clc-sequence-viewer/}{CLC Sequence Viewer} or \href{http://www.mbio.ncsu.edu/bioedit/bioedit.html}{BioEdit})
+    \item DNA/RNA and protein sequences must be aligned prior any subsequent analysis (tree building,~\ldots)
+    \item R doesn't have any possibility for visual editing (use rather software like \href{https://www.geneious.com/}{Geneious}, \href{https://www.clcbio.com/products/clc-sequence-viewer/}{CLC Sequence Viewer} or \href{http://www.mbio.ncsu.edu/bioedit/bioedit.html}{BioEdit})
     \item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
     \begin{itemize}
       \item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python -- only matters what user likes, knows and wish to do with the results\ldots
     \end{itemize}
-    \item R packages use common alignment software: \href{http://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{http://www.drive5.com/muscle/}{MUSCLE}, \href{http://www.clustal.org/}{Clustal},~\ldots
+    \item R packages use common alignment software: \href{https://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{https://www.drive5.com/muscle/}{MUSCLE}, \href{http://clustal.org/}{Clustal},~\ldots
     \begin{itemize}
       \item User must install this software manually -- R is just using external applications (in the examples shown)
     \end{itemize}
@@ -3660,7 +3661,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{itemize}
     \item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} -- first one reads ``\texttt{*StringSet}'' class R objects and writes ``\texttt{*MultipleAlignment}'' R objects; the latter reads and writes object of class ``\texttt{DNAbin}''
     \item \texttt{ape} also contains functions to use Clustal and T-Coffee -- both read and write \texttt{DNAbin}
-    \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/index.html}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write \texttt{DNAbin}
+    \item MAFFT is available from (same author) in packages \href{https://cran.r-project.org/web/packages/ips/}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} -- both read and write \texttt{DNAbin}
   \end{itemize}
   \begin{spluscode}
     library(colorspace) # Libraries needed by phyloch/ips
@@ -3684,24 +3685,72 @@ Source data (two files -- AFLP data with individual names and populations)
     meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1,
       gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+    meles.clustal
+    class(meles.clustal)
     meles.muscle <- muscle(x=meles.dna, exec="muscle", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to muscle!
     meles.muscle
     class(meles.muscle)
-    # Plot the alignment - you can select which bases to plot
-    # and/or modify colors
-    image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-    # Add grey dotted grid
-    grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
     # Remove gaps from alignment - destroy it
-    meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
+    meles.nogaps <- del.gaps(meles.muscle)
+    ?del.gaps # See for details!
   \end{spluscode}
 \end{frame}
 
 \subsection{Display and cleaning}
 
-\begin{frame}{Multiple sequence alignment with MUSCLE}
+\begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
+  \begin{spluscode}
+    # Plot the alignment select bases to plot and/or modify colors
+    image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+    # Add grey dotted grid
+    grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
+  \end{spluscode}
+  \vfill
   \includegraphics[width=\textwidth]{muscle.png}
+\end{frame}
+
+\begin{frame}[fragile]{Align multiple genes}
+  \begin{itemize}
+    \item NGS/HTS introduced work with hundreds and thousands of genes, it makes sense to process them in batch and not manually one-by-one
+  \end{itemize}
+  \begin{spluscode}
+    # Create a list of DNAbin objects to process
+    multialign <- list(meles.dna, usflu.dna, usflu.dna2, usflu.dna3)
+    # See it
+    multialign
+    class(multialign)
+    lapply(X=multialign, FUN=class)
+    # Do the alignment
+    multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft,
+       method="localpair", maxiterate=100, path="/usr/bin/mafft")
+      # Change "path" to fit your path to mafft!
+    # See result
+    multialign.aln
+    multialign.aln[[1]]
+    lapply(X=multialign.aln, FUN=class)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Align multiple genes in parallel}
+  \begin{itemize}
+    \item There are plenty of implementations of parallelisation and using of computer clusters, see \url{https://cran.r-project.org/web/views/HighPerformanceComputing.html}
+  \end{itemize}
+  \begin{spluscode}
+    library(parallel)
+    # Do the same in parallel (mclapply do the tasks in parallel, not
+    # one-by-one like lapply)
+    multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, 
+      exec="muscle", quiet=FALSE, original.ordering=TRUE)
+    # Change "path" to fit your path to muscle!
+    # mclapply() relies on forking and hence is not available on Windows
+    # unless "mc.cores=1"
+    # See result
+    multialign.aln2
+    lapply(X=multialign.aln2, FUN=class)
+    ?mclapply # See more options
+    ?clusterApply # See more options (parLapply should work on Windows)
+  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Cleaning the alignment}
@@ -3713,11 +3762,15 @@ Source data (two files -- AFLP data with individual names and populations)
     # Delete all columns containing any gap
     library(ips)
     usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+    usflu.dna.ng
     # See of settings of "nmax" value - threshold for gap deletion
     ?deleteGaps # "nmax=0" deletes all columns with any gap
+    multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
+    multialign.aln.ng
     # Do not confuse with function delete.gaps() from phyloch package
     # Display the result
     image.DNAbin(x=usflu.dna.ng)
+    lapply(X=multialign.aln.ng, FUN=image.DNAbin)
     # Delete positions in alignment containing only missing data/N
     ?deleteEmptyCells # See help page for details
   \end{spluscode}
