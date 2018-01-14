@@ -1220,12 +1220,15 @@ write.tree(phy=oxalis.trees, file="trees.nwk")
 
 # Drop a tip from multiPhylo
 plot.multiPhylo(x=oxalis.trees)
-oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, "TaxaOut")
+# See tip labels
+oxalis.trees[[1]][["tip.label"]]
+oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, tip="O._callosa_S15")
 class(oxalis.trees.drop) <- "multiPhylo"
 plot.multiPhylo(x=oxalis.trees.drop)
 
 # Drop a tip
 plot.phylo(hauss.nj)
+hauss.nj[["tip.label"]]
 hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
 plot.phylo(hauss.nj.drop)
 
@@ -1261,6 +1264,7 @@ hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted, interactive=
 plot.phylo(hauss.nj.bind)
 
 # Rotate tree
+# plot.phylo plots tree in exact order as it is in the phylo object
 plot.phylo(hauss.nj)
 nodelabels()
 hauss.nj.rotated <- rotate(phy=hauss.nj, node="70")
@@ -1281,7 +1285,7 @@ plot.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj)
 hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
 plot.phylo(hauss.nj.rooted)
-# unroot the tree
+# Unroot the tree
 unroot()
 # Check if it is rooted
 is.rooted()
@@ -1346,7 +1350,7 @@ corrplot(corr=oxalis.trees.d.rf, method="number", type="lower", add=TRUE, col=ra
 # Test if the distance matrix is Euclidean or not
 is.euclid(distmat=as.dist(oxalis.trees.d), plot=TRUE)
 # Calculate the PCoA
-oxalis.trees.pcoa <- dudi.pco(d=as.dist(oxalis.trees.d), scannf=TRUE, full=TRUE)
+oxalis.trees.pcoa <- dudi.pco(d=quasieuclid(as.dist(oxalis.trees.d)), scannf=TRUE, full=TRUE)
 # Plot PCoA
 s.label(dfxy=oxalis.trees.pcoa$li)
 # Add kernel densities
@@ -1354,14 +1358,14 @@ s.kde2d(dfxy=oxalis.trees.pcoa$li, cpoint=0, add.plot=TRUE)
 # Add histogram of eigenvalues
 add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
 # Add title to the plot
-title("\nPCoA of matrix of pairwise trees distances")
+title("PCoA of matrix of pairwise trees distances")
 # Alternative function to plot PCA plot
 scatter(x=oxalis.trees.pcoa, posieig="topleft")
 
 ## Seeing trees in the forest
 
 # Root all trees
-oxalis.trees.rooted <- lapply(X=oxalis.trees, FUN=root, "TaxaOut")
+oxalis.trees.rooted <- lapply(X=oxalis.trees, FUN=root, "O._fibrosa_S159", resolve.root=TRUE)
 class(oxalis.trees.rooted) <- "multiPhylo"
 # Consenus tree (50 % rule)
 oxalis.tree.con <- ape::consensus(oxalis.trees.rooted, p=0.5, check.labels=TRUE)
@@ -1383,19 +1387,21 @@ edgelabels(text=round(oxalis.tree.sp.mean[["edge.length"]], digits=2), frame="no
 axisPhylo(side=1)
 
 # Parsimony super tree
-library(phangorn)
-oxalis.tree.sp <- superTree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
+library(phytools)
+oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
 axisPhylo(side=1)
+?phangorn::superTree # Similar function
 
-# Density tree
+# FIXME Density tree
 densiTree(x=oxalis.trees.ultra, type="cladogram", alpha=0.5, consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black", "green", "blue", "red"), cex=1.5)
 
 # Networks
+library(phangorn)
 oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-plot.networx(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
-plot.networx(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
 
 # Plot all trees on same scale
 kronoviz(x=oxalis.trees.rooted, layout=length(oxalis.trees.rooted), horiz=TRUE)
@@ -1547,7 +1553,7 @@ plot.correlogramList(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.
 
 # Prepare toy data
 # Load MrBayes tree in NEXUS format
-apiaceae.tree <- read.nexus("https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
+apiaceae.tree <- read.nexus(file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
 # See it
 print.phylo(apiaceae.tree)
 plot.phylo(apiaceae.tree)
@@ -1591,11 +1597,12 @@ library(caper) # Load needed library
 data(shorebird) # Load training data
 ?shorebird.data
 shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
-summary(shorebird.pgls)
+summary(shorebird.pgls) # See the result
+# See the plot of observer and fitted values
 plot(shorebird.pgls)
 abline(a=0, b=1, col="red")
-anova(shorebird.pgls)
-AIC(shorebird.pgls)
+anova(shorebird.pgls) # ANOVA view of the model
+AIC(shorebird.pgls) # Akaike's information criterion (smaller = better)
 
 ## Generalized Estimating Equations
 
@@ -1657,7 +1664,7 @@ phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
 # phylosig() can be used as an alternative to phylosignal() - the functions are similar in basic usage
 
 # Examples of usage of GLS for testing of phylogenetic signal
-summary(gls(model=primates.longevity ~ 1, data=as.data.frame (primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
+summary(gls(model=primates.longevity ~ 1, data=as.data.frame(primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
 summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 
 ## phylogenetic PCA

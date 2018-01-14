@@ -3779,13 +3779,15 @@ Source data (two files -- AFLP data with individual names and populations)
     names(oxalis.trees)
     # Export trees in NEWICK format
     write.tree(phy=oxalis.trees, file="trees.nwk")
+    oxalis.trees[[1]][["tip.label"]] # See tip labels
     # Drop a tip from multiPhylo
     plot.multiPhylo(x=oxalis.trees)
-    oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, "TaxaOut")
+    oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip,
+      tip="O._callosa_S15")
     class(oxalis.trees.drop) <- "multiPhylo"
     plot.multiPhylo(x=oxalis.trees.drop)
-    # Drop a tip from single tree
-    plot.phylo(hauss.nj)
+    plot.phylo(hauss.nj) # Drop a tip from single tree
+    hauss.nj[["tip.label"]] # See tip labels (and numbers)
     hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
     plot.phylo(hauss.nj.drop)
   \end{spluscode}
@@ -3829,6 +3831,7 @@ Source data (two files -- AFLP data with individual names and populations)
       interactive=TRUE)
     plot.phylo(hauss.nj.bind)
     # Rotate tree
+    # plot.phylo plots tree in exact order as it is in the phylo object
     plot.phylo(hauss.nj)
     nodelabels()
     hauss.nj.rotated <- rotate(phy=hauss.nj, node="70")
@@ -3854,8 +3857,8 @@ Source data (two files -- AFLP data with individual names and populations)
     plot.phylo(hauss.nj)
     hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
     plot.phylo(hauss.nj.rooted)
-    unroot() # unroot the tree
-    # Check if it is rooted is.rooted()
+    unroot() # Unroot the tree
+    is.rooted() # Check if it is rooted
   \end{spluscode}
 \end{frame}
 
@@ -3973,10 +3976,10 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{spluscode}
     # Test if the distance matrix is Euclidean or not
     is.euclid(distmat=as.dist(oxalis.trees.d), plot=TRUE)
-    [1] TRUE # OK. If it wouldn't be, we could use e.g. quasieuclid()
+    [1] FALSE # We can use e.g. quasieuclid() to make it Euclidean
     # Calculate the PCoA
-    oxalis.trees.pcoa <- dudi.pco(d=as.dist(oxalis.trees.d), scannf=TRUE,
-      full=TRUE)
+    oxalis.trees.pcoa <- dudi.pco(d=quasieuclid(as.dist(oxalis.trees.d)),
+      scannf=TRUE, full=TRUE)
     # Plot PCoA
     s.label(dfxy=oxalis.trees.pcoa$li)
     # Add kernel densities
@@ -3984,7 +3987,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # Add histogram of eigenvalues
     add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
     # Add title to the plot
-    title("\nPCoA of matrix of pairwise trees distances")
+    title("PCoA of matrix of pairwise trees distances")
     # Alternative function to plot PCA plot
     scatter(x=oxalis.trees.pcoa, posieig="topleft")
   \end{spluscode}
@@ -4001,9 +4004,9 @@ Source data (two files -- AFLP data with individual names and populations)
   \includegraphics[height=6cm]{oxalis-cons.png}
   \begin{spluscode}
     # Root all trees
-    oxalis.trees.rooted <- lapply
-      (X=oxalis.trees, FUN=root,
-      "TaxaOut")
+    lapply(X=oxalis.trees, FUN=root,
+      "O._fibrosa_S159",
+      resolve.root=TRUE)
     class(oxalis.trees.rooted) <-
       "multiPhylo"
     # Consensus tree (50 % rule)
@@ -4050,19 +4053,22 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{multicols}{2}
   \includegraphics[height=6cm]{oxalis-pars.png}
   \begin{spluscode}
-    library(phangorn)
-    oxalis.tree.sp <- superTree(tree=
-      oxalis.trees.rooted, method=
-      "optim.parsimony", rooted=TRUE)
+    library(phytools)
+    oxalis.tree.sp <- mrp.supertree
+      (tree=oxalis.trees.rooted,
+      method="optim.parsimony",
+      rooted=TRUE)
     print.phylo(oxalis.tree.sp)
     plot.phylo(oxalis.tree.sp,
       edge.width=2, label.offset=0.01)
     axisPhylo(side=1)
+    # Similar function
+    ?phangorn::superTree
   \end{spluscode}
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{Density tree}
+\begin{frame}[fragile]{Density tree} % FIXME Density doesn't work
   \begin{spluscode}
     densiTree(x=oxalis.trees.ultra, type="cladogram", alpha=0.5,
       consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black",
@@ -4077,14 +4083,14 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{multicols}{2}
   \vfil
   \begin{spluscode}
+    library(phangorn)
     oxalis.tree.net <- consensusNet
       (oxalis.trees.rooted, prob=0.25)
   \end{spluscode}
-  \vfil
+  \vfill
   \includegraphics[height=5.5cm]{oxalis-net.png}
-  \vfil
   \begin{spluscode}
-    plot.networx(x=oxalis.tree.net,
+    plot(x=oxalis.tree.net,
       planar=FALSE, type="2D",
       use.edge.length=TRUE,
       show.tip.label=TRUE,
@@ -4093,7 +4099,7 @@ Source data (two files -- AFLP data with individual names and populations)
       show.nodes=TRUE,
       edge.color="black",
       tip.color="blue") # 2D - left
-    plot.networx(x=oxalis.tree.net,
+    plot(x=oxalis.tree.net,
       planar=FALSE, type="3D",
       use.edge.length=TRUE,
       show.tip.label=TRUE,
@@ -4135,7 +4141,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
     \item Very simple criterion, easy to score the tree, but not to find it -- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed -- it doesn't always guarantee to find the most probable tree
     \item To speed up calculations, initial tree (usually NJ -- slide~\ref{NJ}) is used to start the search
-    \item With rising performance of computers, it use to replaced my maximum likelihood or Bayesian methods
+    \item With rising performance of computers, it uses to be replaced maximum likelihood or Bayesian methods
   \end{itemize}
 \end{frame}
 
@@ -4151,7 +4157,7 @@ Source data (two files -- AFLP data with individual names and populations)
       as.phyDat(meles.dna)
     # Prepare starting tree
     meles.tre.ini <- nj(dist.
-      dna(x=meles.dna,model="raw"))
+      dna(x=meles.dna, model="raw"))
     # Maximum parsimony score
     parsimony(tree=meles.tre.ini,
       data=meles.phydat)
@@ -4296,7 +4302,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # Plot PIC
     plot(x=primates.pic.body, y=primates.pic.longevity, pch=16, cex=1.5)
     abline(a=0, b=1, lty=2) # x=y line
-    # correlation coefficient of both PICs
+    # Correlation coefficient of both PICs
     cor(x=primates.pic.body, y=primates.pic.longevity, method="pearson")
     [1] -0.5179156
   \end{spluscode}
@@ -4444,7 +4450,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{spluscode}
     # Load MrBayes tree in NEXUS format
     apiaceae.tree <- read.nexus
-      ("https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
+      (file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
     print.phylo(apiaceae.tree) # See it
     plot.phylo(apiaceae.tree) # See it
     # Root the tree
@@ -4464,11 +4470,10 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}[fragile]{Modified tree}
-  \vfil
   \begin{center}
     \includegraphics[width=\textwidth-0.5cm]{apiaceae_tree.png}
   \end{center}
-  \vfill
+  \vfil
   \begin{spluscode}
     # Decomposition of topographical distances (right plot)
     table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart
@@ -4531,7 +4536,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}{Orthogram}
   \includegraphics[width=\textwidth]{orthogram.png}
   \begin{itemize}
-    \item Observed value is within permutations -- no significant phylogenetic signal\ldots
+    \item Observed value is within permutations -- no significant inertia of the trait to phylogeny\ldots
   \end{itemize}
 \end{frame}
 
@@ -4581,7 +4586,7 @@ Source data (two files -- AFLP data with individual names and populations)
       \item \texttt{pgls()} uses maximum likelihood to test for phylogenetic signal
       \item The signal is clearly presented
       \item Usually, tuning the model (possible data transformations and or changing model parameters) is necessary to find the best model -- AIC helps
-      \item See \href{https://cran.r-project.org/web/packages/caper/index.html}{caper manual} for details
+      \item See \href{https://cran.r-project.org/web/packages/caper/}{caper manual} for details
     \end{itemize}
   \end{multicols}
 \end{frame}
@@ -4593,6 +4598,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item Extension of GLM for correlated data -- usage is similar
     \item It is possible to use phylogeny or correlation matrix (typically based on phylogeny)
   \end{itemize}
+  \vfil
   \begin{spluscode}
     # Calculate the model
     compar.gee(formula=primates.longevity ~ primates.body,
@@ -4675,7 +4681,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{itemize}
     \item Functions for testing of phylogenetic signal do not work with more measurements per taxon
     \begin{itemize}
-      \item Currently, the only possibility is \texttt{phylosig()} which is able to work with SE (user must prepare this vector from the data manually)
+      \item Currently, the only possibility is \texttt{phylosig()} which is able to work with SE (user must prepare this vector from the data manually; from e.g. \texttt{plotrix::std.error})
     \end{itemize}
     \item \texttt{phylosig()} can be used as an alternative to \texttt{phylosignal()} -- the functions are similar in basic usage
   \end{itemize}
@@ -4693,7 +4699,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \begin{frame}[fragile]{Alternative testing for phylogenetic signal with GLM}
   \begin{itemize}
     \item It is possible to use intercept-only (\texttt{model/formula} will be something like \texttt{variable $\sim$ 1}, not \texttt{variable1 $\sim$ variable2}) GLM to quantify phylogenetic signal in trait
-    \item It is tricky to select the best correlation structure -- AIC can help with selections
+    \item It is tricky to select the best correlation structure -- AIC can help with selections (\texttt{AIC(pgls(\ldots))})
   \end{itemize}
   \begin{spluscode}
     # Examples of usage of GLS for testing of phylogenetic signal
