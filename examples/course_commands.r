@@ -621,7 +621,7 @@ plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3, main="UPGMA tree
 nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
-# Populations FIXME update for newest ape
+# Populations TODO update for newest ape
 # hauss.nj.pop <- nj(hauss.dist.pop)
 # # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
 # source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
