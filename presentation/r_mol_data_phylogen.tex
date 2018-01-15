@@ -3266,7 +3266,7 @@ Source data (two files -- AFLP data with individual names and populations)
       c(lat=41, lon=21), size=c(640,
       640), destfile="gmap.png",
       zoom=8, markers=hauss.coord,
-      maptype="terrain") # Plot saved map:
+      maptype="terrain") # Plot map:
     PlotOnStaticMap(MyMap=hauss.gmap)
   \end{spluscode}
   \begin{center}
@@ -3307,7 +3307,7 @@ Source data (two files -- AFLP data with individual names and populations)
     # will not work correctly
   \end{spluscode}
   \begin{center}
-%    \includegraphics[height=6.5cm]{gmap.png} % FIXME Finish GMap (add file)
+   \includegraphics[height=4cm]{gmap.jpg}
   \end{center}
 \end{multicols}
 \end{frame}
@@ -3400,7 +3400,7 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}{Plotting on SHP files IV and maps from mapproj}
-  \includegraphics[width=\textwidth]{mapy.png} % FIXME Newer map imgae
+  \includegraphics[width=\textwidth]{mapy.png}
 \end{frame}
 
 \section{Structure}
@@ -4761,6 +4761,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \texttt{ace()} can handle continuous as well as discrete data
   \end{itemize}
   \begin{spluscode}
+    library(ape)
     # See ?ace for possible settings and estimations
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
       type="continuous", method="REML",
@@ -4778,55 +4779,102 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}{Ancestral state reconstructions of primates body weights}
+  \begin{itemize}
+    \item ACE returns long numbers --- truncate them by e.g. \texttt{round(x=\ldots, digits=3)} (\texttt{x} is vector with ACE values)
+  \end{itemize}
   \begin{center}
-    \includegraphics[height=6.5cm]{ace.png}
+    \includegraphics[height=6cm]{ace.png}
   \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Another possibilities (package phytools)}
+  \begin{multicols}{2}
   \begin{spluscode}
-    plot.phylo(primates.tree, lwd=2, cex=2)
-    # ML estimation of a continuous trait, can compute confidence interval
-    nodelabels(fastAnc(tree=primates.tree, x=primates.body))
-    # ACE for Brownian evolution with directional trend
-    nodelabels(anc.trend(tree=primates.tree, x=primates.body,
-      maxit=1000)$ace)
-    # ACE for Brownian evolution using likelihood
-    nodelabels(round(anc.ML(tree=primates.tree, x=primates.body,
-      maxit=1000, model="BM")$ace))
-    # Bayesian ancestral character estimation (next slide)
+    # More possibilities
+    plot.phylo(primates.tree, lwd=2,
+      cex=2)
+    # ML estimation of a continuous
+    # trait, can compute confidence
+    # interval (see further)
+    nodelabels(fastAnc(tree=
+      primates.tree, x=primates.body))
+    # ACE for Brownian evolution with
+    # directional trend
+    plot.phylo(primates.tree, lwd=2,
+      cex=2)
+    nodelabels(anc.trend(tree=
+      primates.tree, x=primates.body,
+      maxit=100000)$ace)
+    # ACE for Brownian evolution using
+    # likelihood
+    plot.phylo(primates.tree, lwd=2,
+      cex=2)
+  \end{spluscode}
+  \columnbreak
+  \begin{spluscode}
+    nodelabels(round(anc.ML(tree=
+      primates.tree, x=primates.body,
+      maxit=100000, model="BM")$ace,
+      digits=2), cex=1.5)
+  \end{spluscode}
+  \vfil
+  \begin{center}
+    \includegraphics[height=5cm]{ancml.png}
+  \end{center}
+  \vfill
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Bayesian ancestral character estimation I}
+  \begin{spluscode}
     primates.body.ace.bayes <- anc.Bayes(tree=primates.tree,
-      x=primates.body, ngen=1000) # Use more MCMC generations
+      x=primates.body, ngen=100000) # Use more MCMC generations
     primates.body.ace.bayes
-    nodelabels(primates.body.ace.bayes[11,3:6]) # See next slide
-    # ACE returns long numbers - truncate them by e.g.
-    round(x=..., digits=3) # "x" is vector with ACE values
-    # Another possibility for ancestral character reconstruction
-    ?phangorn::ancestral.pml
+    # Get end of ancestral states from Bayesian posterior distribution
+    # (it should converge to certain values)
+    tail(primates.body.ace.bayes[["mcmc"]])
+    primates.body.ace.bayes[["mcmc"]][1001,3:6]
+    # Get means of ancestral states from Bayesian posterior distribution
+    colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow
+      (primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree
+      $Nnode+length(primates.tree$tip.label))])
+    # Plot the likelihood from posterior distribution (it should converge
+    # to certain values)
+    plot(primates.body.ace.bayes)
+    # Plot the tree and reconstructed ancestral states
+    plot.phylo(primates.tree, lwd=2, cex=2)
+    nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6],
+      digits=3), cex=1.5)
+    ?phangorn::ancestral.pml # Another possibility
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Bayesian ancestral character estimation}
+\begin{frame}[fragile]{Bayesian ancestral character estimation II}
   \begin{spluscode}
-    primates.body.ace.bayes # Print the output object and check it
-           gen     sig2       '6        7        8        9'    logLik
-     [1,]    0 1.391013 2.288170 2.288170 2.288170 2.288170 -13.238593
-     [2,]  100 1.394484 1.742455 2.248855 2.648808 3.105533  -7.552295
-     [3,]  200 1.280646 1.501700 2.514334 2.524295 3.251273  -7.565108
-     [4,]  300 1.230536 1.433547 2.242559 2.593056 2.725938 -10.204376
-     [5,]  400 1.414644 1.648370 2.178676 2.573255 3.381587  -6.949438
-     [6,]  500 2.069528 2.205779 2.111277 2.966358 3.361720  -8.461222
-     [7,]  600 2.314460 2.361329 3.006070 2.995382 3.885636  -8.059215
-     [8,]  700 2.808398 3.119423 3.621859 3.504098 3.736082  -9.159853
-     [9,]  800 3.101082 2.281787 3.497516 2.526587 3.146811 -11.130158
-    [10,]  900 3.110501 2.971506 2.649267 2.913260 4.132872  -9.346940
-    [11,] 1000 2.361981'1.819626 2.674728 2.814608 3.412479' -7.964549
-    # We need node labels (nodes are numbered - here columns "6",
-    # "7", "8" and "9") from the last Bayes generation (here line 11)
-    primates.body.ace.bayes[11,3:6] # Use it for nodelabels()
+    primates.body.ace.bayes # See the values
            6        7        8        9
-    1.819626 2.674728 2.814608 3.412479
+    2.418557 2.569484 2.844268 3.584153
+    tail(primates.body.ace.bayes[["mcmc"]]) # See end of the table
+            gen     sig2        6        7        8        9     logLik
+    996   99500 2.328336 2.999055 2.875331 3.492034 4.220528  -9.178014
+    997   99600 2.998972 3.796833 2.938607 3.622099 3.690610 -10.166447
+    998   99700 2.677339 3.888228 3.200297 2.935587 3.585092  -9.467951
+    999   99800 1.960194 4.129754 3.196746 3.310278 3.425686  -9.780220
+    1000  99900 1.636984 3.556224 2.701105 2.720756 2.965226  -9.770242
+    1001 100000 1.588710'2.641937 3.279439 3.093420 3.670807' -7.538937
+    primates.body.ace.bayes[["mcmc"]][1001,3:6] # See end of the table
+                6        7       8        9
+    1001 2.641937 3.279439 3.09342 3.670807
+    colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.
+      bayes[["mcmc"]]),as.character(1:primates.tree$Nnode+length
+      (primates.tree$tip.label))]) # Get means of ancestral states
+           6        7        8        9
+    2.418557 2.569484 2.844268 3.584153
   \end{spluscode}
+\end{frame}
+
+\begin{frame}{Bayesian ancestral character estimation III}{Likelihood of Bayesian posterior probability and the tree with reconstructions}
+  \includegraphics[width=\textwidth]{ancbayes.png}
 \end{frame}
 
 \begin{frame}[fragile]{Continuous map}
@@ -4865,7 +4913,7 @@ Source data (two files -- AFLP data with individual names and populations)
       (cbind(primates.body, primates.longevity))), treetype="cladogram",
       symbol="circles", scale=FALSE, ratio.tree=0.5)
     table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data),
-      treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+      treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
   \end{spluscode}
   \begin{center}
     \includegraphics[height=4.5cm]{phylotable.png}
@@ -5516,3 +5564,4 @@ Source data (two files -- AFLP data with individual names and populations)
 % Rsamtools
 % https://cran.r-project.org/web/packages/pcadapt/
 % https://github.com/StevisonLab/genotypeR/ https://cran.r-project.org/web/packages/genotypeR/
+% http://www.phytools.org/eqg2015/asr.html

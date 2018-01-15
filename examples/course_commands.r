@@ -1685,6 +1685,7 @@ plot(primates.ppca)
 ## Ancestral state reconstruction
 
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
+library(ape)
 # See ?ace for possible settings
 primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=primates.tree))
 # See result - reconstructions are in $ace - to be plotted on nodes - 1st column are node numbers
@@ -1694,24 +1695,34 @@ primates.body.ace
 plot(primates.tree, lwd=2, cex=2)
 tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
 nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
+# ACE returns long numbers - truncate them by e.g. 
+round(x=..., digits=3) # "x" is vector with ACE values
 
+library(phytools)
 # More possibilities
 plot.phylo(primates.tree, lwd=2, cex=2)
-# ML estimation of a continuous trait, can compute confidence interval
+# ML estimation of a continuous trait, can compute confidence interval (used by some functions, see further)
 nodelabels(fastAnc(tree=primates.tree, x=primates.body))
 # ACE for Brownian evolution with directional trend
 plot.phylo(primates.tree, lwd=2, cex=2)
-nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=1000)$ace)
+nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=100000)$ace)
 # ACE for Brownian evolution using likelihood
 plot.phylo(primates.tree, lwd=2, cex=2)
-nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=1000, model="BM")$ace))
-# Bayesian ancestral character estimation (next slide)
-plot.phylo(primates.tree, lwd=2, cex=2)
-primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000) # Use more MCMC generations
+nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=100000, model="BM")$ace, digits=2), cex=1.5)
+
+# Bayesian ancestral character estimation
+primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=100000) # Use more MCMC generations
 primates.body.ace.bayes
-nodelabels(primates.body.ace.bayes[11,3:6])
-# ACE returns long numbers - truncate them by e.g.
-# round(x=..., digits=3) # "x" is vector with ACE values
+# Get end of ancestral states from Bayesian posterior distribution (it should converge to certain values)
+tail(primates.body.ace.bayes[["mcmc"]])
+primates.body.ace.bayes[["mcmc"]][1001,3:6]
+# Get means of ancestral states from Bayesian posterior distribution
+colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree$Nnode+length(primates.tree$tip.label))])
+# Plot the ancestral states from posterior distribution (it should converge to certain values)
+plot(primates.body.ace.bayes)
+# Plot the tree and reconstructed ancestral states
+plot.phylo(primates.tree, lwd=2, cex=2)
+nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
 # Another possibility for ancestral character reconstruction
 ?phangorn::ancestral.pml
 
@@ -1727,14 +1738,14 @@ plot(primates.contmap)
 
 library(adephylo)
 table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
 phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
 fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
 # 2 characters on 2 axis
-phylomorphospace(tree= primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
+phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
 # 3D (3rd character is fake here)
 # 3 characters it a rotating cube
-phylomorphospace3d(tree= primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body- primates.longevity)), label=TRUE)
+phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body-primates.longevity)), label=TRUE)
 # 2 characters on 2 axis
 fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
 # See manuals for more settings
