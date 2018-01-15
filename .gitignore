@@ -38,6 +38,7 @@ presentation/*.nlo
 *.bak
 *.backup
 examples/geneland/*
+examples/.rkward_autosave
 examples/structure/results/*
 examples/structure/structure_sum/*
 examples/structure/extraparams

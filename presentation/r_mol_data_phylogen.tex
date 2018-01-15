@@ -5119,18 +5119,18 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{spluscode}
     # In every step modify value of variable "X" (add 1 to previous value)
     X <- 0 # Set initial value
-    for (i in 10:1) {
+    for (i in 1:10) {
       # Any commands can be here...
       print("Loop turn") # Some message for user
       print(i) # Print number of turn - note it is decreasing
       X <- X+i # Rise value of "X" by current value of "i" (previous line)
       print(paste("Variable value:", X)) # Print current value of "X"
       }
+    for (i in 10:5) { print(i) } # Can be descending...
     # Work on each item of a list object
     # Print length of each sequence in nothofagus.sequences
     for (L in 1:length(nothofagus.sequences)) {
-      print(length(nothofagus.sequences[[L]]))
-      }
+      print(length(nothofagus.sequences[[L]])) }
     # While loop - it is done while the condition is valid
     # While value of "Q" is < 5 (starting from 0), print it and add 1
     Q <- 0
@@ -5162,6 +5162,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{If-else branching II}
   \begin{spluscode}
+    # Plot from example from previous slide
     plot(XX, YY) # See the result
     # Or (different possibility to get very same result)
     # Note "XX" is reused from the previous slide

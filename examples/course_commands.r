@@ -1788,9 +1788,9 @@ dev_mode(on=FALSE)
 
 ## Functions
 MyFunction <- function (x, y) {
-  # Any commands can be here...
-  x + y
-  }
+	# Any commands can be here...
+	x + y
+	}
 
 # Use as usually:
 MyFunction(5, 8)
@@ -1808,19 +1808,20 @@ for (i in 1:5) { print(i) }
 
 # In every step modify value of variable "X" (add 1 to previous value)
 X <- 0 # Set initial value
-for (i in 10:1) {
-  # Any commands can be here...
-  print("Loop turn") # Some message for user
-  print(i) # Print number of turn - note it is decreasing
-  X <- X+i # Rise value of "X" by current value of "i" (see previous line)
-  print(paste("Variable value:", X)) # Print current value of "X"
-  }
+for (i in 1:10) {
+	# Any commands can be here...
+	print("Loop turn") # Some message for user
+	print(i) # Print number of turn - note it is decreasing
+	X <- X+i # Rise value of "X" by current value of "i" (see previous line)
+	print(paste("Variable value:", X)) # Print current value of "X"
+	}
+for (i in 10:5) { print(i) } # Can be descending...
 
 # Work on each item of a list object
 # Print length of each sequence in nothofagus.sequences
 for (L in 1:length(nothofagus.sequences)) {
-  print(length(nothofagus.sequences[[L]]))
-  }
+	print(length(nothofagus.sequences[[L]]))
+	}
 
 # While loop - it is done while the condition is valid
 # While value of "Q" is < 5 (starting from 0), print it and add 1
@@ -1832,25 +1833,25 @@ XX <- seq(from=-3, to=6.5, by=0.1)
 XX
 YY <- c()
 for (II in 1:length(XX)) {
-  if(XX[II] <= 2) { # Executed for XX <= 2
-    YY[II] <- XX[II]^2
-    } else if(XX[II] > 2) { # Executed for XX > 2
-      YY[II] <- 6-XX[II]
-      }
-  }
+	if(XX[II] <= 2) { # Executed for XX <= 2
+		YY[II] <- XX[II]^2
+		} else if(XX[II] > 2) { # Executed for XX > 2
+			YY[II] <- 6-XX[II]
+			}
+	}
 YY
 plot(XX, YY) # See the result
 
 # Or (different possibility to get very same result)
 # Note "XX" is reused from the previous variant
 CC <- function(AA) {
-  if(AA <= 2) { # Executed for XX <= 2
-    BB <- AA^2
-  } else { # Executed for XX > 2
-    BB <- 6-AA
-    }
-  return(BB) # The output value
-  }
+	if(AA <= 2) { # Executed for XX <= 2
+		BB <- AA^2
+	} else { # Executed for XX > 2
+		BB <- 6-AA
+		}
+	return(BB) # The output value
+	}
 CC # Previously, "YY" contained values to plot made by the for loop, here "CC" contains function to by used by sapply() when plotting
 plot(sapply(XX, CC)) # See the result
 
