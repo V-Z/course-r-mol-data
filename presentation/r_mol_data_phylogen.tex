@@ -114,17 +114,71 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Requirements to exam (``zápočet'')}
+  \begin{enumerate}
+    \item Be present whole course.
+    \item Be active --- ask and answer questions.
+    \item Process some data. This will be very variable and individual. Everyone should be able take some data (according to her/his interest) and do several simple analysis (according to her/his interest). Students can of course use manual, internet, discuss with anyone. The aim is to repeat part the most interesting/important for the student and edit introduced commands to fit her/his needs. Students can thus bring their data (if they are not too large), download any data from the internet or I can give them some toy data.
+    \item Write at least one page (can be splited into multiple articles) on Wikipedia about any method or related topic discussed during the course. Again, this is very open, students can write about any topic they like. I prefer native language of the student (typically to make larger non-English Wikipedia).
+  \end{enumerate}
+
+\end{frame}
+
 \begin{frame}{Materials to help you\ldots}
   \begin{itemize}
     \item Download the presentation from \url{https://soubory.trapa.cz/rcourse/r_mol_data_phylogen.pdf}
     \item Follow all code we will use at \url{https://soubory.trapa.cz/rcourse/course_commands.html}
     \item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
     \begin{itemize}
-      \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
+      \item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} (next slide) -- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
       \item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (see further) and directly work with it
       \item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*.txt}}
       \item \alert{Never ever} open R script in software like MS~Word -- it destroys quotation marks and other things making script unusable
     \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Importance of good text editor}{Can your text editor\ldots ?}
+  \label{editors}
+  \begin{multicols}{2}
+    \begin{itemize}
+      \item Show syntax highlight
+      \item Show line numbers
+      \item Show space between brackets
+      \item Open any encoding and EOL
+      \item Fold source code
+      \item Show line breaks
+      \item Mark lines
+      \item Open multiple files
+      \item Advanced search and replace
+      \item Use regular expressions
+      \item Make projects, add notes
+      \item Use command line
+      \item Check spelling
+      \item Debug source code
+    \end{itemize}
+  \end{multicols}
+  \vfill
+  \vfill
+  \begin{multicols}{4}
+    \begin{itemize}
+      \item \href{https://kate-editor.org/}{Kate}
+      \item \href{https://www.kde.org/applications/utilities/kwrite/}{KWrite}
+      \item \href{http://www.vim.org/}{Vim}
+      \item \href{https://en.wikipedia.org/wiki/Emacs}{GNU Emacs}
+      \item \href{https://www.geany.org/}{Geany}
+      \item \href{https://bluefish.openoffice.nl/}{Bluefish}
+      \item \href{https://wiki.gnome.org/Apps/Gedit}{Gedit}
+      \item \href{https://notepad-plus-plus.org/}{Notepad++}
+      \item \href{https://www.sublimetext.com/}{Sublime}
+      \item \href{https://atom.io/}{Atom}
+      \item \href{https://www.nano-editor.org/}{Nano}
+      \item And \href{https://en.wikipedia.org/wiki/List_of_text_editors}{more}\ldots
+    \end{itemize}
+  \end{multicols}
+  \vfil
+  \begin{itemize}
+    \item The best option is to use text editor of selected R GUI\ldots
   \end{itemize}
 \end{frame}
 
@@ -252,6 +306,15 @@
     \item See instructions at \url{https://cran.r-project.org/bin/linux/redhat/README}
     \item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages -- only some are available in repositories) and optionally \texttt{rkward}
     \item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Important note about names of directories}
+  \begin{itemize}
+    \item \alert{There must not be any spaces or accented characters in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution)
+    \item If the user has e.g. on Windows path like \texttt{C:\textbackslash Documents and Settings\textbackslash Šíleně úpějící koníček\textbackslash R kurzíček}, change it to something like \texttt{C:\textbackslash Users\textbackslash username\textbackslash rcourse}, otherwise user can experience a lot of problems
+    \item It might be required to make a new user on the computer\ldots
+    \item Similarly on Mac OS~X and Linux, avoid directory names with spaces and accented characters
   \end{itemize}
 \end{frame}
 
@@ -398,7 +461,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Popular object classes (we are going to use) I}
+\begin{frame}{Popular object classes (we are going to use) I} % TODO add more (like vcf)
   \begin{itemize}
     \item \texttt{dist} -- distance matrices
     \item \texttt{genind} -- stores various genetic information for individuals
@@ -434,7 +497,7 @@
   There are information about slots within that classes you can access.
 \end{frame}
 
-\begin{frame}{Conversions among data types I}
+\begin{frame}{Conversions among data types I} % TODO add more (like vcf)
   \begin{tabular}{llll}
     \textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
     phylo & phylo4 & \texttt{as(x, "phylo4")} & phylobase\\
@@ -841,6 +904,52 @@
     \item Most of methods are mathematically well defined for haploids and/or diploids, higher ploidies or mixing of ploidies is not always possible
     \item Most of methods shown in the course work with more data types -- not everything is shown
     \item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology} (\href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{česky})
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection} % TODO Input/output data formats
+  \begin{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}}
+    \begin{itemize}
+      \item Compressed version of SAM (see below)
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/FASTA_format}{\textbf{FASTA}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/FASTQ_format}{\textbf{FASTQ}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Newick_format}{\textbf{NEWICK}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Variant_Call_Format}{\textbf{VCF}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/SAM_(file_format)}{\textbf{SAM}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Tab-separated_values}{\textbf{TSV}}
+    \begin{itemize}
+      \item 
+    \end{itemize}
+    \item \href{https://en.wikipedia.org/wiki/Text_file}{\textbf{TXT}}
+    \begin{itemize}
+      \item Plain text file can contain content of all above file formats (except binary BAM) --- sufix \texttt{*.txt} is not really reliable
+      \item Technically, all above plain text formats belong also to this cathegory
+    \end{itemize}
   \end{itemize}
 \end{frame}
 
@@ -1312,6 +1421,17 @@ Source data (two files -- AFLP data with individual names and populations)
     \item Genlight as well as genind allow varying ploidy level
     \item Functions working with genlight use to use parallelisation to speed up operations -- this commonly doesn't work properly on MS~Windows
   \end{itemize}
+\end{frame}
+
+\subsection{VCF}
+
+\begin{frame}[fragile]{VCF}
+  \begin{itemize}
+    \item 
+  \end{itemize}
+  \begin{spluscode}
+
+  \end{spluscode}
 \end{frame}
 
 \subsection{Export}
@@ -1898,6 +2018,28 @@ Source data (two files -- AFLP data with individual names and populations)
   \vfil
   Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for all of the cases
   \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Over 40 distances from philentropy package}
+  \begin{itemize}
+    \item There is enormous number of various distance measures\ldots
+    \item For example \href{https://en.wikipedia.org/wiki/Jaccard_index}{Jaccard index} is used to compare binary (presence/absence) data like \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP}
+  \end{itemize}
+  \begin{spluscode}
+    library(philentropy) # Load the library
+    getDistMethods() # See available distances
+    ?distance # See details of distances
+    # Calculate e.g. Jaccard index for AFLP data
+    # amara.aflp has 30 columns, see dim(amara.aflp)
+    # column 1 contains names, see head(amara.aflp)
+    amara.jac <- distance(x=amara.aflp[,2:30], method="jaccard")
+    # See result
+    class(amara.jac)
+    amara.jac
+    # Make it distance matrix
+    amara.jac <- as.dist(m=amara.jac, diag=TRUE, upper=TRUE)
+    amara.jac
+  \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Visualize pairwise genetic similarities}
@@ -4001,7 +4143,9 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Consensus tree}
 \begin{multicols}{2}
-  \includegraphics[height=6cm]{oxalis-cons.png}
+  \begin{center}
+    \includegraphics[height=5.75cm]{oxalis-cons.png}
+  \end{center}
   \begin{spluscode}
     # Root all trees
     lapply(X=oxalis.trees, FUN=root,
@@ -4025,8 +4169,9 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Species tree -- all trees must be ultrametric}
 \begin{multicols}{2}
-\includegraphics[height=6cm]{oxalis-sp.png}
-  \columnbreak
+  \begin{center}
+    \includegraphics[height=5.75cm]{oxalis-sp.png}
+  \end{center}
   \begin{spluscode}
     # Chronos scale trees
     oxalis.trees.ultra <- lapply
@@ -4051,7 +4196,9 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Parsimony super tree}
 \begin{multicols}{2}
-  \includegraphics[height=6cm]{oxalis-pars.png}
+  \begin{center}
+    \includegraphics[height=5.75cm]{oxalis-pars.png}
+  \end{center}
   \begin{spluscode}
     library(phytools)
     oxalis.tree.sp <- mrp.supertree
@@ -4080,35 +4227,19 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{frame}
 
 \begin{frame}[fragile]{Networks}
-\begin{multicols}{2}
-  \vfil
   \begin{spluscode}
     library(phangorn)
-    oxalis.tree.net <- consensusNet
-      (oxalis.trees.rooted, prob=0.25)
+    oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
+    plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D (down)
+    plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
   \end{spluscode}
-  \vfill
-  \includegraphics[height=5.5cm]{oxalis-net.png}
-  \begin{spluscode}
-    plot(x=oxalis.tree.net,
-      planar=FALSE, type="2D",
-      use.edge.length=TRUE,
-      show.tip.label=TRUE,
-      show.edge.label=TRUE,
-      show.node.label=TRUE,
-      show.nodes=TRUE,
-      edge.color="black",
-      tip.color="blue") # 2D - left
-    plot(x=oxalis.tree.net,
-      planar=FALSE, type="3D",
-      use.edge.length=TRUE,
-      show.tip.label=TRUE,
-      show.edge.label=TRUE,
-      show.node.label=TRUE,
-      show.nodes=TRUE, edge.color=
-      "black", tip.color="blue") # 3D
-  \end{spluscode}
-\end{multicols}
+  \begin{center}
+    \includegraphics[height=4cm]{oxalis-net.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Kronoviz -- see all trees on same scale}
@@ -4200,11 +4331,14 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}{Cophyloplot comparing two trees}
   \begin{multicols}{2}
-    \includegraphics[height=6cm]{cophyloplot.png}
+    \begin{center}
+      \includegraphics[height=4.25cm]{cophyloplot.png}
+    \end{center}
     \begin{itemize}
-      \item \texttt{ladderize()} pre-sorts tips in the tree -- it helps to \texttt{cophyloplot()} to create better plot
+      \item \texttt{ladderize()} pre-sorts tips in the tree -- it can help to \texttt{cophyloplot()} to reduce crossings
+      \item \texttt{cophyloplot()} has not any optimalization to plot the lines
       \item Automatic plot is usually not perfect -- there use to be unneeded crossing lines -- \texttt{rotate=TRUE} is recommended to can fix this manually by clicking to the nodes
-      \item \texttt{cophyloplot()} has similar parameters like \texttt{plot.phylo()} -- play with it and adjust in graphical editor
+      \item \texttt{cophyloplot()} has similar parameters like \texttt{plot.phylo()} -- play with it and/or adjust in graphical editor
     \end{itemize}
   \end{multicols}
 \end{frame}
@@ -4471,15 +4605,13 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Modified tree}
   \begin{center}
-    \includegraphics[width=\textwidth-0.5cm]{apiaceae_tree.png}
+    \includegraphics[width=\textwidth-2cm]{apiaceae_tree.png}
   \end{center}
-  \vfil
   \begin{spluscode}
     # Decomposition of topographical distances (right plot)
     table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart
       (x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
   \end{spluscode}
-  \vfill
 \end{frame}
 
 \begin{frame}[fragile]{Prepare toy data set (the variable)}
@@ -4808,18 +4940,17 @@ Source data (two files -- AFLP data with individual names and populations)
     # ACE for Brownian evolution using
     # likelihood
     plot.phylo(primates.tree, lwd=2,
-      cex=2)
   \end{spluscode}
   \columnbreak
   \begin{spluscode}
+      cex=2)
     nodelabels(round(anc.ML(tree=
       primates.tree, x=primates.body,
       maxit=100000, model="BM")$ace,
       digits=2), cex=1.5)
   \end{spluscode}
-  \vfil
   \begin{center}
-    \includegraphics[height=5cm]{ancml.png}
+    \includegraphics[height=4.5cm]{ancml.png}
   \end{center}
   \vfill
   \end{multicols}
@@ -5531,6 +5662,7 @@ Source data (two files -- AFLP data with individual names and populations)
 
 % TODO Missing topics
 %
+% Add installation of packages: adegraphics, philentropy, StAMPP, stringi, vcfR:
 % More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
 % coalescence based approach for creation of species tree from multiple gene trees - https://faculty.franklin.uga.edu/lliu/content/phybase
@@ -5538,10 +5670,8 @@ Source data (two files -- AFLP data with individual names and populations)
 % ML
 % Bayes trees
 % Arlequin
-% read.vcf
 % https://www.molecularecologist.com/2016/02/quick-and-dirty-tree-building-in-r/
 % https://www.molecularecologist.com/2016/03/geographical-heat-maps-in-r/
-% Jaccard index
 % https://cran.r-project.org/web/packages/MonoPhy/vignettes/MonoPhyVignette.html
 % https://www.molecularecologist.com/2017/02/phylogenetic-trees-in-r-using-ggtree/
 % https://rstudio.github.io/leaflet/

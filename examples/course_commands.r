@@ -289,7 +289,7 @@ meles.genind # See it
 # Test is distribution of SNP is random (1000 permutations)
 snpposi.test(x=as.matrix(meles.dna))
 
-## Check sequences
+# Check sequences
 # Nucleotide diversity
 pegas::nuc.div(x=meles.dna)
 # Base frequencies
@@ -305,6 +305,37 @@ image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Direct function to display the sequences
 image.DNAbin(x=usflu.dna)
 image.DNAbin(x=as.matrix(meles.dna))
+
+# TODO VCF
+# Required library
+library(vcfR)
+# Read input file
+vcf <- read.vcfR() # It returns object of class vcfR-class
+?read.vcfR # See more import options
+# Another option from package pegas returns list of objects loci and data.frame
+?pegas::read.vcf
+# See it
+head(vcf)
+vcf@fix[1:10,1:5]
+summary(t(as.matrix(rad.genlight)))
+# Convert VCF into various objects
+vcfR2genind()
+vcfR2genlight()
+vcfR2DNAbin()
+vcfR2loci()
+# Explore VCF
+# Extract data about depth of coverage
+vcf.dp <- extract.gt(vcf, element='DP', as.numeric=TRUE)
+boxplot(vcf.dp, las=3, col=c("#C0C0C0", "#808080"), ylab="Read Depth (DP)", las=2, cex=0.7)
+abline(h=4, col="red")
+# StAMPP and distance-based analyses
+library(StAMPP)
+# Calculate Nei's distances between individuals/pops
+rad.d.ind <- stamppNeisD(rad.genlight, pop=FALSE) # Nei's 1972 distance between individuals
+stamppPhylip(rad.d.ind, file="rad.indiv_Neis_distance.phy.dst") # Export matrix for SplitsTree
+rad.d.pop <- stamppNeisD(rad.genlight, pop=TRUE) # Nei's 1972 distance between populations
+stamppPhylip(rad.d.pop, file="rad.pops_Neis_distance.phy.dst") # Export matrix for SplitsTree
+
 
 ## Exporting data
 # Convert genind into DF using genind2df()
@@ -506,6 +537,19 @@ class(usflu.distr)
 usflu.distr
 # It is possible to use just basic dist function on whole genlight object (might require a lot of RAM)
 usflu.distg <- dist(as.matrix(usflu.genlight))
+
+# Over 40 distances from philentropy package
+library(philentropy) # Load the library
+getDistMethods() # See available distances
+?distance # See details of distances
+# Calculate e.g. Jaccard index for AFLP data
+amara.jac <- distance(x=amara.aflp[,2:30], method="jaccard") # amara.aflp has 30 columns (see dim(amara.aflp), column 1 contains names (head(amara.aflp)))
+# See result
+class(amara.jac)
+amara.jac
+# Make it distance matrix
+amara.jac <- as.dist(m=amara.jac, diag=TRUE, upper=TRUE)
+amara.jac
 
 # Visualize pairwise genetic similarities
 # table.paint() requires data frame, dist can't be directly converted to DF
