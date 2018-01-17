@@ -48,8 +48,11 @@ examples/*.RData.rkworkplace
 examples/*.fasta
 examples/*.nexus
 examples/*.nwk
+examples/*.png
 examples/*.rda
+examples/*.svg
 examples/*.txt
+examples/*.vcf*
 examples/macedonia_*
 examples/test.RData
 rcourse/macedonia.zip

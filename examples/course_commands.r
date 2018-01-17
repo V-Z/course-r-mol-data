@@ -306,36 +306,81 @@ image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 image.DNAbin(x=usflu.dna)
 image.DNAbin(x=as.matrix(meles.dna))
 
-# TODO VCF
+# VCF
 # Required library
 library(vcfR)
 # Read input file
-vcf <- read.vcfR() # It returns object of class vcfR-class
+# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf (read.vcfR does not work well with network addresses)
+arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf' from the disc
+# It returns object of class vcfR-class
 ?read.vcfR # See more import options
 # Another option from package pegas returns list of objects loci and data.frame
 ?pegas::read.vcf
-# See it
-head(vcf)
-vcf@fix[1:10,1:5]
-summary(t(as.matrix(rad.genlight)))
-# Convert VCF into various objects
-vcfR2genind()
-vcfR2genlight()
-vcfR2DNAbin()
-vcfR2loci()
-# Explore VCF
-# Extract data about depth of coverage
-vcf.dp <- extract.gt(vcf, element='DP', as.numeric=TRUE)
-boxplot(vcf.dp, las=3, col=c("#C0C0C0", "#808080"), ylab="Read Depth (DP)", las=2, cex=0.7)
-abline(h=4, col="red")
-# StAMPP and distance-based analyses
-library(StAMPP)
-# Calculate Nei's distances between individuals/pops
-rad.d.ind <- stamppNeisD(rad.genlight, pop=FALSE) # Nei's 1972 distance between individuals
-stamppPhylip(rad.d.ind, file="rad.indiv_Neis_distance.phy.dst") # Export matrix for SplitsTree
-rad.d.pop <- stamppNeisD(rad.genlight, pop=TRUE) # Nei's 1972 distance between populations
-stamppPhylip(rad.d.pop, file="rad.pops_Neis_distance.phy.dst") # Export matrix for SplitsTree
 
+# Explore VCF
+arabidopsis.vcf
+head(arabidopsis.vcf)
+arabidopsis.vcf@fix[1:10,1:5]
+# Get information about depth of coverage (DP)
+# Se description of DP slot
+strwrap(x=grep(pattern="ID=DP,", x=arabidopsis.vcf@meta, value=TRUE))
+# Extract the DP
+arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP", as.numeric=TRUE)
+# See it
+dim(arabidopsis.vcf.dp)
+head(arabidopsis.vcf.dp)
+# Boxplot of DP
+boxplot(x=arabidopsis.vcf.dp, col="#808080", ylab="Depth of coverage", las=3)
+title("DP per specimen")
+abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
+# Bar plot of mean DP
+barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+title("Mean DP per specimen")
+abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
+# Heatmap of DB (subset)
+heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100, start=0.1)) # Subset - only first 100 loci and individuals
+title("DP per specimens and loci")
+
+# Convert VCF into various objects for later processing
+# Genind
+arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
+# Check it
+arabidopsis.genind
+nInd(arabidopsis.genind)
+indNames(arabidopsis.genind)
+nLoc(arabidopsis.genind)
+locNames(arabidopsis.genind)
+# Genlight (suitable for huge data, not required now)
+arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/Mac and with large data use higher n.cores
+# Check it
+arabidopsis.genlight
+# Loci
+arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
+# Check it
+arabidopsis.loci
+print(x=arabidopsis.loci, details=TRUE)
+# DNAbin
+?vcfR2DNAbin # There are various options how to process variants in VCF
+arabidopsis.dnabin <- vcfR2DNAbin(x=arabidopsis.vcf, consensus=FALSE, extract.haps=TRUE, unphased_as_NA=FALSE)
+# Check it
+arabidopsis.dnabin
+dim(arabidopsis.dnabin)
+as.character.DNAbin(arabidopsis.dnabin[1:15,1:12])
+image.DNAbin(arabidopsis.dnabin)
+snpposi.plot.DNAbin(arabidopsis.dnabin)
+snpposi.test.DNAbin(arabidopsis.dnabin)
+
+# Remove non-biallelic loci
+# Create vector of loci to keep
+arabidopsis.genind.keep <- nAll(arabidopsis.genind) < 3
+# See the vector of loci
+arabidopsis.genind.keep
+# Keep only passing loci
+arabidopsis.genind.bial <- arabidopsis.genind[loc=arabidopsis.genind.keep]
+# See result
+arabidopsis.genind.bial
+# Filtration of missing data
+?poppr::missingno # Various options...
 
 ## Exporting data
 # Convert genind into DF using genind2df()
@@ -347,6 +392,8 @@ write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6
 seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna), file.out="meles.fasta", open="w")
 # Export DNA sequnces as NEXUS
 write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
+# Export VCF
+write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
 # Export trees (objects of class phylo)
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
@@ -403,6 +450,14 @@ library(hierfstat)
 fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
 # Nei's pairwise Fst between all pairs of populations. Difference in res.type="dist"/"matrix" is only in format of output
 pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
+# For mixed ploidy data sets
+arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, percent=95, nclusters=1)
+# For large data use higher nclusters to parallelize calculations
+?StAMPP::stamppFst # See details
+# Matrix of Fst among populations
+arabidopsis.fst[["Fsts"]]
+# Matrix of P values
+arabidopsis.fst[["Pvalues"]]
 
 # Estimates of population theta according to Kimmel et al. 1998
 # theta.msat(hauss.loci)
@@ -538,6 +593,35 @@ usflu.distr
 # It is possible to use just basic dist function on whole genlight object (might require a lot of RAM)
 usflu.distg <- dist(as.matrix(usflu.genlight))
 
+# Distances in mixed-ploidy data sets
+library(StAMPP) # Load required library
+# stamppNeisD requires population factor in genlight (here, population code consists of first three letters of individual's name)
+indNames(arabidopsis.genlight)
+pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
+pop(arabidopsis.genlight) # Check it
+popNames(arabidopsis.genlight)
+# Nei's 1972 distance between individuals (use pop=TRUE to calculate among populations)
+arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
+# Check it
+head(arabidopsis.dist)
+dim(arabidopsis.dist)
+class(arabidopsis.dist)
+# The same on population level
+arabidopsis.dist.pop <- stamppNeisD(geno=arabidopsis.genlight, pop=TRUE)
+# Check it
+head(arabidopsis.dist.pop)
+dim(arabidopsis.dist.pop)
+class(arabidopsis.dist.pop)
+# Export the distance matrix as Phylip format for usage in external software (e.g. SplitsTree)
+stamppPhylip(distance.mat=arabidopsis.dist, file="arabidopsis_dist.txt")
+# Genomic relationship matrix
+?stamppGmatrix # Method details
+arabidopsis.genomat <- stamppGmatrix(geno=arabidopsis.genlight)
+# Check it
+head(arabidopsis.genomat)
+dim(arabidopsis.genomat)
+class(arabidopsis.genomat)
+
 # Over 40 distances from philentropy package
 library(philentropy) # Load the library
 getDistMethods() # See available distances
@@ -588,7 +672,10 @@ abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), co
 hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
 hauss.amova
-# Another possibility is poppr.amova - for more complicated hierarchy - see ?poppr.amova
+# For more complicated hierarchy
+?poppr::poppr.amova
+# For mixed-ploidy dat sets
+?StAMPP::stamppAmova
 
 ## MSN based on Bruvo's distance
 bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
@@ -1438,8 +1525,36 @@ plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
 axisPhylo(side=1)
 ?phangorn::superTree # Similar function
 
-# FIXME Density tree
-densiTree(x=oxalis.trees.ultra, type="cladogram", alpha=0.5, consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black", "green", "blue", "red"), cex=1.5)
+# Density tree
+# Prepare list of trees to show
+hauss.nj.trees <- list(hauss.nj, hauss.nj.bruvo, hauss.nj.rooted)
+hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=compute.brlen)
+hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=chronos)
+class(hauss.nj.trees) <- "multiPhylo"
+# The trees should be (otherwise plotting works, but may be more ugly)...
+is.rooted.multiPhylo(hauss.nj.trees) # rooted,
+is.ultrametric.multiPhylo(hauss.nj.trees) # ultrametric and
+is.binary.multiPhylo(hauss.nj.trees) # binary bifurcating.
+# Plotting has various options, play with it
+phangorn::densiTree(x=hauss.nj.trees, direction="downwards", scaleX=TRUE, col=rainbow(3), width=5, cex=1.5)
+densiTree(x=hauss.nj.trees, direction="upwards", scaleX=TRUE, width=5)
+densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
+# Compare this option with similar on following slide
+?phangorn::densiTree
+?phytools::densityTree
+# Another version for comparing several trees
+phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+
+# # TODO STAR species tree
+# install.packages("http://faculty.franklin.uga.edu/lliu/sites/faculty.franklin.uga.edu.lliu/files/phybase_1.5.tar.gz", repos=NULL) # See https://faculty.franklin.uga.edu/lliu/content/phybase
+# library(phybase)
+# is.binary.multiPhylo(phy=oxalis.trees.ultra)
+# oxalis.spstru <- matrix(data=0, ncol=length(oxalis.trees.ultra), nrow=length(oxalis.trees.ultra))
+# diag(oxalis.spstru) <- 1
+# oxalis.star <- star.sptree(trees=oxalis.trees.ultra, speciesname=oxalis.trees.ultra[[1]]$tip.label, taxaname=oxalis.trees.ultra[[1]]$tip.label, species.structure=oxalis.spstru, outgroup="O._fibrosa_S159", method="nj")
+# oxalis.steac <- steac.sptree(trees=oxalis.trees.ultra, speciesname=oxalis.trees.ultra[[1]]$tip.label, taxaname=oxalis.trees.ultra[[1]]$tip.label, species.structure=oxalis.spstru, outgroup="O._fibrosa_S159", method="nj")
 
 # Networks
 library(phangorn)
@@ -1479,6 +1594,10 @@ tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]), sort(oxalis.tr
 cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean),  assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
 title("Comparing the trees\nParsimony super tree\tSpecies tree")
 legend("topleft", legend="Red lines\nconnect tips", text.col="red", cex=0.75, bty="n", x.intersp=-2, y.intersp=-2)
+# Alternative implementation
+oxalis.cophylo <- cophylo(tr1=oxalis.tree.sp, tr2=oxalis.tree.sp.mean, assoc=(cbind(sort(oxalis.tree.sp$tip.label), sort(oxalis.tree.sp$tip.label))), rotate=TRUE)
+plot.cophylo(x=oxalis.cophylo, lwd=2, link.type="curved")
+title("\nComparisson of species tree (left) and parsimony supertree (right)")
 
 ## More about plotting the trees
 ?plot.phylo # check it for various possibilities what to influence

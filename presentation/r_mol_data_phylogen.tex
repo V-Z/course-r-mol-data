@@ -653,7 +653,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Install needed packages} % FIXME update package list
+\begin{frame}[fragile]{Install needed packages} % FIXME update package list: add adegraphics, philentropy, StAMPP, stringi, vcfR
   \begin{spluscode}
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
@@ -1425,12 +1425,137 @@ Source data (two files -- AFLP data with individual names and populations)
 
 \subsection{VCF}
 
-\begin{frame}[fragile]{VCF}
+\begin{frame}[fragile]{Reading VCF}
   \begin{itemize}
-    \item 
+    \item Download input file from \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf} (\texttt{read.vcfR} does not work well with network addresses)
+    \item Non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} from central and northern Europe
   \end{itemize}
   \begin{spluscode}
+    library(vcfR) # Required library
+    # Pick up downloaded file 'arabidopsis.vcf' from the disc
+    arabidopsis.vcf <- read.vcfR(file=file.choose())
+    # It returns object of class vcfR-class
+    ?read.vcfR # See more import options
+    # Another option returns list of objects loci and data.frame
+    ?pegas::read.vcf
+  \end{spluscode}
+\end{frame}
 
+\begin{frame}[fragile]{Checking VCF I}
+  \begin{spluscode}
+    arabidopsis.vcf
+    head(arabidopsis.vcf)
+    arabidopsis.vcf@fix[1:10,1:5]
+    # Get information about depth of coverage (DP)
+    # Se description of DP slot
+    strwrap(x=grep(pattern="ID=DP,", x=arabidopsis.vcf@meta, value=TRUE))
+    # Extract the DP
+    arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP",
+      as.numeric=TRUE)
+    # See it
+    dim(arabidopsis.vcf.dp)
+    head(arabidopsis.vcf.dp)
+    # Boxplot of DP (next slide)
+    boxplot(x=arabidopsis.vcf.dp, col="#808080", ylab="Depth of coverage",
+      las=3)
+    title("DP per specimen")
+    abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{DP per specimen}
+  \includegraphics[width=\textwidth]{vcf_dp.png}
+\end{frame}
+
+\begin{frame}[fragile]{Checking VCF II}{Bar plot of mean DP}
+  \begin{spluscode}
+    barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE),
+      las=3)
+    title("Mean DP per specimen")
+    abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[width=\textwidth-2cm]{vcf_dp_mean.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Checking VCF III}{Heatmap of DB}
+  \begin{spluscode}
+    heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100,
+      start=0.1)) # Subset - only first 100 loci and individuals
+    title("DP per specimens and loci")
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[width=\textwidth-1.25cm]{vcf_dp_heatmap.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Convert VCF into genind, genlight and loci}
+  \begin{spluscode}
+    # Genind
+    arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
+    # Check it
+    arabidopsis.genind
+    nInd(arabidopsis.genind)
+    indNames(arabidopsis.genind)
+    nLoc(arabidopsis.genind)
+    locNames(arabidopsis.genind)
+    # Genlight (suitable for huge data, not required now)
+    # On Linux/Mac and with large data use higher n.cores
+    arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1)
+    # Check it
+    arabidopsis.genlight
+    # Loci
+    arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
+    # Check it
+    arabidopsis.loci
+    print(x=arabidopsis.loci, details=TRUE)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Convert VCF into DNAbin}
+  \begin{multicols}{2}
+  \begin{spluscode}
+    # There are various options how
+    # to process variants in VCF
+    ?vcfR2DNAbin
+    arabidopsis.dnabin <- vcfR2DNAbin
+      (x=arabidopsis.vcf, consensus=
+      FALSE, extract.haps=TRUE,
+      unphased_as_NA=FALSE)
+    # Check it
+    arabidopsis.dnabin
+    dim(arabidopsis.dnabin)
+    as.character.DNAbin
+      (arabidopsis.dnabin[1:15,1:12])
+    image.DNAbin(arabidopsis.dnabin)
+    snpposi.plot.DNAbin
+      (arabidopsis.dnabin)
+    snpposi.test.DNAbin
+      (arabidopsis.dnabin)
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=7cm]{vcf_dna.png}
+  \end{center}
+  \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Remove non-biallelic loci}
+  \begin{itemize}
+    \item This is commonly done with SNPs as many downstream analyses are well defined only for biallelic loci
+  \end{itemize}
+  \begin{spluscode}
+    # Create vector of loci to keep
+    arabidopsis.genind.keep <- nAll(arabidopsis.genind) < 3
+    # See the vector of loci
+    arabidopsis.genind.keep
+    # Keep only passing loci
+    arabidopsis.genind.bial <-
+      arabidopsis.genind[loc=arabidopsis.genind.keep]
+    # See result
+    arabidopsis.genind.bial
+    # Filtration of missing data
+    ?poppr::missingno # Various options...
   \end{spluscode}
 \end{frame}
 
@@ -1451,11 +1576,11 @@ Source data (two files -- AFLP data with individual names and populations)
       file.out="meles.fasta", open="w")
     # Export DNA sequnces as NEXUS
     write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
-    # Export trees (objects of class phylo)
-    # Writes tree(s) in NEWICK format
-    write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk")
-    # Writes tree(s) in NEXUS format
-    write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus")
+    # Export VCF
+    write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
+    # Export tree(s) (objects of class phylo)
+    write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # In NEWICK
+    write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # In NEXUS
   \end{spluscode}
 \end{frame}
 
@@ -1768,6 +1893,24 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
+\begin{frame}[fragile]{F-statistics for mixed ploidy data}
+  \begin{spluscode}
+    arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight,
+      nboots=100, percent=95, nclusters=1)
+    # For large data use higher nclusters to parallelize calculations
+    # See method details
+    ?StAMPP::stamppFst
+    # Matrix of Fst among populations
+    arabidopsis.fst[["Fsts"]]
+    # Matrix of P values
+    arabidopsis.fst[["Pvalues"]]
+  \end{spluscode}
+  \begin{itemize}
+    \item Methods from StAMPP package (the same is the case for any method working somehow with distances) are sensitive to missing data\ldots
+    \item Populations must be already defined in the genlight object
+  \end{itemize}
+\end{frame}
+
 % TODO population theta
 %     # Estimates of population theta according to Kimmel et al. 1998
 %     theta.msat(hauss.loci)
@@ -2016,8 +2159,54 @@ Source data (two files -- AFLP data with individual names and populations)
     usflu.distg <- dist(as.matrix(usflu.genlight))
   \end{spluscode}
   \vfil
-  Rationale of this approach is to save resources when dividing whole data set into smaller blocks -- useful for huge data, not for all of the cases
+  Rationale of this approach is to save resources when dividing whole data set into smaller blocks --- useful for huge data, not for all of the cases
   \vfill
+\end{frame}
+
+\begin{frame}[fragile]{Distances in mixed-ploidy data sets I}
+  \begin{spluscode}
+    library(StAMPP) # Load required library
+    # stamppNeisD requires population factor in genlight (here, population
+    # code consists of first three letters of individual's name)
+    indNames(arabidopsis.genlight)
+    pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
+      start=1, stop=3)
+    # Check it
+    pop(arabidopsis.genlight)
+    popNames(arabidopsis.genlight)
+    # Nei's 1972 distance between individuals
+    # (use pop=TRUE to calculate among populations)
+    arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
+    # Check it
+    head(arabidopsis.dist)
+    dim(arabidopsis.dist)
+    class(arabidopsis.dist)
+    # The same on population level
+    arabidopsis.dist.pop <- stamppNeisD(geno=arabidopsis.genlight, pop=TRUE)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Distances in mixed-ploidy data sets II}
+  \begin{spluscode}
+    # Check it (from previous slide)
+    head(arabidopsis.dist.pop)
+    dim(arabidopsis.dist.pop)
+    class(arabidopsis.dist.pop)
+    # Export the distance matrix as Phylip format for usage in
+    # external software (e.g. SplitsTree)
+    stamppPhylip(distance.mat=arabidopsis.dist, file="arabidopsis_dist.txt")
+    # Genomic relationship matrix
+    ?stamppGmatrix # Method details
+    arabidopsis.genomat <- stamppGmatrix(geno=arabidopsis.genlight)
+    # Check it
+    head(arabidopsis.genomat)
+    dim(arabidopsis.genomat)
+    class(arabidopsis.genomat)
+  \end{spluscode}
+  \begin{itemize}
+    \item Is there are plenty of missing data and/or the distance is far from being Euclidean, it will not work very well\ldots
+    \item Always check created distances
+  \end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Over 40 distances from philentropy package}
@@ -2167,7 +2356,8 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{itemize}
     \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
 %     \item See \texttt{MSD} column for how much of the variance is on which level -- percentage can be calculated as percentage of each level from \texttt{Total}
-    \item Another possibility is \texttt{poppr.amova} -- for more complicated hierarchy, see \texttt{?poppr.amova}
+    \item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
+    \item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
   \end{itemize}
 \end{frame}
 
@@ -4215,16 +4405,54 @@ Source data (two files -- AFLP data with individual names and populations)
 \end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{Density tree} % FIXME Density doesn't work
+\begin{frame}[fragile]{Density tree I}
   \begin{spluscode}
-    densiTree(x=oxalis.trees.ultra, type="cladogram", alpha=0.5,
-      consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black",
-      "green", "blue", "red"), cex=1.5)
+    # Prepare list of trees to show
+    hauss.nj.trees <- list(hauss.nj, hauss.nj.bruvo, hauss.nj.rooted)
+    hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=compute.brlen)
+    hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=chronos)
+    class(hauss.nj.trees) <- "multiPhylo"
+    # The trees should be (otherwise plotting works, but may be ugly)...
+    is.rooted.multiPhylo(hauss.nj.trees) # rooted,
+    is.ultrametric.multiPhylo(hauss.nj.trees) # ultrametric and
+    is.binary.multiPhylo(hauss.nj.trees) # binary bifurcating.
+    # Plotting has various options, play with it
+    phangorn::densiTree(x=hauss.nj.trees, direction="downwards",
+      scaleX=TRUE, col=rainbow(3), width=5, cex=1.5) # See next slide
+    densiTree(x=hauss.nj.trees, direction="upwards", scaleX=TRUE, width=5)
+    densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
+    # Compare this option with similar on following slide
+    ?phangorn::densiTree
+    ?phytools::densityTree
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Density tree II}
+  \includegraphics[width=\textwidth]{oxalis_density_phangorn.png}
+\end{frame}
+
+\begin{frame}[fragile]{Density tree III}
+  \begin{spluscode}
+    phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE,
+      use.gradient=TRUE, alpha=0.5, lwd=4) # Probably to much noise... :-?
+    phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE,
+      use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
+    phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)],
+      fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
   \end{spluscode}
   \begin{center}
-    \includegraphics[width=\textwidth-1.5cm]{oxalis_density_good.png}
+    \includegraphics[width=\textwidth-2.75cm]{oxalis_density_phytools.png}
   \end{center}
 \end{frame}
+
+% \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
+%   \begin{itemize}
+%     \item Package \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
+%   \end{itemize}
+%   \begin{spluscode}
+% 
+%   \end{spluscode}
+% \end{frame}
 
 \begin{frame}[fragile]{Networks}
   \begin{spluscode}
@@ -4341,6 +4569,22 @@ Source data (two files -- AFLP data with individual names and populations)
       \item \texttt{cophyloplot()} has similar parameters like \texttt{plot.phylo()} -- play with it and/or adjust in graphical editor
     \end{itemize}
   \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Alternative implementation --- phytools::cophylo}
+  \begin{spluscode}
+    ?cophylo # See options
+    # Prepare the object for plotting
+    oxalis.cophylo <- cophylo(tr1=oxalis.tree.sp, tr2=oxalis.tree.sp.mean,
+      assoc=(cbind(sort(oxalis.tree.sp$tip.label),
+      sort(oxalis.tree.sp$tip.label))), rotate=TRUE)
+    plot.cophylo(x=oxalis.cophylo, lwd=2, link.type="curved") # Plot it
+    title("\nComparisson of species tree (left) and parsimony supertree
+      (right)")
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=4cm]{cophylo.png}
+  \end{center}
 \end{frame}
 
 \subsection{Notes about plotting the trees}
@@ -5479,7 +5723,7 @@ Source data (two files -- AFLP data with individual names and populations)
   \begin{itemize}
     \item \href{https://CRAN.R-project.org/package=adegenet}{adegenet}: exploration of genetic and genomic data
     \item \href{https://CRAN.R-project.org/package=adephylo}{adephylo}: multivariate tools to analyze comparative data
-    \item \href{https://CRAN.R-project.org/package=ade4}{ade4}: multivariate data analysis and graphical display (enhancements: \href{https://CRAN.R-project.org/package=ade4TkGUI}{ade4TkGUI}, \href{https://CRAN.R-project.org/package=adegraphics}{adegraphics})
+    \item \href{https://CRAN.R-project.org/package=ade4}{ade4}: multivariate data analysis and graphical display (enhancements: \href{https://CRAN.R-project.org/package=ade4TkGUI}{ade4TkGUI} --- GUI, \href{https://CRAN.R-project.org/package=adegraphics}{adegraphics} --- extra graphical functions, commonly used internally)
     \item \href{https://CRAN.R-project.org/package=akima}{akima}: cubic spline interpolation methods for irregular and regular gridded data
     \item \href{https://CRAN.R-project.org/package=ape}{ape}: Analyses of Phylogenetics and Evolution
     \item \href{https://www.bioconductor.org/packages/release/bioc/html/Biostrings.html}{Biostrings}: string matching algorithms, and other utilities, for fast manipulation of large biological sequences or sets of sequences
@@ -5507,6 +5751,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \href{https://CRAN.R-project.org/package=pegas}{pegas}: population and evolutionary genetics analysis
     \item \href{https://CRAN.R-project.org/package=permute}{permute}: restricted permutation designs
     \item \href{https://CRAN.R-project.org/package=phangorn}{phangorn}: phylogenetic analysis
+    \item \href{https://CRAN.R-project.org/package=philentropy}{philentropy}: over 40 optimized distance and similarity measures for comparing probability functions
     \item \href{https://CRAN.R-project.org/package=phylobase}{phylobase}: phylogenetic structures and comparative data
     \item \href{http://www.christophheibl.de/Rpackages.html}{phyloch}: interfaces and graphic tools for phylogenetic data
     \item \href{https://CRAN.R-project.org/package=phytools}{phytools}: phylogenetic analysis, comparative biology
@@ -5521,7 +5766,10 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \href{https://CRAN.R-project.org/package=sos}{sos}: searches contributed R packages
     \item \href{https://CRAN.R-project.org/package=sp}{sp}: classes and methods for spatial data
     \item \href{https://CRAN.R-project.org/package=spdep}{spdep}: spatial dependence: weighting schemes, statistics and models
+    \item \href{https://CRAN.R-project.org/package=StAMPP}{StAMPP}: statistical analysis of mixed ploidy populations
+    \item \href{https://CRAN.R-project.org/package=stringi}{stringi} and \href{https://CRAN.R-project.org/package=stringr}{stringr}: character string processing, internally used by many packages 
     \item \href{https://CRAN.R-project.org/package=TeachingDemos}{TeachingDemos}: demonstrations for teaching and learning
+    \item \href{https://CRAN.R-project.org/package=vcfR}{vcfR}: import/export, basic checking and manipulations of VCF
     \item \href{https://CRAN.R-project.org/package=vegan}{vegan}: community ecology
     \item \href{https://www.bioconductor.org/packages/3.4/bioc/html/XVector.html}{XVector}: representation and manpulation of external sequences
   \end{itemize}
@@ -5577,6 +5825,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \href{https://CRAN.R-project.org/package=paleoTS}{paleoTS}: analyze paleontological time-series
     \item \href{https://CRAN.R-project.org/package=pastis}{pastis}: phylogenetic assembly with soft taxonomic inferences
     \item \href{https://CRAN.R-project.org/package=PBD}{PBD}: protracted birth-death model of diversification
+    \item \href{https://CRAN.R-project.org/package=pcadapt}{pcadapt}: PCA and search for loci responsible for the grouping (no support for mixing ploidy levels), uses VCF
     \item \href{https://CRAN.R-project.org/package=PCPS}{PCPS}: principal coordinates of phylogenetic structure
     \item \href{https://CRAN.R-project.org/package=phyclust}{phyclust}: phylogenetic clustering
     \item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling
@@ -5608,6 +5857,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \href{https://CRAN.R-project.org/package=treebase}{treebase}:  discovery, access and manipulation of TreeBASE phylogenies
     \item \href{https://CRAN.R-project.org/package=TreePar}{TreePar}: estimating birth and death rates based on phylogenies
     \item \href{https://CRAN.R-project.org/package=TreeSim}{TreeSim}: simulating phylogenetic trees
+    \item \href{https://bioconductor.org/packages/VariantAnnotation/}{VariantAnnotation}: annotation of genetic variants (useful to filter VCF)
   \end{itemize}
   And more\ldots~R is continuously evolving and new packages are arising\ldots
 \end{frame}
@@ -5662,10 +5912,8 @@ Source data (two files -- AFLP data with individual names and populations)
 
 % TODO Missing topics
 %
-% Add installation of packages: adegraphics, philentropy, StAMPP, stringi, vcfR:
 % More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
-% coalescence based approach for creation of species tree from multiple gene trees - https://faculty.franklin.uga.edu/lliu/content/phybase
 % external tree builders
 % ML
 % Bayes trees
@@ -5675,7 +5923,6 @@ Source data (two files -- AFLP data with individual names and populations)
 % https://cran.r-project.org/web/packages/MonoPhy/vignettes/MonoPhyVignette.html
 % https://www.molecularecologist.com/2017/02/phylogenetic-trees-in-r-using-ggtree/
 % https://rstudio.github.io/leaflet/
-% https://faculty.franklin.uga.edu/lliu/content/phybase
 % https://github.com/giby/Linarius
 % https://github.com/ramnathv/rMaps https://github.com/ramnathv/rCharts
 % https://academic.oup.com/bioinformatics/article/doi/10.1093/bioinformatics/btx657/4562328/heatmaply-an-R-package-for-creating-interactive
@@ -5683,13 +5930,9 @@ Source data (two files -- AFLP data with individual names and populations)
 % http://popgen.nescent.org/2015-05-18-Dist-SNP.html
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/
-% Removing Non-biallelic samples
-% loci_to_keep <- nAll(dat) < 3
-% trimmed_dat <- dat[loc = loci_to_keep]
 % DW index - rare alleles
 % ?phytools::plotTree.wBars
 % Rsamtools
-% https://CRAN.R-project.org/package=pcadapt
 % https://github.com/StevisonLab/genotypeR/ https://CRAN.R-project.org/package=genotypeR
 % http://www.phytools.org/eqg2015/asr.html
 % https://www.molecularecologist.com/2016/07/making-maps-in-r-volume-2-ggplots/
