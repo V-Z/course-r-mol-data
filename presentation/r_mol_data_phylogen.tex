@@ -213,6 +213,10 @@
 
 \section{R}
 
+\begin{frame}{The R}
+  \tableofcontents[part=1]
+\end{frame}
+
 \begin{frame}{About R}
   \begin{itemize}
     \item Project for Statistical Computing
@@ -4074,12 +4078,32 @@ Source data (two files -- AFLP data with individual names and populations)
   \end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Cleaning the alignment}
+\begin{frame}[fragile]{Checking the alignment}
   \begin{spluscode}
     # Shortcut for plotting alignment
     image.DNAbin(x=meles.mafft)
     # Display aligned sequences with gaps
     image.DNAbin(x=usflu.dna)
+    # Check the alignment
+    checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
+    checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE,
+      plot=TRUE, what=1:4)
+    ?checkAlignment # See details
+    # DNAbin can be techically list or matrix - some functions require list,
+    # some matrix, some can handle both - check manual and if needed, use
+    as.matrix.DNAbin()
+    as.list.DNAbin()
+    # Matrix makes sense only for alignments, list for any import
+    # (sequences do no have to have same lengths)
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{Checking the alignment}
+  \includegraphics[width=\textwidth]{checkalignment.png}
+\end{frame}
+
+\begin{frame}[fragile]{Cleaning the alignment}
+  \begin{spluscode}
     # Delete all columns containing any gap
     library(ips)
     usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
@@ -4093,7 +4117,12 @@ Source data (two files -- AFLP data with individual names and populations)
     image.DNAbin(x=usflu.dna.ng)
     lapply(X=multialign.aln.ng, FUN=image.DNAbin)
     # Delete positions in alignment containing only missing data/N
-    ?deleteEmptyCells # See help page for details
+    # (rows as well as columns)
+    ?ips::deleteEmptyCells # See help page for details
+    ?phyloch::delete.empty.cells # See help page for details
+    # Delete only empty columns/rows (usage as above)
+    ?ape::del.colgapsonly # See help page for details
+    ?ape::del.rowgapsonly # See help page for details
   \end{spluscode}
 \end{frame}
 

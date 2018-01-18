@@ -1289,17 +1289,13 @@ meles.muscle
 class(meles.muscle)
 
 # Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
+meles.nogaps <- del.gaps(meles.muscle)
+?del.gaps # See for details!
 
 # Plot the alignment - you can select which bases to plot and/or modify colours
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
 grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
-
-# Shortcut for plotting alignment
-image.DNAbin(x=meles.mafft)
-# Display aligned sequences with gaps
-image.DNAbin(x=usflu.dna)
 
 # Align multiple genes
 # Create a list of DNAbin objects to process
@@ -1324,6 +1320,19 @@ lapply(X=multialign.aln2, FUN=class)
 ?mclapply # See more options
 ?clusterApply # See more options (parLapply should work on Windows)
 
+# Shortcut for plotting alignment
+image.DNAbin(x=meles.mafft)
+# Display aligned sequences with gaps
+image.DNAbin(x=usflu.dna)
+# Check the alignment
+checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
+checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE, plot=TRUE, what=1:4)
+?checkAlignment # See details
+# DNAbin can be techically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
+as.matrix.DNAbin()
+as.list.DNAbin()
+# Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
+
 # Delete all columns containing any gap
 library(ips)
 usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
@@ -1336,8 +1345,12 @@ multialign.aln.ng
 # Display the result
 image.DNAbin(x=usflu.dna.ng)
 lapply(X=multialign.aln.ng, FUN=image.DNAbin)
-# Delete positions in alignment containing only missing data/N
-?deleteEmptyCells # See help page for details
+# Delete positions in alignment containing only missing data/N (rows as well as columns)
+?ips::deleteEmptyCells # See help page for details
+?phyloch::delete.empty.cells # See help page for details
+# Delete only empty columns/rows (usage as above)
+?ape::del.colgapsonly # See help page for details
+?ape::del.rowgapsonly # See help page for details
 
 ## Tree manipulations
 
