@@ -1592,7 +1592,7 @@ phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRU
 phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
 phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
 
-# # TODO STAR species tree
+# # TODO STAR and STEAC species trees
 # install.packages("http://faculty.franklin.uga.edu/lliu/sites/faculty.franklin.uga.edu.lliu/files/phybase_1.5.tar.gz", repos=NULL) # See https://faculty.franklin.uga.edu/lliu/content/phybase
 # library(phybase)
 # is.binary.multiPhylo(phy=oxalis.trees.ultra)
@@ -1875,7 +1875,7 @@ phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
 summary(gls(model=primates.longevity ~ 1, data=as.data.frame(primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
 summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 
-## phylogenetic PCA
+## Phylogenetic PCA
 library(adephylo) # Library needed to create phylo4d object required by ppca
 # Calculate pPCA
 primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body, primates.longevity)), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
