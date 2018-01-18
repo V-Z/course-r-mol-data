@@ -1151,6 +1151,7 @@ library(sp)
 library(rworldmap) # Basic world maps
 library(TeachingDemos) # To be able to move text little bit
 library(RgoogleMaps) # Google and OpenStreetMaps
+library(mapplots) # Plot pie charts
 # Plot basic map with state boundaries within selected range
 plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=1.5)
 box() # Add frame around the map
@@ -1172,6 +1173,37 @@ PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
 # Google maps have their own internal scaling, adding of points by standard functions will not work correctly
+
+# Pie charts on a map
+# Prepare matrix with some data (exemplary distribution of haplotypes)
+hauss.pie <- cbind(c(20, 30, 15, 40, 10), c(30, 10, 25, 5, 45), c(10, 20, 20, 15, 5))
+rownames(hauss.pie) <- popNames(hauss.genpop) # Add row names according to populations
+colnames(hauss.pie) <- c("HapA", "HapB", "HapC") # Add column names according to data displayed
+class(hauss.pie) # Check it is matrix
+hauss.pie # See resulting matrix
+# Plot basic map with state boundaries within selected range
+plot(x=getMap(resolution="high"), xlim=c(20, 23), ylim=c(41, 42), asp=1, lwd=1.5)
+box() # Add frame around the map
+# Plot the pie charts
+for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other$xy[["lon"]])[L], y=as.vector(hauss.genpop@other$xy[["lat"]])[L], labels=names(hauss.pie[L,]), radius=0.1, col=topo.colors(3)) }
+?add.pie # See more options
+# Add population labels
+text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
+
+# Pie charts on Google map
+# Prepare list to store recalculated coordinates
+hauss.gmap2.coord <- list()
+# Calcualtion of coordinates to form required by Google Maps
+for (LC in 1:5) { hauss.gmap2.coord[[LC]] <- LatLon2XY.centered(MyMap=hauss.gmap2, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC], lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
+hauss.gmap2.coord # See result
+# Plot plain map
+PlotOnStaticMap(MyMap=hauss.gmap2)
+# Plot pie charts
+for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]$newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]), radius=25, col=topo.colors(n=3, alpha=0.7)) }
+# Alternative option to plot pie charts
+for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=2.5, alpha=0.5) ) }
+# Add population text labels
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
@@ -2182,29 +2214,3 @@ corPlot(haussknechtii.genepop, haussknechtii.divpart)
 difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
 haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
 divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
-
-
-## Pie charts on Google map
-library(RgoogleMaps)
-library(argosfilter)
-df <- read.table('ASYhapl.txt', header=T)
-lat <- c(43,55.8) # define our map's ylim
-lon <- c(4.5,27) # define our map's xlim
-terrmap <- GetMap.bbox(lon, lat, maptype="terrain", destfile="terrain.png", path=paste0("&style=feature:road|element:all|visibility:off","&style=feature:administrative.country|element:geometry.stroke|visibility:off","&style=feature:all|element:labels|visibility:off"), MINIMUMSIZE=TRUE)
-size<-terrmap$size
-pdf(file="ASY1haplotypes.pdf", width=size[1]/72, height=size[2]/72)
-	PlotOnStaticMap(terrmap)
-	for (i in 1:nrow(df)) {
-		d1 <- distance(df$lat[i], df$lat[i], lon[1], lon[2])
-		d2 <- distance(df$lat[i], df$lat[i], lon[1], df$lon[i])
-		a1 <- size[1]/d1
-		a2 <- d2*a1
-		a3 <- -(size[1]/2)+a2+df$offsetx[i]
-		b1 <- size[2]/(lat[2]-lat[1])
-		b2 <- (df$lat[i]-lat[1])*b1
-		b3 <- -(size[2]/2)+b2+df$offsety[i]
-		terrmap <- add.pie(z=c(df$dip[i], df$tet[i], df$oth[i]), x=a3, y=b3, radius=10, col=c("red3", "blue2", "grey"), labels=NA)
-		terrmap <- text(x=a3, y=b3, labels=df$pop[i], pos=df$pos[i], col=as.character(df$col[i]), offset=0.83, cex=0.7)
-		}
-	terrmap <- legend("topleft", inset=.005, title="ASY1 haplotypes", c("diploid", "tetraploid", "other"), fill=c("red3", "blue2", "grey"), horiz=FALSE, cex=1, bg='white')
-	dev.off()

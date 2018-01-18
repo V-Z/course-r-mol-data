@@ -657,7 +657,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Install needed packages} % FIXME update package list: add adegraphics, philentropy, StAMPP, stringi, vcfR
+\begin{frame}[fragile]{Install needed packages} % FIXME update package list: add adegraphics, mapplots, philentropy, StAMPP, stringi, vcfR
   \begin{spluscode}
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
@@ -3589,6 +3589,7 @@ Source data (two files -- AFLP data with individual names and populations)
     library(rworldmap) # Basic world maps
     library(TeachingDemos) # To be able to move text little bit
     library(RgoogleMaps) # Google and OpenStreetMaps
+    library(mapplots) # Plot pie charts
     # Plot basic map with state boundaries within selected range
     plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44),
       asp=1, lwd=1.5)
@@ -3666,6 +3667,74 @@ Source data (two files -- AFLP data with individual names and populations)
    \includegraphics[height=4cm]{gmap.jpg}
   \end{center}
 \end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Adding pie charts to map I}
+  \begin{spluscode}
+    # Prepare matrix with some data (exemplary distribution of haplotypes)
+    hauss.pie <- cbind(c(20, 30, 15, 40, 10), c(30, 10, 25, 5, 45),
+      c(10, 20, 20, 15, 5))
+    # Add row names according to populations
+    rownames(hauss.pie) <- popNames(hauss.genpop)
+    # Add column names according to data displayed
+    colnames(hauss.pie) <- c("HapA", "HapB", "HapC") 
+    class(hauss.pie) # Check it is matrix
+    hauss.pie # See resulting matrix
+    # Plot basic map with state boundaries within selected range
+    plot(x=getMap(resolution="high"), xlim=c(20, 23), ylim=c(41, 42),
+      asp=1, lwd=1.5)
+    box() # Add frame around the map
+    # Plot the pie charts
+    for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other
+      $xy[["lon"]])[L], y=as.vector(hauss.genpop@other$xy[["lat"]])[L],
+      labels=names(hauss.pie[L,]), radius=0.1, col=topo.colors(3)) }
+    ?add.pie # See more options
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Adding pie charts to map II}
+  \begin{spluscode}
+    # Add population labels
+    text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]],
+      labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=6cm]{map_pie.png}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Pie charts on Google map I}
+  \begin{spluscode}
+    # Prepare list to store recalculated coordinates
+    hauss.gmap2.coord <- list()
+    # Calcualtion of coordinates to form required by Google Maps
+    for (LC in 1:5) { hauss.gmap2.coord[[LC]] <- LatLon2XY.centered(MyMap=
+      hauss.gmap2, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC],
+      lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
+    hauss.gmap2.coord # See result
+    # Plot plain map
+    PlotOnStaticMap(MyMap=hauss.gmap2)
+    # Plot pie charts
+    for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]
+      $newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]),
+      radius=25, col=topo.colors(n=3, alpha=0.7)) }
+    # Alternative option to plot pie charts
+    for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]
+      $newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30,
+      col=heat.colors(n=2.5, alpha=0.5) ) }
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Pie charts on Google map II}
+  \begin{spluscode}
+    # Add population text labels
+    PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text,
+      labels=as.vector(popNames(hauss.genind)), cex=3, col="white")
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=5.5cm]{map_pie_google.png}
+  \end{center}
 \end{frame}
 
 \begin{frame}[fragile]{OpenStreetMaps and datasets from mapproj}
@@ -5808,6 +5877,7 @@ Source data (two files -- AFLP data with individual names and populations)
     \item \href{https://www.bioconductor.org/packages/3.4/bioc/html/IRanges.html}{IRanges}: infrastructure for manipulating intervals on sequences
     \item \href{https://CRAN.R-project.org/package=lattice}{lattice}: Trellis graphics, with an emphasis on multivariate data
     \item \href{https://CRAN.R-project.org/package=mapdata}{mapdata}: supplement to maps, larger and/or higher-resolution databases
+    \item \href{https://CRAN.R-project.org/package=mapplots}{mapplots}: Extra map plotting, pie charts and more
     \item \href{https://CRAN.R-project.org/package=mapproj}{mapproj}: converts latitude/longitude into projected coordinates
     \item \href{https://CRAN.R-project.org/package=maps}{maps}: draws geographical maps
     \item \href{https://CRAN.R-project.org/package=maptools}{maptools}: manipulating and reading geographic data
