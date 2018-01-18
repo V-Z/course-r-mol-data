@@ -2182,3 +2182,29 @@ corPlot(haussknechtii.genepop, haussknechtii.divpart)
 difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
 haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
 divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
+
+
+## Pie charts on Google map
+library(RgoogleMaps)
+library(argosfilter)
+df <- read.table('ASYhapl.txt', header=T)
+lat <- c(43,55.8) # define our map's ylim
+lon <- c(4.5,27) # define our map's xlim
+terrmap <- GetMap.bbox(lon, lat, maptype="terrain", destfile="terrain.png", path=paste0("&style=feature:road|element:all|visibility:off","&style=feature:administrative.country|element:geometry.stroke|visibility:off","&style=feature:all|element:labels|visibility:off"), MINIMUMSIZE=TRUE)
+size<-terrmap$size
+pdf(file="ASY1haplotypes.pdf", width=size[1]/72, height=size[2]/72)
+	PlotOnStaticMap(terrmap)
+	for (i in 1:nrow(df)) {
+		d1 <- distance(df$lat[i], df$lat[i], lon[1], lon[2])
+		d2 <- distance(df$lat[i], df$lat[i], lon[1], df$lon[i])
+		a1 <- size[1]/d1
+		a2 <- d2*a1
+		a3 <- -(size[1]/2)+a2+df$offsetx[i]
+		b1 <- size[2]/(lat[2]-lat[1])
+		b2 <- (df$lat[i]-lat[1])*b1
+		b3 <- -(size[2]/2)+b2+df$offsety[i]
+		terrmap <- add.pie(z=c(df$dip[i], df$tet[i], df$oth[i]), x=a3, y=b3, radius=10, col=c("red3", "blue2", "grey"), labels=NA)
+		terrmap <- text(x=a3, y=b3, labels=df$pop[i], pos=df$pos[i], col=as.character(df$col[i]), offset=0.83, cex=0.7)
+		}
+	terrmap <- legend("topleft", inset=.005, title="ASY1 haplotypes", c("diploid", "tetraploid", "other"), fill=c("red3", "blue2", "grey"), horiz=FALSE, cex=1, bg='white')
+	dev.off()
