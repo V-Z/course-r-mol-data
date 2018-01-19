@@ -858,19 +858,7 @@
   \tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 \end{frame}
 
-\begin{frame}{Our data\ldots}
-  \begin{itemize}
-    \item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
-    \begin{itemize}
-      \item Examples are shown mainly with microsatellites, but AFLP and another presence-absence (1/0) data are used in same way --- try it
-    \end{itemize}
-    \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
-    \item Extraction of SNP from DNA is useful in case of huge datasets --- for smaller datasets it is not necessary
-  \end{itemize}
-  \begin{block}{Always save your work!}
-    \alert{We will use data objects during whole course --- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
-  \end{block}
-\end{frame}
+\subsection[Overview]{Overview of data and data types}
 
 \begin{frame}[allowframebreaks]{Brief overview of molecular data types}{Sorted with respect to usage in R}
   \begin{itemize}
@@ -910,28 +898,83 @@
       \item Whole sequences (probes/loci or longer assembled regions) or SNPs (Single Nucleotide Polymorphism --- only polymorphic sites are retained)
     \end{itemize}
     \item Most of methods are mathematically well defined for haploids and/or diploids, higher ploidies or mixing of ploidies is not always possible
-    \item Most of methods shown in the course work with more data types --- not everything is shown
+    \item Most of methods shown in the course work with more data types --- not every variant is shown
     \item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology} (\href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{česky})
   \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{R training data}
+  \begin{itemize}
+    \item R packages commonly contain training data to illustrate its abilities
+    \item We will use some of them during the course
+    \item We will also use data provided by the teacher and/or his colleagues
+  \end{itemize}
+  \begin{spluscode}
+    data() # List data available in currently loaded packages
+    # List data available in all installed packages (can be very long)
+    data(package=rownames(installed.packages()))
+    # Load selected data set
+    # For example phylogeny and species traits of shorebirds from package
+    # caper (we will use it much later)
+    data(shorebird, package="caper")
+    # Optional method (load respective library and then data)
+    library(caper) # Library containing (among others) desired data
+    data(shorebird) # Loading the data
+    ?shorebird # See content of the dataset # or
+    ?caper::shorebird
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Our data\ldots}
+  \begin{itemize}
+    \item We will use
+    \begin{itemize}
+      \item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
+      \item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
+      \item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{http://ibot.sav.sk/usr/Karol/}{Karol Marhold} and his team
+      \item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Holcová} and her colleagues
+      \item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12487/abstract}{Schmickl et al. 2016}
+      \item Partial mitochondrial sequence of mm18 control region of \textit{Meles meles} (Mustelidae) from \href{https://www.nature.com/articles/hdy201445}{Frantz et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/608602125}{GenBank}
+      \item Maturase K (matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
+      \item Phylogeny of selected species of Apiaceae reconstructed from several concatenated plastid genes downloaded from \href{https://www.ncbi.nlm.nih.gov/}{GenBank} and simulated trait
+      \item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?cape::shorebird})
+    \end{itemize}
+    \item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
+    \begin{itemize}
+      \item Examples are shown mainly with microsatellites, but AFLP and another presence-absence (1/0) data are used in same way --- try it
+    \end{itemize}
+    \item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
+    \item Extraction of SNP from DNA is useful in case of huge datasets --- for smaller datasets it is not necessary
+  \end{itemize}
+  \begin{block}{Always save your work!}
+    \alert{We will use data objects during whole course --- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
+  \end{block}
+\end{frame}
+
 \begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection} % TODO Input/output data formats
   \begin{itemize}
-    \item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}}
+    \item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
     \begin{itemize}
       \item Compressed version of SAM (see below)
+      \item Suffix \texttt{*.bam}
     \end{itemize}
-    \item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}}
+    \item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}} (Comma Separated Values)
     \begin{itemize}
-      \item 
+      \item ``One sheet of Excel''
+      \item Common format to store data
+      \item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks --- it is important to check structure before import into R (and very it after import)
+      \item Suffix usually \texttt{*.csv}
     \end{itemize}
     \item \href{https://en.wikipedia.org/wiki/FASTA_format}{\textbf{FASTA}}
     \begin{itemize}
-      \item 
+      \item Simple and populat text format to store genetic sequences (DNA, RNA, proteins)
+      \item Line 1 of every records starts with \texttt{>} and contain name/description of the sequence (\texttt{> Seq 1}), line 2+ contains the sequence (\texttt{ATCG\ldots}) --- until end of file or next \texttt{>}
     \end{itemize}
     \item \href{https://en.wikipedia.org/wiki/FASTQ_format}{\textbf{FASTQ}}
     \begin{itemize}
-      \item 
+      \item Text based format to store sequences (mainly nucleotide)
+      \item Every record consists of 4 lines: sequence ID (with possible description) starting with \texttt{@}, the sequence (\texttt{ATCG\ldots}), \texttt{+} optionally follwoed by the same ID as line 1, and quality values for nucleotides from line 2
+      \item Common format for output of modern high throughput sequencing machines (e.g. Illumina)
     \end{itemize}
     \item \href{https://en.wikipedia.org/wiki/Newick_format}{\textbf{NEWICK}}
     \begin{itemize}
@@ -1435,12 +1478,12 @@ Source data (two files --- AFLP data with individual names and populations)
 
 \begin{frame}[fragile]{Reading VCF}
   \begin{itemize}
-    \item Download input file from \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf} (\texttt{read.vcfR} does not work well with network addresses)
+    \item Download input file from \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz} (\texttt{read.vcfR} does not work well with network addresses)
     \item Non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} from central and northern Europe
   \end{itemize}
   \begin{spluscode}
     library(vcfR) # Required library
-    # Pick up downloaded file 'arabidopsis.vcf' from the disc
+    # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
     arabidopsis.vcf <- read.vcfR(file=file.choose())
     # It returns object of class vcfR-class
     ?read.vcfR # See more import options
@@ -2316,7 +2359,7 @@ Source data (two files --- AFLP data with individual names and populations)
   \vfil
   \begin{itemize}
     \item This is very basic function to make dendrogram
-    \item There are better possibilities (NJ etc --- see slide \ref{NJ} and onward)
+    \item There are better possibilities (NJ etc --- see slide~\ref{NJ} and onward)
   \end{itemize}
 \end{multicols}
 \end{frame}
@@ -2511,23 +2554,23 @@ Source data (two files --- AFLP data with individual names and populations)
   \includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
 \end{frame}
 
-% \begin{frame}[fragile]{NJ tree of populations} % TODO rewrite the function for new version of APE
-%   \begin{spluscode}
-%     # NJ tree of populations
-%     hauss.nj.pop <- nj(hauss.dist.pop)
-%     # Bootstrap - source() loads external scripts
-%     # boot.phylo doesn't work for population trees
-%     source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
-%     hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
-%     # Plot a tree
-%     plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3,
-%       main="Neighbor-Joining tree of populations")
-%     # Labels - bootstrap
-%     nodelabels(round(hauss.boot.pop/10), frame="none")
-%     # Print information about phylo object
-%     print.phylo(hauss.nj.pop)
-%   \end{spluscode}
-% \end{frame}
+\begin{frame}[fragile]{NJ tree of populations}
+  \begin{spluscode}
+    # aboot() can use distances implemented in poppr:
+    ?poppr::aboot
+    ?poppr::nei.dist
+    # Calculations
+    hauss.nj.pop <- aboot(x=hauss.genpop, tree="nj", distance="nei.dist",
+      sample=1000, showtree=FALSE)
+    print.phylo(hauss.nj.pop) # Information about result
+    # Plot a tree
+    plot.phylo(x=hauss.nj.pop, type="radial", show.node.label=TRUE,
+      cex=1.2, edge.width=3, main="Neighbor-Joining tree of populations")
+  \end{spluscode}
+  \begin{center}
+    \includegraphics[height=3cm]{nj_pop.png}
+  \end{center}
+\end{frame}
 
 \begin{frame}[fragile]{NJ tree based on DNA sequences}
   \begin{spluscode}
@@ -3071,7 +3114,7 @@ Source data (two files --- AFLP data with individual names and populations)
   \end{itemize}
   \begin{spluscode}
     data(rupica) # Loads adegenet's training dataset
-                 # Rupicapra rupicapra from French Alps
+                 # Rupicapra rupicapra from French Prealps
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
     chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE,
@@ -5770,6 +5813,34 @@ Source data (two files --- AFLP data with individual names and populations)
   \end{itemize}
 \end{frame}
 
+\begin{frame}[allowframebreaks]{Where to look for the help}
+  \label{help}
+  \begin{block}{Question must have certain form!}
+     Before asking, \alert{ensure your question is in answerable form} --- slide~\ref{howtoask}.
+    \begin{itemize}
+      \item Sloppily asked question can't be answered at all\ldots
+      \item Check documentation, manuals and search the Internet before asking
+    \end{itemize}
+  \end{block}
+  \begin{itemize}
+    \item R homepage \url{https://www.r-project.org/} and packages \url{https://cran.r-project.org/web/packages/} (with documentation and links)
+    \item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
+    \item R genetics mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-genetics}
+    \item Bioconductor home page \url{https://bioconductor.org/} and support forum \url{https://support.bioconductor.org/}
+    \item Adegenet help mailing list \url{http://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
+    \item Poppr forum \url{https://groups.google.com/forum/\#!forum/poppr}
+    \item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
+    \item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
+    \item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
+    \item R at StackOverflow StackExchange (for programmers) \url{https://stackoverflow.com/questions/tagged/r}
+    \item R at CrossValidated StackExchange (for stasticians, mathematicians, etc.) \url{https://stats.stackexchange.com/questions/tagged/r}
+    \item Biostars --- general bioinformatics forum \url{https://www.biostars.org/}
+    \item Biology --- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
+    \item Do not hesitate to ask on the forum or contact author of package with which you have problem, preferably through some public forum or mailing list, they usually respond quickly and helpfully\ldots{ }--- they wish their packages to be working and useful
+    \item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
+  \end{itemize}
+\end{frame}
+
 \subsection{Resources}
 
 \begin{frame}{Citations}
@@ -5777,6 +5848,7 @@ Source data (two files --- AFLP data with individual names and populations)
     \item To correctly cite R launch \texttt{citation()} and see information there --- it is slightly different for every version of R
     \item Cite used packages --- launch \texttt{citation("PackageName")} --- if this information is missing, go to its manual page and/or homepage and find the information there
     \item Packages/functions commonly provide various methods to calculate desired task --- check function's help page (\texttt{\textbf{?}FunctionName}) and find references there and cite them accordingly
+    \item Check original papers to fully understand respective method
   \end{itemize}
 \end{frame}
 
@@ -5798,16 +5870,12 @@ Source data (two files --- AFLP data with individual names and populations)
   \end{thebibliography}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Where to look for the help}
-  \label{help}
-  Before asking, \alert{ensure your question is in answerable form} --- slide~\ref{howtoask}.
+\begin{frame}[allowframebreaks]{Learning resources}
   \begin{itemize}
     \item R homepage \url{https://www.r-project.org/} and packages \url{https://cran.r-project.org/web/packages/} (with documentation and links)
+    \item Books about R \url{https://www.r-project.org/doc/bib/R-books.html}
     \item List of R documentation \url{https://cran.r-project.org/manuals.html}
-    \item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
-    \item R genetics mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-genetics}
-    \item Bioconductor home page \url{https://bioconductor.org/}
-    \item Bioconductor support forum \url{https://support.bioconductor.org/} and Bioconductor help pages \url{https://master.bioconductor.org/help/}
+    \item Bioconductor help pages \url{https://master.bioconductor.org/help/}
     \item R phylo wiki \url{https://www.r-phylo.org/wiki/Main_Page}
     \item R phylogenetics at CRAN \url{https://cran.r-project.org/web/views/Phylogenetics.html}
     \item Integrated documentation search \url{https://www.rdocumentation.org/}
@@ -5816,21 +5884,16 @@ Source data (two files --- AFLP data with individual names and populations)
     \item Little Book of R for Multivariate Analysis \url{https://little-book-of-r-for-multivariate-analysis.readthedocs.org/en/latest/}
     \item Little Book of R for Biomedical Statistics \url{https://a-little-book-of-r-for-biomedical-statistics.readthedocs.org/en/latest/}
     \item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/}
-    \item Adegenet web \url{http://adegenet.r-forge.r-project.org/}, help mailing list \url{http://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
+    \item Adegenet web \url{http://adegenet.r-forge.r-project.org/} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
     \item APE home page \url{http://ape-package.ird.fr/}
     \item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
     \item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
-    \item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation} and forum \url{https://groups.google.com/forum/\#!forum/poppr}
+    \item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation}
     \item Population Genetics in R \url{http://popgen.nescent.org/} by \href{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12558/abstract}{Kamvar et al}
     \item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
     \item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
-    \item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
-    \item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
-    \item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
-    \item Books about R \url{https://www.r-project.org/doc/bib/R-books.html}
-    \item R at StackOverflow StackExchange (for programmers) \url{https://stackoverflow.com/questions/tagged/r}
-    \item R at CrossValidated StackExchange (for stasticians, mathematicians, etc.) \url{https://stats.stackexchange.com/questions/tagged/r}
     \item The R journal \url{https://journal.r-project.org/}
+    \item RStudio Cheat Sheets \url{https://www.rstudio.com/resources/cheatsheets/} and Online learning resources \url{https://www.rstudio.com/online-learning/}
     \item R-bloggers --- aggregation of R blogs \url{https://www.r-bloggers.com/}
     \item R on The Molecular Ecologist \url{https://www.molecularecologist.com/category/software/r/}
     \item R tutorial \url{http://www.r-tutor.com/}
@@ -5848,12 +5911,9 @@ Source data (two files --- AFLP data with individual names and populations)
     \item Try R on-line course full of adventure anf heroic quests \url{http://tryr.codeschool.com/} (Tired of orcs, dragons and princesses? Beat R!)
     \item Quick-R learning resource \url{https://www.statmethods.net/}
     \item R manual and help search \url{http://finzi.psych.upenn.edu/}
-    \item Biostars --- general bioinformatics forum \url{https://www.biostars.org/}
-    \item Biology --- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
-    \item Do not hesitate to ask on the forum or contact author of package with which you have problem, preferably through some public forum or mailing list, they usually respond quickly and helpfully\ldots
     \item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
     \item R packages commonly contain vignettes (tutorials) --- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
-    \item List available training datasets from various R packages by \texttt{data()} and load selected by \texttt{data(DatasetName)}
+    \item And finally, \alert{reading documentation is not wasting of time}! ;-)
   \end{itemize}
 \end{frame}
 
@@ -6068,7 +6128,6 @@ Source data (two files --- AFLP data with individual names and populations)
 % Bayes trees
 % Arlequin
 % DW index - rare alleles
-% ?phytools::plotTree.wBars
 % http://popgen.nescent.org/
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/

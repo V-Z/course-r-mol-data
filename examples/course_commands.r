@@ -123,6 +123,26 @@ library(poppr)
 
 ## Data
 
+# R training data
+# List data available in currently loaded packages
+data()
+# List data available in all installed packages (can be very long)
+data(package=rownames(installed.packages()))
+# Load selected data set
+# For example phylogeny and species traits of shorebirds from package caper (we will use it much later)
+data(shorebird, package="caper")
+# Optional method (load respective library and then data)
+library(caper) # Library containing (among others) desired data
+data(shorebird) # Loading the data
+# See content of the dataset
+?shorebird # Or
+?caper::shorebird
+# R training data we will use during the course
+?adegenet::microbov
+?adegenet::rupica
+?ape::carnivora
+?caper::shorebird
+
 # Load training data
 hauss.loci <- read.loci("https://soubory.trapa.cz/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
 # Data control
@@ -310,8 +330,8 @@ image.DNAbin(x=as.matrix(meles.dna))
 # Required library
 library(vcfR)
 # Read input file
-# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf (read.vcfR does not work well with network addresses)
-arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf' from the disc
+# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz (read.vcfR does not work with network addresses yet)
+arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
 # It returns object of class vcfR-class
 ?read.vcfR # See more import options
 # Another option from package pegas returns list of objects loci and data.frame
@@ -752,16 +772,16 @@ plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3, main="UPGMA tree
 nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
-# Populations TODO update for newest ape
-# hauss.nj.pop <- nj(hauss.dist.pop)
-# # Bootstrap - source() loads external scripts (boot.phylo doesn't work for population trees)
-# source("https://soubory.trapa.cz/rcourse/boot_phylo_nj_pop.r")
-# hauss.boot.pop <- boot.phylo.nj.pop(hauss.nj.pop, hauss.genind, 1000)
-# # Plot a tree
-# plot(hauss.nj.pop, type="radial", cex=1.2, lwd=3, main="Neighbor-Joining tree of populations")
-# # Labels - bootstrap
-# nodelabels(round(hauss.boot.pop/10), frame="none")
-# print.phylo(hauss.nj.pop)
+# Populations
+# aboot() can use distances implemented in poppr:
+?poppr::aboot
+?poppr::nei.dist
+# Calculations
+hauss.nj.pop <- aboot(x=hauss.genpop, tree="nj", distance="nei.dist", sample=1000, showtree=FALSE)
+# Information about result
+print.phylo(hauss.nj.pop)
+# Plot a tree
+plot.phylo(x=hauss.nj.pop, type="radial", show.node.label=TRUE, cex=1.2, edge.width=3, main="Neighbor-Joining tree of populations")
 
 # Make a tree based on DNA sequences
 usflu.tree <- nj(X=usflu.dist)
@@ -975,6 +995,12 @@ plot(hauss.pcoa2.mctest) # Plot of densitiy of permutations
 moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 
 ## sPCA
+
+# Explore various networks
+data(rupica)
+# Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
+chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
+?chooseCN # See for more details - select the best "type" for your data
 
 # Calculates sPCA - here is only 1 positive and 3 negative factors
 hauss.spca <- spca(obj=hauss.genind, cn=hauss.connectivity, scale=TRUE, scannf=TRUE)
@@ -1964,6 +1990,17 @@ fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primate
 ?contMap
 ?setMap
 ?par
+
+# # TODO Ploting traits on trees
+# # Load training data to display
+# data(shorebird, package="caper")
+# # See information about the data
+# ?caper::shorebird
+# # Load library
+# library(phytools)
+# ?plotTree.wBars
+
+
 
 # ## Disparity-through-time
 # disparity(phy=primates.tree, data=primates.body)
