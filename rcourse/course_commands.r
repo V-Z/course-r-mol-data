@@ -13,6 +13,9 @@ getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
 
+## Get information about object classes
+getClassDef("genind") # Or select any other class name
+
 ## Basic operations
 x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
 x # Print "x" content
@@ -23,7 +26,7 @@ mode(x) # Gets type of storage mode of the object
 class(x) # Shows class of the object
 x[2] # Shows second element of the object
 x <- x[-5] # Removes fifth element
-x
+x # See modified object
 y <- matrix(data=5:20, nrow=4, ncol=4) # Creates a matrix
 is.matrix(y) # Is it matrix? Try is.<TAB><TAB> TAB key shows available functions and objects starting by typed text
 y # Prints the matrix
@@ -31,13 +34,13 @@ y[,2] # Prints second column
 y[3,] # Prints third row
 y[4,3] # Prints element from fourth row and third column
 x <- y[2,] # Replaces "x" by second row of "y" (no warning) - R doesn't ask neither notifies when overwriting objects! Be careful!
-x
+x # See modified object
 rm(x) # Deletes x
 y[,1:3] # Prints first through third column of the matrix
 y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
-y
+y # See modified object
 y[y==20] <- 10 # If value of y's element is 20, replace it by 10
-y
+y # See modified object
 summary(y) # Basic statistics - according to columns
 colnames(y) <- c("A", "B", "C", "D") # Set column names - Objects and functions are without quotation marks; files, text with
 colnames(y) # Prints column names, use rownames() in same way
@@ -45,30 +48,30 @@ y[,"C"] # Prints column C (R is case sensitive!)
 t(y) # Transposes the matrix
 y <- as.data.frame(y) # Turns into DF (see other functions as.*)
 y[y==17] <- "NA" # Removes values of 17
-y
+y # See modified object
 y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
 save(list=ls(), file="test.RData") # Saves all objects during the work
 load("test.RData") # Loads saved R environment with all objects
 # When loading saved project, you have to load again libraries and scripts (see further), data objects are restored
 rm(y)
 
-## Get information about object classes
-getClassDef("genind") # Or select any other class name
-
 ## Packages and repositories
+
 # Set repositories
 #  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3, see https://bioconductor.org/).
-options(repos=c("https://cran.wu.ac.at/", "https://r-forge.r-project.org/", "https://rforge.net/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/data/experiment", "https://bioconductor.statistik.tu-dortmund.de/packages/3.4/extra"))
+options(repos=c("https://mirrors.nic.cz/R/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/experiment", "https://r-forge.r-project.org/", "https://rforge.net/"))
 getOption("repos") # Shows actual repositories
+options() # Generic function to modify various settings
+?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("BiocGenerics", "Biostrings", "Geneland", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "BiocGenerics", "Biostrings", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "IRanges", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "muscle", "mvtnorm", "ncbit", "nlme", "numDeriv", "ParallelStructure", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "S4Vectors", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML", "XVector"), repos=getOption("repos"), dependencies=TRUE)
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 
 # Install packages without setting the repositories
 # If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
-install.packages(pkgs=c("Geneland", "MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "diveRsity", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "mvtnorm", "ncbit", "nlme", "numDeriv", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML"))
 update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 
 # Install package phyloch not available in any repository
@@ -77,28 +80,36 @@ install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
 
-# We will load packages by library(package) one by one when needed and plugins\ldots
+# Install package Geneland (since version 4 not available in CRAN anymore)
+# It is possible to specify direct path (local or web URL) to package source
+install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+# Other packages used when using Geneland
+# Needed is PBSmapping or mapproj for conversion of coordinates
+# GUI uses for parallelisation snow and Rmpi
+# RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools (requires rgeos and sp), shapefiles (requires foreign) and tripack on GIS layer
+install.packages(pkgs=c("PBSmapping", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgdal", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
+
+# We will load packages by library(package) one by one when needed and plugins...
 
 # Standard installation
 install.pacakges(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
 
 # Installation from custom repository
-install.packages("ParallelStructure", repos="https://r-forge.r-project.org")
+install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
 ## Bioconductor
-
 # Bioconductor - if https fails, use http
 source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
 ?biocLite
 # Install package(s)
-biocLite(c("Biostrings", "seqinr"))
+biocLite(c("Biostrings", "muscle"))
 # Install Bioconductor packages used during the course
-biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors", "XVector", "muscle"))
+biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "muscle", "S4Vectors", "XVector"), ask=FALSE)
 biocLite() # Update Bioconductor packages
-# Upgrades installed Bioconductor packages to new R release (e.g. from 3.2 to 3.3)
+# Upgrades installed Bioconductor packages to new R release (e.g. from 3.3 to 3.4)
 biocLite("BiocUpgrade")
 
 ## Libraries for population genetic analysis
@@ -109,9 +120,28 @@ library(ade4)
 library(adegenet)
 library(pegas)
 library(poppr)
-library(vegan)
 
 ## Data
+
+# R training data
+# List data available in currently loaded packages
+data()
+# List data available in all installed packages (can be very long)
+data(package=rownames(installed.packages()))
+# Load selected data set
+# For example phylogeny and species traits of shorebirds from package caper (we will use it much later)
+data(shorebird, package="caper")
+# Optional method (load respective library and then data)
+library(caper) # Library containing (among others) desired data
+data(shorebird) # Loading the data
+# See content of the data set
+?shorebird # Or
+?caper::shorebird
+# R training data we will use during the course
+?adegenet::microbov
+?adegenet::rupica
+?ape::carnivora
+?caper::shorebird
 
 # Load training data
 hauss.loci <- read.loci("https://soubory.trapa.cz/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
@@ -124,9 +154,6 @@ hauss.genind <- loci2genind(hauss.loci)
 # See population names
 pop(hauss.genind)
 hauss.genind$pop
-
-# Convert corrected genind to loci
-hauss.loci.cor <- genind2loci(hauss.genind)
 
 # Read coordinates
 hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/haussknechtii_coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
@@ -145,18 +172,20 @@ hauss.genpop
 
 # Removes missing data - see ?missingno for types of dealing with them
 hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1, quiet=FALSE) # Use with caution! It modifies original data!
+?missing # See other options of handling missing data
 # Convert corrected genind to loci
 hauss.loci.cor <- genind2loci(hauss.genind.cor)
 
 # Writes loci file to the disk
 write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t", allele.sep="/")
 
-# Read datasets from various software
+# Read data sets from various software
 read.genalex() # poppr - reads *.csv file
 read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
 read.genetix() # adegenet - reads *.gtx files, only haploid/diploid data
 read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
 read.structure() # adegenet - reads *.str files, only haploid/diploid data
+import2genind() # adegenet - more automated version of above functions
 
 # Import of triploid (polyploid) microsattelites
 tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
@@ -165,6 +194,7 @@ tarax3n.table
 class(tarax3n.table)
 dim(tarax3n.table)
 
+# Convert to genind
 tarax3n.genind <- df2genind(X=tarax3n.table[,1:6], sep="/", ncode=3, pop=tarax3n.table[["pop"]], ploidy=3, type="codom")
 # See resulting genind object
 tarax3n.genind
@@ -215,11 +245,12 @@ usflu.annot <- read.csv("http://adegenet.r-forge.r-project.org/files/usflu.annot
 head(usflu.annot)
 # Convert DNAbin to genind - only polymorphic loci are retained
 usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
+usflu.genind # Check it
 # read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)
 usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
 class(usflu.dna3)
 length(usflu.dna3) # How many sequences we have in the list
-usflu.dna3
+usflu.dna3 # Check it
 # Convert into DNAbin class (technically, DNAbin is a list)
 class(usflu.dna3) <- "DNAbin"
 # Read sequence data in NEXUS
@@ -229,8 +260,9 @@ read.nexus.data(file="sequences.nex")
 meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
 meles.dna
 class(meles.dna)
-# Converts DNAbin to genind - extracts SNP - for large datasets can be computationally very intensive
+# Converts DNAbin to genind - extracts SNP - for large data sets can be computationally very intensive
 meles.genind <- DNAbin2genind(meles.dna)
+meles.genind # Check it
 
 # Query on-line sequence databases
 library(seqinr)
@@ -271,12 +303,13 @@ usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/fil
 snpposi.plot(x=as.matrix(meles.dna), codon=FALSE)
 # Position of polymorphism within alignment - differentiating codons
 snpposi.plot(as.matrix(meles.dna))
-# When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary
+# When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary (polyThres=...)
 meles.genind <- DNAbin2genind(x=meles.dna, polyThres=0.01)
-# Test of random distribution of SNP
+meles.genind # See it
+# Test is distribution of SNP is random (1000 permutations)
 snpposi.test(x=as.matrix(meles.dna))
 
-## Check sequences
+# Check sequences
 # Nucleotide diversity
 pegas::nuc.div(x=meles.dna)
 # Base frequencies
@@ -293,15 +326,94 @@ image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 image.DNAbin(x=usflu.dna)
 image.DNAbin(x=as.matrix(meles.dna))
 
+# VCF
+# Required library
+library(vcfR)
+# Read input file
+# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz (read.vcfR does not work with network addresses yet)
+arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
+# It returns object of class vcfR-class
+?read.vcfR # See more import options
+# Another option from package pegas returns list of objects loci and data.frame
+?pegas::read.vcf
+
+# Explore VCF
+arabidopsis.vcf
+head(arabidopsis.vcf)
+arabidopsis.vcf@fix[1:10,1:5]
+# Get information about depth of coverage (DP)
+# Se description of DP slot
+strwrap(x=grep(pattern="ID=DP,", x=arabidopsis.vcf@meta, value=TRUE))
+# Extract the DP
+arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP", as.numeric=TRUE)
+# See it
+dim(arabidopsis.vcf.dp)
+head(arabidopsis.vcf.dp)
+# Boxplot of DP
+boxplot(x=arabidopsis.vcf.dp, col="#808080", ylab="Depth of coverage", las=3)
+title("DP per specimen")
+abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
+# Bar plot of mean DP
+barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+title("Mean DP per specimen")
+abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
+# Heatmap of DB (subset)
+heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100, start=0.1)) # Subset - only first 100 loci and individuals
+title("DP per specimens and loci")
+
+# Convert VCF into various objects for later processing
+# Genind
+arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
+# Check it
+arabidopsis.genind
+nInd(arabidopsis.genind)
+indNames(arabidopsis.genind)
+nLoc(arabidopsis.genind)
+locNames(arabidopsis.genind)
+# Genlight (suitable for huge data, not required now)
+arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/Mac and with large data use higher n.cores
+# Check it
+arabidopsis.genlight
+# Loci
+arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
+# Check it
+arabidopsis.loci
+print(x=arabidopsis.loci, details=TRUE)
+# DNAbin
+?vcfR2DNAbin # There are various options how to process variants in VCF
+arabidopsis.dnabin <- vcfR2DNAbin(x=arabidopsis.vcf, consensus=FALSE, extract.haps=TRUE, unphased_as_NA=FALSE)
+# Check it
+arabidopsis.dnabin
+dim(arabidopsis.dnabin)
+as.character.DNAbin(arabidopsis.dnabin[1:15,1:12])
+image.DNAbin(arabidopsis.dnabin)
+snpposi.plot.DNAbin(arabidopsis.dnabin)
+snpposi.test.DNAbin(arabidopsis.dnabin)
+
+# Remove non-biallelic loci
+# Create vector of loci to keep
+arabidopsis.genind.keep <- nAll(arabidopsis.genind) < 3
+# See the vector of loci
+arabidopsis.genind.keep
+# Keep only passing loci
+arabidopsis.genind.bial <- arabidopsis.genind[loc=arabidopsis.genind.keep]
+# See result
+arabidopsis.genind.bial
+# Filtration of missing data
+?poppr::missingno # Various options...
+
 ## Exporting data
 # Convert genind into DF using genind2df()
 hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerAll=FALSE)
+# Save microsatellites to disk - check settings of write.table
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
 # Export of DNA sequences into FASTA format
 write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6)
 seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna), file.out="meles.fasta", open="w")
 # Export DNA sequnces as NEXUS
 write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
+# Export VCF
+write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
 # Export trees (objects of class phylo)
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
@@ -310,15 +422,16 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 
 # Get summary - names and sizes of populations, heterozygosity, some info about loci
 hauss.summ <- summary(hauss.genind)
+hauss.summ
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
-# Bartlett's K-squared of difference between observed and expected heterozygosity - not significant
+# Bartlett's K-squared test of difference between observed and expected heterozygosity - not significant
 bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
 # T-test of difference between observed and expected heterozygosity - strongly significant
 t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=TRUE)
 # Create pane with some information
-par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
+par(mfrow=c(2, 2)) # Divide graphical devices into 4 smaller spaces
 # Plot alleles number vs. population sizes
 plot(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall, xlab="Populations sample size", ylab="Number of alleles", main="Alleles numbers and sample sizes", col="red", pch=20)
 # Add text description to the point
@@ -332,6 +445,8 @@ dev.off() # Closes graphical device - otherwise following graphs would still be 
 # poppr returns various population statistics for populations
 ?poppr # See details
 poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4, missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE, plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
+# Algorithms and equations utilized in poppr
+vignette("algo", package="poppr")
 
 # Departure from HWE
 # According to loci
@@ -355,6 +470,17 @@ library(hierfstat)
 fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
 # Nei's pairwise Fst between all pairs of populations. Difference in res.type="dist"/"matrix" is only in format of output
 pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
+# For mixed ploidy data sets
+arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, percent=95, nclusters=1)
+# For large data use higher nclusters to parallelize calculations
+?StAMPP::stamppFst # See details
+# Matrix of Fst among populations
+arabidopsis.fst[["Fsts"]]
+# Matrix of P values
+arabidopsis.fst[["Pvalues"]]
+
+# Estimates of population theta according to Kimmel et al. 1998
+# theta.msat(hauss.loci)
 
 ## Multi locus genotypes
 # Total number of MLGs (simple value)
@@ -372,6 +498,7 @@ mlg.id(hauss.genind)
 data(microbov)
 # Separate populations of Salers cattle
 microbov.pops <- seppop(microbov)[["Salers"]]
+microbov.pops # See it
 # Calculate the inbreeding
 ?inbreeding # Check for more settings
 microbov.inbr <- inbreeding(x=microbov.pops, N=100)
@@ -384,6 +511,7 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles
 
 # See ?dist.gene for details about methods of this distance constructions
 hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
+hauss.dist.g
 
 # Euclidean distance for individuals (plain ordinary distance matrix)
 hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
@@ -391,6 +519,7 @@ hauss.dist
 
 # Nei's distance (not Euclidean) for populations (other methods are available, see ?dist.genpop)
 hauss.dist.pop <- dist.genpop(x=hauss.genpop, method=1, diag=TRUE, upper=TRUE)
+hauss.dist.pop
 # Test if it is Euclidean
 is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10)
 # Turns to be Euclidean
@@ -413,12 +542,16 @@ hauss.dist.bruvo
 
 # Nei's distance (not Euclidean) for individuals (other methods are available, see ?nei.dist from poppr package)
 hauss.dist.nei <- poppr::nei.dist(x=hauss.genind, warning=TRUE)
-is.euclid(hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10) # It has so much NAs, so it it impossible to check it and convert into Euclidean distance
+# Test if it is Euclidean
+is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
 # Show it
 hauss.dist.nei
 
 # Dissimilarity matrix returns a distance reflecting the number of allelic differences between two individuals
 hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
+# Test if it is Euclidean
+is.euclid(distmat=as.dist(m=hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
+# Show it
 hauss.dist.diss
 
 # Import custom distance matrix
@@ -437,9 +570,9 @@ MyDistance
 distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
 # Calculate the distance matrices
 dists <- lapply(distances, function(x) {
-  DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
-  DISTFUN(hauss.genind.cor)
-  })
+	DISTFUN <- match.fun(paste(tolower(x), "dist", sep="."))
+	DISTFUN(hauss.genind.cor)
+	})
 # Add names for the distance names
 names(dists) <- distances
 # Add Bruvo distance
@@ -449,9 +582,9 @@ dists
 par(mfrow=c(2, 3))
 # Calculate NJ and plot all trees
 x <- lapply(names(dists), function(x) {
-  plot(njs(dists[[x]]), main=x, type="unrooted")
-  add.scale.bar(lcol="red", length=0.1)
-  })
+	plot(njs(dists[[x]]), main=x, type="unrooted")
+	add.scale.bar(lcol="red", length=0.1)
+	})
 dev.off() # Close graphical device to reset settings
 # See details of distance methods in package poppr
 vignette("algo", package="poppr")
@@ -480,10 +613,52 @@ usflu.distr
 # It is possible to use just basic dist function on whole genlight object (might require a lot of RAM)
 usflu.distg <- dist(as.matrix(usflu.genlight))
 
+# Distances in mixed-ploidy data sets
+library(StAMPP) # Load required library
+# stamppNeisD requires population factor in genlight (here, population code consists of first three letters of individual's name)
+indNames(arabidopsis.genlight)
+pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
+pop(arabidopsis.genlight) # Check it
+popNames(arabidopsis.genlight)
+# Nei's 1972 distance between individuals (use pop=TRUE to calculate among populations)
+arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
+# Check it
+head(arabidopsis.dist)
+dim(arabidopsis.dist)
+class(arabidopsis.dist)
+# The same on population level
+arabidopsis.dist.pop <- stamppNeisD(geno=arabidopsis.genlight, pop=TRUE)
+# Check it
+head(arabidopsis.dist.pop)
+dim(arabidopsis.dist.pop)
+class(arabidopsis.dist.pop)
+# Export the distance matrix as Phylip format for usage in external software (e.g. SplitsTree)
+stamppPhylip(distance.mat=arabidopsis.dist, file="arabidopsis_dist.txt")
+# Genomic relationship matrix
+?stamppGmatrix # Method details
+arabidopsis.genomat <- stamppGmatrix(geno=arabidopsis.genlight)
+# Check it
+head(arabidopsis.genomat)
+dim(arabidopsis.genomat)
+class(arabidopsis.genomat)
+
+# Over 40 distances from philentropy package
+library(philentropy) # Load the library
+getDistMethods() # See available distances
+?distance # See details of distances
+# Calculate e.g. Jaccard index for AFLP data
+amara.jac <- distance(x=amara.aflp[,2:30], method="jaccard") # amara.aflp has 30 columns (see dim(amara.aflp), column 1 contains names (head(amara.aflp)))
+# See result
+class(amara.jac)
+amara.jac
+# Make it distance matrix
+amara.jac <- as.dist(m=amara.jac, diag=TRUE, upper=TRUE)
+amara.jac
+
 # Visualize pairwise genetic similarities
 # table.paint() requires data frame, dist can't be directly converted to DF
 table.paint(df=as.data.frame(as.matrix(usflu.dist)), cleg=0, clabel.row=0.5, clabel.col=0.5)
-# Same visualization, coloured
+# Same visualization, colored
 # heatmap() reorders values
 heatmap(x=as.matrix(usflu.dist), Rowv=NA, Colv=NA, symm=TRUE)
 # Another possibility is to use function corrplot() from package corrplot
@@ -494,6 +669,7 @@ heatmap(as.matrix(hauss.dist), symm=TRUE, labRow=rownames(as.matrix(hauss.dist.b
 heatmap(as.matrix(hauss.dist.pop), symm=TRUE)
 heatmap(as.matrix(hauss.dist.bruvo), symm=TRUE)
 heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
+?heatmap # Other options
 
 ## Hierarchical clustering
 # According to distance used - see ?hclust for available methods
@@ -516,13 +692,17 @@ abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), co
 hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
 hauss.amova
-# Another possibility is poppr.amova - for more complicated hierarchy - see ?poppr.amova
+# For more complicated hierarchy
+?poppr::poppr.amova
+# For mixed-ploidy dat sets
+?StAMPP::stamppAmova
 
 ## MSN based on Bruvo's distance
 bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
 ?bruvo.msn # See details...
 ?msn.poppr # For another data types
 ?imsn # Interactive creation of MSN
+msn() # Try it
 
 ## NJ
 
@@ -557,7 +737,7 @@ hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist, sample=100) # B
 # Plot the tree, explicitly display node labels
 plot.phylo(x=hauss.aboot, show.node.label=TRUE)
 ?aboot # See details...
-??plot.phylo
+?plot.phylo
 
 # Plot a nice tree with colored tips
 plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
@@ -566,7 +746,7 @@ nodelabels(text=round(hauss.boot/10))
 # Coloured labels - creates vector of colors according to population information in genind object
 nj.rainbow <- colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
 # Colored tips
-tiplabels(text=indNames(hauss.genind), bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
+tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), col.pal=nj.rainbow))
 
 # Plot BW tree with tip symbols and legend
 plot.phylo(x=hauss.nj, type="cladogram", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
@@ -581,7 +761,7 @@ legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=
 
 # Bruvo's distance - NJ
 hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
-plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbor-Joining tree.")
+plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbor-Joining tree")
 # bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function
 nodelabels(hauss.nj.bruvo[["node.labels"]]) # Note you can call node labels from phylo object as phylo$node.labels or phylo[["node.labels"]]
 tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
@@ -592,16 +772,27 @@ plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3, main="UPGMA tree
 nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
+# Populations
+# aboot() can use distances implemented in poppr:
+?poppr::aboot
+?poppr::nei.dist
+# Calculations
+hauss.nj.pop <- aboot(x=hauss.genpop, tree="nj", distance="nei.dist", sample=1000, showtree=FALSE)
+# Information about result
+print.phylo(hauss.nj.pop)
+# Plot a tree
+plot.phylo(x=hauss.nj.pop, type="radial", show.node.label=TRUE, cex=1.2, edge.width=3, main="Neighbor-Joining tree of populations")
+
 # Make a tree based on DNA sequences
 usflu.tree <- nj(X=usflu.dist)
 # Plot it
 plot.phylo(x=usflu.tree, type="unrooted", show.tip=FALSE)
 title("Unrooted NJ tree")
 # Coloured tips
-usflu.pal <- colorRampPalette(topo.colors(length(levels(as.factor(usflu.annot$year)))))
+usflu.pal <- colorRampPalette(topo.colors(length(levels(as.factor(usflu.annot[["year"]])))))
 # Tip labels
 tiplabels(text=usflu.annot$year, bg=num2col(usflu.annot$year, col.pal=usflu.pal), cex=0.75)
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="bottomright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Root the tree - "outgroup" is name of accession (in quotation marks) or number (position within phy object)
@@ -613,7 +804,7 @@ title("Rooted NJ tree")
 tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
 # Add axis with phylogenetic distance
 axisPhylo()
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Bootstrap rooted tree
@@ -624,7 +815,7 @@ plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("NJ tree + bootstrap values")
 tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
 axisPhylo()
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 # Plots bootstrap support - note usflu.boot contains raw numbers - transform it into percent
 nodelabels(text=round(usflu.boot/10), cex=0.75)
@@ -662,7 +853,7 @@ s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 # To plot different axes use for example "...dfxy=hauss.pcoa$li[c(2, 3)]..."
 # Add kernel density
 s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
-# Adds histogram of Eigenvalues
+# Add histogram of Eigenvalues
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
 
 # Colored display according to populations
@@ -776,10 +967,12 @@ abline(h=0, v=0, col="grey")
 add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio=0.3)
 # Calculate phylogenetic tree
 usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
-# Plot coloured phylogenetic tree
+# Plot colored phylogenetic tree
 plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
 tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
 title("NJ tree of the US influenza data")
+# Add legend
+legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 ## Moran's I
 # Load required library
@@ -803,12 +996,18 @@ moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 
 ## sPCA
 
+# Explore various networks
+data(rupica)
+# Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
+chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
+?chooseCN # See for more details - select the best "type" for your data
+
 # Calculates sPCA - here is only 1 positive and 3 negative factors
 hauss.spca <- spca(obj=hauss.genind, cn=hauss.connectivity, scale=TRUE, scannf=TRUE)
 # Plot eigenvalues of sPCA - gobal vs. local structure
 barplot(height=hauss.spca$eig, main="Eigenvalues of sPCA", col=spectral(length(hauss.spca[["eig"]])))
 legend("topright", fill=spectral(2), leg=c("Global structures", "Local structures")) # Add legend
-abline(h=0,col="grey") # Add line showing zero
+abline(h=0, col="grey") # Add line showing zero
 # Information about sPCA
 print.spca(hauss.spca)
 # Summary of sPCA results
@@ -816,12 +1015,18 @@ summary.spca(hauss.spca)
 # Shows connectivity network, 3 different scores, barplot of eigenvalues and eigenvalues decomposition
 plot.spca(hauss.spca)
 # Display of scores in color canals (two analogous variants)
-colorplot.spca(hauss.spca, cex=4)
+colorplot.spca(hauss.spca, cex=3)
 title("sPCA - colorplot of PC 1 and 2 (lagged scores)", line=1, cex=1.5)
-colorplot(x=hauss.genind$other$xy, hauss.spca$ls, axes=1:ncol(hauss.spca$li), cex=4)
+colorplot(x=hauss.genind$other$xy, hauss.spca$ls, axes=1:ncol(hauss.spca$li), cex=3)
 title("sPCA - colorplot of PC 1 and 2 (lagged scores)", line=1, cex=1.5)
 # Spatial and variance components of the eigenvalues
 screeplot.spca(x=hauss.spca, main=NULL)
+
+# Test if global/local structure is significant
+hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+plot(hauss.spca.glo)
+hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+plot(hauss.spca.loc)
 
 # Map of genetic clines
 library(akima) # This library is needed for some manipulation with coordinates
@@ -834,9 +1039,9 @@ image(x=hauss.spca.temp, col=spectral(100))
 s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
 # Interpolated lagged score on a map
 hauss.spca.annot <- function() {
-    title("sPCA - interpolated map of individual scores")
-    points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
-  }
+	title("sPCA - interpolated map of individual scores")
+	points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
+	}
 filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
 
 # Loading plots - which alleles contribute the most?
@@ -855,6 +1060,10 @@ plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", 
 points(hauss.genpop$other$xy, cex=2.5, pch=20, col="red")
 text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=popNames(hauss.genpop), cex=3)
 legend("bottomright", leg="Genetic boundaries\namong populations")
+# For plotting see
+?points
+?text
+?legend
 
 ## Mantel test - isolation by distance
 # Geographical distance
@@ -878,13 +1087,7 @@ plot(hauss.mantel.cor)
 ## Geneland
 # Haploid and diploid codominant markers (microsattelites or SNPs)
 # Load needed libraries
-library(PBSmapping)
-library(RandomFields)
-library(fields)
-library(spam)
-library(grid)
-library(maps)
-library(tcltk)
+library(PBSmapping) # Required to transform coordinates
 library(Geneland)
 # Graphical interface available for Geneland - we will use only command line
 Geneland.GUI()
@@ -910,53 +1113,63 @@ hauss.geneland.burnin <- 100
 hauss.geneland.maxpop <- 10
 # FOR loop will run several independent runs and produce output maps of genetic clusters - outputs are written into subdirectory within geneland directory
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
-  # On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows is complicated)
-  system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
-  # Inferrence - MCMC chain - see ?MCMC for details
-  MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
-  # Post-process chains
-  PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
-  # Output
-  # Simulated number of populations
-  Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, file=paste(hauss.geneland.path.mcmc, "/geneland-number_of_clusters.pdf", sep=""), format="pdf", burnin=hauss.geneland.burnin)
-  dev.off() # We must close graphical device manually
-  # Map of estimated population membership
-  PosteriorMode(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, format="pdf", file=paste(hauss.geneland.path.mcmc,"/geneland-map.pdf", sep=""))
-  dev.off() # We must close graphical device manually
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
+	# On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows in R is complicated)
+	system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
+	# Inferrence - MCMC chain - see ?MCMC for details
+	# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
+	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
+	# Post-process chains
+	PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
+	# Output
+	# Simulated number of populations
+	Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, file=paste(hauss.geneland.path.mcmc, "/geneland-number_of_clusters.pdf", sep=""), format="pdf", burnin=hauss.geneland.burnin)
+	dev.off() # We must close graphical device manually
+	# Map of estimated population membership
+	PosteriorMode(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, format="pdf", file=paste(hauss.geneland.path.mcmc,"/geneland-map.pdf", sep=""))
+	dev.off() # We must close graphical device manually
+	}
 # Prepare list to record values of Fst for all runs
 hauss.geneland.fstat <- list()
 # Estimate Fst
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  # F-statistics - Fis and Fst
-  hauss.geneland.fstat[[hauss.geneland.irun]] <- Fstat.output(coordinates=hauss.geneland.coord.utm, genotypes=hauss.geneland.data, burnin=hauss.geneland.burnin, ploidy=2, path.mcmc=hauss.geneland.path.mcmc)
-  }
-  # Print Fst output
-  hauss.geneland.fstat
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# F-statistics - Fis and Fst
+	hauss.geneland.fstat[[hauss.geneland.irun]] <- Fstat.output(coordinates=hauss.geneland.coord.utm, genotypes=hauss.geneland.data, burnin=hauss.geneland.burnin, ploidy=2, path.mcmc=hauss.geneland.path.mcmc)
+	}
+# Print Fst output
+hauss.geneland.fstat
 # MCMC inference under the admixture model
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
-  # On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows is complicated)
-  system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-  HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
-  }
-# Produce maps of respective inferred clusters  
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
+	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
+	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
+	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+	}
+# Produce maps of respective inferred clusters
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  # Maps - tesselations
-  PlotTessellation(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, path=hauss.geneland.path.mcmc)
-  for (hauss.geneland.irun.img in 1:hauss.geneland.maxpop) { dev.off() } # We must close graphical device manually
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# Maps - tesselations
+	PlotTessellation(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, printit=TRUE, path=hauss.geneland.path.mcmc)
+	for (hauss.geneland.irun.img in 1:hauss.geneland.maxpop) { dev.off() } # We must close graphical device manually
+	}
+# Estimate frequencies of null alleles
+hauss.geneland.fna <- list()
+for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	# Estimation
+	hauss.geneland.fna[[hauss.geneland.irun]] <- EstimateFreqNA(path.mcmc=hauss.geneland.path.mcmc)
+	}
+# See output
+hauss.geneland.fna
 # Calculate average posterior probability
 hauss.geneland.lpd <- rep(NA, hauss.geneland.nrun)
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-  hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-  hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,"log.posterior.density.txt",sep="")
-  hauss.geneland.lpd[hauss.geneland.irun] <- mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)])
-  }
+	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+	hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,"log.posterior.density.txt",sep="")
+	hauss.geneland.lpd[hauss.geneland.irun] <- mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)])
+	}
 # Sorts runs according to decreasing posterior probability - the first one is the best
 order(hauss.geneland.lpd, decreasing=TRUE)
 hauss.geneland.lpd
@@ -968,6 +1181,7 @@ library(sp)
 library(rworldmap) # Basic world maps
 library(TeachingDemos) # To be able to move text little bit
 library(RgoogleMaps) # Google and OpenStreetMaps
+library(mapplots) # Plot pie charts
 # Plot basic map with state boundaries within selected range
 plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=1.5)
 box() # Add frame around the map
@@ -983,12 +1197,49 @@ hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
 ?PlotOnStaticMap # See all options
+# Other option of adding points and labels
+hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite")
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
+# Google maps have their own internal scaling, adding of points by standard functions will not work correctly
+
+# Pie charts on a map
+# Prepare matrix with some data (exemplary distribution of haplotypes)
+hauss.pie <- cbind(c(20, 30, 15, 40, 10), c(30, 10, 25, 5, 45), c(10, 20, 20, 15, 5))
+rownames(hauss.pie) <- popNames(hauss.genpop) # Add row names according to populations
+colnames(hauss.pie) <- c("HapA", "HapB", "HapC") # Add column names according to data displayed
+class(hauss.pie) # Check it is matrix
+hauss.pie # See resulting matrix
+# Plot basic map with state boundaries within selected range
+plot(x=getMap(resolution="high"), xlim=c(20, 23), ylim=c(41, 42), asp=1, lwd=1.5)
+box() # Add frame around the map
+# Plot the pie charts
+for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other$xy[["lon"]])[L], y=as.vector(hauss.genpop@other$xy[["lat"]])[L], labels=names(hauss.pie[L,]), radius=0.1, col=topo.colors(3)) }
+?add.pie # See more options
+# Add population labels
+text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
+
+# Pie charts on Google map
+# Prepare list to store recalculated coordinates
+hauss.gmap2.coord <- list()
+# Calcualtion of coordinates to form required by Google Maps
+for (LC in 1:5) { hauss.gmap2.coord[[LC]] <- LatLon2XY.centered(MyMap=hauss.gmap2, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC], lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
+hauss.gmap2.coord # See result
+# Plot plain map
+PlotOnStaticMap(MyMap=hauss.gmap2)
+# Plot pie charts
+for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]$newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]), radius=25, col=topo.colors(n=3, alpha=0.7)) }
+# Alternative option to plot pie charts
+for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=2.5, alpha=0.5) ) }
+# Add population text labels
+PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
-library(maps) # Various maping tools (plotting, ...)
-library(mapdata) # More detailed maps, but political boundaries often outdatet, see http://cran.r-project.org/web/packages/mapdata/
+library(maps) # Various mapping tools (plotting, ...)
+library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/
 library(mapproj) # Converts latitude/longitude into projected coordinates
 # Plot a map, check parameters, among others projection and ?mapproject for its details
 map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE, col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
@@ -999,9 +1250,11 @@ points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=1
 library(maptools)
 # Load SHP file
 # Data from http://download.geofabrik.de/europe/macedonia.html
-# Directory has to contain also respective DBF and SHX files (same name, only different extension)
+# R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
+dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
+# Check correct import by plotting all layers
 macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
 plot(macedonia_building)
 macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
@@ -1014,13 +1267,16 @@ macedonia_roads <- readShapeLines(fn="macedonia_roads.shp")
 plot(macedonia_roads)
 macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
 plot(macedonia_waterways)
-# Plot all layers into single image
+# Plot all layers into single image, add more information
 plot(macedonia_building)
 plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
 plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
 plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
 plot(macedonia_roads, add=TRUE, col="orange")
 plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+# Add state boundaries
+plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=5, add=TRUE) # Or e.g.
+map(database="worldHires", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
 # Add sampling points
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
 # Add description of psampling points
@@ -1030,7 +1286,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 
 ## Structure
 
-# Inspiration: http://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
+# Inspiration: https://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
 # get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
 # Set working directory
@@ -1063,6 +1319,7 @@ Structure.deltaK("list_k.txt", 5)
 graphics.off() # Close graphics
 Structure.cluster("list_k.txt", 5)
 # Reordering ("alignment") of runs to get same clusters in same columns (prepare respective list_k files - one for each K)
+# Preparing data for CLUMPP
 Structure.order("list_k_02.txt", 5)
 Structure.order("list_k_03.txt", 5)
 Structure.order("list_k_04.txt", 5)
@@ -1087,37 +1344,80 @@ class(meles.mafft)
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
 meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+meles.clustal
+class(meles.clustal)
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
 
-# Plot the alignment - you can select which bases to plot and/or modify colours
+# Remove gaps from alignment - destroy it
+meles.nogaps <- del.gaps(meles.muscle)
+?del.gaps # See for details!
+
+# Plot the alignment - you can select which bases to plot and/or modify colors
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
 grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
-# Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle) # See ?del.gaps for details!
+
+# Align multiple genes
+# Create a list of DNAbin objects to process
+multialign <- list(meles.dna, usflu.dna, usflu.dna2, usflu.dna3)
+# See it
+multialign
+class(multialign)
+lapply(X=multialign, FUN=class)
+# Do the alignment
+multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+# See result
+multialign.aln
+multialign.aln[[1]]
+lapply(X=multialign.aln, FUN=class)
+# Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
+library(parallel)
+multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
+# mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
+# See result
+multialign.aln2
+lapply(X=multialign.aln2, FUN=class)
+?mclapply # See more options
+?clusterApply # See more options (parLapply should work on Windows)
 
 # Shortcut for plotting alignment
 image.DNAbin(x=meles.mafft)
 # Display aligned sequences with gaps
 image.DNAbin(x=usflu.dna)
+# Check the alignment
+checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
+checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE, plot=TRUE, what=1:4)
+?checkAlignment # See details
+# DNAbin can be techically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
+as.matrix.DNAbin()
+as.list.DNAbin()
+# Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
 
 # Delete all columns containing any gap
 library(ips)
 usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+usflu.dna.ng
 # See of settings of "nmax" value - threshold for gap deletion
 ?deleteGaps # "nmax=0" deletes all columns with any gap
+multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
+multialign.aln.ng
 # Do not confuse with function delete.gaps() from phyloch package
 # Display the result
 image.DNAbin(x=usflu.dna.ng)
-# Delete positions in alignment containing only missing data/N
-?deleteEmptyCells # See help page for details
+lapply(X=multialign.aln.ng, FUN=image.DNAbin)
+# Delete positions in alignment containing only missing data/N (rows as well as columns)
+?ips::deleteEmptyCells # See help page for details
+?phyloch::delete.empty.cells # See help page for details
+# Delete only empty columns/rows (usage as above)
+?ape::del.colgapsonly # See help page for details
+?ape::del.rowgapsonly # See help page for details
 
 ## Tree manipulations
 
 # Read trees in NEWICK format - single or multiple tree(s)
-oxalis.trees <- read.tree("https://soubory.trapa.cz/rcourse/oxalis.nwk")
+oxalis.trees <- read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
 summary(oxalis.trees)
 length(oxalis.trees)
 names(oxalis.trees)
@@ -1126,12 +1426,15 @@ write.tree(phy=oxalis.trees, file="trees.nwk")
 
 # Drop a tip from multiPhylo
 plot.multiPhylo(x=oxalis.trees)
-oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, "TaxaOut")
+# See tip labels
+oxalis.trees[[1]][["tip.label"]]
+oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, tip="O._callosa_S15")
 class(oxalis.trees.drop) <- "multiPhylo"
 plot.multiPhylo(x=oxalis.trees.drop)
 
 # Drop a tip
 plot.phylo(hauss.nj)
+hauss.nj[["tip.label"]]
 hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
 plot.phylo(hauss.nj.drop)
 
@@ -1167,6 +1470,7 @@ hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted, interactive=
 plot.phylo(hauss.nj.bind)
 
 # Rotate tree
+# plot.phylo plots tree in exact order as it is in the phylo object
 plot.phylo(hauss.nj)
 nodelabels()
 hauss.nj.rotated <- rotate(phy=hauss.nj, node="70")
@@ -1180,14 +1484,14 @@ plot.phylo(hauss.nj.ladderized)
 # Root the tree
 plot.phylo(hauss.nj)
 print.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it soemtimes doesn't work)
+hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
 print.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj.rooted)
 # Root the tree interactive
 plot.phylo(hauss.nj)
 hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
 plot.phylo(hauss.nj.rooted)
-# unroot the tree
+# Unroot the tree
 unroot()
 # Check if it is rooted
 is.rooted()
@@ -1198,7 +1502,7 @@ is.ultrametric()
 chronos()
 ?chronos # Check it for mode how to calculate the lengths
 
-# Compute branch lengths for trees withou branch lengths
+# Compute branch lengths for trees without branch lengths
 compute.brlen()
 ?compute.brlen # Check it for mode how to calculate the lengths
 
@@ -1217,11 +1521,11 @@ oxalis.trees.d <- matrix(nrow=length(oxalis.trees), ncol=length(oxalis.trees))
 
 # Calculate pairwise topographic distances
 for (i in 1:length(oxalis.trees)) {
-  for (j in i:length(oxalis.trees)) {
-    print(c(i,j))
-    oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]], oxalis.trees[[j]])
-   }
- }
+	for (j in i:length(oxalis.trees)) {
+		print(c(i,j))
+		oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]], oxalis.trees[[j]])
+		}
+	}
 
 # Basic information about the distance matrix
 dim(oxalis.trees.d)
@@ -1252,7 +1556,7 @@ corrplot(corr=oxalis.trees.d.rf, method="number", type="lower", add=TRUE, col=ra
 # Test if the distance matrix is Euclidean or not
 is.euclid(distmat=as.dist(oxalis.trees.d), plot=TRUE)
 # Calculate the PCoA
-oxalis.trees.pcoa <- dudi.pco(d=as.dist(oxalis.trees.d), scannf=TRUE, full=TRUE)
+oxalis.trees.pcoa <- dudi.pco(d=quasieuclid(as.dist(oxalis.trees.d)), scannf=TRUE, full=TRUE)
 # Plot PCoA
 s.label(dfxy=oxalis.trees.pcoa$li)
 # Add kernel densities
@@ -1260,14 +1564,14 @@ s.kde2d(dfxy=oxalis.trees.pcoa$li, cpoint=0, add.plot=TRUE)
 # Add histogram of eigenvalues
 add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
 # Add title to the plot
-title("\nPCoA of matrix of pairwise trees distances")
+title("PCoA of matrix of pairwise trees distances")
 # Alternative function to plot PCA plot
 scatter(x=oxalis.trees.pcoa, posieig="topleft")
 
 ## Seeing trees in the forest
 
 # Root all trees
-oxalis.trees.rooted <- lapply(X=oxalis.trees, FUN=root, "TaxaOut")
+oxalis.trees.rooted <- lapply(X=oxalis.trees, FUN=root, "O._fibrosa_S159", resolve.root=TRUE)
 class(oxalis.trees.rooted) <- "multiPhylo"
 # Consenus tree (50 % rule)
 oxalis.tree.con <- ape::consensus(oxalis.trees.rooted, p=0.5, check.labels=TRUE)
@@ -1289,19 +1593,40 @@ edgelabels(text=round(oxalis.tree.sp.mean[["edge.length"]], digits=2), frame="no
 axisPhylo(side=1)
 
 # Parsimony super tree
-library(phangorn)
-oxalis.tree.sp <- superTree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
+library(phytools)
+oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
 axisPhylo(side=1)
+?phangorn::superTree # Similar function
 
 # Density tree
-densiTree(x=oxalis.trees.ultra, type="cladogram", alpha=0.5, consensus=oxalis.tree.sp.mean, scaleX=TRUE, col=c("black", "green", "blue", "red"), cex=1.5)
+# Prepare list of trees to show
+hauss.nj.trees <- list(hauss.nj, hauss.nj.bruvo, hauss.nj.rooted)
+hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=compute.brlen)
+hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=chronos)
+class(hauss.nj.trees) <- "multiPhylo"
+# The trees should be (otherwise plotting works, but may be more ugly)...
+is.rooted.multiPhylo(hauss.nj.trees) # rooted,
+is.ultrametric.multiPhylo(hauss.nj.trees) # ultrametric and
+is.binary.multiPhylo(hauss.nj.trees) # binary bifurcating.
+# Plotting has various options, play with it
+phangorn::densiTree(x=hauss.nj.trees, direction="downwards", scaleX=TRUE, col=rainbow(3), width=5, cex=1.5)
+densiTree(x=hauss.nj.trees, direction="upwards", scaleX=TRUE, width=5)
+densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
+# Compare this option with similar on following slide
+?phangorn::densiTree
+?phytools::densityTree
+# Another version for comparing several trees
+phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
 
 # Networks
+library(phangorn)
 oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-plot.networx(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
-plot.networx(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
 
 # Plot all trees on same scale
 kronoviz(x=oxalis.trees.rooted, layout=length(oxalis.trees.rooted), horiz=TRUE)
@@ -1335,6 +1660,10 @@ tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]), sort(oxalis.tr
 cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean),  assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
 title("Comparing the trees\nParsimony super tree\tSpecies tree")
 legend("topleft", legend="Red lines\nconnect tips", text.col="red", cex=0.75, bty="n", x.intersp=-2, y.intersp=-2)
+# Alternative implementation
+oxalis.cophylo <- cophylo(tr1=oxalis.tree.sp, tr2=oxalis.tree.sp.mean, assoc=(cbind(sort(oxalis.tree.sp$tip.label), sort(oxalis.tree.sp$tip.label))), rotate=TRUE)
+plot.cophylo(x=oxalis.cophylo, lwd=2, link.type="curved")
+title("\nComparisson of species tree (left) and parsimony supertree (right)")
 
 ## More about plotting the trees
 ?plot.phylo # check it for various possibilities what to influence
@@ -1453,7 +1782,7 @@ plot.correlogramList(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.
 
 # Prepare toy data
 # Load MrBayes tree in NEXUS format
-apiaceae.tree <- read.nexus("https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
+apiaceae.tree <- read.nexus(file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
 # See it
 print.phylo(apiaceae.tree)
 plot.phylo(apiaceae.tree)
@@ -1497,11 +1826,12 @@ library(caper) # Load needed library
 data(shorebird) # Load training data
 ?shorebird.data
 shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
-summary(shorebird.pgls)
+summary(shorebird.pgls) # See the result
+# See the plot of observer and fitted values
 plot(shorebird.pgls)
 abline(a=0, b=1, col="red")
-anova(shorebird.pgls)
-AIC(shorebird.pgls)
+anova(shorebird.pgls) # ANOVA view of the model
+AIC(shorebird.pgls) # Akaike's information criterion (smaller = better)
 
 ## Generalized Estimating Equations
 
@@ -1536,10 +1866,10 @@ phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
 # phylosig() can be used as an alternative to phylosignal() - the functions are similar in basic usage
 
 # Examples of usage of GLS for testing of phylogenetic signal
-summary(gls(model=primates.longevity ~ 1, data=as.data.frame (primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
+summary(gls(model=primates.longevity ~ 1, data=as.data.frame(primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
 summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 
-## phylogenetic PCA
+## Phylogenetic PCA
 library(adephylo) # Library needed to create phylo4d object required by ppca
 # Calculate pPCA
 primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body, primates.longevity)), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
@@ -1557,6 +1887,7 @@ plot(primates.ppca)
 ## Ancestral state reconstruction
 
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
+library(ape)
 # See ?ace for possible settings
 primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=primates.tree))
 # See result - reconstructions are in $ace - to be plotted on nodes - 1st column are node numbers
@@ -1566,24 +1897,34 @@ primates.body.ace
 plot(primates.tree, lwd=2, cex=2)
 tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
 nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
+# ACE returns long numbers - truncate them by e.g. 
+round(x=..., digits=3) # "x" is vector with ACE values
 
+library(phytools)
 # More possibilities
 plot.phylo(primates.tree, lwd=2, cex=2)
-# ML estimation of a continuous trait, can compute confidence interval
+# ML estimation of a continuous trait, can compute confidence interval (used by some functions, see further)
 nodelabels(fastAnc(tree=primates.tree, x=primates.body))
 # ACE for Brownian evolution with directional trend
 plot.phylo(primates.tree, lwd=2, cex=2)
-nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=1000)$ace)
+nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=100000)$ace)
 # ACE for Brownian evolution using likelihood
 plot.phylo(primates.tree, lwd=2, cex=2)
-nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=1000, model="BM")$ace))
-# Bayesian ancestral character estimation (next slide)
-plot.phylo(primates.tree, lwd=2, cex=2)
-primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=1000) # Use more MCMC generations
+nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=100000, model="BM")$ace, digits=2), cex=1.5)
+
+# Bayesian ancestral character estimation
+primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=100000) # Use more MCMC generations
 primates.body.ace.bayes
-nodelabels(primates.body.ace.bayes[11,3:6])
-# ACE returns long numbers - truncate them by e.g.
-# round(x=..., digits=3) # "x" is vector with ACE values
+# Get end of ancestral states from Bayesian posterior distribution (it should converge to certain values)
+tail(primates.body.ace.bayes[["mcmc"]])
+primates.body.ace.bayes[["mcmc"]][1001,3:6]
+# Get means of ancestral states from Bayesian posterior distribution
+colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree$Nnode+length(primates.tree$tip.label))])
+# Plot the ancestral states from posterior distribution (it should converge to certain values)
+plot(primates.body.ace.bayes)
+# Plot the tree and reconstructed ancestral states
+plot.phylo(primates.tree, lwd=2, cex=2)
+nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
 # Another possibility for ancestral character reconstruction
 ?phangorn::ancestral.pml
 
@@ -1599,14 +1940,14 @@ plot(primates.contmap)
 
 library(adephylo)
 table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
 phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
 fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
 # 2 characters on 2 axis
-phylomorphospace(tree= primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
+phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
 # 3D (3rd character is fake here)
 # 3 characters it a rotating cube
-phylomorphospace3d(tree= primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body- primates.longevity)), label=TRUE)
+phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body-primates.longevity)), label=TRUE)
 # 2 characters on 2 axis
 fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
 # See manuals for more settings
@@ -1617,6 +1958,25 @@ fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primate
 ?contMap
 ?setMap
 ?par
+
+# Ploting traits on trees
+# Load training data to display
+data(shorebird, package="caper")
+# See information about the data
+?caper::shorebird
+# Load library
+library(phytools)
+# Prepare named vector of values to plot
+shorebird.toplot <- shorebird.data[["Egg.Mass"]]
+names(shorebird.toplot) <- rownames(shorebird.data)
+shorebird.toplot # See it
+# See options for plotting functions
+?plotTree.wBars
+?dotTree
+?plotSimmap
+# Plot the trees
+plotTree.wBars(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE)
+dotTree(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE, type="cladogram")
 
 ## Graphics
 # Output figure will be saved to the disk as OutputFile.png
@@ -1631,7 +1991,7 @@ dev.off() # Closes graphical device - needed after use of plotting functions png
 ?svg # Exact possibilities of all 3 functions vary from system to system
 ?pdf # according to graphical libraries available in the computer.
 
-## Install pacakges from GitHub
+## Install packages from GitHub
 # Needed library
 install.packages("devtools")
 library(devtools)
@@ -1643,9 +2003,9 @@ dev_mode(on=FALSE)
 
 ## Functions
 MyFunction <- function (x, y) {
-  # Any commands can be here...
-  x + y
-  }
+	# Any commands can be here...
+	x + y
+	}
 
 # Use as usually:
 MyFunction(5, 8)
@@ -1663,19 +2023,20 @@ for (i in 1:5) { print(i) }
 
 # In every step modify value of variable "X" (add 1 to previous value)
 X <- 0 # Set initial value
-for (i in 10:1) {
-  # Any commands can be here...
-  print("Loop turn") # Some message for user
-  print(i) # Print number of turn - note it is decreasing
-  X <- X+i # Rise value of "X" by current value of "i" (see previous line)
-  print(paste("Variable value:", X)) # Print current value of "X"
-  }
+for (i in 1:10) {
+	# Any commands can be here...
+	print("Loop turn") # Some message for user
+	print(i) # Print number of turn - note it is decreasing
+	X <- X+i # Rise value of "X" by current value of "i" (see previous line)
+	print(paste("Variable value:", X)) # Print current value of "X"
+	}
+for (i in 10:5) { print(i) } # Can be descending...
 
 # Work on each item of a list object
 # Print length of each sequence in nothofagus.sequences
 for (L in 1:length(nothofagus.sequences)) {
-  print(length(nothofagus.sequences[[L]]))
-  }
+	print(length(nothofagus.sequences[[L]]))
+	}
 
 # While loop - it is done while the condition is valid
 # While value of "Q" is < 5 (starting from 0), print it and add 1
@@ -1687,24 +2048,24 @@ XX <- seq(from=-3, to=6.5, by=0.1)
 XX
 YY <- c()
 for (II in 1:length(XX)) {
-  if(XX[II] <= 2) { # Executed for XX <= 2
-    YY[II] <- XX[II]^2
-    } else if(XX[II] > 2) { # Executed for XX > 2
-      YY[II] <- 6-XX[II]
-      }
-  }
+	if(XX[II] <= 2) { # Executed for XX <= 2
+		YY[II] <- XX[II]^2
+		} else if(XX[II] > 2) { # Executed for XX > 2
+			YY[II] <- 6-XX[II]
+			}
+	}
 YY
 plot(XX, YY) # See the result
 
 # Or (different possibility to get very same result)
 # Note "XX" is reused from the previous variant
 CC <- function(AA) {
-  if(AA <= 2) { # Executed for XX <= 2
-    BB <- AA^2
-  } else { # Executed for XX > 2
-    BB <- 6-AA
-    }
-  return(BB) # The output value
-  }
+	if(AA <= 2) { # Executed for XX <= 2
+		BB <- AA^2
+	} else { # Executed for XX > 2
+		BB <- 6-AA
+		}
+	return(BB) # The output value
+	}
 CC # Previously, "YY" contained values to plot made by the for loop, here "CC" contains function to by used by sapply() when plotting
 plot(sapply(XX, CC)) # See the result

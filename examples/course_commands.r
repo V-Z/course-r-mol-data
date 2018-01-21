@@ -63,15 +63,15 @@ options(repos=c("https://mirrors.nic.cz/R/", "https://bioconductor.statistik.tu-
 getOption("repos") # Shows actual repositories
 options() # Generic function to modify various settings
 ?options # Gives details
-# Install packages FIXME check packages
+# Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "MASS", "PBSmapping", "ParallelStructure", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "S4Vectors", "TeachingDemos", "XML", "XVector", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "muscle", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "BiocGenerics", "Biostrings", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "IRanges", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "muscle", "mvtnorm", "ncbit", "nlme", "numDeriv", "ParallelStructure", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "S4Vectors", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML", "XVector"), repos=getOption("repos"), dependencies=TRUE)
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 
 # Install packages without setting the repositories
 # If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
-install.packages(pkgs=c("MASS", "PBSmapping", "RandomFields", "RandomFieldsUtils", "RgoogleMaps", "Rmpi", "TeachingDemos", "XML", "ade4", "adegenet", "adephylo", "akima", "ape", "brew", "caper", "colorspace", "combinat", "corrplot", "fields", "geiger", "ggplot2", "gplots", "hierfstat", "lattice", "mapdata", "mapproj", "maps", "maptools", "mvtnorm", "nlme", "pegas", "permute", "phangorn", "phylobase", "phytools", "picante", "plotrix", "polysat", "poppr", "rworldmap", "seqinr", "shiny", "sos", "sp", "spdep", "spam", "vegan"), dependencies=TRUE)
+install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "mvtnorm", "ncbit", "nlme", "numDeriv", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML"))
 update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 
 # Install package phyloch not available in any repository
@@ -80,7 +80,7 @@ install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
 
-# Install package Geneland (since version 4 not availble in CRAN anymore)
+# Install package Geneland (since version 4 not available in CRAN anymore)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
 # Other packages used when using Geneland
@@ -89,7 +89,7 @@ install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.
 # RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools (requires rgeos and sp), shapefiles (requires foreign) and tripack on GIS layer
 install.packages(pkgs=c("PBSmapping", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgdal", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
 
-# We will load packages by library(package) one by one when needed and plugins\ldots
+# We will load packages by library(package) one by one when needed and plugins...
 
 # Standard installation
 install.pacakges(c("adegenet", "poppr", "phytools"))
@@ -105,9 +105,9 @@ source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
 ?biocLite
 # Install package(s)
-biocLite(c("Biostrings", "seqinr"))
+biocLite(c("Biostrings", "muscle"))
 # Install Bioconductor packages used during the course
-biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "S4Vectors", "XVector", "muscle"))
+biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "muscle", "S4Vectors", "XVector"), ask=FALSE)
 biocLite() # Update Bioconductor packages
 # Upgrades installed Bioconductor packages to new R release (e.g. from 3.3 to 3.4)
 biocLite("BiocUpgrade")
@@ -134,7 +134,7 @@ data(shorebird, package="caper")
 # Optional method (load respective library and then data)
 library(caper) # Library containing (among others) desired data
 data(shorebird) # Loading the data
-# See content of the dataset
+# See content of the data set
 ?shorebird # Or
 ?caper::shorebird
 # R training data we will use during the course
@@ -179,7 +179,7 @@ hauss.loci.cor <- genind2loci(hauss.genind.cor)
 # Writes loci file to the disk
 write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t", allele.sep="/")
 
-# Read datasets from various software
+# Read data sets from various software
 read.genalex() # poppr - reads *.csv file
 read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
 read.genetix() # adegenet - reads *.gtx files, only haploid/diploid data
@@ -260,7 +260,7 @@ read.nexus.data(file="sequences.nex")
 meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
 meles.dna
 class(meles.dna)
-# Converts DNAbin to genind - extracts SNP - for large datasets can be computationally very intensive
+# Converts DNAbin to genind - extracts SNP - for large data sets can be computationally very intensive
 meles.genind <- DNAbin2genind(meles.dna)
 meles.genind # Check it
 
@@ -426,12 +426,12 @@ hauss.summ
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
-# Bartlett's K-squared of difference between observed and expected heterozygosity - not significant
+# Bartlett's K-squared test of difference between observed and expected heterozygosity - not significant
 bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
 # T-test of difference between observed and expected heterozygosity - strongly significant
 t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=TRUE)
 # Create pane with some information
-par(mfrow=c(2,2)) # Divide graphical devices into 4 smaller spaces
+par(mfrow=c(2, 2)) # Divide graphical devices into 4 smaller spaces
 # Plot alleles number vs. population sizes
 plot(x=hauss.summ$n.by.pop, y=hauss.summ$pop.nall, xlab="Populations sample size", ylab="Number of alleles", main="Alleles numbers and sample sizes", col="red", pch=20)
 # Add text description to the point
@@ -658,7 +658,7 @@ amara.jac
 # Visualize pairwise genetic similarities
 # table.paint() requires data frame, dist can't be directly converted to DF
 table.paint(df=as.data.frame(as.matrix(usflu.dist)), cleg=0, clabel.row=0.5, clabel.col=0.5)
-# Same visualization, coloured
+# Same visualization, colored
 # heatmap() reorders values
 heatmap(x=as.matrix(usflu.dist), Rowv=NA, Colv=NA, symm=TRUE)
 # Another possibility is to use function corrplot() from package corrplot
@@ -789,10 +789,10 @@ usflu.tree <- nj(X=usflu.dist)
 plot.phylo(x=usflu.tree, type="unrooted", show.tip=FALSE)
 title("Unrooted NJ tree")
 # Coloured tips
-usflu.pal <- colorRampPalette(topo.colors(length(levels(as.factor(usflu.annot$year)))))
+usflu.pal <- colorRampPalette(topo.colors(length(levels(as.factor(usflu.annot[["year"]])))))
 # Tip labels
 tiplabels(text=usflu.annot$year, bg=num2col(usflu.annot$year, col.pal=usflu.pal), cex=0.75)
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="bottomright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Root the tree - "outgroup" is name of accession (in quotation marks) or number (position within phy object)
@@ -804,7 +804,7 @@ title("Rooted NJ tree")
 tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
 # Add axis with phylogenetic distance
 axisPhylo()
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Bootstrap rooted tree
@@ -815,7 +815,7 @@ plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("NJ tree + bootstrap values")
 tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot$year, col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
 axisPhylo()
-# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colours from colour scale
+# Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
 legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 # Plots bootstrap support - note usflu.boot contains raw numbers - transform it into percent
 nodelabels(text=round(usflu.boot/10), cex=0.75)
@@ -853,7 +853,7 @@ s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 # To plot different axes use for example "...dfxy=hauss.pcoa$li[c(2, 3)]..."
 # Add kernel density
 s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
-# Adds histogram of Eigenvalues
+# Add histogram of Eigenvalues
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
 
 # Colored display according to populations
@@ -967,7 +967,7 @@ abline(h=0, v=0, col="grey")
 add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio=0.3)
 # Calculate phylogenetic tree
 usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
-# Plot coloured phylogenetic tree
+# Plot colored phylogenetic tree
 plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
 tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
 title("NJ tree of the US influenza data")
@@ -1060,6 +1060,10 @@ plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", 
 points(hauss.genpop$other$xy, cex=2.5, pch=20, col="red")
 text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=popNames(hauss.genpop), cex=3)
 legend("bottomright", leg="Genetic boundaries\namong populations")
+# For plotting see
+?points
+?text
+?legend
 
 ## Mantel test - isolation by distance
 # Geographical distance
@@ -1234,8 +1238,8 @@ PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
-library(maps) # Various maping tools (plotting, ...)
-library(mapdata) # More detailed maps, but political boundaries often outdatet, see http://cran.r-project.org/web/packages/mapdata/
+library(maps) # Various mapping tools (plotting, ...)
+library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/
 library(mapproj) # Converts latitude/longitude into projected coordinates
 # Plot a map, check parameters, among others projection and ?mapproject for its details
 map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE, col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
@@ -1246,7 +1250,7 @@ points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=1
 library(maptools)
 # Load SHP file
 # Data from http://download.geofabrik.de/europe/macedonia.html
-# R working directory has to contain also respective DBF and SHX files (same name, only different extension)
+# R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
 dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
@@ -1350,7 +1354,7 @@ class(meles.muscle)
 meles.nogaps <- del.gaps(meles.muscle)
 ?del.gaps # See for details!
 
-# Plot the alignment - you can select which bases to plot and/or modify colours
+# Plot the alignment - you can select which bases to plot and/or modify colors
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Add grey dotted grid
 grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
@@ -1480,7 +1484,7 @@ plot.phylo(hauss.nj.ladderized)
 # Root the tree
 plot.phylo(hauss.nj)
 print.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it soemtimes doesn't work)
+hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
 print.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj.rooted)
 # Root the tree interactive
@@ -1498,7 +1502,7 @@ is.ultrametric()
 chronos()
 ?chronos # Check it for mode how to calculate the lengths
 
-# Compute branch lengths for trees withou branch lengths
+# Compute branch lengths for trees without branch lengths
 compute.brlen()
 ?compute.brlen # Check it for mode how to calculate the lengths
 
@@ -1846,16 +1850,16 @@ compar.gee(formula=primates.longevity ~ primates.body, phy=primates.tree)
 compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(value=1, phy=primates.tree, fixed=TRUE))
 # for corStruct there are similar functions corBlomberg, corMartins, corPagel, corBrownian - see manuals for differences
 
-# # multiple phylogenetic regressions and residuals
+# # TODO multiple phylogenetic regressions and residuals
 # # x can be matrix of data
 # phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
 # phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
 
-# # Ornstein-Uhlenbeck Model
+# # TODO Ornstein-Uhlenbeck Model
 # # Simulation of evolution on phylogenetic tree
 # compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
 
-# ## Variance Partitioning
+# ## TODO Variance Partitioning
 # # vare: the estimated residual variance–covariance matrix;
 # # vara: the estimated additive effect variance–covariance matrix;
 # # u: the estimates of the phylogeny wide means;
@@ -1866,7 +1870,7 @@ compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(valu
 # apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
 # mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
 
-# # when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
+# # TODO when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
 # # http://evolution.gs.washington.edu/phylip.html
 # primates.varcomp <- varCompPhylip(x=cbind(primates.body, primates.longevity), phy=primates.tree, exec="~/bin/phylip/exe/contrast")
 # mantel.test(m1=primates.varcomp$varA, m2=primates.varcomp$varE, nperm=1000, graph=TRUE, alternative="two.sided")
@@ -1991,18 +1995,27 @@ fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primate
 ?setMap
 ?par
 
-# # TODO Ploting traits on trees
-# # Load training data to display
-# data(shorebird, package="caper")
-# # See information about the data
-# ?caper::shorebird
-# # Load library
-# library(phytools)
-# ?plotTree.wBars
+# Ploting traits on trees
+# Load training data to display
+data(shorebird, package="caper")
+# See information about the data
+?caper::shorebird
+# Load library
+library(phytools)
+# Prepare named vector of values to plot
+shorebird.toplot <- shorebird.data[["Egg.Mass"]]
+names(shorebird.toplot) <- rownames(shorebird.data)
+shorebird.toplot # See it
+# See options for plotting functions
+?plotTree.wBars
+?dotTree
+?plotSimmap
+# Plot the trees
+plotTree.wBars(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE)
+dotTree(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE, type="cladogram")
 
 
-
-# ## Disparity-through-time
+# ## TODO Disparity-through-time
 # disparity(phy=primates.tree, data=primates.body)
 # dtt(phy=primates.tree, data=primates.body, nsim=1000)
 # # lineage-through-time plot
@@ -2021,7 +2034,7 @@ dev.off() # Closes graphical device - needed after use of plotting functions png
 ?svg # Exact possibilities of all 3 functions vary from system to system
 ?pdf # according to graphical libraries available in the computer.
 
-## Install pacakges from GitHub
+## Install packages from GitHub
 # Needed library
 install.packages("devtools")
 library(devtools)
@@ -2101,6 +2114,7 @@ CC # Previously, "YY" contained values to plot made by the for loop, here "CC" c
 plot(sapply(XX, CC)) # See the result
 
 ################################################################################
+# TODO more topics
 
 ## RAxML
 meles.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
@@ -2118,7 +2132,7 @@ summary(polysattest)
 Loci(polysattest) # Information about loci
 class(polysattest)
 # Add information missing in input data file
-Description(polysattest) <- "Dataset for the tutorial" # Description of dataset
+Description(polysattest) <- "Dataset for the tutorial" # Description of data set
 PopNames(polysattest) <- c("PopA", "PopB", "PopC") # Population names
 PopInfo(polysattest) <- rep(x=1:3, each=100) # Which individuals belong to which population
 PopInfo(polysattest) # Which individuals belong to which population
