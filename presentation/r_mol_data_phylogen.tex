@@ -1154,7 +1154,7 @@
     # Use with caution! It modifies original data!
     hauss.genind.cor <- missingno(pop=hauss.genind, type="mean",
       cutoff=0.1, quiet=FALSE)
-    ?missing # See other options of handling missing data
+    ?missingno # See other options of handling missing data
     # Convert corrected genind to loci
     hauss.loci.cor <- genind2loci(hauss.genind.cor)
     # Writes loci file to the disk
@@ -1480,7 +1480,8 @@
     ape::GC.content(x=meles.dna)
     # Number of times any dimer/trimer/etc oligomers occur in a sequence
     # Note: count() requires single sequence as DNAbin/character
-    seqinr::count(seq=meles.nogaps[["KJ161328.1"]], wordsize=3)
+    seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]),
+      wordsize=3)
     # View sequences - all must be of the same length
     image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
     # Function "image" requires as input matrix
@@ -1985,15 +1986,20 @@
 
 \begin{frame}[fragile]{F-statistics for mixed ploidy data}
   \begin{spluscode}
+    # stamppFst requires population factor in genlight (here, population
+    # code consists of first three letters of individual's name)
+    indNames(arabidopsis.genlight)
+    pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
+      start=1, stop=3)
+    # Check it
+    pop(arabidopsis.genlight)
+    popNames(arabidopsis.genlight)
     arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight,
       nboots=100, percent=95, nclusters=1)
     # For large data use higher nclusters to parallelize calculations
-    # See method details
-    ?StAMPP::stamppFst
-    # Matrix of Fst among populations
-    arabidopsis.fst[["Fsts"]]
-    # Matrix of P values
-    arabidopsis.fst[["Pvalues"]]
+    ?StAMPP::stamppFst # See method details
+    arabidopsis.fst[["Fsts"]] # Matrix of Fst among populations
+    arabidopsis.fst[["Pvalues"]] # Matrix of P values
   \end{spluscode}
   \begin{itemize}
     \item Methods from StAMPP package (the same is the case for any method working somehow with distances) are sensitive to missing data\ldots
@@ -2256,14 +2262,7 @@
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets I}
   \begin{spluscode}
     library(StAMPP) # Load required library
-    # stamppNeisD requires population factor in genlight (here, population
-    # code consists of first three letters of individual's name)
-    indNames(arabidopsis.genlight)
-    pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
-      start=1, stop=3)
-    # Check it
-    pop(arabidopsis.genlight)
-    popNames(arabidopsis.genlight)
+    # stamppNeisD requires population factor in genlight
     # Nei's 1972 distance between individuals
     # (use pop=TRUE to calculate among populations)
     arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
@@ -2273,15 +2272,15 @@
     class(arabidopsis.dist)
     # The same on population level
     arabidopsis.dist.pop <- stamppNeisD(geno=arabidopsis.genlight, pop=TRUE)
+    # Check it
+    head(arabidopsis.dist.pop)
+    dim(arabidopsis.dist.pop)
+    class(arabidopsis.dist.pop)
   \end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets II}
   \begin{spluscode}
-    # Check it (from previous slide)
-    head(arabidopsis.dist.pop)
-    dim(arabidopsis.dist.pop)
-    class(arabidopsis.dist.pop)
     # Export the distance matrix as Phylip format for usage in
     # external software (e.g. SplitsTree)
     stamppPhylip(distance.mat=arabidopsis.dist, file="arabidopsis_dist.txt")
@@ -2294,7 +2293,7 @@
     class(arabidopsis.genomat)
   \end{spluscode}
   \begin{itemize}
-    \item If there are plenty of missing data and/or the distance is far from being Euclidean, it will not work very well\ldots
+    \item If there are plenty of missing data and/or the distance is far from being Euclidean, it will not work very well\ldots{ } --- sanitize missing data prior calculating distance (e.g. using \texttt{poppr::missingno})
     \item Always check created distances
   \end{itemize}
 \end{frame}
@@ -3802,7 +3801,7 @@
     # Alternative option to plot pie charts
     for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]
       $newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30,
-      col=heat.colors(n=2.5, alpha=0.5) ) }
+      col=heat.colors(n=3, alpha=0.5) ) }
   \end{spluscode}
 \end{frame}
 
