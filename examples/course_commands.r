@@ -79,10 +79,14 @@ update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+# If above command fails on Windows, try
+install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+# If above command fails on Windows, try
+install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelisation snow and Rmpi
@@ -692,6 +696,7 @@ abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), co
 # From package pegas (doesn't directly show percentage of variance)
 hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
+# See results
 hauss.amova
 # For more complicated hierarchy
 ?poppr::poppr.amova
@@ -1025,8 +1030,10 @@ screeplot.spca(x=hauss.spca, main=NULL)
 
 # Test if global/local structure is significant
 hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+hauss.spca.glo
 plot(hauss.spca.glo)
 hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+hauss.spca.loc
 plot(hauss.spca.loc)
 
 # Map of genetic clines

@@ -181,6 +181,20 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Think before you type (and hit Enter)\ldots}
+  \begin{itemize}
+    \item Commands from file \texttt{course\_commands.r} can be mostly directly launched without editing them, but before you do so\ldots
+    \begin{enumerate}
+      \item Read the command and all comments around, do not blindy launch it
+      \item Ensure you understand, what is \textbf{aim} of the command (what it is supposed to do)
+      \item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
+      \item Ensure you understand \textbf{syntax} of the command (what it technically does)
+    \end{enumerate}
+    \item Some commands from \texttt{course\_commands.r} \textit{do require} to be edited according to particular user's computer --- it is described in the comments around the command
+    \item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindy repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{What we will and what we will not do\ldots}
   \begin{multicols}{2}
     \textbf{We will go through\ldots}
@@ -212,7 +226,7 @@
 
 \section{R}
 
-\begin{frame}{The R}
+\begin{frame}{The R}{Basic introduction to work with R, installation of all required software}
   \tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 \end{frame}
 
@@ -241,14 +255,22 @@
 \end{frame}
 
 \begin{frame}{RKWard}
+  \includegraphics[width=\textwidth]{rkward.jpg}
+\end{frame}
+
+\begin{frame}{When using RKWard, consider change of settings of text editor for more comfortable work}
   \begin{center}
-    \includegraphics[width=\textwidth]{rkward.jpg}
+    \includegraphics[width=\textwidth-0.25cm]{rkward_settings.png}
   \end{center}
 \end{frame}
 
 \begin{frame}{RStudio}
+  \includegraphics[width=\textwidth]{rstudio.jpg}
+\end{frame}
+
+\begin{frame}{When using RStudio, turn on soft line wrap, select Czech mirror to download packages and consider change of appearance for more comfortable work}
   \begin{center}
-    \includegraphics[width=\textwidth]{rstudio.jpg}
+    \includegraphics[width=\textwidth-1.5cm]{rstudio_settings.png}
   \end{center}
 \end{frame}
 
@@ -315,7 +337,7 @@
 \begin{frame}{Important note about names of directories}
   \begin{itemize}
     \item \alert{There must not be any spaces or accented characters in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution)
-    \item If the user has e.g. on Windows path like \texttt{C:\textbackslash Documents and Settings\textbackslash Šíleně úpějící koníček\textbackslash R kurzíček}, change it to something like \texttt{C:\textbackslash Users\textbackslash username\textbackslash rcourse}, otherwise user can experience a~lot of problems
+    \item If the user has e.g. on Windows path like \texttt{C:/Documents and Settings/Šíleně úpějící koníček/R kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems
     \item It might be required to make a~new user on the computer\ldots
     \item Similarly on Mac OS~X and Linux, avoid directory names with spaces and accented characters
   \end{itemize}
@@ -417,7 +439,7 @@
     \item \alert{Set and check working directory} in R:
   \end{itemize}
   \begin{spluscode}
-    setwd("/some/path/") # Or "~/...". In Windows "C:\..."
+    setwd("/some/path/") # Or "~/...". In Windows "C:/..."
     getwd() # Verifies where we are
     dir() # Lists files and folders on the disk
     ls() # Lists currently available R objects
@@ -608,6 +630,7 @@
     load("test.RData") # Loads saved R environment with all objects
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
+    fix(x) # Use to edit matrices, data frames, functions, ...
   \end{spluscode}
 \end{frame}
 
@@ -719,6 +742,9 @@
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/
       phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+    # If above command fails on Windows, try
+    install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip",
+      repos=NULL)
   \end{spluscode}
 \end{frame}
 
@@ -727,13 +753,15 @@
   \begin{itemize}
     \item Check \url{https://www2.imm.dtu.dk/~gigu/Geneland/} and \href{https://www2.imm.dtu.dk/~gigu/Geneland/Geneland-Doc.pdf}{manual}
     \item Since version 4, Geneland is not available in CRAN anymore
-    \item Will be used from slide~\ref{GenelandUse}
   \end{itemize}
   \begin{spluscode}
     # Install package Geneland (since version 4 not available in CRAN)
     # It is possible to specify direct path to package source
     install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/
       Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+    # If above command fails on Windows, try
+    install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/
+      Geneland_4.0.8.zip", repos=NULL)
     # Other packages used when using Geneland
     # Needed is PBSmapping or mapproj for conversion of coordinates
     # GUI uses for parallelisation snow and Rmpi
@@ -1030,6 +1058,64 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Examples of data and formats I --- AFLP (presence/absence) gel and microsatellites from sequencing machine}
+  \includegraphics[width=\textwidth]{aflp_ssrs.png}
+\end{frame}
+
+\begin{frame}{Examples of data and formats II --- Aligned DNA sequences displayed in Geneious}
+  \includegraphics[width=\textwidth]{alignment_geneious.png}
+\end{frame}
+
+\begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences in text view}
+  \begin{spluscode}
+    > CY013200
+    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttcccctagtgaaaaca
+    ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgatcacgaatgat
+    > CY013781
+    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttccccaaattgaagtg
+    ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgactaatgctact
+    ... # FASTA continues...
+    @7001425F:141:CAV4JANXX:3:1104:1496:1976 1:N:0:GTGTCC
+    NCGATTCATTTTAGCAATTAGACGTGAAGGTCTCTTGATGAAAGACACTAACGAACTCTTTCCTTGGACACC
+    +
+    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    @7001425F:141:CAV4JANXX:3:1104:1250:1987 1:N:0:GTGTCC
+    TCGATTCACTGAACTGAATGTCCGACAAACTTTAGTTTGTCGTTTCTACCTCACCAAAGTTCGGAGCTTCGA
+    +
+    BBBBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    ... # FASTQ continues...
+  \end{spluscode}
+\end{frame}
+
+\begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It containst Illumina short reads mapped to reference}
+  \includegraphics[width=\textwidth]{bam_igv.png}
+\end{frame}
+
+\begin{frame}{Examples of data and formats V --- VCF with multiple samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
+  \includegraphics[width=\textwidth]{vcf_igv.png}
+\end{frame}
+
+\begin{frame}[fragile]{Examples of data and formats VI --- Parts of VCF in text view}
+  \begin{spluscode}
+    ... # Header
+    ##ALT=<ID=NON_REF,Description="Represents any possible alternative al...
+    ##FILTER=<ID=DP_4,Description="DP < 4">
+    ... # Information about data stored
+    ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in geno...
+    ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for ...
+    ... # Information about chromosomes etc.
+    ##contig=<ID=scaffold_1,length=33132539>
+    ##contig=<ID=scaffold_2,length=19320864>
+    ... # The data (variants of nucleotides)
+    #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMA...
+    scaffold_4      22846289        .       C       A       91.52   PASS ...
+    scaffold_4      22846291        .       C       T       325.58  PASS ...
+    ...AC=1;AF=1.057e-03;AN=946;BaseQRankSum=0.825;ClippingRankSum=0.118;...
+    ...DP=4046;ExcessHet=3.0302;FS=0.000;InbreedingCoeff=-0.0096;MQ=79.24...
+    ... # More data...
+  \end{spluscode}
+\end{frame}
+
 \begin{frame}[allowframebreaks]{Notes about paths to import the data}
   \label{path}
   \begin{itemize}
@@ -1038,7 +1124,7 @@
     \item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
     \item Local paths (within one computer) can be absolute or relative
     \begin{itemize}
-      \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:\textbackslash} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+      \item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:/} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
       \item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
       \begin{itemize}
 	\item In the easiest case the input file is in same directory as is R's working directory --- verify by \texttt{getwd()} and \texttt{dir()} --- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
@@ -1668,6 +1754,26 @@
     write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # In NEWICK
     write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # In NEXUS
   \end{spluscode}
+\end{frame}
+
+\subsection{}
+
+\begin{frame}{Import your data}
+  \begin{block}{Tasks}
+    \begin{enumerate}
+      \item Prior to import into R, \alert{ensure your data are correct} --- same decimal separator everywhere, consistent structure of CSV/TSV, no syntactic problems in FASTA/NEXUS/NEWICK,~\ldots
+      \item Import some of your data into R
+      \begin{itemize}
+	\item Be inspired by previous slides --- edit commands to fit your needs and process your data
+	\item R is extremely flexible, but not everything is figured out within one minute\ldots
+      \end{itemize}
+      \item \textbf{Check your data after import} to ensure they were correctly read
+    \end{enumerate}
+  \end{block}
+  \begin{itemize}
+    \item Upcoming chapters can serve like inspiration (not exhaustive) how to process your data in R, what is possible to do with them\ldots
+    \item Previous examples are not covering all possibilities\ldots
+  \end{itemize}
 \end{frame}
 
 \section{Basic analysis}
@@ -2426,14 +2532,25 @@
   \vfill
 \end{frame}
 
-\subsection{AMOVA} % TODO get percentage of variability
+\subsection{AMOVA}
 
-\begin{frame}[fragile]{AMOVA}
+\begin{frame}{AMOVA I}
+  \begin{itemize}
+    \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+    \item Some implementations can partition variance into various levels
+    \item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
+    \item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
+    \item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
+    \item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{AMOVA II}
   \begin{spluscode}
-    # From package pegas (doesn't directly show percentage of variance)
     hauss.pop <- pop(hauss.genind)
     hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
       nperm=1000, is.squared=TRUE)
+    # See results
     hauss.amova
     ...
                     SSD      MSD df
@@ -2441,13 +2558,12 @@
     Error     119.58100 2.847167 42
     Total     150.30023 3.267396 46
     ...
+    Variance components:
+               sigma2 P.value
+    hauss.pop 0.55738       0 # From here we can calculate the percentage
+    Error     2.84717
+    ...
   \end{spluscode}
-  \begin{itemize}
-    \item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
-%     \item See \texttt{MSD} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from \texttt{Total}
-    \item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
-    \item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
-  \end{itemize}
 \end{frame}
 
 \subsection{MSN}
@@ -2766,6 +2882,23 @@
 
 \begin{frame}{PCoA --- Bruvo and colorplot}
   \includegraphics[width=\textwidth]{pcoa-dalsi.png}
+\end{frame}
+
+\subsection{}
+
+\begin{frame}{Process more data}{Not all combinations and possibilities were showen\ldots}
+  \begin{block}{Tasks}
+    \begin{enumerate}
+      \item Most of examples were showen with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
+      \item Try some of the introduced analyses with your own custom imported data
+    \end{enumerate}
+  \end{block}
+  \begin{itemize}
+    \item Of course, following chapters will show more possible analyses\ldots
+    \item Previous examples are not covering all possibilities\ldots
+    \item It is crucial to be able to edit the introduced commands to be able to handle your data
+    \item Check help pages of the functions for more options what to do with your data
+  \end{itemize}
 \end{frame}
 
 \section{DAPC}
@@ -3188,9 +3321,11 @@
   \begin{spluscode}
     hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw,
       nperm=999)
+    hauss.spca.glo
     plot(hauss.spca.glo)
     hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw,
       nperm=999)
+    hauss.spca.loc
     plot(hauss.spca.loc)
   \end{spluscode}
   \vfill
@@ -5619,6 +5754,24 @@
   \includegraphics[width=\textwidth]{treeval.png}
 \end{frame}
 
+\section{}
+
+\begin{frame}{Process more data}{Not all combinations and possibilities were showen\ldots}
+  \begin{block}{Tasks}
+    \begin{enumerate}
+      \item Try to do some analyses with another introduced toy data
+      \item Try some of the introduced analyses with your own custom imported data
+    \end{enumerate}
+  \end{block}
+  \begin{itemize}
+    \item Working code can be easily recycled to process another data in similar way
+    \item R is always moving forward --- new and new options are arising --- be opened for news and search them on the Internet
+    \item Previous examples are not covering all possibilities\ldots
+    \item It is crucial to be able to edit the introduced commands to be able to handle your data
+    \item Check help pages of the functions for more options what to do with your data
+  \end{itemize}
+\end{frame}
+
 \section{The end}
 
 \begin{frame}{Final topics}{General remarks about graphics, introduction to scripting, documentation and help resources, overview of packages}
@@ -6208,7 +6361,8 @@
 % http://popgen.nescent.org/
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/
-% http://www.phytools.org/eqg2015/asr.html
+% http://www.phytools.org/eqg2015/
+% http://www.phytools.org/Cordoba2017/
 % https://www.molecularecologist.com/2017/02/phylogenetic-trees-in-r-using-ggtree/
 % https://www.molecularecologist.com/2016/07/making-maps-in-r-volume-2-ggplots/
 % https://www.molecularecologist.com/2016/03/geographical-heat-maps-in-r/
