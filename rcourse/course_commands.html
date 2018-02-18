@@ -90,10 +90,14 @@ y<b>$</b>B <b><span style='color:#54ffff;'># Gets variable B of data frame y ($ 
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;ape&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;colorspace&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;XML&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>dependencies=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
 <b><span style='color:#54ffff;'># It is possible to specify direct path (local or web URL) to package source</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#ff54ff;'>&quot;http://www.christophheibl.de/phyloch_1.5-3.tar.gz&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;source&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># If above command fails on Windows, try</span></b>
+<b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#54ff54;'>pkgs=</span></b><b><span style='color:#ff54ff;'>&quot;http://www.christophheibl.de/phyloch_1.5-3.zip&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#00ff00;'>NULL</span></b><b>)</b>
 
 <b><span style='color:#54ffff;'># Install package Geneland (since version 4 not available in CRAN anymore)</span></b>
 <b><span style='color:#54ffff;'># It is possible to specify direct path (local or web URL) to package source</span></b>
 <b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;source&quot;</span></b><b>)</b>
+<b><span style='color:#54ffff;'># If above command fails on Windows, try</span></b>
+<b><span style='color:#dede49;'>install.packages</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.zip&quot;</span></b>, <b><span style='color:#54ff54;'>repos=</span></b><b><span style='color:#00ff00;'>NULL</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Other packages used when using Geneland</span></b>
 <b><span style='color:#54ffff;'># Needed is PBSmapping or mapproj for conversion of coordinates</span></b>
 <b><span style='color:#54ffff;'># GUI uses for parallelisation snow and Rmpi</span></b>
@@ -183,7 +187,7 @@ hauss.genpop
 
 <b><span style='color:#54ffff;'># Removes missing data - see ?missingno for types of dealing with them</span></b>
 hauss.genind.cor <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>missingno</span></b><b>(</b><b><span style='color:#54ff54;'>pop=</span></b>hauss.genind, <b><span style='color:#54ff54;'>type=</span></b><b><span style='color:#ff54ff;'>&quot;mean&quot;</span></b>, <b><span style='color:#54ff54;'>cutoff=</span></b><b><span style='color:#ff54ff;'>0.1</span></b>, <b><span style='color:#54ff54;'>quiet=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b> <b><span style='color:#54ffff;'># Use with caution! It modifies original data!</span></b>
-?missing <b><span style='color:#54ffff;'># See other options of handling missing data</span></b>
+?missingno <b><span style='color:#54ffff;'># See other options of handling missing data</span></b>
 <b><span style='color:#54ffff;'># Convert corrected genind to loci</span></b>
 hauss.loci.cor <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>genind2loci</span></b><b>(</b>hauss.genind.cor<b>)</b>
 
@@ -328,7 +332,7 @@ ape<b>::</b><b><span style='color:#dede49;'>base.freq</span></b><b>(</b><b><span
 <b><span style='color:#54ffff;'># GC content</span></b>
 ape<b>::</b><b><span style='color:#dede49;'>GC.content</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>meles.dna<b>)</b>
 <b><span style='color:#54ffff;'># Number of times any dimer/trimer/etc oligomers occur in a sequence</span></b>
-seqinr<b>::</b><b><span style='color:#dede49;'>count</span></b><b>(</b><b><span style='color:#54ff54;'>seq=</span></b>meles.nogaps<b>[[</b><b><span style='color:#ff54ff;'>&quot;KJ161328.1&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>wordsize=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
+seqinr<b>::</b><b><span style='color:#dede49;'>count</span></b><b>(</b><b><span style='color:#54ff54;'>seq=</span></b><b><span style='color:#dede49;'>as.character.DNAbin</span></b><b>(</b>meles.dna<b>[[</b><b><span style='color:#ff54ff;'>&quot;KJ161328.1&quot;</span></b><b>]])</b>, <b><span style='color:#54ff54;'>wordsize=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
 <b><span style='color:#54ffff;'># View sequences - all must be of the same length</span></b>
 <b><span style='color:#dede49;'>image</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>usflu.dna, <b><span style='color:#dede49;'>c</span></b><b>(</b><b><span style='color:#ff54ff;'>&quot;a&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;t&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;c&quot;</span></b> ,<b><span style='color:#ff54ff;'>&quot;g&quot;</span></b>, <b><span style='color:#ff54ff;'>&quot;n&quot;</span></b><b>)</b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>rainbow</span></b><b>(</b><b><span style='color:#ff54ff;'>5</span></b><b>))</b>
 <b><span style='color:#54ffff;'># Function &quot;image&quot; requires as input matrix, so that sequences must be of same length</span></b>
@@ -482,6 +486,11 @@ hauss.pops.loci <b><span style='color:#336366;'>&lt;-</span></b><b><span style='
 <b><span style='color:#54ffff;'># Nei's pairwise Fst between all pairs of populations. Difference in res.type=&quot;dist&quot;/&quot;matrix&quot; is only in format of output</span></b>
 <b><span style='color:#dede49;'>pairwise.fst</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>hauss.genind, <b><span style='color:#54ff54;'>pop=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>res.type=</span></b><b><span style='color:#ff54ff;'>&quot;matrix&quot;</span></b><b>)</b>
 <b><span style='color:#54ffff;'># For mixed ploidy data sets</span></b>
+<b><span style='color:#54ffff;'># stamppFst requires population factor in genlight (here, population code consists of first three letters of individual's name)</span></b>
+<b><span style='color:#dede49;'>indNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>
+<b><span style='color:#dede49;'>pop</span></b><b>(</b>arabidopsis.genlight<b>)</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>substr</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>indNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>, <b><span style='color:#54ff54;'>start=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>stop=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
+<b><span style='color:#dede49;'>pop</span></b><b>(</b>arabidopsis.genlight<b>)</b> <b><span style='color:#54ffff;'># Check it</span></b>
+<b><span style='color:#dede49;'>popNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>
 arabidopsis.fst <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>StAMPP<b>::</b><b><span style='color:#dede49;'>stamppFst</span></b><b>(</b><b><span style='color:#54ff54;'>geno=</span></b>arabidopsis.genlight, <b><span style='color:#54ff54;'>nboots=</span></b><b><span style='color:#ff54ff;'>100</span></b>, <b><span style='color:#54ff54;'>percent=</span></b><b><span style='color:#ff54ff;'>95</span></b>, <b><span style='color:#54ff54;'>nclusters=</span></b><b><span style='color:#ff54ff;'>1</span></b><b>)</b>
 <b><span style='color:#54ffff;'># For large data use higher nclusters to parallelize calculations</span></b>
 ?StAMPP<b>::</b>stamppFst <b><span style='color:#54ffff;'># See details</span></b>
@@ -489,9 +498,6 @@ arabidopsis.fst <b><span style='color:#336366;'>&lt;-</span></b><b><span style='
 arabidopsis.fst<b>[[</b><b><span style='color:#ff54ff;'>&quot;Fsts&quot;</span></b><b>]]</b>
 <b><span style='color:#54ffff;'># Matrix of P values</span></b>
 arabidopsis.fst<b>[[</b><b><span style='color:#ff54ff;'>&quot;Pvalues&quot;</span></b><b>]]</b>
-
-<b><span style='color:#54ffff;'># Estimates of population theta according to Kimmel et al. 1998</span></b>
-<b><span style='color:#54ffff;'># theta.msat(hauss.loci)</span></b>
 
 <b><span style='color:#b00000;'>## Multi locus genotypes</span></b>
 <b><span style='color:#54ffff;'># Total number of MLGs (simple value)</span></b>
@@ -516,7 +522,7 @@ microbov.inbr <b><span style='color:#336366;'>&lt;-</span></b><b><span style='co
 <b><span style='color:#54ffff;'># Prepare population means for plotting</span></b>
 microbov.bar <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>sapply</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>microbov.inbr, <b><span style='color:#54ff54;'>FUN=</span></b>mean<b>)</b>
 <b><span style='color:#54ffff;'># Plot it</span></b>
-<b><span style='color:#dede49;'>hist</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>microbov.bar, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#ff54ff;'>&quot;firebrick&quot;</span></b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Average inbreeding in Salers cattles&quot;</span></b><b>)</b>
+<b><span style='color:#dede49;'>hist</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b>microbov.bar, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#ff54ff;'>&quot;firebrick&quot;</span></b>, <b><span style='color:#54ff54;'>main=</span></b><b><span style='color:#ff54ff;'>&quot;Average inbreeding in Salers cattle&quot;</span></b><b>)</b>
 
 <b><span style='color:#b00000;'>## Genetic distances</span></b>
 
@@ -626,11 +632,7 @@ usflu.distg <b><span style='color:#336366;'>&lt;-</span></b><b><span style='colo
 
 <b><span style='color:#54ffff;'># Distances in mixed-ploidy data sets</span></b>
 <b><span style='color:#dede49;'>library</span></b><b>(</b>StAMPP<b>)</b> <b><span style='color:#54ffff;'># Load required library</span></b>
-<b><span style='color:#54ffff;'># stamppNeisD requires population factor in genlight (here, population code consists of first three letters of individual's name)</span></b>
-<b><span style='color:#dede49;'>indNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>
-<b><span style='color:#dede49;'>pop</span></b><b>(</b>arabidopsis.genlight<b>)</b> <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>substr</span></b><b>(</b><b><span style='color:#54ff54;'>x=</span></b><b><span style='color:#dede49;'>indNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>, <b><span style='color:#54ff54;'>start=</span></b><b><span style='color:#ff54ff;'>1</span></b>, <b><span style='color:#54ff54;'>stop=</span></b><b><span style='color:#ff54ff;'>3</span></b><b>)</b>
-<b><span style='color:#dede49;'>pop</span></b><b>(</b>arabidopsis.genlight<b>)</b> <b><span style='color:#54ffff;'># Check it</span></b>
-<b><span style='color:#dede49;'>popNames</span></b><b>(</b>arabidopsis.genlight<b>)</b>
+<b><span style='color:#54ffff;'># stamppNeisD requires population factor in genlight</span></b>
 <b><span style='color:#54ffff;'># Nei's 1972 distance between individuals (use pop=TRUE to calculate among populations)</span></b>
 arabidopsis.dist <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>stamppNeisD</span></b><b>(</b><b><span style='color:#54ff54;'>geno=</span></b>arabidopsis.genlight, <b><span style='color:#54ff54;'>pop=</span></b><b><span style='color:#00ff00;'>FALSE</span></b><b>)</b>
 <b><span style='color:#54ffff;'># Check it</span></b>
@@ -702,6 +704,7 @@ usflu.upgma <b><span style='color:#336366;'>&lt;-</span></b><b><span style='colo
 <b><span style='color:#54ffff;'># From package pegas (doesn't directly show percentage of variance)</span></b>
 hauss.pop <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>pop</span></b><b>(</b>hauss.genind<b>)</b>
 hauss.amova <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b>pegas<b>::</b><b><span style='color:#dede49;'>amova</span></b><b>(</b>hauss.dist<b>~</b>hauss.pop, <b><span style='color:#54ff54;'>data=</span></b><b><span style='color:#00ff00;'>NULL</span></b>, <b><span style='color:#54ff54;'>nperm=</span></b><b><span style='color:#ff54ff;'>1000</span></b>, <b><span style='color:#54ff54;'>is.squared=</span></b><b><span style='color:#00ff00;'>TRUE</span></b><b>)</b>
+<b><span style='color:#54ffff;'># See results</span></b>
 hauss.amova
 <b><span style='color:#54ffff;'># For more complicated hierarchy</span></b>
 ?poppr<b>::</b>poppr.amova
@@ -713,7 +716,7 @@ hauss.amova
 ?bruvo.msn <b><span style='color:#54ffff;'># See details...</span></b>
 ?msn.poppr <b><span style='color:#54ffff;'># For another data types</span></b>
 ?imsn <b><span style='color:#54ffff;'># Interactive creation of MSN</span></b>
-<b><span style='color:#dede49;'>msn</span></b><b>()</b> <b><span style='color:#54ffff;'># Try it</span></b>
+<b><span style='color:#dede49;'>imsn</span></b><b>()</b> <b><span style='color:#54ffff;'># Try it</span></b>
 
 <b><span style='color:#b00000;'>## NJ</span></b>
 
@@ -1035,8 +1038,10 @@ hauss.spca <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color
 
 <b><span style='color:#54ffff;'># Test if global/local structure is significant</span></b>
 hauss.spca.glo <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>global.rtest</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>hauss.genind<b>$</b>tab, <b><span style='color:#54ff54;'>listw=</span></b>hauss.spca<b>$</b>lw, <b><span style='color:#54ff54;'>nperm=</span></b><b><span style='color:#ff54ff;'>999</span></b><b>)</b>
+hauss.spca.glo
 <b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.spca.glo<b>)</b>
 hauss.spca.loc <b><span style='color:#336366;'>&lt;-</span></b><b><span style='color:#ff54ff;'> </span></b><b><span style='color:#dede49;'>local.rtest</span></b><b>(</b><b><span style='color:#54ff54;'>X=</span></b>hauss.genind<b>$</b>tab, <b><span style='color:#54ff54;'>listw=</span></b>hauss.spca<b>$</b>lw, <b><span style='color:#54ff54;'>nperm=</span></b><b><span style='color:#ff54ff;'>999</span></b><b>)</b>
+hauss.spca.loc
 <b><span style='color:#dede49;'>plot</span></b><b>(</b>hauss.spca.loc<b>)</b>
 
 <b><span style='color:#54ffff;'># Map of genetic clines</span></b>
@@ -1242,7 +1247,7 @@ hauss.gmap2.coord <b><span style='color:#54ffff;'># See result</span></b>
 <b><span style='color:#54ffff;'># Plot pie charts</span></b>
 <b><span style='color:#ffff54;'>for</span></b> <b>(</b>LP <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>5</span></b><b>)</b> <b>{</b> <b><span style='color:#dede49;'>add.pie</span></b><b>(</b><b><span style='color:#54ff54;'>z=</span></b>hauss.pie<b>[</b>LP,<b>]</b>, <b><span style='color:#54ff54;'>x=</span></b>hauss.gmap2.coord<b>[[</b>LP<b>]]</b><b>$</b>newX, <b><span style='color:#54ff54;'>y=</span></b>hauss.gmap2.coord<b>[[</b>LP<b>]]</b><b>$</b>newY, <b><span style='color:#54ff54;'>labels=</span></b><b><span style='color:#dede49;'>names</span></b><b>(</b>hauss.pie<b>[</b>LP,<b>])</b>, <b><span style='color:#54ff54;'>radius=</span></b><b><span style='color:#ff54ff;'>25</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>topo.colors</span></b><b>(</b><b><span style='color:#54ff54;'>n=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>alpha=</span></b><b><span style='color:#ff54ff;'>0.7</span></b><b>))</b> <b>}</b>
 <b><span style='color:#54ffff;'># Alternative option to plot pie charts</span></b>
-<b><span style='color:#ffff54;'>for</span></b> <b>(</b>LF <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>5</span></b><b>)</b> <b>{</b> plotrix<b>::</b><b><span style='color:#dede49;'>floating.pie</span></b><b>(</b><b><span style='color:#54ff54;'>xpos=</span></b>hauss.gmap2.coord<b>[[</b>LF<b>]]</b><b>$</b>newX, <b><span style='color:#54ff54;'>ypos=</span></b>hauss.gmap2.coord<b>[[</b>LF<b>]]</b><b>$</b>newY, <b><span style='color:#54ff54;'>x=</span></b>hauss.pie<b>[</b>LF,<b>]</b>, <b><span style='color:#54ff54;'>radius=</span></b><b><span style='color:#ff54ff;'>30</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>heat.colors</span></b><b>(</b><b><span style='color:#54ff54;'>n=</span></b><b><span style='color:#ff54ff;'>2.5</span></b>, <b><span style='color:#54ff54;'>alpha=</span></b><b><span style='color:#ff54ff;'>0.5</span></b><b>)</b> <b>)</b> <b>}</b>
+<b><span style='color:#ffff54;'>for</span></b> <b>(</b>LF <b><span style='color:#ffff54;'>in</span></b> <b><span style='color:#ff54ff;'>1</span></b><b>:</b><b><span style='color:#ff54ff;'>5</span></b><b>)</b> <b>{</b> plotrix<b>::</b><b><span style='color:#dede49;'>floating.pie</span></b><b>(</b><b><span style='color:#54ff54;'>xpos=</span></b>hauss.gmap2.coord<b>[[</b>LF<b>]]</b><b>$</b>newX, <b><span style='color:#54ff54;'>ypos=</span></b>hauss.gmap2.coord<b>[[</b>LF<b>]]</b><b>$</b>newY, <b><span style='color:#54ff54;'>x=</span></b>hauss.pie<b>[</b>LF,<b>]</b>, <b><span style='color:#54ff54;'>radius=</span></b><b><span style='color:#ff54ff;'>30</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#dede49;'>heat.colors</span></b><b>(</b><b><span style='color:#54ff54;'>n=</span></b><b><span style='color:#ff54ff;'>3</span></b>, <b><span style='color:#54ff54;'>alpha=</span></b><b><span style='color:#ff54ff;'>0.5</span></b><b>)</b> <b>)</b> <b>}</b>
 <b><span style='color:#54ffff;'># Add population text labels</span></b>
 <b><span style='color:#dede49;'>PlotOnStaticMap</span></b><b>(</b><b><span style='color:#54ff54;'>MyMap=</span></b>hauss.gmap2, <b><span style='color:#54ff54;'>lat=</span></b>hauss.genpop<b>@</b>other<b>$</b>xy<b>[[</b><b><span style='color:#ff54ff;'>&quot;lat&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>lon=</span></b>hauss.genpop<b>@</b>other<b>$</b>xy<b>[[</b><b><span style='color:#ff54ff;'>&quot;lon&quot;</span></b><b>]]</b>, <b><span style='color:#54ff54;'>add=</span></b><b><span style='color:#00ff00;'>TRUE</span></b>, <b><span style='color:#54ff54;'>FUN=</span></b>text, <b><span style='color:#54ff54;'>labels=</span></b><b><span style='color:#dede49;'>as.vector</span></b><b>(</b><b><span style='color:#dede49;'>popNames</span></b><b>(</b>hauss.genind<b>))</b>, <b><span style='color:#54ff54;'>cex=</span></b><b><span style='color:#ff54ff;'>2.5</span></b>, <b><span style='color:#54ff54;'>col=</span></b><b><span style='color:#ff54ff;'>&quot;white&quot;</span></b><b>)</b>
 

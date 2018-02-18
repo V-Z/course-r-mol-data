@@ -488,7 +488,7 @@ arabidopsis.fst[["Fsts"]]
 # Matrix of P values
 arabidopsis.fst[["Pvalues"]]
 
-# Estimates of population theta according to Kimmel et al. 1998
+# TODO Estimates of population theta according to Kimmel et al. 1998
 # theta.msat(hauss.loci)
 
 ## Multi locus genotypes
@@ -514,7 +514,7 @@ microbov.inbr <- inbreeding(x=microbov.pops, N=100)
 # Prepare population means for plotting
 microbov.bar <- sapply(X=microbov.inbr, FUN=mean)
 # Plot it
-hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles")
+hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle")
 
 ## Genetic distances
 
@@ -2021,7 +2021,6 @@ shorebird.toplot # See it
 # Plot the trees
 plotTree.wBars(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE)
 dotTree(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE, type="cladogram")
-
 
 # ## TODO Disparity-through-time
 # disparity(phy=primates.tree, data=primates.body)

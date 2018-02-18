@@ -81,7 +81,7 @@
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
-\date{January 22 to 25, 2018}
+\date{February 19 to 22, 2018}
 
 % Default language
 \usepackage{polyglossia}
@@ -185,13 +185,13 @@
   \begin{itemize}
     \item Commands from file \texttt{course\_commands.r} can be mostly directly launched without editing them, but before you do so\ldots
     \begin{enumerate}
-      \item Read the command and all comments around, do not blindy launch it
+      \item Read the command and all comments around, do not blindly launch it
       \item Ensure you understand, what is \textbf{aim} of the command (what it is supposed to do)
       \item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
       \item Ensure you understand \textbf{syntax} of the command (what it technically does)
     \end{enumerate}
     \item Some commands from \texttt{course\_commands.r} \textit{do require} to be edited according to particular user's computer --- it is described in the comments around the command
-    \item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindy repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
+    \item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
   \end{itemize}
 \end{frame}
 
@@ -630,7 +630,7 @@
     load("test.RData") # Loads saved R environment with all objects
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
-    fix(x) # Use to edit matrices, data frames, functions, ...
+    fix(y) # Use to edit matrices, data frames, functions, ...
   \end{spluscode}
 \end{frame}
 
@@ -878,7 +878,7 @@
     \begin{itemize}
       \item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
     \end{itemize}
-    \item Structure \url{https://web.stanford.edu/group/pritchardlab/software.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} --- not part of the course)
+    \item Structure \url{https://web.stanford.edu/group/pritchardlab/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} --- not part of the course)
     \begin{itemize}
       \item De facto standard for analysis of population genetic structure (from slide~\ref{structure})
       \item Its outputs are usually post-processed in other software (not part of the course, see \href{https://trapa.cz/en/structure-r-linux}{web})
@@ -1087,7 +1087,7 @@
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It containst Illumina short reads mapped to reference}
+\begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It contains Illumina short reads mapped to reference}
   \includegraphics[width=\textwidth]{bam_igv.png}
 \end{frame}
 
@@ -2886,10 +2886,10 @@
 
 \subsection{}
 
-\begin{frame}{Process more data}{Not all combinations and possibilities were showen\ldots}
+\begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
   \begin{block}{Tasks}
     \begin{enumerate}
-      \item Most of examples were showen with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
+      \item Most of examples were shown with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
       \item Try some of the introduced analyses with your own custom imported data
     \end{enumerate}
   \end{block}
@@ -4990,14 +4990,14 @@
     \item Testing if there is correlation between evolution of two or more characters (if they evolve together)
     \item Testing if there is correlation between one character and phylogenetic history (if trait changes follow evolution)
     \item Reconstruction of ancestral states of character
-    \item For some methods, taxonomical level can be taken into account (if there is significant evolutionary signal on the trait evolution on e.g. level of genus or family)
+    \item For some methods, taxonomic level can be taken into account (if there is significant evolutionary signal on the trait evolution on e.g. level of genus or family)
     \item Generally available for continuous as well as discrete characters (not in all methods)
     \item Some methods can handle more observations per accession
     \item There are various methods how to display everything
     \item Methods and models are highly debated in the literature
     \begin{itemize}
       \item Different experts commonly disagree what is the best method
-      \item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidisation --- \href{https://www.tau.ac.il/~itaymay/cp/chromEvol/}{chromEvol})
+      \item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{https://www.tau.ac.il/~itaymay/cp/chromEvol/}{chromEvol})
       \item Usage is better to be consulted with some relevant expert
       \item This is very difficult chapter by meaning of how to find the best method to analyze particular data\ldots
     \end{itemize}
@@ -5728,7 +5728,7 @@
 %   \end{spluscode}
 % \end{frame}
 
-\begin{frame}[fragile]{Ploting traits on trees --- code}
+\begin{frame}[fragile]{Plotting traits on trees --- code}
   \begin{spluscode}
     # Load training data to display
     data(shorebird, package="caper")
@@ -5750,13 +5750,13 @@
   \end{spluscode}
 \end{frame}
 
-\begin{frame}{Ploting traits on trees --- plots}
+\begin{frame}{Plotting traits on trees --- plots}
   \includegraphics[width=\textwidth]{treeval.png}
 \end{frame}
 
 \section{}
 
-\begin{frame}{Process more data}{Not all combinations and possibilities were showen\ldots}
+\begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
   \begin{block}{Tasks}
     \begin{enumerate}
       \item Try to do some analyses with another introduced toy data

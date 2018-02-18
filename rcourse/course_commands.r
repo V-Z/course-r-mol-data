@@ -79,10 +79,14 @@ update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+# If above command fails on Windows, try
+install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # It is possible to specify direct path (local or web URL) to package source
 install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+# If above command fails on Windows, try
+install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelisation snow and Rmpi
@@ -172,7 +176,7 @@ hauss.genpop
 
 # Removes missing data - see ?missingno for types of dealing with them
 hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1, quiet=FALSE) # Use with caution! It modifies original data!
-?missing # See other options of handling missing data
+?missingno # See other options of handling missing data
 # Convert corrected genind to loci
 hauss.loci.cor <- genind2loci(hauss.genind.cor)
 
@@ -317,7 +321,7 @@ ape::base.freq(x=meles.dna)
 # GC content
 ape::GC.content(x=meles.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
-seqinr::count(seq=meles.nogaps[["KJ161328.1"]], wordsize=3)
+seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]), wordsize=3)
 # View sequences - all must be of the same length
 image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
 # Function "image" requires as input matrix, so that sequences must be of same length
@@ -471,6 +475,11 @@ fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
 # Nei's pairwise Fst between all pairs of populations. Difference in res.type="dist"/"matrix" is only in format of output
 pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
 # For mixed ploidy data sets
+# stamppFst requires population factor in genlight (here, population code consists of first three letters of individual's name)
+indNames(arabidopsis.genlight)
+pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
+pop(arabidopsis.genlight) # Check it
+popNames(arabidopsis.genlight)
 arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, percent=95, nclusters=1)
 # For large data use higher nclusters to parallelize calculations
 ?StAMPP::stamppFst # See details
@@ -478,9 +487,6 @@ arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, perc
 arabidopsis.fst[["Fsts"]]
 # Matrix of P values
 arabidopsis.fst[["Pvalues"]]
-
-# Estimates of population theta according to Kimmel et al. 1998
-# theta.msat(hauss.loci)
 
 ## Multi locus genotypes
 # Total number of MLGs (simple value)
@@ -505,7 +511,7 @@ microbov.inbr <- inbreeding(x=microbov.pops, N=100)
 # Prepare population means for plotting
 microbov.bar <- sapply(X=microbov.inbr, FUN=mean)
 # Plot it
-hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattles")
+hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle")
 
 ## Genetic distances
 
@@ -615,11 +621,7 @@ usflu.distg <- dist(as.matrix(usflu.genlight))
 
 # Distances in mixed-ploidy data sets
 library(StAMPP) # Load required library
-# stamppNeisD requires population factor in genlight (here, population code consists of first three letters of individual's name)
-indNames(arabidopsis.genlight)
-pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
-pop(arabidopsis.genlight) # Check it
-popNames(arabidopsis.genlight)
+# stamppNeisD requires population factor in genlight
 # Nei's 1972 distance between individuals (use pop=TRUE to calculate among populations)
 arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
 # Check it
@@ -691,6 +693,7 @@ abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), co
 # From package pegas (doesn't directly show percentage of variance)
 hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
+# See results
 hauss.amova
 # For more complicated hierarchy
 ?poppr::poppr.amova
@@ -702,7 +705,7 @@ bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, verte
 ?bruvo.msn # See details...
 ?msn.poppr # For another data types
 ?imsn # Interactive creation of MSN
-msn() # Try it
+imsn() # Try it
 
 ## NJ
 
@@ -1024,8 +1027,10 @@ screeplot.spca(x=hauss.spca, main=NULL)
 
 # Test if global/local structure is significant
 hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+hauss.spca.glo
 plot(hauss.spca.glo)
 hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+hauss.spca.loc
 plot(hauss.spca.loc)
 
 # Map of genetic clines
@@ -1231,7 +1236,7 @@ PlotOnStaticMap(MyMap=hauss.gmap2)
 # Plot pie charts
 for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]$newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]), radius=25, col=topo.colors(n=3, alpha=0.7)) }
 # Alternative option to plot pie charts
-for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=2.5, alpha=0.5) ) }
+for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=3, alpha=0.5) ) }
 # Add population text labels
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
