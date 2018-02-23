@@ -1899,7 +1899,7 @@
 
 \begin{frame}[fragile]{Descriptive statistics II}
   \begin{itemize}
-    \item \texttt{t-test} and \texttt{bartlett.test} require data to have normal distribution --- if the condition is not met, it is necessary to use some weaker non-parametric test (\texttt{kruskal.test}, \texttt{wilcox.test},~\ldots)
+    \item \texttt{t.test} and \texttt{bartlett.test} require data to have normal distribution --- if the condition is not met, it is necessary to use some weaker non-parametric test (\texttt{kruskal.test}, \texttt{wilcox.test},~\ldots)
     \item See respective manual pages for details
     \item \texttt{shapiro.test()} tests the normality of given vector
   \end{itemize}
@@ -2651,7 +2651,7 @@
   \begin{footnotesize}
   \begin{spluscode}
     ## Plot a nice tree with colored tips
-    plot.phylo(x=hauss.nj, type="unrooted", show.tip=F, lwd=3, main="NJ")
+    plot.phylo(x=hauss.nj, type="unr", show.tip=F, edge.width=3, main="NJ")
     # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
     nodelabels(text=round(hauss.boot/10))
     # Colored labels - creates vector of colors according to populations
@@ -2659,7 +2659,7 @@
     tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), 
       col.pal=nj.rainbow)) # Colored tips
     ## Plot BW tree with tip symbols and legend
-    plot.phylo(x=hauss.nj, type="cladogram", show.tip=F, lwd=3, main="NJ")
+    plot.phylo(x=hauss.nj, type="clad", show.tip=F, edge.width=3, main="NJ")
     axisPhylo() # Add axis with distances
     # From node labels let's remove unneeded frame
     nodelabels(text=round(hauss.boot/10), frame="none", bg="white")
@@ -2683,7 +2683,7 @@
     hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
     plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE,
-      lwd=3, main="Neighbor-Joining tree")
+      edge.width=3, main="Neighbor-Joining tree")
     # Call node labels as phylo$node.labels or phylo[["node.labels"]]
     nodelabels(hauss.nj.bruvo[["node.labels"]]) 
     tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop,
@@ -2691,7 +2691,7 @@
     # UPGMA
     hauss.upgma <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="upgma", showtree=TRUE, cutoff=1, quiet=FALSE)
-    plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3,
+    plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, edge.width=3,
       main="UPGMA tree")
     nodelabels(hauss.upgma[["node.labels"]])
     tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop,
@@ -5034,7 +5034,7 @@
     primates.pic.longevity <- pic(x=primates.longevity, phy=primates.tree,
       scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
     # Plot a tree with PIC values
-    plot.phylo(x=primates.tree, lwd=2, cex=1.5)
+    plot.phylo(x=primates.tree, edge.width=2, cex=1.5)
     nodelabels(round(primates.pic.body, digits=3), adj=c(0, -0.5),
       frame="none")
     nodelabels(round(primates.pic.longevity, digits=3), adj=c(0, 1),
@@ -5509,7 +5509,7 @@
     # To be plotted on nodes - 1st column are node numbers
     primates.body.ace
     # Plot it
-    plot.phylo(primates.tree, lwd=2, cex=2)
+    plot.phylo(x=primates.tree, edge.width=2, cex=2)
     tiplabels(round(primates.body, digits=3), adj=c(0, -1),
       frame="none", col="blue", cex=2)
     nodelabels(round(primates.body.ace$ace, digits=3),
@@ -5530,8 +5530,8 @@
   \begin{multicols}{2}
   \begin{spluscode}
     # More possibilities
-    plot.phylo(primates.tree, lwd=2,
-      cex=2)
+    plot.phylo(x=primates.tree,
+      edge.width=2, cex=2)
     # ML estimation of a continuous
     # trait, can compute confidence
     # interval (see further)
@@ -5539,18 +5539,18 @@
       primates.tree, x=primates.body))
     # ACE for Brownian evolution with
     # directional trend
-    plot.phylo(primates.tree, lwd=2,
-      cex=2)
+    plot.phylo(x=primates.tree,
+      edge.width=2, cex=2)
     nodelabels(anc.trend(tree=
       primates.tree, x=primates.body,
       maxit=100000)$ace)
     # ACE for Brownian evolution using
     # likelihood
-    plot.phylo(primates.tree, lwd=2,
+    plot.phylo(x=primates.tree,
   \end{spluscode}
   \columnbreak
   \begin{spluscode}
-      cex=2)
+      edge.width=2, cex=2)
     nodelabels(round(anc.ML(tree=
       primates.tree, x=primates.body,
       maxit=100000, model="BM")$ace,
@@ -5580,7 +5580,7 @@
     # to certain values)
     plot(primates.body.ace.bayes)
     # Plot the tree and reconstructed ancestral states
-    plot.phylo(primates.tree, lwd=2, cex=2)
+    plot.phylo(x=primates.tree, edge.width=2, cex=2)
     nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6],
       digits=3), cex=1.5)
     ?phangorn::ancestral.pml # Another possibility
@@ -6225,6 +6225,7 @@
     \item \href{https://CRAN.R-project.org/package=distory}{distory}: geodesic distance between phylogenetic trees
     \item \href{https://CRAN.R-project.org/package=diversitree}{diversitree}: comparative phylogenetic analyses of diversification
     \item \href{https://CRAN.R-project.org/package=diveRsity}{diveRsity}: calculation of both genetic diversity partition statistics, genetic differentiation statistics, and locus informativeness for ancestry assignment
+    \item \href{https://CRAN.R-project.org/package=ecodist}{ecodist}: Dissimilarity-based functions for ecological analysis, spatial and community data
     \item \href{https://CRAN.R-project.org/package=evobiR}{evobiR}: comparative and population genetic analyses
     \item \href{https://CRAN.R-project.org/package=expands}{expands}: expanding ploidy and allele-frequency on nested subpopulations
     \item \href{https://CRAN.R-project.org/package=expoTree}{expoTree}: calculates the density dependent likelihood of a~phylogenetic tree
@@ -6374,3 +6375,15 @@
 % https://www.molecularecologist.com/2015/01/a-population-genetic-r-evolution/
 % https://www.molecularecologist.com/2014/11/admixture-maps-in-r-for-dummies/
 % https://www.molecularecologist.com/2013/10/random-drift-and-phenotypic-evolution/
+%
+% - Nahradit SPCA jinou verzí (z adephylo?).
+% - Požadavek na R 3.4 (hlavně Linux), nemít více verzí R (hlavně Windows).
+% - U RKWardu zdůraznit potřebu jeho kompilace pro dané R (hlavně Linux).
+% - Možná omezit balíčky, aby se netahalo tolik závislostí.
+% - Zkontrolovat matici z `dist.topo` - asi vyhodit dělání symetrické matice a přehodit někam manipulaci s trojůhelníky matice.
+% - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
+% - Víc příkladů na indexování.
+% - Obecně o `lapply` a spol.
+% - Vyhodit `cbind` a `jitter` trik z `pic.ortho` -- nechat jen obecně.
+% - Vyhodit instalaci potřebných balíčků Bioconductoru.
+% - Přidat k použití `cor` i `cor.test`.

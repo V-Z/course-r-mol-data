@@ -53,6 +53,7 @@ y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
 save(list=ls(), file="test.RData") # Saves all objects during the work
 load("test.RData") # Loads saved R environment with all objects
 # When loading saved project, you have to load again libraries and scripts (see further), data objects are restored
+fix(y) # Use to edit matrices, data frames, functions, ...
 rm(y)
 
 ## Packages and repositories
@@ -743,7 +744,7 @@ plot.phylo(x=hauss.aboot, show.node.label=TRUE)
 ?plot.phylo
 
 # Plot a nice tree with colored tips
-plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
+plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, edge.width=3, main="Neighbour-Joining tree")
 # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
 nodelabels(text=round(hauss.boot/10))
 # Coloured labels - creates vector of colors according to population information in genind object
@@ -752,7 +753,7 @@ nj.rainbow <- colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
 tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), col.pal=nj.rainbow))
 
 # Plot BW tree with tip symbols and legend
-plot.phylo(x=hauss.nj, type="cladogram", show.tip=FALSE, lwd=3, main="Neighbour-Joining tree")
+plot.phylo(x=hauss.nj, type="cladogram", show.tip=FALSE, edge.width=3, main="Neighbour-Joining tree")
 # Add axis with distances
 axisPhylo()
 # From node labels let's remove unneeded frame
@@ -764,14 +765,14 @@ legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=
 
 # Bruvo's distance - NJ
 hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
-plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, lwd=3, main="Neighbor-Joining tree")
+plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE, edge.width=3, main="Neighbor-Joining tree")
 # bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function
 nodelabels(hauss.nj.bruvo[["node.labels"]]) # Note you can call node labels from phylo object as phylo$node.labels or phylo[["node.labels"]]
 tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
 
 # Bruvo's distance - UPGMA
 hauss.upgma <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="upgma", showtree=TRUE, cutoff=1, quiet=FALSE)
-plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, lwd=3, main="UPGMA tree")
+plot.phylo(hauss.upgma, type="unrooted", show.tip=FALSE, edge.width=3, main="UPGMA tree")
 nodelabels(hauss.upgma[["node.labels"]])
 tiplabels(hauss.upgma[["tip.label"]], bg=fac2col(x=hauss.genind@pop, col.pal=nj.rainbow))
 
@@ -1710,7 +1711,7 @@ primates.pic.body <- pic(x=primates.body, phy=primates.tree, scaled=TRUE, var.co
 primates.pic.longevity <- pic(x=primates.longevity, phy=primates.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
 
 # Plot a tree with PIC values
-plot.phylo(x=primates.tree, lwd=2, cex=1.5)
+plot.phylo(x=primates.tree, edge.width=2, cex=1.5)
 nodelabels(round(primates.pic.body, digits=3), adj=c(0, -0.5), frame="none")
 nodelabels(round(primates.pic.longevity, digits=3), adj=c(0, 1), frame="none")
 add.scale.bar()
@@ -1907,14 +1908,14 @@ round(x=..., digits=3) # "x" is vector with ACE values
 
 library(phytools)
 # More possibilities
-plot.phylo(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, edge.width=2, cex=2)
 # ML estimation of a continuous trait, can compute confidence interval (used by some functions, see further)
 nodelabels(fastAnc(tree=primates.tree, x=primates.body))
 # ACE for Brownian evolution with directional trend
-plot.phylo(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, edge.width=2, cex=2)
 nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=100000)$ace)
 # ACE for Brownian evolution using likelihood
-plot.phylo(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, edge.width=2, cex=2)
 nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=100000, model="BM")$ace, digits=2), cex=1.5)
 
 # Bayesian ancestral character estimation
@@ -1928,7 +1929,7 @@ colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.bayes[["mc
 # Plot the ancestral states from posterior distribution (it should converge to certain values)
 plot(primates.body.ace.bayes)
 # Plot the tree and reconstructed ancestral states
-plot.phylo(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, edge.width=2, cex=2)
 nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
 # Another possibility for ancestral character reconstruction
 ?phangorn::ancestral.pml
