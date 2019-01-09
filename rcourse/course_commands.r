@@ -8,7 +8,7 @@ library(sos)
 findFn("DAPC") # Search for function name
 
 ## Set working directory
-setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
 getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
@@ -59,21 +59,16 @@ rm(y)
 ## Packages and repositories
 
 # Set repositories
-#  We will need extra repositories. For Bioconductor keep same version as is version of your R installation (Bioconductor 3.4 for R 3.3, see https://bioconductor.org/).
-options(repos=c("https://mirrors.nic.cz/R/", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/bioc", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/annotation", "https://bioconductor.statistik.tu-dortmund.de/packages/3.6/data/experiment", "https://r-forge.r-project.org/", "https://rforge.net/"))
+# We will need extra repositories
 getOption("repos") # Shows actual repositories
+options(repos=c("https://mirrors.nic.cz/R/", "https://r-forge.r-project.org/", "https://rforge.net/"))
 options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "BiocGenerics", "Biostrings", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "IRanges", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "muscle", "mvtnorm", "ncbit", "nlme", "numDeriv", "ParallelStructure", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "S4Vectors", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML", "XVector"), repos=getOption("repos"), dependencies=TRUE)
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
-
-# Install packages without setting the repositories
-# If repositories are not set (for any reason), it is possible to install in several steps packages from main repository and from another sources
-install.packages(pkgs=c("ade4", "adegenet", "adephylo", "akima", "animation", "ape", "boot", "brew", "caTools", "caper", "cluster", "clusterGeneration", "coda", "colorspace", "combinat", "corrplot", "deSolve", "deldir", "devtools", "digest", "doParallel", "dplyr", "expm", "fastmatch", "fields", "foreach", "foreign", "gdata", "geiger", "ggplot2", "git2r", "gmodels", "gplots", "gtable", "gtools", "hierfstat", "httr", "igraph", "ips", "jsonlite", "KernSmooth", "lattice", "lazyeval", "LearnBayes", "magrittr", "mapdata", "mapplots", "mapproj", "maps", "maptools", "MASS", "Matrix", "memoise", "memuse", "mgcv", "mnormt", "msm", "mvtnorm", "ncbit", "nlme", "numDeriv", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "plyr", "png", "poppr", "RandomFields", "RandomFieldsUtils", "Rcpp", "reshape2", "rgdal", "rgeos", "RgoogleMaps", "rlang", "Rmpi", "rncl", "RNeXML", "rworldmap", "scales", "scatterplot3d", "segmented", "seqinr", "shapefiles", "shiny", "snow", "sos", "sp", "spData", "spam", "spdep", "StAMPP", "stringr", "subplex", "TeachingDemos", "tibble", "tidyr", "tripack", "vcfR", "vegan", "viridisLite", "whisker", "withr", "XML"))
-update.packages(ask=FALSE) # Update installed (CRAN by default) packages
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
@@ -85,19 +80,19 @@ install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NU
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # It is possible to specify direct path (local or web URL) to package source
-install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
+install.packages("https://i-pri.org/special/Biostatistics/Software/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
 # If above command fails on Windows, try
-install.packages("https://www2.imm.dtu.dk/~gigu/Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
+install.packages("https://i-pri.org/special/Biostatistics/Software/Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelisation snow and Rmpi
-# RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools (requires rgeos and sp), shapefiles (requires foreign) and tripack on GIS layer
-install.packages(pkgs=c("PBSmapping", "RgoogleMaps", "Rmpi", "foreign", "mapproj", "maptools", "rgdal", "rgeos", "shapefiles", "snow", "sp", "tripack"), dependencies=TRUE)
+# RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools, shapefiles (requires foreign) and tripack on GIS layer
+install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 
-# We will load packages by library(package) one by one when needed and plugins...
+# We will load packages by library(package) one by one when needed...
 
 # Standard installation
-install.pacakges(c("adegenet", "poppr", "phytools"))
+install.packages(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
 
 # Installation from custom repository
@@ -759,7 +754,7 @@ axisPhylo()
 # From node labels let's remove unneeded frame
 nodelabels(text=round(hauss.boot/10), frame="none", bg="white")
 # As tip label we use only symbols - see ?points for graphical details
-tiplabels(frame="none", pch=rep(x=0:4, times=c(13, 17,  2,  6,  9)), lwd=2, cex=2)
+tiplabels(frame="none", pch=rep(x=0:4, times=c(13, 17, 2, 6, 9)), lwd=2, cex=2)
 # Plot a legend explainindg symbols
 legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=0:4, pt.lwd=2, pt.cex=2, bty="o", bg="lightgrey", box.lwd=2, cex=1.2, title="Populations")
 
@@ -924,7 +919,7 @@ hauss.dapc
 # A la PCA graph
 scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii", bg="white", cex=3, clab=0, col=rainbow(3), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Same in BW
-scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii", bg="white", pch=c(15:17), cell=0, cstar=0, solid=1, cex=2.5, clab=0, col=grey.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
+scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii", bg="white", pch=c(15:17), cell=0, cstar=0, solid=1, cex=2.5, clab=0, col=gray.colors(3, start=0, end=0.8, gamma=2, alpha=0), posi.da="bottomleft", scree.pca=TRUE, posi.pca="bottomright", leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Density functions - only for first axis here!
 scatter(x=hauss.dapc3, xax=1, yax=1, main="DAPC", bg="white", solid=0.5, leg=TRUE, txt.leg=c("Group 1", "Group 2", "Group 3"), posi.leg="topleft")
 # Assignment of individuals to clusters
@@ -1315,7 +1310,7 @@ MPI_structure(...) # Same arguments as on previous slide
 # Postprocess results with Structure sum R script by Dorothee Ehrich
 source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
 # Create new directory with result files results_job_*_f and set working directory accordingly
-setwd("/home/vojta/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/structure_sum/")
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
 dir()
 # Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://soubory.trapa.cz/rcourse/list_k.txt
 # See documentation for details. Functions take as an argument list_k file and number of populations
@@ -1663,7 +1658,7 @@ all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean, use.edge.length=FALSE)
 tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]), sort(oxalis.tree.sp.mean[["tip.label"]])), nrow=length(oxalis.tree.sp[["tip.label"]]), ncol=2)
 # Draw a tree - play with graphical parameters and use rotate=TRUE
 # to be able to adjust fit manually
-cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean),  assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
+cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean), assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
 title("Comparing the trees\nParsimony super tree\tSpecies tree")
 legend("topleft", legend="Red lines\nconnect tips", text.col="red", cex=0.75, bty="n", x.intersp=-2, y.intersp=-2)
 # Alternative implementation
