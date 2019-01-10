@@ -14,7 +14,7 @@ dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
 
 ## Get information about object classes
-getClassDef("genind") # Or select any other class name
+getClassDef("data.frame") # Or select any other class name
 
 ## Basic operations
 x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
@@ -69,6 +69,7 @@ options() # Generic function to modify various settings
 install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
+update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
@@ -100,16 +101,29 @@ install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
 ## Bioconductor
+# Install CRAN package BiocManager used to manage Bioconductor packages
+if (!requireNamespace("BiocManager"))
+	install.packages("BiocManager")
+BiocManager::install()
+# Search for Bioconductor packages
+BiocManager::available() # List everything
+?BiocManager::available # See options
+# Update installed packages
+BiocManager::install()
+# Install Bioconductor packages
+BiocManager::install("muscle") # Simplest usage
+BiocManager::install(pkgs=c("Biostrings", "muscle"))
+?BiocManager::install # See more options
+
+# For R < 3.5.0 use old legacy method (will be removed)
 # Bioconductor - if https fails, use http
 source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
 ?biocLite
 # Install package(s)
 biocLite(c("Biostrings", "muscle"))
-# Install Bioconductor packages used during the course
-biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "muscle", "S4Vectors", "XVector"), ask=FALSE)
 biocLite() # Update Bioconductor packages
-# Upgrades installed Bioconductor packages to new R release (e.g. from 3.3 to 3.4)
+# Upgrades installed Bioconductor packages to new R release
 biocLite("BiocUpgrade")
 
 ## Libraries for population genetic analysis
@@ -257,7 +271,7 @@ class(usflu.dna3) <- "DNAbin"
 read.nexus.data(file="sequences.nex")
 
 # Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
-meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
+meles.dna <- read.GenBank(access.nb=c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
 meles.dna
 class(meles.dna)
 # Converts DNAbin to genind - extracts SNP - for large data sets can be computationally very intensive
@@ -291,7 +305,7 @@ read.PLINK(file="PLINKfile", ...)
 ?readPLINK # See it for available options
 # Extract SNP from FASTA alignment
 usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
-# If it crashes (on Windows), try add parameter "parallel=FALSE"
+# If it crashes (on Windows), try to add parameter "parallel=FALSE"
 # Function has several options to speed up reading
 ?fasta2genlight
 
@@ -330,8 +344,10 @@ image.DNAbin(x=as.matrix(meles.dna))
 # Required library
 library(vcfR)
 # Read input file
-# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz (read.vcfR does not work with network addresses yet)
+# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz
 arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
+# Or directly load remote file
+arabidopsis.vcf <- read.vcfR(file="https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
 # It returns object of class vcfR-class
 ?read.vcfR # See more import options
 # Another option from package pegas returns list of objects loci and data.frame
@@ -357,7 +373,7 @@ abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
 barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
 title("Mean DP per specimen")
 abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
-# Heatmap of DB (subset)
+# Heatmap of DP (subset)
 heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100, start=0.1)) # Subset - only first 100 loci and individuals
 title("DP per specimens and loci")
 
@@ -870,7 +886,7 @@ s.class(dfxy=hauss.pcoa.bruvo$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
 add.scatter.eig(hauss.pcoa.bruvo$eig, posi="bottomright", 3, 1, 2)
 # Another possibility for colored plot (see ?colorplot for details)
 colorplot(xy=hauss.pcoa$li[c(1, 2)], X=hauss.pcoa$li, transp=TRUE, cex=3, xlab="PC 1", ylab="PC 2")
-title(main="PCoA, axes 1 and 3")
+title(main="PCoA, axes 1 and 2")
 abline(v=0, h=0, col="grey", lty=2)
 
 ## Clustering analysis
