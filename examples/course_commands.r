@@ -66,7 +66,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
@@ -904,7 +904,7 @@ hauss.kfind
 # Graph showing table of original and inferred populations and assignment of individuals
 table.value(df=table(pop(hauss.genind), hauss.kfind$grp), col.lab=paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=TRUE)
 # For K=3 - note parameters n.pca and n.clust - we just rerun the analysis and when results are stable, no problem here
-hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3, stat="BIC", choose.n.clust=FALSE, max.n.clust=10, n.iter=100000, n.start=100, scale=FALSE, truenames=TRUE)
+hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3, stat="BIC", choose.n.clust=FALSE, n.iter=100000, n.start=100, scale=FALSE, truenames=TRUE)
 # See results as text
 table(pop(hauss.genind), hauss.kfind3$grp)
 hauss.kfind3
@@ -1044,7 +1044,7 @@ screeplot.spca(x=hauss.spca, main=NULL)
 hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
 hauss.spca.glo
 plot(hauss.spca.glo)
-hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
+hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999) # FIXME local.rtest of spca
 hauss.spca.loc
 plot(hauss.spca.loc)
 
@@ -1068,7 +1068,7 @@ filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pc
 hauss.spca.loadings <- hauss.spca$c1[,1]^2
 names(hauss.spca.loadings) <- rownames(hauss.spca$c1)
 loadingplot(x=hauss.spca.loadings, xlab="Alleles", ylab="Weight of the alleles", main="Contribution of alleles to the first sPCA axis")
-boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="grey")
+boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="gray")
 
 ## Monmonier - genetic boundaries
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
@@ -1212,7 +1212,7 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 # Insert legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
-# Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
+# FIXME Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
 hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain")
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
@@ -1255,7 +1255,7 @@ for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=
 # Add population text labels
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
-# Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
+# FIXME Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
 GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
 library(maps) # Various mapping tools (plotting, ...)
@@ -1275,6 +1275,7 @@ dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
 # Check correct import by plotting all layers
+# TODO readShapeLines is deprecated; use rgdal::readOGR or sf::st_read
 macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
 plot(macedonia_building)
 macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
@@ -1310,7 +1311,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
 # get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
 # Set working directory
-setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
+setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/")
 getwd()
 # Load ParallelStructure package
 library(ParallelStructure)
@@ -1372,7 +1373,7 @@ class(meles.muscle)
 
 # Remove gaps from alignment - destroy it
 meles.nogaps <- del.gaps(meles.muscle)
-?del.gaps # See for details!
+?del.gaps # See for details
 
 # Plot the alignment - you can select which bases to plot and/or modify colors
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
@@ -1393,7 +1394,7 @@ multialign.aln
 multialign.aln[[1]]
 lapply(X=multialign.aln, FUN=class)
 # Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
-library(parallel)
+library(parallel) # FIXME Alignments
 multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
 # mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
 # See result
@@ -1614,6 +1615,7 @@ axisPhylo(side=1)
 
 # Parsimony super tree
 library(phytools)
+class(oxalis.trees.rooted) <- "multiPhylo"
 oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
@@ -1638,9 +1640,9 @@ densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
 ?phangorn::densiTree
 ?phytools::densityTree
 # Another version for comparing several trees
-phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
-phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
-phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Probably to much noise... :-?
+phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
+phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 
 # # TODO STAR and STEAC species trees
 # install.packages("http://faculty.franklin.uga.edu/lliu/sites/faculty.franklin.uga.edu.lliu/files/phybase_1.5.tar.gz", repos=NULL) # See https://faculty.franklin.uga.edu/lliu/content/phybase
@@ -1654,8 +1656,8 @@ phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.
 # Networks
 library(phangorn)
 oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
-plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
+plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 3D
 
 # Plot all trees on same scale
 kronoviz(x=oxalis.trees.rooted, layout=length(oxalis.trees.rooted), horiz=TRUE)
@@ -1754,8 +1756,8 @@ lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
 
 # Intraspecific variation
 # PIC - orthonormal contrasts using the method
-primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,]), phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
-primates.pic.ortho
+# Preparing tips with fake random variable values
+primates.pic.var <- list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,])
 # Explanation of the cbind trick
 cbind(primates.body, jitter(primates.body), jitter(primates.body))
 cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,]
@@ -1763,6 +1765,13 @@ cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,]
 class(cbind(primates.body, jitter(primates.body), jitter(primates.body)))
 class(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,])
 # jitter() adds random noise every time, so that the values differ
+# Check list of numeric vectors - required as input for pic.ortho()
+primates.pic.var
+class(primates.pic.var)
+class(primates.pic.var[[1]])
+# Calculate for one character - this must be done for at least one more character and correlation of PICs must be tested
+primates.pic.ortho <- pic.ortho(x=primates.pic.var, phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
+primates.pic.ortho
 
 ## Phylogenetic autocorrelation
 
@@ -1950,7 +1959,7 @@ primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", 
 primates.body.ace
 # Other implementations are available in packages geiger (functions fitContinuousMCMC and fitDiscrete), phangorn and more in ape (MPR)
 # Plot it
-plot(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, lwd=2, cex=2)
 tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
 nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
 # ACE returns long numbers - truncate them by e.g. 
