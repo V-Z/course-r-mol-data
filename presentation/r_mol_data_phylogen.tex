@@ -247,7 +247,7 @@
 		\item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://www.rstudio.com/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
-		\item R commander (Rcmdr) \url{http://www.rcommander.com/} --- multi-platform, not so rich as previous
+		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
 		\item Java GUI for R \url{https://rforge.net/JGR/} --- Java (multi-platform, but with all Java issues like memory consumption)
 		\item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
 		\item Pick one you like (from above list or any else) and install it\ldots
@@ -346,8 +346,8 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 12,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,400 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 13,600 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,600 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,000 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more\ldots
@@ -659,7 +659,7 @@
 		\item User has basically two options
 		\begin{enumerate}
 			\item Set all repositories in R and use basic commands to install packages (slide~\ref{repos})
-			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff}) or use special tools (e.g. for \href{http://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
+			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff}) or use special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
 		\end{enumerate}
 	\end{itemize}
 \end{frame}
@@ -827,7 +827,7 @@
 		\end{itemize}
 		\item Gdal \url{https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries}
 		\begin{itemize}
-			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+			\item Recommended for conversion of coordinates for Geneland (from slide~\ref{GenelandUse}), loading of SHP files, etc.
 		\end{itemize}
 		\item GIMP \url{https://www.gimp.org/}
 		\begin{itemize}
@@ -843,7 +843,7 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item MPI \url{http://www.stats.uwo.ca/faculty/yu/Rmpi/}
+		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
 		\begin{itemize}
 			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended)
 			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
@@ -853,7 +853,7 @@
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
 % 		\item PHYLIP \url{http://evolution.genetics.washington.edu/phylip/} % TODO Rphylip
-		\item proj \url{http://proj4.org/download.html}
+		\item proj \url{https://proj4.org/download.html}
 		\begin{itemize}
 			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
 		\end{itemize}
@@ -945,9 +945,9 @@
 		\begin{itemize}
 			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
 			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
-			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{http://ibot.sav.sk/usr/Karol/}{Karol Marhold} and his team
-			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Holcová} and her colleagues
-			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12487/abstract}{Schmickl et al. 2016}
+			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/people}{Karol Marhold} and his team
+			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
+			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
 			\item Partial mitochondrial sequence of mm18 control region of \textit{Meles meles} (Mustelidae) from \href{https://www.nature.com/articles/hdy201445}{Frantz et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/608602125}{GenBank}
 			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
 			\item Phylogeny of selected species of Apiaceae reconstructed from several concatenated plastid genes downloaded from \href{https://www.ncbi.nlm.nih.gov/}{GenBank} and simulated trait
@@ -1001,7 +1001,7 @@
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
 		\begin{itemize}
-			\item Popular plain text format used by software like \href{http://mesquiteproject.org/}{Mesquite}, \href{http://mrbayes.sourceforge.net/}{MrBayes}, \href{http://paup.sc.fsu.edu/}{PAUP*}, \href{http://www.splitstree.org/}{SplitsTree},~\ldots
+			\item Popular plain text format used by software like \href{https://mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{http://www.splitstree.org/}{SplitsTree},~\ldots
 			\item Structure can be complex, is divided into blocks containing e.g. sequences, trees (in NEWICK format), distance matrix, fragmentation data, networks (e.g. for SplitsTree), MrBayes commands, traits,~\ldots
 			\item Several variants, sometimes problems with interoperability
 			\item Suffix usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
@@ -1010,7 +1010,7 @@
 		\begin{itemize}
 			\item Text-based format for storing biological sequences aligned to a~reference sequence
 			\item Structure is relatively complex
-			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{http://www.htslib.org/}{SAMtools}
+			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{https://www.htslib.org/}{SAMtools}
 			\item Suffix usually \texttt{*.sam}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Tab-separated_values}{\textbf{TSV}} (TAB separated values)
@@ -4081,7 +4081,7 @@
 	\begin{itemize}
 		\item Let's use modern multi-core CPUs and plenty of RAM in current computers --- parallelisation saves time
 		\item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
-		\item When using it, cite \href{http://www.plosone.org/article/info\%3Adoi\%2F10.1371\%2Fjournal.pone.0070651}{Besnier \& Glover 2013}
+		\item When using it, cite \href{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0070651}{Besnier \& Glover 2013}
 		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
 		\item Authors recommend to run it without GUI and not on Windows\ldots
 		\item For this chapter start new R project in new working directory
@@ -4200,7 +4200,7 @@
       /structure_sum/")
 	\end{spluscode}
 	\begin{itemize}
-		\item When using it, cite \href{http://onlinelibrary.wiley.com/doi/10.1111/j.1471-8286.2006.01380.x/abstract}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net), see \href{https://soubory.trapa.cz/rcourse/structure-sum-2011.pdf}{manual}
+		\item When using it, cite \href{https://onlinelibrary.wiley.com/doi/full/10.1111/j.1471-8286.2006.01380.x}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net), see \href{https://soubory.trapa.cz/rcourse/structure-sum-2011.pdf}{manual}
 		\item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
 		\item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
 	\end{itemize}
@@ -4778,7 +4778,7 @@
 
 % \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
 % 	\begin{itemize}
-% 		\item Package \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
+% 		\item Package \href{https://github.com/bomeara/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
 % 	\end{itemize}
 % 	\begin{spluscode}
 % 
@@ -5463,7 +5463,7 @@
 		\item Phylogenetic component is removed from the data, then classical PCA is calculated
 		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the taxa --- it shows trends of character evolution on the tree, not positions of taxa in PC space
 		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
-		\item From package \href{https://academic.oup.com/bioinformatics/article-lookup/doi/10.1093/bioinformatics/btq292}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
+		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
 		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
 	\end{itemize}
 \end{frame}
@@ -5813,7 +5813,7 @@
 			\item It can be tricky to get desired figure --- some magic use to be needed\ldots
 		\end{itemize}
 		\item There are \href{https://CRAN.R-project.org/web/views/Graphics.html}{plenty of graphical packages}
-		\item Advanced functions we used internally by used packages are \href{https://CRAN.R-project.org/package=lattice}{lattice} (\href{http://lattice.r-forge.r-project.org/}{web}), \href{https://CRAN.R-project.org/package=gplots}{gplot} and \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2} (\href{http://ggplot2.org/}{web 1}, \href{http://ggplot2.tidyverse.org/}{web 2})
+		\item Advanced functions we used internally by used packages are \href{https://CRAN.R-project.org/package=lattice}{lattice} (\href{http://lattice.r-forge.r-project.org/}{web}), \href{https://CRAN.R-project.org/package=gplots}{gplot} and \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2} (\href{https://ggplot2.tidyverse.org/}{web})
 		\begin{itemize}
 			\item They have enormous possibilities, it is large topic for another long course\ldots
 		\end{itemize}
@@ -6123,26 +6123,25 @@
 		\item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
 		\item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
 		\item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation}
-		\item Population Genetics in R \url{http://popgen.nescent.org/} by \href{http://onlinelibrary.wiley.com/doi/10.1111/1755-0998.12558/abstract}{Kamvar et al}
+		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12558}{Kamvar et al}
 		\item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
 		\item RStudio Cheat Sheets \url{https://www.rstudio.com/resources/cheatsheets/} and Online learning resources \url{https://www.rstudio.com/online-learning/}
 		\item R-bloggers --- aggregation of R blogs \url{https://www.r-bloggers.com/}
 		\item R on The Molecular Ecologist \url{https://www.molecularecologist.com/category/software/r/}
-		\item R tutorial \url{http://www.r-tutor.com/}
+		\item R tutorial \url{https://www.r-tutor.com/}
 		\item Cookbook for R  \url{http://www.cookbook-r.com/}
 		\item Spatial R \url{https://sites.google.com/site/spatialr/}
 		\item R for open big data \url{https://ropensci.org/}
 		\item Statistics with R \url{http://zoonek2.free.fr/UNIX/48_R/all.html}
 		\item The R Inferno book \url{https://www.burns-stat.com/documents/books/the-r-inferno/} (Feeling like being in hell when using R?)
 		\item Springer R series \url{https://www.springer.com/series/6991?detailsPage=titles}
-		\item ggplot2 (the most powerful graphical library used by many packages) information \url{http://ggplot2.org/}
-		\item plyr documentation \url{http://plyr.had.co.nz/} --- manipulation with data (split-apply-combine)
+		\item ggplot2 (the most powerful graphical library used by many packages) information \url{https://ggplot2.tidyverse.org/}
+		\item plyr documentation \url{https://plyr.had.co.nz/} --- manipulation with data (split-apply-combine)
 		\item Leaflet for R \url{https://rstudio.github.io/leaflet/}
 		\item Learning R blog \url{https://learnr.wordpress.com/}
 		\item R for Community Ecologists \url{http://ecology.msu.montana.edu/labdsv/R/}
-		\item Try R on-line course full of adventure and heroic quests \url{http://tryr.codeschool.com/} (Tired of orcs, dragons and princesses? Beat R!:)
 		\item Quick-R learning resource \url{https://www.statmethods.net/}
 		\item R manual and help search \url{http://finzi.psych.upenn.edu/}
 		\item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
@@ -6164,6 +6163,7 @@
 		\item \href{https://CRAN.R-project.org/package=caper}{caper}: phylogenetic comparative analyses
 		\item \href{https://CRAN.R-project.org/package=corrplot}{corrplot}: graphical display of a~correlation or general matrix
 		\item \href{https://CRAN.R-project.org/package=devtools}{devtools}: package development tools, access to GitHub
+		\item \href{https://CRAN.R-project.org/package=gee}{gee}: generalized estimation equation solver
 		\item \href{https://CRAN.R-project.org/package=geiger}{geiger}: fitting macroevolutionary models to phylogenetic trees
 		\item \href{https://i-pri.org/special/Biostatistics/Software/Geneland/}{Geneland}: stochastic simulation and MCMC inference of structure from genetic data
 		\item \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2}: data visualizations using the Grammar of Graphics
@@ -6189,15 +6189,18 @@
 		\item \href{https://CRAN.R-project.org/package=picante}{picante}: integrates phylogeny and ecology
 		\item \href{https://CRAN.R-project.org/package=plotrix}{plotrix}: various labeling, axis and color scaling functions
 		\item \href{https://CRAN.R-project.org/package=poppr}{poppr}: genetic analysis of populations with mixed reproduction
+		\item \href{https://CRAN.R-project.org/package=raster}{raster}: reading, writing, manipulating, analyzing and modeling of gridded spatial data
 		\item \href{https://CRAN.R-project.org/package=rgdal}{rgdal}: bindings to the Geospatial Data Abstraction Library and access to projection/transformation operations library
 		\item \href{https://CRAN.R-project.org/package=RgoogleMaps}{RgoogleMaps}: interface to query the Google server for static maps and uses the map as a~background image to overlay plots
 		\item \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi}: interface (wrapper) to MPI (used for parallel processing)
 		\item \href{https://CRAN.R-project.org/package=rworldmap}{rworldmap}: mapping global data
 		\item \href{https://CRAN.R-project.org/package=seqinr}{seqinr}: exploratory data analysis and data visualization for biological sequence
+		\item \href{https://CRAN.R-project.org/package=shapefiles}{shapefiles}: read and write ESRI shapefiles
 		\item \href{https://CRAN.R-project.org/package=snow}{snow}: simple parallel computing
 		\item \href{https://CRAN.R-project.org/package=sos}{sos}: searches contributed R packages
 		\item \href{https://CRAN.R-project.org/package=sp}{sp}: classes and methods for spatial data
 		\item \href{https://CRAN.R-project.org/package=spdep}{spdep}: spatial dependence: weighting schemes, statistics and models
+		\item \href{https://CRAN.R-project.org/package=splancs}{splancs}: display and analysis of spatial point pattern data
 		\item \href{https://CRAN.R-project.org/package=StAMPP}{StAMPP}: statistical analysis of mixed ploidy populations
 		\item \href{https://CRAN.R-project.org/package=TeachingDemos}{TeachingDemos}: demonstrations for teaching and learning, enhanced plotting of text
 		\item \href{https://CRAN.R-project.org/package=tripack}{tripack}: constrained two-dimensional Delaunay triangulation
@@ -6221,7 +6224,6 @@
 		\item \href{https://CRAN.R-project.org/package=convevol}{convevol}: quantifies and assesses the significance of convergent evolution
 		\item \href{https://CRAN.R-project.org/package=corHMM}{corHMM}: analysis of binary character evolution
 		\item \href{https://CRAN.R-project.org/package=DAMOCLES}{DAMOCLES}: maximum likelihood of a~dynamical model of community assembly
-		\item \href{https://CRAN.R-project.org/package=dartR}{dartR}: facilitate the import, filtering and analysis of SNP and silicodart (presence/absence) data
 		\item \href{https://CRAN.R-project.org/package=DDD}{DDD}: diversity-dependent diversification
 		\item \href{https://CRAN.R-project.org/package=dendextend}{dendextend}: extending dendrogram objects
 		\item \href{https://CRAN.R-project.org/package=distory}{distory}: geodesic distance between phylogenetic trees
@@ -6233,8 +6235,6 @@
 		\item \href{https://CRAN.R-project.org/package=expands}{expands}: expanding ploidy and allele-frequency on nested subpopulations
 		\item \href{https://CRAN.R-project.org/package=expoTree}{expoTree}: calculates the density dependent likelihood of a~phylogenetic tree
 		\item \href{https://CRAN.R-project.org/package=fields}{fields}: tools for spatial data
-		\item \href{https://CRAN.R-project.org/package=FREGAT}{FREGAT}: fast regional association analysis of quantitative traits for family-based and population studies
-		\item \href{https://CRAN.R-project.org/package=gee}{gee}: generalized estimation equation solver
 		\item \href{https://CRAN.R-project.org/package=genetics}{genetics}: population genetics
 		\item \href{https://CRAN.R-project.org/package=genotypeR}{genotypeR}: design of genotyping markers from VCF files, output of markers for multiplexing on various platforms, various QA/QC and analysis
 		\item \href{https://CRAN.R-project.org/package=geomorph}{geomorph}: geometric morphometric analyses of 2D/3D landmark data
@@ -6272,7 +6272,7 @@
 		\item \href{https://CRAN.R-project.org/package=pcadapt}{pcadapt}: PCA and search for loci responsible for the grouping (no support for mixing ploidy levels), uses VCF
 		\item \href{https://CRAN.R-project.org/package=PCPS}{PCPS}: principal coordinates of phylogenetic structure
 		\item \href{https://CRAN.R-project.org/package=permute}{permute}: restricted permutation designs
-		\item \href{https://faculty.franklin.uga.edu/lliu/content/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
+		\item \href{https://github.com/bomeara/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
 		\item \href{https://CRAN.R-project.org/package=phyclust}{phyclust}: phylogenetic clustering
 		\item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling
 		\item \href{https://CRAN.R-project.org/package=PHYLOGR}{PHYLOGR}: manipulation and analysis of phylogenetically simulated data sets and phylogenetically based analyses using GLS
@@ -6285,13 +6285,11 @@
 		\item \href{https://CRAN.R-project.org/package=pmc}{pmc}: phylogenetic Monte Carlo
 		\item \href{https://CRAN.R-project.org/package=polyfreqs}{polyfreqs}: Gibbs sampling algorithm to perform Bayesian inference on biallelic SNP frequencies, genotypes and heterozygosity in a~population of autopolyploids
 		\item \href{https://CRAN.R-project.org/package=polysat}{polysat}: polyploid microsatellite analysis
-		\item \href{https://CRAN.R-project.org/package=RADami}{RADami}: phylogenetic analysis of RADseq data
 		\item \href{https://CRAN.R-project.org/package=RandomFields}{RandomFields}: simulation of Gaussian fields (+ \href{https://CRAN.R-project.org/package=RandomFieldsUtils}{RandomFieldsUtils})
 		\item \href{https://github.com/thierrygosselin/radiator}{radiator}: RADseq data exploration, manipulation and visualization
 		\item \href{https://github.com/ramnathv/rCharts}{rCharts}: interactive JS charts
 		\item \href{https://CRAN.R-project.org/package=RColorBrewer}{RColorBrewer}: ColorBrewer palettes
 		\item \href{https://CRAN.R-project.org/package=rdryad}{rdryad}: access for Dryad web services
-		\item \href{https://CRAN.R-project.org/package=Reol}{Reol}: interface to the Encyclopedia of Life
 		\item \href{https://github.com/ramnathv/rMaps}{rMaps}: interactive maps
 		\item \href{https://CRAN.R-project.org/package=rphast}{rphast}: interface to PHAST software for comparative genomics
 		\item \href{https://r-forge.r-project.org/projects/rmesquite/}{RMesquite}: interoperability with Mesquite
