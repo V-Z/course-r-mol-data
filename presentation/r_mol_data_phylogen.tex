@@ -130,7 +130,7 @@
 		\item Download the script from \url{https://soubory.trapa.cz/rcourse/course_commands.r}, use it and write your comments and notes to it during the course
 		\begin{itemize}
 			\item \alert{Note:} Open the R script in some \alert{good} \href{http://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} (next slide) --- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
-			\item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (see further) and directly work with it
+			\item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (slide~\ref{gui}) and directly work with it
 			\item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*.txt}}
 			\item \alert{Never ever} open R script in software like MS~Word --- it destroys quotation marks and other things making script unusable
 		\end{itemize}
@@ -177,7 +177,7 @@
 	\end{multicols}
 	\vfil
 	\begin{itemize}
-		\item The best option is to use text editor of selected R GUI\ldots
+		\item The best option is to use text editor of selected R GUI (slide~\ref{gui})\ldots
 	\end{itemize}
 \end{frame}
 
@@ -190,7 +190,7 @@
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
 			\item Ensure you understand \textbf{syntax} of the command (what it technically does)
 		\end{enumerate}
-		\item Some commands from \texttt{course\_commands.r} \textit{do require} to be edited according to particular user's computer --- it is described in the comments around the command
+		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do require} to be edited} according to particular user's computer --- it is described in the comments around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
 	\end{itemize}
 \end{frame}
@@ -233,7 +233,7 @@
 \begin{frame}{About R}
 	\begin{itemize}
 		\item Project for Statistical Computing
-		\item Open-source --- freely available with source code --- anyone can use it and contribute its development
+		\item Open-source --- freely available with source code --- anyone can use and modify it and contribute its development
 		\item Development is organized by non-governmental non-profit organization from Vienna
 		\item Thousands of packages extending its functionality are available --- all fields of computations in any scientific discipline
 		\item Provides only command line interface --- full control over the analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis etc.
@@ -243,8 +243,9 @@
 \end{frame}
 
 \begin{frame}{Graphical user interfaces (GUI)}
+	\label{gui}
 	\begin{itemize}
-		\item Provide more comfortable interface for work with scripts (source code highlight), overview of loaded packages and variables, easier work with figures,~\ldots
+		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://www.rstudio.com/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
@@ -276,7 +277,7 @@
 
 \subsection{Installation}
 
-\begin{frame}{MS Windows \& Apple Mac OS~X}
+\begin{frame}{MS Windows \& Apple macOS}
 	\begin{itemize}
 		\item Got to \url{https://CRAN.R-project.org/}
 		\item Download appropriate version and install as usual
@@ -285,7 +286,7 @@
 		\item Usually there are some problems every time new version of OS is released --- it takes time to modify and recompile packages for new version of OS
 		\item You have to check for new version of R manually
 		\item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
-		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{Mac OS~X}, but it requires some work to install it
+		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{macOS}, but it requires some work to install it
 	\end{itemize}
 \end{frame}
 
@@ -321,7 +322,7 @@
 			\end{footnotesize}
 		\end{itemize}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
-		\item Install package \texttt{patterns-openSUSE-devel\_basis} for compilation of R packages when installing them from R (only some R packages are available in repositories)
+		\item Install packages \texttt{patterns-openSUSE-devel\_basis} and \texttt{gcc-fortran} for compilation of R packages when installing them from R (only some R packages are available in openSUSE repositories)
 		\item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
 \end{frame}
@@ -339,7 +340,7 @@
 		\item \alert{There must not be any spaces or accented characters in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution)
 		\item If the user has e.g. on Windows path like \texttt{C:/Documents and Settings/Šíleně úpějící koníček/R kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems
 		\item It might be required to make a~new user on the computer\ldots
-		\item Similarly on Mac OS~X and Linux, avoid directory names with spaces and accented characters
+		\item Similarly on macOS and Linux, avoid directory names with spaces and accented characters
 	\end{itemize}
 \end{frame}
 
@@ -350,7 +351,7 @@
 		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,600 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,000 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
-		\item And more\ldots
+		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
 		\item Some packages are available from more resources
 		\item Same name for function can be used in different packages (there is no central index) --- to distinguish them call functions like this: \texttt{muscle::read.fasta()} vs. \texttt{seqinr::read.fasta()} --- call function \texttt{read.fasta()} from package \texttt{muscle} \alert{or} \texttt{seqinr} (and their parameters can be different\ldots) --- see further
 	\end{itemize}
@@ -446,7 +447,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
-		\item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/Mac OS~X)
+		\item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/macOS)
 		\item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time
 		\item RStudio and RKWard help with this very much
 	\end{itemize}
@@ -678,14 +679,15 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item \alert{Keep newest version of R and and newest versions of packages!}
-		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries)
+		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
+		\item After upgrade of R (e.g. from 3.4 to 3.5), user must reinstall all packages
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Install packages}
 	\begin{itemize}
-		\item If repositories from slide~\ref{repos} are not set (for any reason), it is possible to install in several steps packages from main repository (CRAN) and from another sources (next slide)
+		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
 	\end{itemize}
 	\begin{spluscode}
@@ -795,7 +797,7 @@
 	\label{bioc}
 	\begin{itemize}
 		\item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
-		\item To install it, add appropriate repositories (repository has its own version number not strictly following R --- change them accordingly when upgrading R, see \href{https://bioconductor.org/install}{web}) or \textbf{use Bioconductor's special function} (recommended by Bioconductor):
+		\item To install it, add appropriate repositories (repository has its own version number not strictly following R, see \href{https://bioconductor.org/install}{web}) and \textbf{use Bioconductor's special helper package} (recommended by Bioconductor):
 	\end{itemize}
 	\begin{spluscode}
     # Install CRAN package BiocManager used to manage Bioconductor packages
@@ -818,7 +820,7 @@
 		\item We use several software packages outside R
 		\begin{itemize}
 			\item R functions can use this software
-			\item External software can be used (depending on R package) to create/modify R object, or just as different method for (batch) usage of the software
+			\item External software can be used (depending on R package) to create/modify R object, or just as different method for (batch) usage of the software (similarly to BASH, Python, etc.)
 			\item User must install this software manually
 		\end{itemize}
 		\item Clustal (W/X; Omega is not used in the course) \url{http://clustal.org/}
@@ -845,7 +847,7 @@
 		\end{itemize}
 		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
 		\begin{itemize}
-			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended)
+			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows, macOS and Linux have more options for parallelisation)
 			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
 		\end{itemize}
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
@@ -875,13 +877,14 @@
 
 \begin{frame}[allowframebreaks]{Brief overview of molecular data types}{Sorted with respect to usage in R}
 	\begin{itemize}
-		\item Isozymes --- forms of proteins differing in electrophoresis by their weight and/or charge
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Isozyme}{Isozymes}} --- forms of proteins differing in electrophoresis by their weight and/or charge
 		\begin{itemize}
 			\item Typically coded as presence/absence (1/0) data
+			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) matrices
 		\end{itemize}
-		\item Fragmentation data --- length polymorphism
+		\item \textbf{Fragmentation data} --- length polymorphism
 		\begin{itemize}
-			\item Codominant data --- e.g. microsatellites (SSRs --- Simple Sequence Repeats)
+			\item Codominant data --- e.g. \href{https://en.wikipedia.org/wiki/Microsatellite}{microsatellites} (SSRs --- Simple Sequence Repeats)
 			\begin{itemize}
 				\item Variability in number of short (usually 1--3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 25--250 repeats) bordered by unique primer sequences
 				\item Very variable, fast evolving, species-specific primers needed
@@ -891,27 +894,31 @@
 			\item Presence/absence (1/0) dominant data
 			\begin{itemize}
 				\item The allele \textbf{is} or \textbf{is not} present  --- it is impossible to distinguish heterozygots from dominant homozygots
-				\item AFLP (Amplified Fragment Length Polymorphism) --- very variable, technically complicated, nowadays bit expensive and outdated
-				\item Simpler methods RAPD (Random Amplified Polymorphic DNA) and PCR-RFLP (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
+				\item \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP} (Amplified Fragment Length Polymorphism) --- very variable, technically complicated, nowadays bit expensive and outdated
+				\item Simpler methods \href{https://en.wikipedia.org/wiki/RAPD}{RAPD} (Random Amplified Polymorphic DNA) and \href{https://en.wikipedia.org/wiki/Restriction_fragment_length_polymorphism}{PCR-RFLP} (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
 			\end{itemize}
 		\end{itemize}
-		\item Protein sequences --- not used in the course
+		\item \textbf{Protein sequences} --- not used in the course
 		\begin{itemize}
 			\item Apart similar usage as with DNA/RNA (sequence analysis) it is possible to work with the structure and conformation of the proteins
-			\item R has plenty of packages for specialized protein analyses
+			\item R (especially \href{https://bioconductor.org/}{Bioconductor}) has plenty of packages for specialized protein analyses and more
 		\end{itemize}
-		\item Nucleic acid sequences (in nearly any form) --- DNA or RNA
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Nucleic_acid_sequence}{Nucleic acid sequences}} (in nearly any form) --- DNA or RNA
 		\begin{itemize}
 			\item From ``classical'' Sanger sequencing --- long individual reads
-			\item From modern HTS (NGS) --- 454 pyrosequencing, Illumina,~\ldots
-	\begin{itemize}
-		\item Probably most used are RADseq scanning whole genome, HybSeq using specific probes to sequence only single/low-copy nuclear markers, Genome Skimming getting the most abundant part of the genome (plastid and mitochondrial sequences and ITS1-5.8S rRNA-ITS2 region); and their variants
-		\item There are special tools to process raw data from the machines --- not part of the course
-	\end{itemize}
-			\item Whole sequences (probes/loci or longer assembled regions) or SNPs (Single Nucleotide Polymorphism --- only polymorphic sites are retained)
+			\item From modern \href{https://en.wikipedia.org/wiki/DNA_sequencing\#High-throughput_methods}{HTS (NGS)} --- \href{https://en.wikipedia.org/wiki/Pyrosequencing}{454 pyrosequencing}, \href{https://en.wikipedia.org/wiki/Illumina_dye_sequencing}{Illumina},~\ldots{ }methods
+			\begin{itemize}
+				\item Probably most used are \href{https://en.wikipedia.org/wiki/Restriction_site_associated_DNA_markers}{RADseq} scanning whole genome, \href{https://bsapubs.onlinelibrary.wiley.com/doi/abs/10.3732/apps.1400042}{HybSeq} and other \href{https://en.wikipedia.org/wiki/Exome_sequencing}{target enrichment} methods using specific probes to sequence only single/low-copy nuclear markers, \href{https://bsapubs.onlinelibrary.wiley.com/doi/abs/10.3732/ajb.1100335}{Genome Skimming} getting the most abundant part of the genome (plastid and mitochondrial sequences and ITS1-5.8S rRNA-ITS2 region), \href{https://en.wikipedia.org/wiki/Genotyping_by_sequencing}{Genotyping by sequencing (GBS)}; and their variants
+				\item There are special tools to process raw data from the machines --- not part of the course
+				\item Modern methods are quickly developing and able to produce $\sim$10$^{12}$~bp per run and multiplex many individuals
+			\end{itemize}
+			\item Whole sequences (probes/loci or longer assembled regions) or \href{https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism}{SNPs} (\href{https://en.wikipedia.org/wiki/SNP_genotyping}{Single Nucleotide Polymorphism} --- only polymorphic sites are retained)
 		\end{itemize}
 		\item Most of methods are mathematically well defined for haploids and/or diploids, higher ploidies or mixing of ploidies is not always possible
 		\item Most of methods shown in the course work with more data types --- not every variant is shown
+		\begin{itemize}
+			\item Explore more options yourselves
+		\end{itemize}
 		\item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology} (\href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{česky})
 	\end{itemize}
 \end{frame}
@@ -959,6 +966,7 @@
 		\end{itemize}
 		\item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
 		\item Extraction of SNP from DNA is useful in case of huge data sets --- for smaller data sets it is not necessary
+		\item Many methods can process (nearly) any input data type
 	\end{itemize}
 	\begin{block}{Always save your work!}
 		\alert{We will use data objects during whole course --- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
@@ -1017,7 +1025,7 @@
 		\begin{itemize}
 			\item ``One sheet of Excel''
 			\item Common format to store data (traits, coordinates,~\ldots), similar to CSV
-			\item Columns (cells) are separated by tabs (\texttt{\textbackslash t}) --- it is important to check structure before import into R (and very it after import)
+			\item Columns (cells) are separated by tabs (\texttt{\textbackslash t}) --- it is important to check structure before import into R (and verify it after import)
 			\item Suffix usually \texttt{*.tsv}, \texttt{*.tab}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Text_file}{\textbf{TXT}}
@@ -1107,13 +1115,13 @@
 		\item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
 		\item Local paths (within one computer) can be absolute or relative
 		\begin{itemize}
-			\item Absolute paths start from the top of files hierarchy: on UNIX (Linux, Mac OS~X,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:/} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+			\item Absolute paths start from the top of files hierarchy: on UNIX (Linux, macOS,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:/} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
 			\item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
 			\begin{itemize}
 	\item In the easiest case the input file is in same directory as is R's working directory --- verify by \texttt{getwd()} and \texttt{dir()} --- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
 	\item For subdirectory start with its name (\textbf{no} with \texttt{/} or \texttt{C:}), e.g. \texttt{FileParameter="subdirectory/another/directory/file.txt"}
 	\item When going directory up, use one \texttt{..} for each level, e.g. \texttt{FileParameter="../upper/directory/file.txt"}
-	\item On UNIX (Mac OS~X, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
+	\item On UNIX (macOS, Linux,~\ldots) tilde \texttt{\textasciitilde} means user's home directory (e.g. \texttt{/home/USER/}), so \texttt{FileParameter="\textasciitilde/some/file.txt"} is same as \texttt{FileParameter="/home/USER/some/file.txt"}
 			\end{itemize}
 			\item If loading data from computer, carefully check the paths or \textbf{use function \texttt{file.choose()} to interactively pick up the file anywhere in the computer} --- it can replace nearly any filename parameter (e.g. \alert{\texttt{FileParameter=file.choose()}})
 		\end{itemize}
@@ -1302,9 +1310,9 @@
 	\vfill
 	\begin{spluscode}
         L1 L2 L3 L4 L5 L6 L7 L8 L9 ...
-    Ind1 0 0 1 1 1 0 0 0 1 ...
-    IndG 0 0 1 1 0 0 0 0 0 ...
-     ...  ...              ...
+    Ind1 0  0  1  1  1  0  0  0  1 ...
+    IndG 0  0  1  1  0  0  0  0  0 ...
+     ...  ...                      ...
 	\end{spluscode}
 	\vfill
 	\begin{footnotesize}
@@ -1587,7 +1595,7 @@
 	\end{itemize}
 	\begin{spluscode}
     library(vcfR) # Required library
-    # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
+    # Pick up downloaded file 'arabidopsis.vcf.gz' from the disk
     arabidopsis.vcf <- read.vcfR(file=file.choose())
     # File choose dialog can open in background - search for it :-)
     # Or directly load remote file
@@ -1659,7 +1667,7 @@
     nLoc(arabidopsis.genind)
     locNames(arabidopsis.genind)
     # Genlight (suitable for huge data, not required now)
-    # On Linux/Mac and with large data use higher n.cores
+    # On Linux/macOS and with large data use higher n.cores
     arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1)
     # Check it
     arabidopsis.genlight
@@ -3740,7 +3748,7 @@
         hauss.geneland.irun, "/", sep="")
       hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,
         "log.posterior.density.txt", sep="")
-      hauss.geneland.lpd[hauss.geneland.irun] <- 
+      hauss.geneland.lpd[hauss.geneland.irun] <-
         mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)]) }
     # Sorts runs according to decreasing posterior probability
     # the first one is the best
@@ -4181,7 +4189,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item It may help to set \texttt{n\_cpu=1}, but it is only for testing then, not for real work...
-		\item If this fails, look for some UNIX machine (Linux, Mac OS~X, BSD,~\ldots)\ldots
+		\item If this fails, look for some UNIX machine (Linux, macOS, BSD,~\ldots)\ldots
 	\end{itemize}
 \end{frame}
 
@@ -5091,9 +5099,9 @@
     Ateles       2.02815 1.986006 2.091402
     Galago       1.46968 1.494281 1.496831
     cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,]
-      4.094340      4.072501      4.035324 
+      4.094340      4.072501      4.035324
     cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,]
-      3.610920      3.572728      3.664654 
+      3.610920      3.572728      3.664654
     class(cbind(primates.body, jitter(primates.body),
       jitter(primates.body)))
     [1] "matrix"
@@ -5848,15 +5856,15 @@
 	\begin{itemize}
 		\item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension with list of R commands
 		\item Mark all user comments with \texttt{\#} on the beginning
-		\item In command line (Linux/Mac OS~X/Windows/\ldots) use
+		\item In command line (Linux/macOS/Windows/\ldots) use
 		\begin{itemize}
 			\item \texttt{Rscript myscript.r} to work \textbf{interactively} --- all output is written to the terminal (as usual), user can be asked for some values,~\ldots
 			\item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} --- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow --- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum}
 		\end{itemize}
 		\item Script ends when there is some error or on the end of the file
-		\item When working on both Windows and Mac OS~X/Linux, take care about end of lines
+		\item When working on both Windows and macOS/Linux, take care about end of lines
 		\begin{itemize}
-			\item Windows and UNIX (Linux, Mac OS~X,~\ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
+			\item Windows and UNIX (Linux, macOS,~\ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
 			\item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines for target system
 		\end{itemize}
 	\end{itemize}

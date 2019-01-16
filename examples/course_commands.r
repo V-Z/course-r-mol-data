@@ -387,7 +387,7 @@ indNames(arabidopsis.genind)
 nLoc(arabidopsis.genind)
 locNames(arabidopsis.genind)
 # Genlight (suitable for huge data, not required now)
-arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/Mac and with large data use higher n.cores
+arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
 # Check it
 arabidopsis.genlight
 # Loci
