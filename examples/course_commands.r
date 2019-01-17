@@ -442,6 +442,8 @@ hauss.summ
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
+# Test normality of the vector - can we use bartlett.test() or t.test(), or do we have to use weaker kruskal.test() or wilcox.test()?
+shapiro.test(hauss.summ$Hexp)
 # Bartlett's K-squared test of difference between observed and expected heterozygosity - not significant
 bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
 # T-test of difference between observed and expected heterozygosity - strongly significant
@@ -730,6 +732,7 @@ hauss.nj <- nj(hauss.dist)
 # Test tree quality - plot original vs. reconstructed distance
 plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))), xlab="Original distance", ylab="Reconstructed distance")
 abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
+cor.test(x=as.vector(hauss.dist), y=as.vector(as.dist(cophenetic(hauss.nj))), alternative="two.sided") # Testing the correlation
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
 # Plot a basic tree - see ?plot.phylo for details

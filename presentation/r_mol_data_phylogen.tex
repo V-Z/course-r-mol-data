@@ -1783,16 +1783,16 @@
 			\item Check assumptions and requirements of the methods before usage
 			\item Think if the method answers your question
 		\end{itemize}
-		\item \textbf{Population-genetic indices} --- from slide~\ref{popgenindx}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Population_genetics}{Population-genetic} indices} --- from slide~\ref{popgenindx}
 		\begin{itemize}
 			\item Huge number\ldots
 			\item Characterize differences among individuals/groups or genetic variability on various levels (within/among individuals/populations,~\ldots)
 			\item One number tries to describe whole situation --- always very rough
 			\item Description of heterozygosity, allelic richness, distribution of multi locus genotypes among populations, level of inbreeding,~\ldots
 		\end{itemize}
-		\item \textbf{Distance-based methods} --- from slide~\ref{distances}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Genetic_distance}{Distance}-based methods} --- from slide~\ref{distances}
 		\begin{itemize}
-			\item \alert{It is crucial to select appropriate distance method for given data}
+			\item \alert{It is crucial to select appropriate distance method for given data type}
 			\item Usually require the distance matrix to be Euclidean
 			\item Distance matrix has one single number (index) for each pair of comparisons (individuals, populations) --- rough
 			\item Generally, the matrices describe pairwise similarities among the individuals/populations
@@ -1801,13 +1801,13 @@
 				\item Based on similarity (described by the matrix), not on any (evolutionary) model
 				\item The matrix based on genetic data is supposed to well reflect the genetic similarity, thus real relationships among individuals/populations
 			\end{itemize}
-			\item \textbf{Hierarchical clustering} --- from slide~\ref{hierclust}
+			\item \textbf{\href{https://en.wikipedia.org/wiki/Hierarchical_clustering}{Hierarchical clustering}} --- from slide~\ref{hierclust}
 			\begin{itemize}
 				\item Several methods clustering individuals according to their (dis)similarity from top or down into clusters
 				\item (Un)weighted per-group mean average (\textbf{U/WPGMA}) and others
 				\item Used more in ecology, for genetic data not so much anymore (following methods use to produce better results)
 			\end{itemize}
-			\item \textbf{Neighbor-Joining (NJ)} --- from slide~\ref{NJ}
+			\item \textbf{\href{https://en.wikipedia.org/wiki/Neighbor_joining}{Neighbor-Joining (NJ)}} --- from slide~\ref{NJ}
 			\begin{itemize}
 				\item A~tree starting from the two most similar individuals and connecting in the next steps next and next the most similar individual
 				\item In some cases artificially chains individuals
@@ -1815,16 +1815,16 @@
 			\end{itemize}
 			\item \textbf{Principal Coordinates Analysis (PCoA)} --- from slide~\ref{pcoa}
 			\begin{itemize}
-				\item The most common method of multivariate statistics for genetic data
+				\item The most common method of \href{https://en.wikipedia.org/wiki/Multidimensional_scaling}{multivariate statistics} for genetic data
 				\item Shows individuals in 2D scatter plot to retain maximum variability (by finding correlations among loci)
 			\end{itemize}
 		\end{itemize}
-		\item \textbf{Minimum Spanning Network (MSN)} --- slide~\ref{MSN}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Minimum_spanning_tree}{Minimum Spanning Network (MSN)}} --- slide~\ref{MSN}
 		\begin{itemize}
 			\item Simple network connecting the most similar genotypes/haplotypes
 			\item Useful for clones, cpDNA, mtDNA,~\ldots
 			\end{itemize}
-		\item \textbf{Multivariate statistics}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Multivariate_statistics}{Multivariate statistics}}
 		\begin{itemize}
 			\item Two variables are easily displayable in 2D xy-scatter plot (we can calculate correlation, whatever)
 			\item In molecular data, each locus is more or less independent variable --- 1000~bp alignment has 1000 variables: How to display plot with 1000 axes to be able to really see something?
@@ -1833,29 +1833,29 @@
 			\item Good for data display and creation of hypotheses --- not to verify them (there is no statistical test)
 			\item Data are commonly scaled --- all variables are in same scale
 		\end{itemize}
-		\item \textbf{Maximum Parsimony (MP)} --- from slide~\ref{MP}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum Parsimony (MP)}} --- from slide~\ref{MP}
 		\begin{itemize}
-			\item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of changes
-			\item It is easy to score how good the solution is, but computationally demanding to find the best one
+			\item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of evolutionary changes (DNA mutations)
+			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
 		\end{itemize}
-		\item \textbf{Maximum Likelihood (ML)}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_likelihood_estimation}{Maximum Likelihood (ML)}}
 		\begin{itemize}
 			\item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely tree under given mutational model
-			\item It is easy to score how good the solution is, but computationally demanding to find the best one
+			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
 		\end{itemize}
-		\item \textbf{Bayesian statistics}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Bayesian_statistics}{Bayesian statistics}}
 		\begin{itemize}
 			\item Based on \href{https://en.wikipedia.org/wiki/Bayes_theorem}{Bayesian theorem} --- probability of model under given data
 			\item Methods are looking for the best (e.g. evolutionary) \textbf{model} (e.g. phylogenetic tree) \textbf{explaining the data} (e.g. DNA sequences)
-			\item Algorithm exploring possible models and approaching the best runs in steps (generations)
+			\item Algorithm exploring possible models, scoring them and approaching the best runs in steps (iterative generations)
 			\begin{itemize}
 				\item After some time it converges to find optimal solution (usually described by logarithms of likelihood of given model)
 				\item Usually, $\sim$millions (or even more) of generations are required
-				\item Beginning use to be very unstable --- it is discarded as burn-in (``heating'' of Markov Chain Monte Carlo (MCMC) doing the exploration and optimization of models), usually $\sim$10--25\%~of steps
+				\item Beginning use to be very unstable --- it is discarded as burn-in (``heating'' of \href{https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo}{Markov Chain Monte Carlo (MCMC)} doing the exploration and optimization of models), usually $\sim$10--25\%~of steps
 			\end{itemize}
 		\end{itemize}
 		\item MP, ML and Bayesian statistics contain (evolutionary) \textbf{models} --- they are not based on similarity (as matrix-based methods), so that they are supposed to reveal real structure in the data
-		\item \textbf{Permutations}, \textbf{bootstraps} and another tests
+		\item \textbf{Permutations}, \textbf{bootstraps} and another \href{https://en.wikipedia.org/wiki/Resampling_(statistics)}{tests}
 		\begin{itemize}
 			\item It is necessary to test statistical significance of the obtained results
 			\item Most common methods somehow shuffle the data (drop one column,~\ldots) and repeat the calculation to see how stable is the result (it might be driven by one or few loci,~\ldots)
@@ -1953,7 +1953,7 @@
     poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4,
       missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE,
       plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
-    ... # Output table with indices:
+    # Output table with indices:
       Pop  N MLG eMLG       SE     H     G lambda   E.5  Hexp   Ia # More...
        He 13  11 1.97 1.58e-01 2.352  9.94  0.899 0.941 0.503 1.42 ...
        Ne  6   5 1.93 2.49e-01 1.561  4.50  0.778 0.930 0.604 3.44 ...
@@ -2591,13 +2591,14 @@
 \begin{frame}[fragile]{Calculate and test NJ tree}
 	\label{NJ}
 	\begin{spluscode}
-    # Calculates the tree (try with various distances)
-    hauss.nj <- nj(hauss.dist)
+    hauss.nj <- nj(hauss.dist) # Calculates the tree (try various distances)
     # Test tree quality - plot original vs. reconstructed distance
     plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))),
       xlab="Original distance", ylab="Reconstructed distance")
     abline(lm(as.vector(hauss.dist) ~
       as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
+    cor.test(x=as.vector(hauss.dist), y=as.vector(as.dist(cophenetic
+      (hauss.nj))), alternative="two.sided") # Testing the correlation
     # Linear model for above graph
     summary(lm(as.vector(hauss.dist) ~
       as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
