@@ -81,7 +81,7 @@
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=2cm]{rlogo.jpg}}
-\date{February 21 to 24, 2019}
+\date{January 21 to 24, 2019}
 
 % Default language
 \usepackage{polyglossia}
@@ -242,12 +242,17 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Graphical user interfaces (GUI)}
+\begin{frame}[allowframebreaks]{Graphical user interfaces (GUI)}
 	\label{gui}
 	\begin{itemize}
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://www.rstudio.com/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
+		\begin{itemize}
+			\item RKWard must be compiled for the same version as you use
+			\item If downloading for Windows or macOS, check your version of R and download respective version of RKWard
+			\item On Linux, do not mix package repositories, ensure RKWard is compiled for your R version (typically install both from same resource)
+		\end{itemize}
 		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
 		\item Java GUI for R \url{https://rforge.net/JGR/} --- Java (multi-platform, but with all Java issues like memory consumption)
 		\item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
@@ -3158,8 +3163,8 @@
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
 	\begin{itemize}
-		\item Moran's~\textit{I} --- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
-		\item Mantel test --- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
+		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
+		\item \href{https://en.wikipedia.org/wiki/Mantel_test}{Mantel test} --- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
 		\item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
 		\item There are unlimited possibilities with connections with GIS software --- check specialized courses and literature
 	\end{itemize}
@@ -3811,29 +3816,40 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Basic map and Google map}
+\begin{frame}[fragile]{Basic map}
+	\begin{spluscode}
+    # Insert legend
+    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne",
+      "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o",
+      bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
+	\end{spluscode}
+	\begin{center}
+		\includegraphics[height=5.5cm]{map.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Google map}
 	\begin{multicols}{2}
 		\begin{spluscode}
-    # Insert legend
-    legend(x="topright", inset=1/50,
-      legend=c("He", "Oh", "Pr", "Ne",
-      "Sk"), col="red", border="black",
-      pch=15:19, pt.cex=2, bty="o",
-      bg="lightgrey", box.lwd=1.5,
-      cex=1.5, title="Populations")
     # Google map is produced into a
     # file. Parameter markers contain
     # data frame with coordinates and
     # possibly with more information
-    hauss.gmap <- GetMap(center=
-      c(lat=41, lon=21), size=c(640,
-      640), destfile="gmap.png",
-      zoom=8, markers=hauss.coord,
-      maptype="terrain") # Plot map:
+    hauss.gmap <- GetMap(center=c(lat=
+      41, lon=21), size=c(640, 640),
+      destfile="gmap.png", zoom=8,
+      markers=hauss.coord, maptype=
+      "terrain", API_console_key="XXX")
+    # Plot the map
     PlotOnStaticMap(MyMap=hauss.gmap)
 		\end{spluscode}
+		\begin{itemize}
+			\item Google recently started to require \href{https://developers.google.com/maps/documentation/maps-static/intro}{API key}, it doesn't work without it\ldots
+			\item See \href{http://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
+			\item Many on-line map services do require (paid) API key\ldots
+		\end{itemize}
 		\begin{center}
-			\includegraphics[height=6.5cm]{maps.png}
+			\includegraphics[height=4.5cm]{gmap1.jpg}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -3844,7 +3860,8 @@
     hauss.gmap2 <- GetMap(center=c(
       lat=41, lon=21), size=c(640,
       640), destfile="gmap2.png",
-      zoom=8, maptype="satellite")
+      zoom=8, maptype="satellite",
+      API_console_key="XXX")
     PlotOnStaticMap(MyMap=hauss.gmap2,
       lat=hauss.genpop@other$xy[["lat"
       ]], lon=hauss.genpop@other$xy
@@ -3858,9 +3875,9 @@
     PlotOnStaticMap(MyMap=hauss.gmap2,
       lat=hauss.genpop@other$xy[["lat"
       ]], lon=hauss.genpop@other$xy
-      [["lon"]], add=TRUE, FUN=text,
 		\end{spluscode}
 		\begin{spluscode}
+      [["lon"]], add=TRUE, FUN=text,
       labels=as.vector(popNames(
       hauss.genind)), pos=4, cex=3,
       col="white")
@@ -3870,7 +3887,7 @@
     # will not work correctly
 		\end{spluscode}
 		\begin{center}
-		\includegraphics[height=4cm]{gmap.jpg}
+			\includegraphics[height=3.5cm]{gmap2.jpg}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -3968,13 +3985,13 @@
 
 \begin{frame}[fragile]{Plotting on SHP files I}
 	\begin{itemize}
+		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
 		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} and unpack them into R working directory
 		\item Data were originally downloaded from \url{https://download.geofabrik.de/europe/macedonia.html}
 		\item R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
 	\end{itemize}
 	\begin{spluscode}
     library(maptools)
-    # Load SHP file
     dir() # Verify required files are unpacked in the working directory
     # There are several functions readShape* - select appropriate
     # according to data stored in respective SHP file
@@ -4262,8 +4279,13 @@
 
 \section{Alignment}
 
-\begin{frame}{Multiple sequence alignment}
+\begin{frame}[fragile]{Multiple sequence alignment}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\vfill
+	\begin{spluscode}
+    # Go back to the original working directory
+    setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
+	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Multiple sequence alignment}
@@ -4319,13 +4341,14 @@
       original.ordering=TRUE) # Change "exec" to fit your path to muscle!
     meles.muscle
     class(meles.muscle)
+    ?muscle::muscle # See option in muscle package
     # Remove gaps from alignment - destroy it
     meles.nogaps <- del.gaps(meles.muscle)
     ?del.gaps # See for details
 	\end{spluscode}
 \end{frame}
 
-\subsection{Display and cleaning}
+\subsection{Multiple genes}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
 	\begin{spluscode}
@@ -4380,6 +4403,8 @@
     ?clusterApply # See more options (parLapply should work on Windows)
 	\end{spluscode}
 \end{frame}
+
+\subsection{Display and cleaning}
 
 \begin{frame}[fragile]{Checking the alignment}
 	\begin{spluscode}
@@ -4991,7 +5016,7 @@
 		\item There are various methods how to display everything
 		\item Methods and models are highly debated in the literature
 		\begin{itemize}
-			\item Different experts commonly disagree what is the best method
+			\item Different experts commonly disagree what is the best method\ldots
 			\item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{https://www.tau.ac.il/~itaymay/cp/chromEvol/}{chromEvol})
 			\item Usage is better to be consulted with some relevant expert
 			\item This is very difficult chapter by meaning of how to find the best method to analyze particular data\ldots
@@ -5117,6 +5142,7 @@
 	\begin{spluscode}
     # Check list of numeric vectors - required as input for pic.ortho()
     primates.pic.var
+    primates.pic.var[[1]]
     class(primates.pic.var)
     class(primates.pic.var[[1]])
     # Calculate for one character - this must be done for at least one more
@@ -5126,7 +5152,7 @@
     primates.pic.var
 	\end{spluscode}
 	\begin{itemize}
-		\item Resulting vector (here \texttt{primates.pic.var}) can then be used in absolutely same way as output of classical \texttt{pic()} --- testing by \texttt{lmorigin()} (slide~\ref{pic-test}) etc.
+		\item Resulting vector (here \texttt{primates.pic.ortho}) can then be used in absolutely same way as output of classical \texttt{pic()} --- testing by \texttt{lmorigin()} (slide~\ref{pic-test}) etc.
 	\end{itemize}
 \end{frame}
 
@@ -5332,7 +5358,7 @@
 
 \begin{frame}{Results of PGLS}
 	\begin{multicols}{2}
-		\includegraphics[height=6cm]{shorebirds.png}
+		\includegraphics[height=5.5cm]{shorebirds.png}
 		\begin{itemize}
 			\item \texttt{pgls()} uses maximum likelihood to test for phylogenetic signal
 			\item The signal is clearly presented
@@ -5853,20 +5879,21 @@
 
 \subsection{Scripts}
 
-\begin{frame}{R script and its running from command line}
+\begin{frame}[allowframebreaks]{R script and its running from command line}
 	\begin{itemize}
-		\item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension with list of R commands
+		\item R script is just plain \texttt{TXT} file with \texttt{.r} (e.g. \texttt{myscript.r}) extension containing list of R commands
 		\item Mark all user comments with \texttt{\#} on the beginning
 		\item In command line (Linux/macOS/Windows/\ldots) use
 		\begin{itemize}
-			\item \texttt{Rscript myscript.r} to work \textbf{interactively} --- all output is written to the terminal (as usual), user can be asked for some values,~\ldots
-			\item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} --- all output is written into \texttt{myscript.Rout}, terminal is clean and user can not influence the script anyhow --- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum}
+			\item \texttt{Rscript myscript.r} to work \textbf{interactively} --- all output is written to the terminal (screen; as usual), user can be asked for some values,~\ldots
+			\item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} --- all output is written into file \texttt{myscript.Rout}, terminal (screen) is clean and user can not influence the script anyhow --- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum} --- be sure the script doesn't require user input and works correctly
 		\end{itemize}
-		\item Script ends when there is some error or on the end of the file
-		\item When working on both Windows and macOS/Linux, take care about end of lines
+		\item Script ends when there is any error or on the end of the file
+		\item When working on both Windows and macOS/Linux, take care about end of lines, and in case of usage of accented characters (e.g. for labels) also about encoding
 		\begin{itemize}
 			\item Windows and UNIX (Linux, macOS,~\ldots) have different internal symbol for \href{https://en.wikipedia.org/wiki/Newline}{new line}
 			\item Use UNIX command line utilities \texttt{dos2unix myscript.r} or \texttt{unix2dos myscript.r} to get correct ends of lines for target system
+			\item Linux and macOS use to use UTF-8, Windows use regional encoding, e.g. Czech CP-1250 --- use advanced text editor (slide~\ref{editors}) to convert the encoding, or use some command line tool, like \texttt{iconv}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -5921,7 +5948,7 @@
     for (i in 1:10) {
       # Any commands can be here...
       print("Loop turn") # Some message for user
-      print(i) # Print number of turn - note it is decreasing
+      print(i) # Print number of turn - note how it is increasing
       X <- X+i # Rise value of "X" by current value of "i" (previous line)
       print(paste("Variable value:", X)) # Print current value of "X"
       }
@@ -5941,7 +5968,7 @@
 
 \begin{frame}[fragile]{If-else branching I}
 	\begin{itemize}
-		\item Basic method of branching the code --- \textbf{if} the condition is met, one branch is followed, \textbf{else} --- in any other case --- the other branch of the code is executed
+		\item Basic method of branching the code --- \textbf{if} the condition is met, \textbf{then} one branch is followed, \textbf{else} --- in any other case --- the other branch of the code is executed
 		\item \texttt{else} part can be missing --- the code is executed \textbf{only if} the condition is met
 	\end{itemize}
 	\begin{spluscode}
@@ -5951,7 +5978,7 @@
     for (II in 1:length(XX)) {
       if(XX[II] <= 2) { # Executed for XX <= 2
         YY[II] <- XX[II]^2
-        } else if(XX[II] > 2) { # Executed for XX > 2
+        } else { # if(XX[II] > 2) # Executed for XX > 2
           YY[II] <- 6-XX[II]
           }
       }
@@ -6096,21 +6123,28 @@
 \end{frame}
 
 \begin{frame}{Further reading}{The most important books for our topics}
-	\begin{thebibliography}{1}
-		\bibitem[Paradis 2012]{Paradis2012}
-			Emmanuel Paradis
-			\newblock Analysis of Phylogenetics and Evolution with R, second edition
-			\newblock Springer, 2012
-			\newblock \url{http://ape-package.ird.fr/APER.html}
-		\bibitem[Crawley 2012]{Crawley2012}
-			Michael J. Crawley
-			\newblock The R Book, second edition
-			\newblock Wiley, 2012
-		\bibitem[Sinha 2014]{Sinha2014}
-			Paurush Praveen Sinha
-			\newblock Bioinformatics with R Cookbook
-			\newblock Packt Publishing, 2014
-	\end{thebibliography}
+	\begin{multicols}{2}
+		\begin{thebibliography}{1}
+			\bibitem[Paradis 2012]{Paradis2012}
+				Emmanuel Paradis
+				\newblock Analysis of Phylogenetics and Evolution with R, second edition
+				\newblock Springer, 2012
+				\newblock \url{http://ape-package.ird.fr/APER.html}
+			\bibitem[Crawley 2012]{Crawley2012}
+				Michael J. Crawley
+				\newblock The R Book, second edition
+				\newblock Wiley, 2012
+			\bibitem[Sinha 2014]{Sinha2014}
+				Paurush Praveen Sinha
+				\newblock Bioinformatics with R Cookbook
+				\newblock Packt Publishing, 2014
+			\bibitem[Ives 2018]{Ives2018}
+				Anthony R. Ives
+				\newblock Mixed and Phylogenetic Models: A Conceptual Introduction to Correlated Data
+				\newblock Leanpub, 2018
+				\newblock \url{https://leanpub.com/correlateddata} (free to read on-line)
+		\end{thebibliography}
+	\end{multicols}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Learning resources}
@@ -6136,6 +6170,7 @@
 		\item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
+		\item R Programming \url{https://en.wikibooks.org/wiki/R_Programming}
 		\item RStudio Cheat Sheets \url{https://www.rstudio.com/resources/cheatsheets/} and Online learning resources \url{https://www.rstudio.com/online-learning/}
 		\item R-bloggers --- aggregation of R blogs \url{https://www.r-bloggers.com/}
 		\item R on The Molecular Ecologist \url{https://www.molecularecologist.com/category/software/r/}
@@ -6152,6 +6187,7 @@
 		\item Learning R blog \url{https://learnr.wordpress.com/}
 		\item R for Community Ecologists \url{http://ecology.msu.montana.edu/labdsv/R/}
 		\item Quick-R learning resource \url{https://www.statmethods.net/}
+		\item Visualizing and annotating phylogenetic trees with ggtree \url{https://4va.github.io/biodatasci/r-ggtree.html}
 		\item R manual and help search \url{http://finzi.psych.upenn.edu/}
 		\item \href{http://rseek.org/}{Uncle Google} is your friend (\textit{``how to XXX in R''})\ldots
 		\item R packages commonly contain vignettes (tutorials) --- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
@@ -6185,7 +6221,7 @@
 		\item \href{https://CRAN.R-project.org/package=mapproj}{mapproj}: converts latitude/longitude into projected coordinates
 		\item \href{https://CRAN.R-project.org/package=maps}{maps}: draws geographical maps
 		\item \href{https://CRAN.R-project.org/package=maptools}{maptools}: manipulating and reading geographic data
-		\item \href{https://bioconductor.org/packages/release/bioc/html/muscle.html}{muscle}: multiple sequence alignment with MUSCLE % FIXME Add example/note to Multiple sequence alignment chapter
+		\item \href{https://bioconductor.org/packages/release/bioc/html/muscle.html}{muscle}: multiple sequence alignment with MUSCLE
 		\item \href{https://CRAN.R-project.org/package=nlme}{nlme}: fits and compares Gaussian linear and nonlinear mixed-effects models
 		\item \href{https://r-forge.r-project.org/projects/parallstructure/}{ParallelStructure}: running analysis in the population genetics software STRUCTURE
 		\item \href{https://CRAN.R-project.org/package=PBSmapping}{PBSmapping}: spatial analysis tools
@@ -6221,6 +6257,7 @@
 \begin{frame}[allowframebreaks]{Another interesting packages (we did not use)\ldots}{For your own explorations\ldots}
 	\begin{itemize}
 		\item \href{https://CRAN.R-project.org/package=adhoc}{adhoc}: ad hoc distance thresholds for DNA barcoding identification
+		\item \href{https://github.com/eliotmiller/addTaxa}{addTaxa}: adding missing taxa to phylogenies
 		\item \href{https://CRAN.R-project.org/package=apex}{apex}: analysis of multiple gene data
 		\item \href{https://CRAN.R-project.org/package=apTreeshape}{apTreeshape}: analysis of phylogenetic tree topologies
 		\item \href{https://CRAN.R-project.org/package=BAMMtools}{BAMMtools}: analyzing and visualizing complex macroevolutionary dynamics on phylogenetic trees
@@ -6247,7 +6284,7 @@
 		\item \href{https://CRAN.R-project.org/package=genetics}{genetics}: population genetics
 		\item \href{https://CRAN.R-project.org/package=genotypeR}{genotypeR}: design of genotyping markers from VCF files, output of markers for multiplexing on various platforms, various QA/QC and analysis
 		\item \href{https://CRAN.R-project.org/package=geomorph}{geomorph}: geometric morphometric analyses of 2D/3D landmark data
-		\item \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree}: visualization and annotation of phylogenetic trees
+		\item \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree}: visualization and annotation of phylogenetic trees (\href{https://guangchuangyu.github.io/software/ggtree/documentation/}{documentation})
 		\item \href{https://CRAN.R-project.org/package=HardyWeinberg}{HardyWeinberg}: statistical tests and graphics for HWE
 		\item \href{https://CRAN.R-project.org/package=heatmaply}{heatmaply}: interactive cluster heat maps
 		\item \href{https://CRAN.R-project.org/package=HMPTrees}{HMPTrees}: models, compares, and visualizes populations of taxonomic tree objects
@@ -6260,6 +6297,7 @@
 		\item \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}: non-parametric method for identifying potential outlying observations in a~collection of phylogenetic trees
 		\item \href{https://CRAN.R-project.org/package=knitr}{knitr}: general-purpose tool for dynamic report generation
 		\item \href{https://CRAN.R-project.org/package=LDheatmap}{LDheatmap}: graphical display, as a~heat map, of measures of pairwise linkage disequilibrium between SNPs
+		\item \href{https://www.bioconductor.org/packages/release/bioc/html/LEA.html}{LEA}: landscape and ecological association studies
 		\item \href{https://CRAN.R-project.org/package=leaflet}{leaflet}: interactive web maps with the JavaScript Leaflet library
 		\item \href{https://github.com/giby/Linarius}{Linarius}: dominant marker analysis with mixed ploidy levels
 		\item \href{https://CRAN.R-project.org/package=markophylo}{markophylo}: markov chain models for phylogenetic trees
@@ -6391,6 +6429,7 @@
 % http://popgen.nescent.org/
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/
+% http://www.phytools.org/eqg/
 % http://www.phytools.org/eqg2015/
 % http://www.phytools.org/Cordoba2017/
 % https://www.molecularecologist.com/2017/02/phylogenetic-trees-in-r-using-ggtree/
@@ -6404,17 +6443,12 @@
 % https://www.molecularecologist.com/2015/01/a-population-genetic-r-evolution/
 % https://www.molecularecologist.com/2014/11/admixture-maps-in-r-for-dummies/
 % https://www.molecularecologist.com/2013/10/random-drift-and-phenotypic-evolution/
-% https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492
+% https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492 - https://datadryad.org/resource/doi:10.5061/dryad.2s8d0f9
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
 %
 % - Nahradit SPCA jinou verzí (z adephylo?).
-% - Požadavek na R 3.4 (hlavně Linux), nemít více verzí R (hlavně Windows).
-% - U RKWardu zdůraznit potřebu jeho kompilace pro dané R (hlavně Linux).
-% - Možná omezit balíčky, aby se netahalo tolik závislostí.
 % - Zkontrolovat matici z `dist.topo` - asi vyhodit dělání symetrické matice a přehodit někam manipulaci s trojůhelníky matice.
 % - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
 % - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
-% - Vyhodit `cbind` a `jitter` trik z `pic.ortho` -- nechat jen obecně.
-% - Vyhodit instalaci potřebných balíčků Bioconductoru.
 % - Přidat k použití `cor` i `cor.test`.

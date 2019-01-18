@@ -1047,7 +1047,7 @@ screeplot.spca(x=hauss.spca, main=NULL)
 hauss.spca.glo <- global.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
 hauss.spca.glo
 plot(hauss.spca.glo)
-hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999) # FIXME local.rtest of spca
+hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999)
 hauss.spca.loc
 plot(hauss.spca.loc)
 
@@ -1215,13 +1215,14 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 # Insert legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
-# FIXME Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
-hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain")
+# Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
+# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/intro
+hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain", API_console_key="XXX")
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
 ?PlotOnStaticMap # See all options
 # Other option of adding points and labels
-hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite")
+hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite", API_console_key="XXX")
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
@@ -1259,7 +1260,7 @@ for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
 # FIXME Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
-GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
+GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=20000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
 library(maps) # Various mapping tools (plotting, ...)
 library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/
@@ -1353,6 +1354,9 @@ Structure.order("list_k_07.txt", 5)
 # Continue with CLUMPP and distruct
 # Details: https://trapa.cz/en/structure-r-linux
 
+# Go back to the original working directory
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
+
 ## Multiple sequence alignment
 
 # Libraries
@@ -1373,6 +1377,8 @@ class(meles.clustal)
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
+# See option in muscle package
+?muscle::muscle
 
 # Remove gaps from alignment - destroy it
 meles.nogaps <- del.gaps(meles.muscle)
@@ -1770,6 +1776,7 @@ class(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,])
 # jitter() adds random noise every time, so that the values differ
 # Check list of numeric vectors - required as input for pic.ortho()
 primates.pic.var
+primates.pic.var[[1]]
 class(primates.pic.var)
 class(primates.pic.var[[1]])
 # Calculate for one character - this must be done for at least one more character and correlation of PICs must be tested
@@ -2100,7 +2107,7 @@ X <- 0 # Set initial value
 for (i in 1:10) {
 	# Any commands can be here...
 	print("Loop turn") # Some message for user
-	print(i) # Print number of turn - note it is decreasing
+	print(i) # Print number of turn - note how it is increasing
 	X <- X+i # Rise value of "X" by current value of "i" (see previous line)
 	print(paste("Variable value:", X)) # Print current value of "X"
 	}
@@ -2124,7 +2131,7 @@ YY <- c()
 for (II in 1:length(XX)) {
 	if(XX[II] <= 2) { # Executed for XX <= 2
 		YY[II] <- XX[II]^2
-		} else if(XX[II] > 2) { # Executed for XX > 2
+		} else { # if(XX[II] > 2) # Executed for XX > 2
 			YY[II] <- 6-XX[II]
 			}
 	}
