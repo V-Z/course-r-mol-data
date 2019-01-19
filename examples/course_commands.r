@@ -1756,6 +1756,9 @@ abline(a=0, b=1, lty=2) # x=y line
 
 # Correlation of PIC of body mass and longevity
 cor(x=primates.pic.body, y=primates.pic.longevity, method="pearson")
+# Correlation test
+cor.test(x=primates.pic.body, y=primates.pic.longevity, alternative="greater", method="pearson")
+# Linear model of both PICs
 lm(formula=primates.pic.longevity~primates.pic.body)
 # Because PICs have expected mean zero - such linear regressions should be done through the origin (i.e. the intercept is set to zero)
 lm(formula=primates.pic.longevity~primates.pic.body-1)

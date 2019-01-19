@@ -5069,7 +5069,12 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{Plot of PIC (on the tree)}
+\begin{frame}[fragile]{Plot of PIC (on the tree)}
+	\begin{spluscode}
+    # Testing if there is positive correlation
+    cor.test(x=primates.pic.body, y=primates.pic.longevity,
+      alternative="greater", method="pearson")
+	\end{spluscode}
 	\includegraphics[width=\textwidth]{pic.png}
 \end{frame}
 
@@ -6238,7 +6243,7 @@
 		\item \href{https://CRAN.R-project.org/package=rgdal}{rgdal}: bindings to the Geospatial Data Abstraction Library and access to projection/transformation operations library
 		\item \href{https://CRAN.R-project.org/package=RgoogleMaps}{RgoogleMaps}: interface to query the Google server for static maps and uses the map as a~background image to overlay plots
 		\item \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi}: interface (wrapper) to MPI (used for parallel processing)
-		\item \href{https://CRAN.R-project.org/package=rworldmap}{rworldmap}: mapping global data
+		\item \href{https://CRAN.R-project.org/package=rworldmap}{rworldmap}: mapping global data (and extra data in \href{https://CRAN.R-project.org/package=rworldxtra}{rworldxtra})
 		\item \href{https://CRAN.R-project.org/package=seqinr}{seqinr}: exploratory data analysis and data visualization for biological sequence
 		\item \href{https://CRAN.R-project.org/package=shapefiles}{shapefiles}: read and write ESRI shapefiles
 		\item \href{https://CRAN.R-project.org/package=snow}{snow}: simple parallel computing
@@ -6426,6 +6431,7 @@
 % Bayes trees
 % DW index - rare alleles
 % https://cran.r-project.org/web/packages/phangorn/vignettes/
+% https://github.com/JClavel/Examples
 % http://popgen.nescent.org/
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/
@@ -6451,4 +6457,5 @@
 % - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
 % - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
-% - Přidat k použití `cor` i `cor.test`.
+% - The geodesic distance of Billera et al. (2001) has been disabled: see the package distory on CRAN. -- lepší, než RF, nerozbije se jedním nesouladem u kořene stromu
+% The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
