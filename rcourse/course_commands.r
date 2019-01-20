@@ -14,7 +14,7 @@ dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
 
 ## Get information about object classes
-getClassDef("genind") # Or select any other class name
+getClassDef("data.frame") # Or select any other class name
 
 ## Basic operations
 x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
@@ -66,9 +66,10 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
+update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
@@ -100,16 +101,29 @@ install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
 ## Bioconductor
+# Install CRAN package BiocManager used to manage Bioconductor packages
+if (!requireNamespace("BiocManager"))
+	install.packages("BiocManager")
+BiocManager::install()
+# Search for Bioconductor packages
+BiocManager::available() # List everything
+?BiocManager::available # See options
+# Update installed packages
+BiocManager::install()
+# Install Bioconductor packages
+BiocManager::install("muscle") # Simplest usage
+BiocManager::install(pkgs=c("Biostrings", "muscle"))
+?BiocManager::install # See more options
+
+# For R < 3.5.0 use old legacy method (will be removed)
 # Bioconductor - if https fails, use http
 source("https://bioconductor.org/biocLite.R")
 # Get help how to use it
 ?biocLite
 # Install package(s)
 biocLite(c("Biostrings", "muscle"))
-# Install Bioconductor packages used during the course
-biocLite(pkgs=c("BiocGenerics", "Biostrings", "IRanges", "muscle", "S4Vectors", "XVector"), ask=FALSE)
 biocLite() # Update Bioconductor packages
-# Upgrades installed Bioconductor packages to new R release (e.g. from 3.3 to 3.4)
+# Upgrades installed Bioconductor packages to new R release
 biocLite("BiocUpgrade")
 
 ## Libraries for population genetic analysis
@@ -257,7 +271,7 @@ class(usflu.dna3) <- "DNAbin"
 read.nexus.data(file="sequences.nex")
 
 # Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
-meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
+meles.dna <- read.GenBank(access.nb=c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
 meles.dna
 class(meles.dna)
 # Converts DNAbin to genind - extracts SNP - for large data sets can be computationally very intensive
@@ -291,7 +305,7 @@ read.PLINK(file="PLINKfile", ...)
 ?readPLINK # See it for available options
 # Extract SNP from FASTA alignment
 usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
-# If it crashes (on Windows), try add parameter "parallel=FALSE"
+# If it crashes (on Windows), try to add parameter "parallel=FALSE"
 # Function has several options to speed up reading
 ?fasta2genlight
 
@@ -330,8 +344,10 @@ image.DNAbin(x=as.matrix(meles.dna))
 # Required library
 library(vcfR)
 # Read input file
-# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz (read.vcfR does not work with network addresses yet)
+# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz
 arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
+# Or directly load remote file
+arabidopsis.vcf <- read.vcfR(file="https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
 # It returns object of class vcfR-class
 ?read.vcfR # See more import options
 # Another option from package pegas returns list of objects loci and data.frame
@@ -357,7 +373,7 @@ abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
 barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
 title("Mean DP per specimen")
 abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
-# Heatmap of DB (subset)
+# Heatmap of DP (subset)
 heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100, start=0.1)) # Subset - only first 100 loci and individuals
 title("DP per specimens and loci")
 
@@ -371,7 +387,7 @@ indNames(arabidopsis.genind)
 nLoc(arabidopsis.genind)
 locNames(arabidopsis.genind)
 # Genlight (suitable for huge data, not required now)
-arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/Mac and with large data use higher n.cores
+arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
 # Check it
 arabidopsis.genlight
 # Loci
@@ -426,6 +442,8 @@ hauss.summ
 # Plot expected vs. observed heterozygosity - it looks like big difference
 plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs, main="Observed vs expected heterozygosity", xlab="Expected heterozygosity", ylab="Observed heterozygosity")
 abline(0, 1, col="red")
+# Test normality of the vector - can we use bartlett.test() or t.test(), or do we have to use weaker kruskal.test() or wilcox.test()?
+shapiro.test(hauss.summ$Hexp)
 # Bartlett's K-squared test of difference between observed and expected heterozygosity - not significant
 bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
 # T-test of difference between observed and expected heterozygosity - strongly significant
@@ -711,6 +729,7 @@ hauss.nj <- nj(hauss.dist)
 # Test tree quality - plot original vs. reconstructed distance
 plot(as.vector(hauss.dist), as.vector(as.dist(cophenetic(hauss.nj))), xlab="Original distance", ylab="Reconstructed distance")
 abline(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj)))), col="red")
+cor.test(x=as.vector(hauss.dist), y=as.vector(as.dist(cophenetic(hauss.nj))), alternative="two.sided") # Testing the correlation
 summary(lm(as.vector(hauss.dist) ~ as.vector(as.dist(cophenetic(hauss.nj))))) # Prints summary text
 
 # Plot a basic tree - see ?plot.phylo for details
@@ -867,7 +886,7 @@ s.class(dfxy=hauss.pcoa.bruvo$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
 add.scatter.eig(hauss.pcoa.bruvo$eig, posi="bottomright", 3, 1, 2)
 # Another possibility for colored plot (see ?colorplot for details)
 colorplot(xy=hauss.pcoa$li[c(1, 2)], X=hauss.pcoa$li, transp=TRUE, cex=3, xlab="PC 1", ylab="PC 2")
-title(main="PCoA, axes 1 and 3")
+title(main="PCoA, axes 1 and 2")
 abline(v=0, h=0, col="grey", lty=2)
 
 ## Clustering analysis
@@ -885,7 +904,7 @@ hauss.kfind
 # Graph showing table of original and inferred populations and assignment of individuals
 table.value(df=table(pop(hauss.genind), hauss.kfind$grp), col.lab=paste("Inferred\ncluster", 1:length(hauss.kfind$size)), grid=TRUE)
 # For K=3 - note parameters n.pca and n.clust - we just rerun the analysis and when results are stable, no problem here
-hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3, stat="BIC", choose.n.clust=FALSE, max.n.clust=10, n.iter=100000, n.start=100, scale=FALSE, truenames=TRUE)
+hauss.kfind3 <- find.clusters(x=hauss.genind, n.pca=35, n.clust=3, stat="BIC", choose.n.clust=FALSE, n.iter=100000, n.start=100, scale=FALSE, truenames=TRUE)
 # See results as text
 table(pop(hauss.genind), hauss.kfind3$grp)
 hauss.kfind3
@@ -1010,7 +1029,7 @@ abline(h=0, col="grey") # Add line showing zero
 # Information about sPCA
 print.spca(hauss.spca)
 # Summary of sPCA results
-summary.spca(hauss.spca)
+summary.spca(hauss.spca) # replace by adespatial::multispati
 # Shows connectivity network, 3 different scores, barplot of eigenvalues and eigenvalues decomposition
 plot.spca(hauss.spca)
 # Display of scores in color canals (two analogous variants)
@@ -1049,7 +1068,7 @@ filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pc
 hauss.spca.loadings <- hauss.spca$c1[,1]^2
 names(hauss.spca.loadings) <- rownames(hauss.spca$c1)
 loadingplot(x=hauss.spca.loadings, xlab="Alleles", ylab="Weight of the alleles", main="Contribution of alleles to the first sPCA axis")
-boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="grey")
+boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="gray")
 
 ## Monmonier - genetic boundaries
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
@@ -1194,12 +1213,13 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
 # Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
-hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain")
+# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/intro
+hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain", API_console_key="XXX")
 # Plot saved map
 PlotOnStaticMap(MyMap=hauss.gmap)
 ?PlotOnStaticMap # See all options
 # Other option of adding points and labels
-hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite")
+hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite", API_console_key="XXX")
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
@@ -1237,7 +1257,7 @@ for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
 # Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
-GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
+GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=20000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
 library(maps) # Various mapping tools (plotting, ...)
 library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/
@@ -1256,6 +1276,7 @@ dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
 # There are several functions readShape* - select appropriate according to data stored in respective SHP file
 # Check correct import by plotting all layers
+# readShapeLines is deprecated; use rgdal::readOGR or sf::st_read
 macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
 plot(macedonia_building)
 macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
@@ -1291,7 +1312,7 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 # Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
 # get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
 # Set working directory
-setwd("~/dokumenty/fakulta/vyuka/r_mol_data/examples/structure/")
+setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/")
 getwd()
 # Load ParallelStructure package
 library(ParallelStructure)
@@ -1330,6 +1351,10 @@ Structure.order("list_k_07.txt", 5)
 # Continue with CLUMPP and distruct
 # Details: https://trapa.cz/en/structure-r-linux
 
+# Go back to the original working directory
+# Go to YOUR OWN directory, same as on beginning
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
+
 ## Multiple sequence alignment
 
 # Libraries
@@ -1350,10 +1375,12 @@ class(meles.clustal)
 meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
 meles.muscle
 class(meles.muscle)
+# See option in muscle package
+?muscle::muscle
 
 # Remove gaps from alignment - destroy it
 meles.nogaps <- del.gaps(meles.muscle)
-?del.gaps # See for details!
+?del.gaps # See for details
 
 # Plot the alignment - you can select which bases to plot and/or modify colors
 image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
@@ -1595,6 +1622,7 @@ axisPhylo(side=1)
 
 # Parsimony super tree
 library(phytools)
+class(oxalis.trees.rooted) <- "multiPhylo"
 oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
@@ -1619,15 +1647,15 @@ densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
 ?phangorn::densiTree
 ?phytools::densityTree
 # Another version for comparing several trees
-phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
-phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
-phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4)
+phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Probably to much noise... :-?
+phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
+phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 
 # Networks
 library(phangorn)
 oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
-plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue")
+plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
+plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 3D
 
 # Plot all trees on same scale
 kronoviz(x=oxalis.trees.rooted, layout=length(oxalis.trees.rooted), horiz=TRUE)
@@ -1717,6 +1745,9 @@ abline(a=0, b=1, lty=2) # x=y line
 
 # Correlation of PIC of body mass and longevity
 cor(x=primates.pic.body, y=primates.pic.longevity, method="pearson")
+# Correlation test
+cor.test(x=primates.pic.body, y=primates.pic.longevity, alternative="greater", method="pearson")
+# Linear model of both PICs
 lm(formula=primates.pic.longevity~primates.pic.body)
 # Because PICs have expected mean zero - such linear regressions should be done through the origin (i.e. the intercept is set to zero)
 lm(formula=primates.pic.longevity~primates.pic.body-1)
@@ -1726,8 +1757,8 @@ lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
 
 # Intraspecific variation
 # PIC - orthonormal contrasts using the method
-primates.pic.ortho <- pic.ortho(x=list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,]), phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
-primates.pic.ortho
+# Preparing tips with fake random variable values
+primates.pic.var <- list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,])
 # Explanation of the cbind trick
 cbind(primates.body, jitter(primates.body), jitter(primates.body))
 cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,]
@@ -1735,6 +1766,14 @@ cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,]
 class(cbind(primates.body, jitter(primates.body), jitter(primates.body)))
 class(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,])
 # jitter() adds random noise every time, so that the values differ
+# Check list of numeric vectors - required as input for pic.ortho()
+primates.pic.var
+primates.pic.var[[1]]
+class(primates.pic.var)
+class(primates.pic.var[[1]])
+# Calculate for one character - this must be done for at least one more character and correlation of PICs must be tested
+primates.pic.ortho <- pic.ortho(x=primates.pic.var, phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
+primates.pic.ortho
 
 ## Phylogenetic autocorrelation
 
@@ -1895,7 +1934,7 @@ primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", 
 primates.body.ace
 # Other implementations are available in packages geiger (functions fitContinuousMCMC and fitDiscrete), phangorn and more in ape (MPR)
 # Plot it
-plot(primates.tree, lwd=2, cex=2)
+plot.phylo(x=primates.tree, lwd=2, cex=2)
 tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
 nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
 # ACE returns long numbers - truncate them by e.g. 
@@ -2027,7 +2066,7 @@ X <- 0 # Set initial value
 for (i in 1:10) {
 	# Any commands can be here...
 	print("Loop turn") # Some message for user
-	print(i) # Print number of turn - note it is decreasing
+	print(i) # Print number of turn - note how it is increasing
 	X <- X+i # Rise value of "X" by current value of "i" (see previous line)
 	print(paste("Variable value:", X)) # Print current value of "X"
 	}
@@ -2051,7 +2090,7 @@ YY <- c()
 for (II in 1:length(XX)) {
 	if(XX[II] <= 2) { # Executed for XX <= 2
 		YY[II] <- XX[II]^2
-		} else if(XX[II] > 2) { # Executed for XX > 2
+		} else { # if(XX[II] > 2) # Executed for XX > 2
 			YY[II] <- 6-XX[II]
 			}
 	}

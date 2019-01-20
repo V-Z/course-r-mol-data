@@ -190,7 +190,7 @@
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
 			\item Ensure you understand \textbf{syntax} of the command (what it technically does)
 		\end{enumerate}
-		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do require} to be edited} according to particular user's computer --- it is described in the comments around the command
+		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
 	\end{itemize}
 \end{frame}
@@ -1187,7 +1187,6 @@
 \end{frame}
 
 \begin{frame}[fragile]{Prepare genind object for analysis and load coordinates}
-	\vfill
 	\begin{spluscode}
     # Conversion of loci to genind - used for many analysis
     hauss.genind <- loci2genind(hauss.loci)
@@ -1212,12 +1211,11 @@
       quote="", dec=".", row.names=1)
     hauss.coord
 	\end{spluscode}
-	\vfil
 	\begin{itemize}
 		\item Coordinates can be in any projection or scale --- according to aim
-		\item Take care about parameters of \texttt{read.csv()}! See \texttt{?read.csv} for details
+		\item Take care about parameters of \texttt{read.csv()}! See \texttt{?read.csv}
+		\item \texttt{pegas::geod} calculates geodesic distances (on Earth surface)
 	\end{itemize}
-	\vfill
 \end{frame}
 
 \begin{frame}[fragile]{Add coordinates to genind and create genpop object}
@@ -4073,6 +4071,7 @@
 		\end{itemize}
 		\item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
 		\item Relatively complicated tool requiring plenty of work\ldots
+		\item Here is shown processing option using \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure}, another option is package \href{https://CRAN.R-project.org/package=strataG}{strataG} (see \texttt{?strataG::structure})
 	\end{itemize}
 \end{frame}
 
@@ -4284,6 +4283,7 @@
 	\vfill
 	\begin{spluscode}
     # Go back to the original working directory
+    # Go to YOUR OWN directory, same as on beginning
     setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
 	\end{spluscode}
 \end{frame}
@@ -4580,19 +4580,22 @@
 
 \subsection{Seeing trees in the forest}
 
-\begin{frame}{Topographical distances among matrices I~--- implementations}
+\begin{frame}[allowframebreaks]{Topographical distances among matrices --- implementations}
 	\begin{itemize}
 		\item Robinsons-Foulds distance in \texttt{phytools::multiRF}
 		\begin{itemize}
 			\item The index adds 1~for each difference between pair of trees
 			\item Well defined only for fully bifurcating trees --- if not fulfilled, some results might be misleading
 			\item Allow comparison of trees created by different methods
+			\item If the difference is very close to root, RF value can be large, even there are not much differences in the tree at all --- \texttt{dist.multiPhylo} from package \href{https://CRAN.R-project.org/package=distory}{distory} can be an alternative, although interpretation of that geodesic distance is sometimes not so straightforward as simple logic of RF
 		\end{itemize}
 		\item Methods implemented in \texttt{ape::dist.topo} allow comparison of trees with polytomies (\texttt{method="PH85"}) or use of squared lengths of internal branches (\texttt{method="score"})
 		\item Final matrices are commonly not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} --- may be problematic for usage in methods like PCA
 		\begin{itemize}
 			\item Test it with \texttt{ade4::is.euclid}, can be scaled (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} --- carefully, it can damage meaning of the data
+			\item We get matrix of pairwise differences among trees (from multiple genes), we need display and analyze it
 		\end{itemize}
+		\item Set of tools for identifying discordant phylogenetic trees are e.g. in package \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}
 	\end{itemize}
 \end{frame}
 
@@ -6357,7 +6360,7 @@
 		\item \href{https://CRAN.R-project.org/package=spatstat}{spatstat}: spatial point pattern analysis
 		\item \href{https://r-forge.r-project.org/projects/splits/}{splits}: delimiting species and automated taxonomy at many levels of biological organization
 		\item \href{https://CRAN.R-project.org/package=strap}{strap}: stratigraphic analysis of phylogenetic trees, palaeontology
-		\item \href{https://CRAN.R-project.org/package=strataG}{strataG}: analyzing stratified population genetic data
+		\item \href{https://CRAN.R-project.org/package=strataG}{strataG}: analyzing stratified population genetic data by vast range of methods, very powerful
 		\item \href{https://CRAN.R-project.org/package=stringi}{stringi} and \href{https://CRAN.R-project.org/package=stringr}{stringr}: character string processing, internally used by many packages
 		\item \href{https://CRAN.R-project.org/package=surface}{surface}: fitting Hansen models to investigate convergent evolution
 		\item \href{https://CRAN.R-project.org/package=SYNCSA}{SYNCSA}: analysis of metacommunities based on functional traits and phylogeny of the community components
@@ -6451,11 +6454,9 @@
 % https://www.molecularecologist.com/2013/10/random-drift-and-phenotypic-evolution/
 % https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492 - https://datadryad.org/resource/doi:10.5061/dryad.2s8d0f9
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
-%
 % - Nahradit SPCA jinou verzí (z adephylo?).
 % - Zkontrolovat matici z `dist.topo` - asi vyhodit dělání symetrické matice a přehodit někam manipulaci s trojůhelníky matice.
 % - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
 % - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
-% - The geodesic distance of Billera et al. (2001) has been disabled: see the package distory on CRAN. -- lepší, než RF, nerozbije se jedním nesouladem u kořene stromu
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.

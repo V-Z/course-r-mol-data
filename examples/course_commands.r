@@ -1355,6 +1355,7 @@ Structure.order("list_k_07.txt", 5)
 # Details: https://trapa.cz/en/structure-r-linux
 
 # Go back to the original working directory
+# Go to YOUR OWN directory, same as on beginning
 setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
 
 ## Multiple sequence alignment

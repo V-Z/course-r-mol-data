@@ -4,7 +4,7 @@
 # Use './web_update.sh all' to update also presentation and scripts and data
 
 # The server
-REMOTE=`grep lad ~/.bashrc | grep -o "[a-z0-9.]\+@[a-z0-9.]\+"`
+REMOTE=`grep laddobar ~/.bashrc | grep -o "[a-z0-9.]\+@[a-z0-9.]\+"`
 
 echo "Syncing 'rcourse' directory"
 echo
