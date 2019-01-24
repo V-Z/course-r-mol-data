@@ -185,10 +185,10 @@
 	\begin{itemize}
 		\item Commands from file \texttt{course\_commands.r} can be mostly directly launched without editing them, but before you do so\ldots
 		\begin{enumerate}
-			\item Read the command and all comments around, do not blindly launch it
+			\item \textbf{Read} the command and all comments around, do not blindly launch it
 			\item Ensure you understand, what is \textbf{aim} of the command (what it is supposed to do)
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
-			\item Ensure you understand \textbf{syntax} of the command (what it technically does)
+			\item Ensure you understand \textbf{syntax} of the command (its grammatical structure and what and how it technically does)
 		\end{enumerate}
 		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
@@ -694,6 +694,7 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
+		\item After upgrade of R (e.g. from 3.4 to 3.5), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
@@ -726,13 +727,15 @@
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     # Regularly update installed packages
     update.packages(ask=FALSE)
+    # Upgrade all packages e.g. from R 3.4 to 3.5
+    install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Install phyloch package}{Example of installation of package not available in any repository}
 	\label{phyloch}
 	\begin{itemize}
-		\item Check \url{http://www.christophheibl.de/Rpackages.html} 
+		\item Check \url{http://www.christophheibl.de/Rpackages.html}
 		\item Package phyloch is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R
 	\end{itemize}
 	\begin{spluscode}
@@ -1512,6 +1515,7 @@
     usflu.genlight <- fasta2genlight
       (file="http://adegenet.r-forge.r-project.org/files/usflu.fasta",
       quiet=FALSE, saveNbAlleles=TRUE)
+    usflu.genlight # See genlight
     ?fasta2genlight # Function has several options to speed up reading
     # If it crashes (on Windows), try to add parameter "parallel=FALSE"
 	\end{spluscode}
@@ -2652,7 +2656,7 @@
     nodelabels(text=round(hauss.boot/10))
     # Colored labels - creates vector of colors according to populations
     nj.rainbow<-colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
-    tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), 
+    tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind),
       col.pal=nj.rainbow)) # Colored tips
     ## Plot BW tree with tip symbols and legend
     plot.phylo(x=hauss.nj, type="clad", show.tip=F, edge.width=3, main="NJ")
@@ -3215,9 +3219,9 @@
     hauss.pcoa1.mctest
     # Output:
       Monte-Carlo simulation of Moran I
-    data:  hauss.pcoa$li[, 1] 
-    weights: hauss.connectivity  
-    number of simulations + 1: 1001 
+    data:  hauss.pcoa$li[, 1]
+    weights: hauss.connectivity
+    number of simulations + 1: 1001
     statistic = -0.5163, observed rank = 1, p-value = 0.999
     alternative hypothesis: greater
     # Plot the results
@@ -3246,9 +3250,9 @@
     hauss.pcoa2.mctest
     # Output
     Monte-Carlo simulation of Moran's I
-    data:  hauss.pcoa$li[, 2] 
-    weights: hauss.connectivity  
-    number of simulations + 1: 1001 
+    data:  hauss.pcoa$li[, 2]
+    weights: hauss.connectivity
+    number of simulations + 1: 1001
     statistic = 0.0545, observed rank = 1001, p-value = 0.000999
     alternative hypothesis: greater
     # Plot the results
@@ -3524,7 +3528,7 @@
     Call:
     mantel.correlog(D.eco = hauss.dist, D.geo = hauss.gdist, XY = NULL,
      n.class = 0, break.pts = NULL, cutoff = FALSE, r.type = "pearson",
-     nperm = 1000, mult = "holm", progressive = TRUE) 
+     nperm = 1000, mult = "holm", progressive = TRUE)
             class.index     n.dist Mantel.cor Pr(Mantel) Pr(corrected)
     D.cl.1     0.054757 532.000000   0.409545     0.0010      0.000999 ***
     D.cl.2     0.164271   0.000000         NA         NA            NA
@@ -3898,7 +3902,7 @@
     # Add row names according to populations
     rownames(hauss.pie) <- popNames(hauss.genpop)
     # Add column names according to data displayed
-    colnames(hauss.pie) <- c("HapA", "HapB", "HapC") 
+    colnames(hauss.pie) <- c("HapA", "HapB", "HapC")
     class(hauss.pie) # Check it is matrix
     hauss.pie # See resulting matrix
     # Plot basic map with state boundaries within selected range
@@ -4818,7 +4822,7 @@
 % 		\item Package \href{https://github.com/bomeara/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
 % 	\end{itemize}
 % 	\begin{spluscode}
-% 
+%
 % 	\end{spluscode}
 % \end{frame}
 
@@ -5416,10 +5420,10 @@
 \end{frame}
 
 % \subsection{Partitioning} % TODO Partitioning
-% 
+%
 % \begin{frame}[fragile]{Variance partitioning}
 % 	\begin{spluscode}
-% 
+%
 % 	\end{spluscode}
 % \end{frame}
 
@@ -5794,10 +5798,10 @@
 \end{frame}
 
 % \subsection{Disparity} % TODO Disparity
-% 
+%
 % \begin{frame}[fragile]{Disparity through time}
 % 	\begin{spluscode}
-% 
+%
 % 	\end{spluscode}
 % \end{frame}
 
@@ -5838,7 +5842,7 @@
     dev.off() # Closes graphical device - needed after use of plotting
               # functions png(), svg(), pdf(), ... followed by any
               # function like plot() to write the file(s) to the disk
-    filename="OutFiles_%03d.png" # Returns list of files named 
+    filename="OutFiles_%03d.png" # Returns list of files named
                                  # OutFiles_001.png, OutFiles_002.png, ...
                                  # Useful for functions returning more
                                  # graphs.
@@ -6457,6 +6461,19 @@
 % - Nahradit SPCA jinou verzí (z adephylo?).
 % - Zkontrolovat matici z `dist.topo` - asi vyhodit dělání symetrické matice a přehodit někam manipulaci s trojůhelníky matice.
 % - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
+% - Nejdříve pracovat s jednotlivými stromy, pak až s multiPhylo
 % - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
+% - Zkontrolovat funkce na čtení DNA, možná nechat jen něco, co ukládá přímo DNAbin
+% - Načtenou DNA zalignovat a pracovat pak s tím alignmentem
+% - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy
+% - Přidat načítání a export nexu
+% - Přidat/zmínit práci s proteiny (AA třídy)
+% - Profiltrovat VCF alespoň na chybějící data, zkontrolovat konverzi do DNAbin
+% - Obecně povyházet varianty řešení různých úloh jen do poznámek a ostatní nechat v jedné nejvýhodnější variantě
+% - přidat typické workflow (data, typické objevy a cesty)
+% - Alignment hned za načítání genetických dat
+% - Pozor na alignment více genů, mclapply a spol. nefungují v GUI
+% - Ukládání tabulkových výstupů, více o načítání tabulek
+% - Možná zredukovat počet příkladů a méně je kombinovat
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.

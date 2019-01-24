@@ -70,6 +70,8 @@ install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", 
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
+# Upgrade all packages e.g. from R 3.4 to 3.5
+install.packages(pkgs=installed.packages()) # Packages installed manually from different resources must be reinstalled manually
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
@@ -305,6 +307,8 @@ read.PLINK(file="PLINKfile", ...)
 ?readPLINK # See it for available options
 # Extract SNP from FASTA alignment
 usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
+# See result
+usflu.genlight
 # If it crashes (on Windows), try to add parameter "parallel=FALSE"
 # Function has several options to speed up reading
 ?fasta2genlight
@@ -1404,7 +1408,7 @@ multialign.aln
 multialign.aln[[1]]
 lapply(X=multialign.aln, FUN=class)
 # Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
-library(parallel) # FIXME Alignments
+library(parallel)
 multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
 # mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
 # See result
@@ -1504,7 +1508,7 @@ plot.phylo(hauss.nj.bind)
 # plot.phylo plots tree in exact order as it is in the phylo object
 plot.phylo(hauss.nj)
 nodelabels()
-hauss.nj.rotated <- rotate(phy=hauss.nj, node="70")
+hauss.nj.rotated <- ape::rotate(phy=hauss.nj, node="70")
 plot.phylo(hauss.nj.rotated)
 
 # Ladderize the tree
@@ -2242,52 +2246,3 @@ meles.tre4 <- root(meles.fit$tree,1)
 plot(meles.tre4, show.tip=FALSE, edge.width=2)
 title("Maximum-likelihood tree")
 axisPhylo()
-
-## Diversity
-
-library(plotrix) # Závislos diveRsity
-library(shiny) # Závislos diveRsity
-library(ggplot2) # Závislos diveRsity
-library(diveRsity)
-
-setwd("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/")
-
-nuphar.divpart <- fastDivPart(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=TRUE)
-inCalc(infile="diversity/nuphar.genepop", outfile="diversity/", pairwise=FALSE, xlsx=FALSE, bootstraps=1000, parallel=TRUE)
-nuphar.genepop <- readGenepop(infile="diversity/nuphar.genepop", gp=3, bootstrap=FALSE)
-corPlot(nuphar.genepop, nuphar.divpart)
-difPlot(nuphar.divpart, outfile="diversity/", interactive=TRUE)
-chiCalc(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, minFreq=0.01)
-divRatio(infile="diversity/nuphar.genepop", outfile="diversity/", gp=3, pop_stats=nuphar.genepop, refPos=10, bootstraps=1000, parallel=TRUE)
-divMigrate(infile="diversity/nuphar.genepop", nbs=1000, plot=TRUE, para=TRUE)
-
-# Private alleles apod.
-convert("popgenkit/nuphar.genepop", ndigit=3)
-popgen("popgenkit/nuphar.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
-bootstrapHet("popgenkit/nuphar.arp", ndigit=3, nrepet=100) # Má problémy s množstvím chybějících dat (hlavně při vyšším BS)
-jackmsatpop("popgenkit/nuphar.arp", ndigit=3, interval=1, nrepet=1000, richness=FALSE) # Nefunguje (nejspíš kvůli množství chybějících dat)!
-
-# Diversity
-dioszegia.divpart <- divPart(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
-dioszegia.incalc <- inCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
-dioszegia.genepop <- readGenepop(infile="diversity/dioszegia.genepop", gp=3, bootstrap=FALSE)
-corPlot(dioszegia.genepop, dioszegia.divpart)
-difPlot(dioszegia.divpart, outfile="diversity/dioszegia/", interactive=TRUE)
-chiCalc(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, minFreq=0.01)
-dioszegia.divratio <- divRatio(infile="diversity/dioszegia.genepop", outfile="diversity/dioszegia/", gp=3, pop_stats=dioszegia.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
-# Private alleles apod.
-# Po populacích
-convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
-popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
-# Po druzích
-convert("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_pop.gen", ndigit=3)
-popgen("~/dokumenty/botanak/tarax_dioszegia_ssrs/analyzy/sw8_r/dioszegia_popgenkit_sp.arp", ndigit=3, freq.overall=TRUE, freq.by.pop=TRUE, genetic.stats=TRUE, pairwise.fst=TRUE)
-
-# Diversity
-haussknechtii.divpart <- divPart(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pairwise=TRUE, WC_Fst=TRUE, bs_locus=TRUE, bs_pairwise=TRUE, bootstraps=1000, plot=TRUE, parallel=FALSE)
-haussknechtii.incalc <- inCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, bs_locus=TRUE, bs_pairwise=TRUE, plot=FALSE, bootstraps=1000, parallel=FALSE)
-haussknechtii.genepop <- readGenepop(infile="diversity/haussknechtii.genepop", gp=3, bootstrap=FALSE)
-corPlot(haussknechtii.genepop, haussknechtii.divpart)
-difPlot(haussknechtii.divpart, outfile="diversity/haussknechtii/", interactive=TRUE)
-haussknechtii.chicalc <- chiCalc(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, minFreq=0.01)
-divRatio(infile="diversity/haussknechtii.genepop", outfile="diversity/haussknechtii/", gp=3, pop_stats=haussknechtii.genepop, refPos=10, bootstraps=1000, parallel=FALSE)
