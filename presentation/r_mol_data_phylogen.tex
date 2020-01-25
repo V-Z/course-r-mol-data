@@ -703,7 +703,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 3.4 to 3.5), user must reinstall all packages
+		\item After upgrade of R (e.g. from 3.5 to 3.6), user must reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -711,7 +711,7 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
-		\item After upgrade of R (e.g. from 3.4 to 3.5), all packages must be reinstalled
+		\item After upgrade of R (e.g. from 3.5 to 3.6), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
@@ -744,7 +744,7 @@
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     # Regularly update installed packages
     update.packages(ask=FALSE)
-    # Upgrade all packages e.g. from R 3.4 to 3.5
+    # Upgrade all packages e.g. from R 3.5 to 3.6
     install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
@@ -1439,20 +1439,12 @@
     # When converting DNAbin to genind, the sequences must be aligned!
     usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
     usflu.genind # Check it
-    # read.fasta() from seqinr package reads DNA or AA in FASTA format and
-    # returns a list (DNAbin is for us now better choice)
-    usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.
-      r-project.org/files/usflu.fasta", seqtype="DNA")
-    class(usflu.dna3)
-    length(usflu.dna3) # How many sequences we have in the list
-    usflu.dna3 # Check it
-    # Convert into DNAbin class (technically, DNAbin is a list)
-    class(usflu.dna3) <- "DNAbin"
     # Read sequence data in NEXUS
     read.nexus.data(file="sequences.nex")
 	\end{spluscode}
 	\begin{itemize}
-		\item RNA or protein sequences can be handed in same way
+		\item RNA or protein sequences can be handed in same way --- see \texttt{?read.dna} and \texttt{?read.FASTA}
+		\item Do not confuse \texttt{read.nexus.data} (reads sequences) and \texttt{read.nexus} (reads trees)
 	\end{itemize}
 \end{frame}
 
@@ -1507,7 +1499,7 @@
 		\item Import from \href{http://zzz.bwh.harvard.edu/plink/}{PLINK} requires saving of data with option \href{http://zzz.bwh.harvard.edu/plink/dataman.shtml#recode}{\enquote{-recodeA}}
 	\end{itemize}
 	\begin{spluscode}
-    read.PLINK(file="PLINKfile", ...) # See ?readPLINK
+    read.PLINK(file="PLINKfile", ...) # See ?read.PLINK
 	\end{spluscode}
 	\begin{itemize}
 		\item Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
@@ -4360,7 +4352,7 @@
 	\end{itemize}
 	\begin{spluscode}
     # Create a list of DNAbin objects to process
-    multialign <- list(meles.dna, usflu.dna, usflu.dna2, usflu.dna3)
+    multialign <- list(meles.dna, usflu.dna, usflu.dna2)
     # See it
     multialign
     class(multialign)

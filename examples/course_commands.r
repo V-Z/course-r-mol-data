@@ -69,7 +69,7 @@ install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", 
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
-# Upgrade all packages e.g. from R 3.4 to 3.5
+# Upgrade all packages e.g. from R 3.5 to 3.6
 install.packages(pkgs=installed.packages()) # Packages installed manually from different resources must be reinstalled manually
 
 # Install package phyloch not available in any repository
@@ -115,17 +115,6 @@ BiocManager::install()
 BiocManager::install("muscle") # Simplest usage
 BiocManager::install(pkgs=c("Biostrings", "muscle"))
 ?BiocManager::install # See more options
-
-# For R < 3.5.0 use old legacy method (will be removed)
-# Bioconductor - if https fails, use http
-source("https://bioconductor.org/biocLite.R")
-# Get help how to use it
-?biocLite
-# Install package(s)
-biocLite(c("Biostrings", "muscle"))
-biocLite() # Update Bioconductor packages
-# Upgrades installed Bioconductor packages to new R release
-biocLite("BiocUpgrade")
 
 ## Libraries for population genetic analysis
 
@@ -261,13 +250,6 @@ head(usflu.annot)
 # Convert DNAbin to genind - only polymorphic loci are retained
 usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
 usflu.genind # Check it
-# read.fasta() from seqinr package reads DNA or AA in FASTA format - returns a list (DNAbin is for us now better choice)
-usflu.dna3 <- seqinr::read.fasta(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", seqtype="DNA")
-class(usflu.dna3)
-length(usflu.dna3) # How many sequences we have in the list
-usflu.dna3 # Check it
-# Convert into DNAbin class (technically, DNAbin is a list)
-class(usflu.dna3) <- "DNAbin"
 # Read sequence data in NEXUS
 read.nexus.data(file="sequences.nex")
 
@@ -303,7 +285,7 @@ nothofagus.dna # See it
 
 # Importing SNP
 read.PLINK(file="PLINKfile", ...)
-?readPLINK # See it for available options
+?read.PLINK # See it for available options
 # Extract SNP from FASTA alignment
 usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
 # See result
@@ -1392,7 +1374,7 @@ grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
 
 # Align multiple genes
 # Create a list of DNAbin objects to process
-multialign <- list(meles.dna, usflu.dna, usflu.dna2, usflu.dna3)
+multialign <- list(meles.dna, usflu.dna, usflu.dna2)
 # See it
 multialign
 class(multialign)
