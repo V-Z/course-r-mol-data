@@ -3,8 +3,7 @@ help(rep) # Help for particular function (package must be loaded)
 ?rep # Help for particular function (package must be loaded)
 ??ANOVA # Search for the term within all installed packages
 help.search("analysis of variance") # Search for the phrase within all installed packages - return list of hits sorted according to type and package (i.e. package::function)
-install.packages("sos") # More comprehensive search from packages
-library(sos)
+require(sos) # More comprehensive search from packages
 findFn("DAPC") # Search for function name
 
 ## Set working directory
@@ -35,7 +34,7 @@ y[3,] # Prints third row
 y[4,3] # Prints element from fourth row and third column
 x <- y[2,] # Replaces "x" by second row of "y" (no warning) - R doesn't ask neither notifies when overwriting objects! Be careful!
 x # See modified object
-rm(x) # Deletes x
+rm(x) # Deletes x (no warning)
 y[,1:3] # Prints first through third column of the matrix
 y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
 y # See modified object
@@ -1207,7 +1206,7 @@ hauss.geneland.lpd
 library(sp)
 library(rworldmap) # Basic world maps
 library(TeachingDemos) # To be able to move text little bit
-library(RgoogleMaps) # Google and OpenStreetMaps
+library(RgoogleMaps) # Google maps
 library(mapplots) # Plot pie charts
 # Plot basic map with state boundaries within selected range
 plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=1.5)
@@ -1262,9 +1261,6 @@ for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]$newX, y=ha
 for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=3, alpha=0.5) ) }
 # Add population text labels
 PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
-
-# FIXME Plot on OpenStreeMap - server is commonly overloaded and doesn't respond correctly
-GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=20000, destfile="osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE, NEWMAP=TRUE, verbose=1)
 
 library(maps) # Various mapping tools (plotting, ...)
 library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/

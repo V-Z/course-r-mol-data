@@ -47,7 +47,7 @@
 % Syntax higlight
 \usepackage{minted}
 \usemintedstyle{vim} % Styles are listed by pygmentize -L styles; languages are listed by pygmentize -L lexers
-\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Beige, fontfamily=tt, gobble=4, numbersep=-6pt}
+\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Gray, fontfamily=tt, gobble=4, numbersep=-6pt}
 % Change line number style
 \renewcommand{\theFancyVerbLine}{
 	\sffamily
@@ -259,25 +259,25 @@
 
 \begin{frame}{RKWard}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{rkward.jpg}
+		\includegraphics[width=\textwidth-3.5cm]{rkward.jpg}
 	\end{center}
 \end{frame}
 
 \begin{frame}{When using RKWard, consider change of settings of text editor for more comfortable work}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{rkward_settings.png}
+		\includegraphics[width=\textwidth-4cm]{rkward_settings.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}{RStudio}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{rstudio.jpg}
+		\includegraphics[width=\textwidth-3.5cm]{rstudio.jpg}
 	\end{center}
 \end{frame}
 
 \begin{frame}{When using RStudio, turn on soft line wrap, select Czech mirror to download packages and consider change of appearance for more comfortable work}
 	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{rstudio_settings.png}
+		\includegraphics[width=\textwidth-5.25cm]{rstudio_settings.png}
 	\end{center}
 \end{frame}
 
@@ -344,7 +344,7 @@
 \begin{frame}{Important note about names of directories}
 	\begin{itemize}
 		\item \alert{There must not be any spaces or accented characters in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution)
-		\item If the user has e.g. on Windows path like \texttt{C:/Documents and Settings/Šíleně úpějící koníček/R kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems
+		\item If the user has e.g. on Windows path like \texttt{C:/Documents and Settings/Šíleně úpějící kůoň/kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems\ldots
 		\item It might be required to make a~new user on the computer\ldots
 		\item Similarly on macOS and Linux, avoid directory names with spaces and accented characters
 	\end{itemize}
@@ -418,8 +418,7 @@
     help.search("searched phrase") # Search for the phrase within all
       # installed packages - return list of hits sorted according to
       # type and package (i.e. package::function)
-    install.packages("sos") # More comprehensive search from packages
-    library(sos)
+    require(sos) # More comprehensive search from packages
     findFn("function") # Search for function name
 	\end{spluscode}
 	\vfill
@@ -517,7 +516,7 @@
 		\item \texttt{dapc} --- results of DAPC
 		\item and more\ldots~common task is converting among formats\ldots
 		\item \ldots not all formats are (easily) convertible among each other\ldots
-		\item To get information about content of each data type see \texttt{getClassDef("data.frame") \# Or any other class name (of loaded package)} --- there are information about slots within that classes you can access
+		\item To get information about content of each data type see \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
 	\end{itemize}
 \end{frame}
 
@@ -534,15 +533,15 @@
 		phylo & network & \texttt{as.network(x)} & ape\\
 		phylo & igraph & \texttt{as.igraph(x)} & ape\\
 		phylo4 & phylo & \texttt{as(x, "phylo")} & phylobase\\
-		matching & phylo & \texttt{as.phylo(x)} & ape\\
-		treeshape & phylo & \texttt{as.phylo(x)} & apTreeshape\\
-		splits & phylo & \texttt{as.phylo(x)} & phangorn
+		matching & phylo & \texttt{as.phylo(x)} & ape
 	\end{tabular}
 \end{frame}
 
 \begin{frame}{Conversions among data types II}
 	\begin{tabular}{llll}
 		\textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
+		treeshape & phylo & \texttt{as.phylo(x)} & apTreeshape\\
+		splits & phylo & \texttt{as.phylo(x)} & phangorn\\
 		splits & networx & \texttt{as.networx(x)} & phangorn\\
 		evonet & phylo & \texttt{as.phylo(x)} & ape\\
 		evonet & networx & \texttt{as.networx(x)} & ape\\
@@ -551,40 +550,46 @@
 		haploNet & network & \texttt{as.network(x)} & pegas\\
 		haploNet & igraph & \texttt{as.igraph(x)} & pegas\\
 		hclust & phylo & \texttt{as.phylo(x)} & ape\\
-		hclust & dendrogram & \texttt{as.dendrogram(x)} & stats\\
-		DNAbin & character & \texttt{as.character(x)} & ape\\
-		DNAbin & alignment & \texttt{as.alignment(x)} & ape\\
-		DNAbin & phyDat & \texttt{as.phyDat(x)} & phangorn\\
-		DNAbin & genind & \texttt{DNAbin2genind(x)} & adegenet
+		hclust & dendrogram & \texttt{as.dendrogram(x)} & stats
 	\end{tabular}
 \end{frame}
 
 \begin{frame}{Conversions among data types III}
 	\begin{tabular}{llll}
 		\textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
+		DNAbin & character & \texttt{as.character(x)} & ape\\
+		DNAbin & alignment & \texttt{as.alignment(x)} & ape\\
+		DNAbin & phyDat & \texttt{as.phyDat(x)} & phangorn\\
+		DNAbin & genind & \texttt{DNAbin2genind(x)} & adegenet\\
 		character & DNAbin & \texttt{as.DNAbin(x)} & ape\\
 		character & loci & \texttt{as.loci(x)} & pegas\\
 		alignment & DNAbin & \texttt{as.DNAbin(x)} & ape\\
 		alignment & phyDat & \texttt{as.phyDat(x)} & phangorn\\
 		alignment & character & \texttt{as.matrix(x)} & seqinr\\
-		alignment & genind & \texttt{alignment2genind(x)} & adegenet\\
-		phyDat & DNAbin & \texttt{as.DNAbin(x)} & phangorn\\
-		phyDat & character & \texttt{as.character(x)} & phangorn\\
-		loci & genind & \texttt{loci2genind(x)} & pegas\\
-		loci & data frame & \texttt{class(x) <- "data.frame"} & --- \\
-		genind & loci & \texttt{genind2loci(x)} & pegas\\
-		genind & genpop & \texttt{genind2genpop(x)} & adegenet\\
-		genind & df & \texttt{genind2df(x)} & adegenet
+		alignment & genind & \texttt{alignment2genind(x)} & adegenet
 	\end{tabular}
 \end{frame}
 
 \begin{frame}{Conversions among data types IV}
 	\begin{tabular}{llll}
 		\textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
+		phyDat & DNAbin & \texttt{as.DNAbin(x)} & phangorn\\
+		phyDat & character & \texttt{as.character(x)} & phangorn\\
+		loci & genind & \texttt{loci2genind(x)} & pegas\\
+		loci & data frame & \texttt{class(x) <- "data.frame"} & --- \\
+		genind & loci & \texttt{genind2loci(x)} & pegas\\
+		genind & genpop & \texttt{genind2genpop(x)} & adegenet\\
+		genind & df & \texttt{genind2df(x)} & adegenet\\
 		data frame & phyDat & \texttt{as.phyDat(x)} & phangorn\\
 		data frame & loci & \texttt{as.loci(x)} & pegas\\
 		data frame & genind & \texttt{df2genind(x)} & adegenet\\
-		matrix & phyDat & \texttt{as.phyDat(x)} & phangorn\\
+		matrix & phyDat & \texttt{as.phyDat(x)} & phangorn
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{Conversions among data types V}
+	\begin{tabular}{llll}
+		\textbf{From} & \textbf{To} & \textbf{Command} & \textbf{Package}\\
 		vcfR & chromR & \texttt{vcfR2chromR(x)} & vcfR\\
 		vcfR & genind & \texttt{vcfR2genind(x)} & vcfR\\
 		vcfR & migrate & \texttt{vcfR2migrate(x)} & vcfR\\
@@ -595,7 +600,7 @@
 	\end{tabular}
 \end{frame}
 
-\begin{frame}[fragile]{Basic operations with data I}
+\begin{frame}[fragile]{Basic operations with data I}{\alert{R doesn't ask neither notifies when overwriting objects! Be careful!}}
 	\begin{spluscode}
     x <- c(5, 6, 7, 8, 9) # Creates vector (see also ?rep)
     x # Print "x" content
@@ -612,15 +617,14 @@
     y # Prints the matrix
     y[,2] # Prints second column
     y[3,] # Prints third row
-    y[4,3] # Prints element from fourth row and third column
-    x <- y[2,] # Replaces "x" by second row of "y" (no warning)
-    # R doesn't ask neither notifies when overwriting objects! Be careful!
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Basic operations with data II}
 	\begin{spluscode}
-    rm(x) # Deletes x
+    y[4,3] # Prints element from fourth row and third column
+    x <- y[2,] # Replaces "x" by second row of "y" (no warning)
+    rm(x) # Deletes x (no warning)
     y[,1:3] # Prints first through third column of the matrix
     y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
     y[y==20] <- 10 # If value of y's element is 20, replace it by 10
@@ -633,11 +637,17 @@
     y <- as.data.frame(y) # Turns into DF (see other functions as.*)
     y[y==17] <- "NA" # Removes values of 17 (NA = not available = missing)
     y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
-    save(list=ls(), file="test.RData") # Saves all objects during the work
-    load("test.RData") # Loads saved R environment with all objects
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Basic operations with data III}
+	\begin{spluscode}
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
-    fix(y) # Use to edit matrices, data frames, functions, ...
+    save(list=ls(), file="test.RData") # Saves all objects during the work
+    load("test.RData") # Loads saved R environment with all objects
+    # Use to edit matrices, data frames, functions, ...
+    fix(y)
 	\end{spluscode}
 \end{frame}
 
@@ -777,7 +787,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Bioconductor and others --- differences from another repositories}
+\begin{frame}[fragile]{Bioconductor and others --- differences from another repositories}{Bioconductor has its own installation method}
 	\label{sources-diff}
 	\begin{spluscode}
     # Standard installation
@@ -797,9 +807,6 @@
     BiocManager::install(pkgs=c("Biostrings", "muscle"))
     ?BiocManager::install # See more options
 	\end{spluscode}
-	\begin{itemize}
-		\item Bioconductor has its own installation method
-	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Bioconductor}
@@ -1055,11 +1062,15 @@
 \end{frame}
 
 \begin{frame}{Examples of data and formats I --- AFLP (presence/absence) gel and microsatellites from sequencing machine}
-	\includegraphics[width=\textwidth]{aflp_ssrs.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-1cm]{aflp_ssrs.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Examples of data and formats II --- Aligned DNA sequences displayed in Geneious}
-	\includegraphics[width=\textwidth]{alignment_geneious.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{alignment_geneious.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences in text view}
@@ -1069,7 +1080,6 @@
     ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgatcacgaatgat
     > CY013781
     atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttccccaaattgaagtg
-    ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgactaatgctact
     ... # FASTA continues...
 	\end{spluscode}
 	\vfill
@@ -1081,17 +1091,20 @@
     @7001425F:141:CAV4JANXX:3:1104:1250:1987 1:N:0:GTGTCC
     TCGATTCACTGAACTGAATGTCCGACAAACTTTAGTTTGTCGTTTCTACCTCACCAAAGTTCGGAGCTTCGA
     +
-    BBBBBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     ... # FASTQ continues...
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It contains Illumina short reads mapped to reference}
-	\includegraphics[width=\textwidth]{bam_igv.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{bam_igv.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Examples of data and formats V --- VCF with multiple samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
-	\includegraphics[width=\textwidth]{vcf_igv.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-1.5cm]{vcf_igv.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Examples of data and formats VI --- Parts of VCF in text view}
@@ -1161,30 +1174,23 @@
 \subsection{Microsatellites}
 
 \begin{frame}[fragile]{Load data}
-	\vfill
-	\textbf{Source data:}
-	\vfill
 	\begin{spluscode}
-        pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
+    # Source data
+    pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
     H01  He 269/269 198/198 221/223 419/419 197/197 196/196 ...
     H02  He 275/283 198/198 221/223 419/419 193/193 168/190 ...
     ... ...     ...     ...     ...     ...     ...     ... ...
-	\end{spluscode}
-	\vfill
-	\textbf{Loading the data:}
-	\vfill
-	\begin{spluscode}
+    # Loading the data
     # Load training data (Taraxacum haussknechtii from Macedonia)
     hauss.loci <- read.loci(file="https://soubory.trapa.cz/rcourse/
       haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/",
       col.pop=2, col.loci=3:14, row.names=1) # \t means TAB key
-    # Data control
-    hauss.loci
+    hauss.loci # Data control
     print(hauss.loci, details=TRUE)
 	\end{spluscode}
 	\vfill
 	\begin{footnotesize}
-		First line starts with empty cell (if \texttt{header} is presented), there can be any extra column, take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB --- \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) according to data formatting.
+		First line starts with empty cell (if \texttt{header} is presented), there can be any extra column, take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) \alert{according to data formatting}.
 	\end{footnotesize}
 	\vfill
 \end{frame}
@@ -1193,25 +1199,17 @@
 	\begin{spluscode}
     # Conversion of loci to genind - used for many analysis
     hauss.genind <- loci2genind(hauss.loci)
-    # See population names
-    pop(hauss.genind)
+    pop(hauss.genind) # See population names
     hauss.genind$pop # "$" separates extra slots within object
 	\end{spluscode}
-	\vfill
-	\textbf{Source data:}
-	\vfil
 	\begin{spluscode}
+    # Source data
     Ind      lon   lat
     H01  21.3333  41.1
     ...      ...   ...
-	\end{spluscode}
-	\vfill
-	\textbf{Read coordinates:}
-	\vfil
-	\begin{spluscode}
-    hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/
-      haussknechtii_coordinates.csv", header=TRUE, sep="\t",
-      quote="", dec=".", row.names=1)
+    # Read coordinates
+    hauss.coord <- read.csv("https://soubory.trapa.cz/rcourse/haussknechtii_
+      coordinates.csv", header=TRUE, sep="\t", quote="", dec=".", row.names=1)
     hauss.coord
 	\end{spluscode}
 	\begin{itemize}
@@ -1225,23 +1223,21 @@
 	\begin{spluscode}
     # Add coordinates - note identification of slots within object
     hauss.genind$other$xy <- hauss.coord
-    # See result
-    hauss.genind$other$xy
-    hauss.genind
+    hauss.genind$other$xy # See result - the coordinates
+    hauss.genind # See result - whole object
     # Conversion to genpop - for population-level analysis
     hauss.genpop <- genind2genpop(hauss.genind, process.other=TRUE)
-    # See result
-    hauss.genpop
+    hauss.genpop # See result
     # Removes missing data - see ?missingno for types of dealing them
     # Use with caution! It modifies original data!
-    hauss.genind.cor <- missingno(pop=hauss.genind, type="mean",
-      cutoff=0.1, quiet=FALSE)
+    hauss.genind.cor <- missingno(pop=hauss.genind, type="mean", cutoff=0.1,
+      quiet=FALSE)
     ?missingno # See other options of handling missing data
     # Convert corrected genind to loci
     hauss.loci.cor <- genind2loci(hauss.genind.cor)
     # Writes loci file to the disk
-    write.loci(hauss.loci.cor, file="hauss.loci.cor.txt",
-      loci.sep="\t", allele.sep="/")
+    write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t",
+      allele.sep="/")
 	\end{spluscode}
 \end{frame}
 
@@ -1254,9 +1250,11 @@
     read.structure() # adegenet - reads *.str files, only ha/diploids
     import2genind() # adegenet - more automated version of above functions
 	\end{spluscode}
-	\begin{block}{One function rules them all\ldots}
-		All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
-	\end{block}
+	\begin{alertblock}{One function rules them all\ldots}
+		\begin{footnotesize}
+			All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
+		\end{footnotesize}
+	\end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]{Import of polyploid microsatellites}
@@ -1365,7 +1363,6 @@
       loc.names=NULL, pop=amara.pop[,1], type="PA")
     indNames(aflp.genind) <- amara.aflp[,1] # Add individual names
     aflp.genind
-    summary(amara.aflp)
     # You can add any other variables into genind$other$XXX
 	\end{spluscode}
 \end{frame}
@@ -1402,7 +1399,7 @@
 		\item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by \enquote{\texttt{/}}, \enquote{\texttt{|}} or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
 		\item \textbf{Do not use} underscores (\enquote{\texttt{\_}}) or minuses (\enquote{\texttt{-}}) to name objects in R --- only numbers, Latin letters or dots
 		\item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites --- try \texttt{read.table()} instead\ldots
-		\item Genind object (since Adegenet version 2) is able to store mixed ploidy data, but not all analysis using genind are able to handle that\ldots
+		\item Genind object is able to store mixed ploidy data, but not all analysis are able to handle it
 	\end{itemize}
 \end{frame}
 
@@ -1411,8 +1408,7 @@
 \begin{frame}[fragile]{Import of DNA sequence data I}
 	\begin{spluscode}
     # Reading FASTA (read.dna() reads also another formats, see ?read.dna)
-    # Sequences of flu viruses from various years from USA
-    # (Adegenet toy data)
+    # Sequences of flu viruses from various years from USA (Adegenet toy data)
     usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/
       files/usflu.fasta", format="fasta")
     class(usflu.dna) # Check the object
@@ -1485,14 +1481,13 @@
     choosebank("embl") # Choose some bank
     ?query # See how to construct the query
     # Query selected database - there are a lot of possibilities
-    nothofagus <- query(listname="nothofagus",
-      query="SP=Nothofagus AND K=rbcl", verbose=TRUE)
+    nothofagus <- query(listname="nothofagus",query="SP=Nothofagus AND K=rbcl",
+      verbose=TRUE)
     nothofagus$req # See the sequences information
     # Get the sequences as a list
     nothofagus.sequences <- getSequence(nothofagus$req)
     nothofagus.sequences # See sequences
-    # Get annotations
-    nothofagus.annot <- getAnnot(nothofagus[["req"]])
+    nothofagus.annot <- getAnnot(nothofagus[["req"]]) # Get annotations
     nothofagus.annot
     closebank() # Close the bank when work is over
     # Convert sequences from a list to DNAbin (functions as.DNAbin*)
@@ -1521,7 +1516,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item For small data sets, keep data as genind as it is more information-rich --- genlight is more efficient for large data (> $\sim$100,000~SNPs)
-		\item Adegenet has custom format to store SNP as plain text file and function \texttt{read.snp} to import it into \texttt{genlight} object --- check \href{https://github.com/thibautjombart/adegenet/wiki/Tutorials}{Adegenet tutorial} \textbf{genomics} first, \texttt{?read.snp \# See the options}
+		\item Adegenet has custom format to store SNP as plain text file and function \texttt{read.snp} to import it into \texttt{genlight} object --- check \href{https://github.com/thibautjombart/adegenet/wiki/Tutorials}{Adegenet tutorial} \textbf{genomics}, \texttt{?read.snp}
 	\end{itemize}
 \end{frame}
 
@@ -1548,19 +1543,16 @@
     snpposi.test(as.matrix(meles.dna))
 		\end{spluscode}
 		\begin{flushright}
-			\includegraphics[height=6cm]{snpposi.png}
+			\includegraphics[height=7cm]{snpposi.png}
 		\end{flushright}
 	\end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Checking sequences}
 	\begin{spluscode}
-    # Nucleotide diversity
-    pegas::nuc.div(x=meles.dna)
-    # Base frequencies
-    ape::base.freq(x=meles.dna)
-    # GC content
-    ape::GC.content(x=meles.dna)
+    pegas::nuc.div(x=meles.dna) # Nucleotide diversity
+    ape::base.freq(x=meles.dna) # Base frequencies
+    ape::GC.content(x=meles.dna) # GC content
     # Number of times any dimer/trimer/etc oligomers occur in a sequence
     # Note: count() requires single sequence as DNAbin/character
     seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]),
@@ -1569,8 +1561,7 @@
     image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
     # Function "image" requires as input matrix
     # So that sequences must be of same length
-    image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"),
-      col=rainbow(5))
+    image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
     # Direct function to display the sequences
     image.DNAbin(x=usflu.dna)
     image.DNAbin(x=as.matrix(meles.dna))
@@ -1578,7 +1569,9 @@
 \end{frame}
 
 \begin{frame}{\textit{Meles} sequences}
-	\includegraphics[width=\textwidth]{sequences_meles.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-1.5cm]{sequences_meles.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Notes about using genlight (vs. genind)}
@@ -1606,8 +1599,8 @@
     arabidopsis.vcf <- read.vcfR(file=file.choose())
     # File choose dialog can open in background - search for it :-)
     # Or directly load remote file
-    arabidopsis.vcf <- read.vcfR(file=
-      "https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
+    arabidopsis.vcf <- read.vcfR
+      (file="https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
     # It returns object of class vcfR-class
     ?read.vcfR # See more import options
     ?pegas::read.vcf # This one returns list of objects loci and data.frame
@@ -1637,18 +1630,19 @@
 \end{frame}
 
 \begin{frame}{DP per specimen}
-	\includegraphics[width=\textwidth]{vcf_dp.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2.5cm]{vcf_dp.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Checking VCF II}{Bar plot of mean DP}
 	\begin{spluscode}
-    barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE),
-      las=3)
+    barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
     title("Mean DP per specimen")
     abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{vcf_dp_mean.png}
+		\includegraphics[width=\textwidth-6.5cm]{vcf_dp_mean.png}
 	\end{center}
 \end{frame}
 
@@ -1659,7 +1653,7 @@
     title("DP per specimens and loci")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.25cm]{vcf_dp_heatmap.png}
+		\includegraphics[width=\textwidth-6cm]{vcf_dp_heatmap.png}
 	\end{center}
 \end{frame}
 
@@ -1667,8 +1661,7 @@
 	\begin{spluscode}
     # Genind
     arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
-    # Check it
-    arabidopsis.genind
+    arabidopsis.genind # Check it
     nInd(arabidopsis.genind)
     indNames(arabidopsis.genind)
     nLoc(arabidopsis.genind)
@@ -1676,12 +1669,10 @@
     # Genlight (suitable for huge data, not required now)
     # On Linux/macOS and with large data use higher n.cores
     arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1)
-    # Check it
-    arabidopsis.genlight
+    arabidopsis.genlight # Check it
     # Loci
     arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
-    # Check it
-    arabidopsis.loci
+    arabidopsis.loci # Check it
     print(x=arabidopsis.loci, details=TRUE)
 	\end{spluscode}
 \end{frame}
@@ -1749,8 +1740,7 @@
       file.out="meles.fasta", open="w")
     # Export DNA sequences as NEXUS
     write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
-    # Export VCF
-    write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
+    write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz") # Export VCF
     # Export tree(s) (objects of class phylo)
     write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # In NEWICK
     write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # In NEXUS
@@ -1883,8 +1873,7 @@
     # Get summary - names and sizes of populations,
     # heterozygosity, some info about loci
     hauss.summ <- summary(hauss.genind)
-    # Plot expected vs. observed heterozygosity
-    # it looks like big difference
+    # Plot expected vs. observed heterozygosity it looks like big difference
     plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs,
       main="Observed vs expected heterozygosity",
       xlab="Expected heterozygosity", ylab="Observed heterozygosity")
@@ -1905,12 +1894,11 @@
 		\item \texttt{shapiro.test()} tests the normality of given vector
 	\end{itemize}
 	\begin{spluscode}
-    # T-test of difference between
-    # observed and expected heterozygosity - strongly significant
+    # T-test of difference between observed and expected heterozygosity
     t.test(x=hauss.summ$Hexp, y=hauss.summ$Hobs, paired=TRUE, var.equal=T)
                  Paired t-test
     data:  hauss.summ$Hexp and hauss.summ$Hobs
-    t = 3.5622, df = 11, p-value = 0.004456
+    t = 3.5622, df = 11, p-value = 0.004456 # strongly significant
     alternative hypothesis: true difference in means is not equal to 0
     95 percent confidence interval:
      0.06114303 0.25887357
@@ -1938,13 +1926,14 @@
       expected-observed", ylab="Hexp - Hobs", las=3)
     barplot(height=hauss.summ[["n.by.pop"]], main="Sample sizes per
       population", ylab="Number of genotypes", las=3)
-    dev.off() # Closes graphical device - otherwise following
-              # graphs would still be divided into 4 parts
+    dev.off() # Closes graphical device to reset graphical settings
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Graphs from previous slides}
-	\includegraphics[width=\textwidth]{heterozygosity.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{heterozygosity.png}
+	\end{center}
 \end{frame}
 
 \subsection{Statistics}
@@ -1975,7 +1964,9 @@
 \end{frame}
 
 \begin{frame}{Histograms of simulations of rbarD for each population}{The populations are significantly far from being clonal}
-	\includegraphics[width=\textwidth]{poppr.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2.5cm]{poppr.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
@@ -2097,8 +2088,7 @@
     indNames(arabidopsis.genlight)
     pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
       start=1, stop=3)
-    # Check it
-    pop(arabidopsis.genlight)
+    pop(arabidopsis.genlight) # Check it
     popNames(arabidopsis.genlight)
     arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight,
       nboots=100, percent=95, nclusters=1)
@@ -2146,7 +2136,7 @@
 
 \begin{frame}[fragile]{Inbreeding}
 	\begin{multicols}{2}
-		\includegraphics[height=5.5cm]{inbreeding.png}
+		\includegraphics[height=7cm]{inbreeding.png}
 		\begin{spluscode}
     # Load training data (cattle)
     data(microbov)
@@ -2157,8 +2147,7 @@
     # Calculate the inbreeding
     microbov.inbr <- inbreeding(x=
       microbov.pops, N=100)
-    # Check for more settings
-    ?inbreeding
+    ?inbreeding # Check for settings
     # population means for plotting
     microbov.bar <- sapply(X=
       microbov.inbr, FUN=mean)
@@ -2179,16 +2168,14 @@
     hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
     # Euclidean distance for individuals (plain ordinary distance matrix)
     hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=T, upper=T)
-    hauss.dist
-    # Nei's distance (not Euclidean) for populations
-    # (other methods are available, see ?dist.genpop)
+    # Nei's distance (not Euclidean) for populations (other methods are
+    # available, see ?dist.genpop)
     hauss.dist.pop <- dist.genpop(x=hauss.genpop, method=1, diag=T, upper=T)
     # Test if it is Euclidean
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # FALSE = No
     # Turn to be Euclidean
-    hauss.dist.pop <- cailliez(distmat=hauss.dist.pop, print=FALSE,
-      tol=1e-07, cor.zero=TRUE)
-    # Test if it is Euclidean
+    hauss.dist.pop <- cailliez(distmat=hauss.dist.pop, print=FALSE, tol=1e-07,
+      cor.zero=TRUE)
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
 	\end{spluscode}
 	\vfil
@@ -2209,8 +2196,7 @@
       tol=1e-07, cor.zero=TRUE)
     # Test if it is Euclidean
     is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
-    # Show it
-    hauss.dist.bruvo
+    hauss.dist.bruvo  # Show it
 	\end{spluscode}
 	\begin{itemize}
 		\item See poppr's manual and manual pages of the functions for details and different possibilities of settings
@@ -2223,7 +2209,7 @@
 		How to deal with zero distances in original matrix? There is no really good solution\ldots\\ Histograms of Bruvo distance before and after transformation:
 	\end{footnotesize}
 	\begin{center}
-		\includegraphics[width=\textwidth]{bruvodist.png}
+		\includegraphics[width=\textwidth-4.5cm]{bruvodist.png}
 	\end{center}
 \end{frame}
 
@@ -2233,12 +2219,10 @@
     # (other methods are available, see ?nei.dist from poppr package)
     hauss.dist.nei <- nei.dist(x=hauss.genind, warning=TRUE)
     is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
-    hauss.dist.nei
     # Dissimilarity matrix returns a distance reflecting the number of
     # allelic differences between two individuals
     hauss.dist.diss <- diss.dist(x=hauss.genind, percent=FALSE, mat=TRUE)
     is.euclid(as.dist(hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
-    hauss.dist.diss
 	\end{spluscode}
 	\vfill
 	\textbf{Import own distance matrix from another software:}
@@ -2297,14 +2281,12 @@
       DISTFUN(hauss.genind.cor) })
     # Add names for the distance names
     names(dists) <- distances
-    # Add Bruvo distance
-    dists[["Bruvo"]] <- hauss.dist.bruvo
-    dists
-    # Split graphical device into 2 lines, 3 panes each
-    par(mfrow=c(2, 3))
+    dists[["Bruvo"]] <- hauss.dist.bruvo # Add Bruvo distance
+    dists # Check list of distances
+    par(mfrow=c(2, 3)) # Split graphical device into 2 lines, 3 panes each
     # Calculate NJ and plot all trees
-    x <- lapply(names(dists), function(x) {
-      plot(njs(dists[[x]]), main=x, type="unrooted")
+    x <- lapply(names(dists), function(x) { plot(njs(dists[[x]]), main=x,
+      type="unrooted")
       add.scale.bar(lcol="red", length=0.1) })
     dev.off() # Close graphical device to reset settings
 	\end{spluscode}
@@ -2312,7 +2294,7 @@
 
 \begin{frame}{Neighbor-Joining of same dataset under different matrices}{The results are very different\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth]{distances.png}
+		\includegraphics[width=\textwidth-4cm]{distances.png}
 	\end{center}
 \end{frame}
 
@@ -2347,16 +2329,15 @@
 	\begin{spluscode}
     usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
     class(usflu.dists.l)
-    usflu.dists <- lapply(X=usflu.dists.l, FUN=function(DDD)
-      dist(as.matrix(DDD)))
+    usflu.dists <- lapply(X=usflu.dists.l, FUN=function(D) dist(as.matrix(D)))
     class(usflu.dists)
     names(usflu.dists)
     class(usflu.dists[[1]])
     usflu.distr <- Reduce(f="+", x=usflu.dists)
     class(usflu.distr)
     usflu.distr
-    # It is possible to use just basic dist function on whole
-    # genlight object (might require a lot of RAM)
+    # It is possible to use just basic dist function on whole genlight object
+    # (might require a lot of RAM)
     usflu.distg <- dist(as.matrix(usflu.genlight))
 	\end{spluscode}
 	\vfil
@@ -2366,10 +2347,10 @@
 
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets I}
 	\begin{spluscode}
-    library(StAMPP) # Load required library
-    # stamppNeisD requires population factor in genlight
-    # Nei's 1972 distance between individuals
-    # (use pop=TRUE to calculate among populations)
+    # Load required library
+    library(StAMPP)
+    # stamppNeisD requires population factor in genlight Nei's 1972 distance
+    # between individuals (use pop=TRUE to calculate among populations)
     arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
     # Check it
     head(arabidopsis.dist)
@@ -2449,7 +2430,7 @@
 		\end{itemize}
 		\columnbreak
 		\begin{center}
-			\includegraphics[height=6cm]{dna-dists.png}
+			\includegraphics[height=7cm]{dna-dists.png}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -2459,7 +2440,7 @@
 \begin{frame}[fragile]{Heat maps}
 	\label{hierclust}
 	\begin{multicols}{2}
-		\includegraphics[height=6cm]{heatmap.png}
+		\includegraphics[height=7cm]{heatmap.png}
 		\columnbreak
 		\begin{spluscode}
     # Based on various distances
@@ -2485,7 +2466,7 @@
 
 \begin{frame}[fragile]{Hierarchical clustering --- UPGMA and others}
 	\begin{multicols}{2}
-		\includegraphics[height=6cm]{hierclust.png}
+		\includegraphics[height=7cm]{hierclust.png}
 		\begin{spluscode}
     # According to distance used
     # see ?hclust for methods
@@ -2526,7 +2507,9 @@
 \end{frame}
 
 \begin{frame}{UPGMA is not the best choice here\ldots}
-	\includegraphics[width=\textwidth]{upgma.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{upgma.png}
+	\end{center}
 	\vfil
 	All points in the right graph should be clustered along the red line\ldots
 	\vfill
@@ -2613,15 +2596,14 @@
     plot.phylo(x=hauss.nj, type="phylogram")
     plot.phylo(x=hauss.nj, type="cladogram", edge.width=2)
     plot.phylo(x=hauss.nj, type="fan", edge.width=2, edge.lty=2)
-    plot.phylo(x=hauss.nj, type="radial", edge.color="red",
-      edge.width=2, edge.lty=3, cex=2)
-    # There are enormous graphical possibilities...
+    plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2,
+      edge.lty=3, cex=2) # There are enormous graphical possibilities...
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{nj1.png}
+		\includegraphics[width=\textwidth-5.5cm]{nj1.png}
 	\end{center}
 \end{frame}
 
@@ -2642,14 +2624,14 @@
     # Another possibility
     hauss.aboot <- aboot(x=hauss.genind, tree="nj", distance=nei.dist,
       sample=100) # Bootstrap values are in slot node.label
-    # Plot the tree, explicitly display node labels
-    plot.phylo(x=hauss.aboot, show.node.label=TRUE)
-    ?aboot # Package poppr
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Nicer trees}
+\begin{frame}[fragile]{Plotting bootstrap and nicer trees}
 	\begin{spluscode}
+    # Plot the tree, explicitly display node labels
+    plot.phylo(x=hauss.aboot, show.node.label=TRUE)
+    ?aboot # Package poppr
     ## Plot a nice tree with colored tips
     plot.phylo(x=hauss.nj, type="unr", show.tip=F, edge.width=3, main="NJ")
     # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
@@ -2663,6 +2645,11 @@
     axisPhylo() # Add axis with distances
     # From node labels let's remove unneeded frame
     nodelabels(text=round(hauss.boot/10), frame="none", bg="white")
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Nicer trees}
+	\begin{spluscode}
     # As tip label we use only symbols - see ?points for graphical details
     tiplabels(frame="none", pch=rep(0:4,times=c(13,17,2,6,9)), lwd=2, cex=2)
     # Plot a legend explaining symbols
@@ -2673,7 +2660,9 @@
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
-	\includegraphics[width=\textwidth]{nj2.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{nj2.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Trees based on Bruvo's distance}{Package poppr (bootstrap is incorporated within the function)}
@@ -2684,9 +2673,8 @@
     plot.phylo(x=hauss.nj.bruvo, type="unrooted", show.tip=FALSE,
       edge.width=3, main="Neighbor-Joining tree")
     # Call node labels as phylo$node.labels or phylo[["node.labels"]]
-    nodelabels(hauss.nj.bruvo[["node.labels"]])
-    tiplabels(hauss.nj.bruvo[["tip.label"]], bg=fac2col(x=hauss.genind$pop,
-      col.pal=nj.rainbow))
+    nodelabels(hauss.nj.bruvo[["node.labels"]]) tiplabels(hauss.nj.bruvo
+      [["tip.label"]], bg=fac2col(x=hauss.genind$pop, col.pal=nj.rainbow))
     # UPGMA
     hauss.upgma <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12),
       sample=1000, tree="upgma", showtree=TRUE, cutoff=1, quiet=FALSE)
@@ -2699,13 +2687,14 @@
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
-	\includegraphics[width=\textwidth]{nj-upgma-bruvo.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{nj-upgma-bruvo.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{NJ tree of populations}
 	\begin{spluscode}
-    # aboot() can use distances implemented in poppr:
-    ?poppr::aboot
+    ?poppr::aboot # aboot() can use distances implemented in poppr:
     ?poppr::nei.dist
     # Calculations
     hauss.nj.pop <- aboot(x=hauss.genpop, tree="nj", distance="nei.dist",
@@ -2716,7 +2705,7 @@
       cex=1.2, edge.width=3, main="Neighbor-Joining tree of populations")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=3cm]{nj_pop.png}
+		\includegraphics[height=2.5cm]{nj_pop.png}
 	\end{center}
 \end{frame}
 
@@ -2763,15 +2752,13 @@
 \begin{frame}[fragile]{Bootstrap rooted tree}
 	\begin{spluscode}
     # Calculate it
-    usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna,
-      FUN=function(EEE) root(nj(dist.dna(EEE, model="TN93")),
-      outgroup=1), B=1000)
+    usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=
+      function(EEE) root(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
     # Plot the tree
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("NJ tree + bootstrap values")
-    tiplabels(frame="none", pch=20,
-      col=transp(num2col(x=usflu.annot[["year"]], col.pal=usflu.pal),
-      alpha=0.7), cex=3.5, fg="transparent")
+    tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot[["year"]],
+      col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
     axisPhylo()
     # Legend - describing years - pretty() automatically shows best
     # values from given range, num2col() selects colors from color scale
@@ -2793,14 +2780,12 @@
     # Set length of bad branches to zero
     usflu.tree.usflu.na.density$edge.length[usflu.tocollapse] <- 0
     # Create new tree
-    usflu.tree.collapsed <- di2multi(phy=usflu.tree.usflu.na.density,
-      tol=0.00001)
+    usflu.tree.collapsed <- di2multi(usflu.tree.usflu.na.density, tol=0.00001)
     # Plot the consensus tree
     plot.phylo(x=usflu.tree.collapsed, show.tip=FALSE, edge.width=2)
     title("NJ tree after collapsing weak nodes")
-    tiplabels(text=usflu.annot$year,
-      bg=transp(num2col(x=usflu.annot[["year"]], col.pal=usflu.pal),
-      alpha=0.7), cex=0.5, fg="transparent")
+    tiplabels(text=usflu.annot$year, bg=transp(num2col(x=usflu.annot
+      [["year"]], col.pal=usflu.pal), alpha=0.7), cex=0.5, fg="transparent")
     axisPhylo()
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
@@ -2809,7 +2794,7 @@
 
 \begin{frame}{The trees}
 	\begin{center}
-		\includegraphics[width=\textwidth-2.5cm]{nj_dna.png}
+		\includegraphics[width=\textwidth-7cm]{nj_dna.png}
 	\end{center}
 	\end{frame}
 
@@ -2831,22 +2816,21 @@
 	\label{pcoa}
 	\begin{spluscode}
     hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE,
-      scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE,
-      nf=3)
+      scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE, nf=3)
     # Basic display
     s.label(dfxy=hauss.pcoa$li, clabel=0.75)
     # To plot different axes use for example dfxy=hauss.pcoa$li[c(2, 3)]
     # Add kernel density
     s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
     # Add histogram of Eigenvalues
-    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2,
-      posi="bottomleft", sub="Eigenvalues")
+    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft",
+      sub="Eigenvalues")
     # Colored display according to populations
     # Creates vector of colors according to populations
     hauss.pcoa.col <- rainbow(length(levels(pop(hauss.genind))))
     s.class(dfxy=hauss.pcoa$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
-    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2,
-      posi="bottomleft", sub="Eigenvalues")
+    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft",
+      sub="Eigenvalues")
     title("Principal Coordinates Analysis") # Adds title to the graph
 	\end{spluscode}
 \end{frame}
@@ -2854,7 +2838,7 @@
 \begin{frame}[fragile]{PCoA II}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=6.5cm]{pcoa.png}
+			\includegraphics[height=7cm]{pcoa.png}
 		\end{center}
 		\columnbreak
 		\begin{spluscode}
@@ -2880,18 +2864,20 @@
 \end{frame}
 
 \begin{frame}{PCoA --- Bruvo and colorplot}
-  \includegraphics[width=\textwidth]{pcoa-dalsi.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{pcoa-dalsi.png}
+	\end{center}
 \end{frame}
 
 \subsection{}
 
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
-	\begin{block}{Tasks}
+	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Most of examples were shown with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
 			\item Try some of the introduced analyses with your own custom imported data
 		\end{enumerate}
-	\end{block}
+	\end{exampleblock}
 	\begin{itemize}
 		\item Of course, following chapters will show more possible analyses\ldots
 		\item Previous examples are not covering all possibilities\ldots
@@ -2923,7 +2909,7 @@
 
 \begin{frame}{Principal difference between PCA and DA}
 	\begin{center}
-		\includegraphics[height=6cm]{dapc-da-pca.png}
+		\includegraphics[height=6.5cm]{dapc-da-pca.png}
 	\end{center}
 \end{frame}
 
@@ -2937,8 +2923,7 @@
     hauss.kfind <- find.clusters(x=hauss.genind, stat="BIC",
       choose.n.clust=TRUE, max.n.clust=10, n.iter=100000, n.start=100,
       scale=FALSE, truenames=TRUE)
-    # See results as text
-    table(pop(hauss.genind), hauss.kfind$grp)
+    table(pop(hauss.genind), hauss.kfind$grp) # See results as text
     hauss.kfind
     # Graph showing table of original and inferred populations and
     # assignment of individuals
@@ -3008,7 +2993,7 @@
 
 \begin{frame}{DAPC for K=2}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{dapc2.png}
+		\includegraphics[width=\textwidth-5.5cm]{dapc2.png}
 	\end{center}
 \end{frame}
 
@@ -3022,8 +3007,7 @@
     # Select number of informative DA (here 2 - usually keep all of them)
     hauss.dapc3 <- dapc(x=hauss.genind, pop=hauss.kfind3$grp, center=TRUE,
       scale=FALSE, var.contrib=TRUE, pca.info=TRUE, truenames=TRUE)
-    # Information
-    hauss.dapc
+    hauss.dapc # Information
     # A la PCA graph
     scatter(x=hauss.dapc3, main="DAPC, Taraxacum haussknechtii",
       bg="white", cex=3, clab=0, col=rainbow(3), posi.da="bottomleft",
@@ -3037,7 +3021,9 @@
 \end{frame}
 
 \begin{frame}{DAPC for K=3}
-	\includegraphics[width=\textwidth]{dapc3.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-3cm]{dapc3.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{DAPC code III}
@@ -3064,13 +3050,13 @@
 
 \begin{frame}{DAPC for K=3, extra information}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{dapc3-extra.png}
+		\includegraphics[width=\textwidth-5.5cm]{dapc3-extra.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}{Another DAPC example}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{dapc.png}
+		\includegraphics[width=\textwidth-6cm]{dapc.png}
 	\end{center}
 \end{frame}
 
@@ -3087,19 +3073,18 @@
     # Sum of the number of second allele in each SNP
     usflu.freq <- glSum(usflu.genlight)
     # Plot distribution of (second) allele frequencies
-    hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele
-      frequencies", main="Distribution of (second) allele frequencies")
-    lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5,
-      col="red", lwd=3 )
+    hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele frequencies",
+      main="Distribution of (second) allele frequencies")
+    lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red",
+      lwd=3 )
     # Mean number of second allele in each SNP
     usflu.mean <- glMean(usflu.genlight)
     usflu.mean <- c(usflu.mean, 1-usflu.mean)
     # Plot distribution of allele frequencies
-    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3",
-      xlab="Allele frequencies", main="Distribution of allele
-      frequencies", nclass=20)
-    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean,
-      bw=0.05)$y*2, lwd=3)
+    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele
+      frequencies", main="Distribution of allele frequencies", nclass=20)
+    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2,
+      lwd=3)
 	\end{spluscode}
 \end{frame}
 
@@ -3107,25 +3092,26 @@
 	\begin{spluscode}
     # Play with bw parameter to get optimal image
     usflu.na.density <- density(glNA(usflu.genlight), bw=10)
-    # Set range of xlim parameter from 0 to the length
-    # of original alignment
+    # Set range of xlim parameter from 0 to the length of original alignment
     plot(x=usflu.na.density, type="n", xlab="Position in the alignment",
       main="Location of the missing values (NA)", xlim=c(0, 1701))
     polygon(c(usflu.na.density$x, rev(usflu.na.density$x)),
       c(usflu.na.density$y, rep(0, length(usflu.na.density$x))),
       col=transp("blue", alpha=0.3))
-    points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)),
-      pch="|", cex=2, col="blue")
+    points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2,
+      col="blue")
 	\end{spluscode}
 	\begin{itemize}
 		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
 		\item Lets keep hoping in fast development of computers\ldots
-		\item \alert{Note for Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library, which is not available on Windows --- add parameter \texttt{parallel=FALSE} to be able to use them on Windows
+		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library unavailable on Windows --- add parameter \texttt{parallel=FALSE} to be able to use them
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
-	\includegraphics[width=\textwidth]{flu_alleles.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{flu_alleles.png}
+	\end{center}
 \end{frame}
 
 \subsection{PCA and NJ}
@@ -3141,12 +3127,11 @@
     abline(h=0, v=0, col="gray")
     add.scatter.eig(usflu.pca[["eig"]][1:40], 2, 1, 2, posi="topright",
       inset=0.05, ratio=0.3)
-    # Calculate phylogenetic tree
-    usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
+    usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight))) # Get the tree
     # Plot colored phylogenetic tree
     plot.phylo(x=usflu.tree.genlight, type="fan", show.tip=FALSE)
-    tiplabels(pch=20, col=num2col(usflu.annot[["year"]],
-      col.pal=usflu.pal), cex=4)
+    tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal),
+      cex=4)
     title("NJ tree of the US influenza data")
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
@@ -3154,7 +3139,9 @@
 \end{frame}
 
 \begin{frame}{PCA, NJ and genlight objects}
-	\includegraphics[width=\textwidth]{flu_pcoa_nj.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{flu_pcoa_nj.png}
+	\end{center}
 \end{frame}
 
 \section{Spatial analysis}
@@ -3190,11 +3177,10 @@
 
 \begin{frame}[fragile]{Calculation of Moran's \textit{I} I}
 	\begin{spluscode}
-    # Load required library
-    library(spdep)
+    library(spdep) # Load required library
     # Creates connection network
-    hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5,
-      d1=0, d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
+    hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5, d1=0,
+      d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
     hauss.connectivity
     # Test of Moran's I for 1st PCoA axis
     # Results can be checked against permuted values of moran.mc()
@@ -3232,7 +3218,7 @@
 
 \begin{frame}{Moran's~\textit{I} for our 1$^{st}$ axis isn't significant}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{moran1.png}
+		\includegraphics[width=\textwidth-5cm]{moran1.png}
 	\end{center}
 	\begin{itemize}
 		\item Tested hypothesis \enquote{greater} --- \textbf{no} significant \textbf{positive} autocorrelation
@@ -3262,7 +3248,9 @@
 \end{frame}
 
 \begin{frame}{Second axis is surprisingly significant}
-	\includegraphics[width=\textwidth]{moran2.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{moran2.png}
+	\end{center}
 	\begin{itemize}
 		\item Tested hypothesis \enquote{greater} --- there \textbf{is} significant positive autocorrelation --- individuals are genetically similar over space
 	\end{itemize}
@@ -3312,7 +3300,7 @@
 
 \begin{frame}{sPCA outputs I}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{spca.png}
+		\includegraphics[width=\textwidth-6cm]{spca.png}
 	\end{center}
 \end{frame}
 
@@ -3328,7 +3316,9 @@
     plot(hauss.spca.loc)
 	\end{spluscode}
 	\vfill
-	\includegraphics[width=\textwidth]{spca-glob-loc.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-5cm]{spca-glob-loc.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Map of genetic clines}
@@ -3343,14 +3333,12 @@
       max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
     # For 1st axis
     image(x=hauss.spca.temp, col=spectral(100))
-    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1],
-      add.p=TRUE, csize=0.5, sub="PCoA - first PC", csub=2,
-      possub="topleft")
+    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE,
+      csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
     # For 2nd axis
     image(x=hauss.spca.temp, col=spectral(100))
     s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2],
-      add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2,
-      possub="topleft")
+      add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
 	\end{spluscode}
 \end{frame}
 
@@ -3365,8 +3353,9 @@
       lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\n
       score 1"), plot.title=hauss.spca.annot())
 	\end{spluscode}
-
-	\includegraphics[width=\textwidth]{spca-pc.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-6cm]{spca-pc.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Loading plots --- which alleles contribute the most?}
@@ -3376,11 +3365,13 @@
     loadingplot(x=hauss.spca.loadings, xlab="Alleles", ylab="Weight of the
       alleles", main="Contribution of alleles to the first sPCA axis")
     boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3,
-      ylab="Contribution", xlab="Marker", main="Contribution by markers
-      into the first global score", col="gray")
+      ylab="Contribution", xlab="Marker", main="Contribution by markers into
+      the first global score", col="gray")
 	\end{spluscode}
 	\vfill
-	\includegraphics[width=\textwidth]{spca-loading.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-5cm]{spca-loading.png}
+	\end{center}
 \end{frame}
 
 \subsection{Monmonier}
@@ -3466,11 +3457,10 @@
 \begin{frame}[fragile]{Mantel test --- isolation by distance}
 	\begin{spluscode}
     # Geographical distance
-    hauss.gdist <- dist(x=hauss.genind$other$xy, method="euclidean",
-      diag=TRUE, upper=TRUE)
+    hauss.gdist <- dist(x=hauss.genind$other$xy, method="euclidean", diag=TRUE,
+      upper=TRUE)
     # Mantel test
-    hauss.mantel <- mantel.randtest(m1=hauss.dist, m2=hauss.gdist,
-      nrepet=1000)
+    hauss.mantel <- mantel.randtest(m1=hauss.dist, m2=hauss.gdist, nrepet=1000)
     hauss.mantel # See text output
     plot(hauss.mantel, nclass=30)
     # Libraries required by mantel.correlog:
@@ -3481,15 +3471,15 @@
     hauss.mantel.cor <- mantel.correlog(D.eco=hauss.dist,D.geo=hauss.gdist,
       XY=NULL, n.class=0, break.pts=NULL, cutoff=FALSE, r.type="pearson",
       nperm=1000, mult="holm", progressive=TRUE)
-    # See results for respective classes
-    hauss.mantel.cor
+    hauss.mantel.cor # See results for respective classes
     summary(hauss.mantel.cor)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Mantel test outputs --- strongly significant}
 	\begin{multicols}{2}
-		\includegraphics[height=6cm]{mantel.png}
+		\includegraphics[height=7cm]{mantel.png}
+		\vfill
 		\begin{spluscode}
     hauss.mantel # See output
     Monte-Carlo test
@@ -3508,13 +3498,14 @@
     # Plot correlogram (next slide)
     plot(hauss.mantel.cor)
 		\end{spluscode}
+		\vfill
 	\end{multicols}
 \end{frame}
 
 \begin{frame}{Plot of Mantel Correlogram Analysis}
 	\vfil
 	\begin{center}
-		\includegraphics[width=\textwidth-1cm]{mantel-cor.png}
+		\includegraphics[width=\textwidth-5.5cm]{mantel-cor.png}
 	\end{center}
 	\vfil
 	Correlation (genetic similarity) in several distance classes (positive \textbf{[up]} in short distance \textbf{[left]}, negative \textbf{[down]} in long \textbf{[right]}; \textbf{[full]} --- significant, \textbf{[empty]} --- not significant) --- see \texttt{?mantel.correlog} for details
@@ -3537,7 +3528,6 @@
     D.cl.5     0.492812 466.000000  -0.097214     0.0160      0.031968 *
     D.cl.6     0.602325  36.000000  -0.086288     0.0140      0.041958 *
     D.cl.7     0.711839 108.000000  -0.044109     0.1568      0.313686
-    D.cl.8     0.821353 458.000000  -0.095780     0.0100      0.049950 *
        ...          ...        ...        ...        ...           ...
     ---
     Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
@@ -3592,9 +3582,8 @@
     hauss.geneland.coord.utm # Final coordinates
     # Load data (only haploid or diploid data are supported)
     # only plain table with alleles
-    hauss.geneland.data <- read.table(file=
-      "https://soubory.trapa.cz/rcourse/haussknechtii_geneland.txt",
-      na.string="-999", header=FALSE, sep="\t")
+    hauss.geneland.data <- read.table(file= "https://soubory.trapa.cz/rcourse/
+      haussknechtii_geneland.txt", na.string="-999", header=FALSE, sep="\t")
     dim(hauss.geneland.data)
     hauss.geneland.data
 	\end{spluscode}
@@ -3628,30 +3617,26 @@
     # of genetic clusters - outputs are written into subdirectory within
     # geneland directory (this has to exist prior launching analysis)
     for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-      hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun,
-        "/", sep="") # paste is good especially for joining several texts
+      hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/",
+      sep="") # paste is good especially for joining several texts
       # On Windows, remove following line and create subdirectories from
       # 1 to max K manually (creating subdirs in Windows in R is complicated)
       system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirs
       # Inference - MCMC chain - see ?MCMC for details
-      MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
-        hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc,
-        delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=
-        hauss.geneland.maxpop, nit=10000, thinning=10,
-        freq.model="Uncorrelated", spatial=TRUE)
-      # For loop continues on next slide
+      MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland
+        .data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=
+        TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10,
+        freq.model="Uncorrelated", spatial=TRUE) # Loop continues on next slide
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Running MCMC}
 	\begin{spluscode}
-      # Start of FOR loop is on previous page
-      # In practice set much higher number of iterations (nit, millions),
-      # appropriate sampling (thinning, thousands) and longer burnin
-      # Post-process chains
-      PostProcessChain(coordinates=hauss.geneland.coord.utm,
-        path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500,
-        burnin=hauss.geneland.burnin)
+      # Start of FOR loop is on previous page. In practice set much higher
+      # number of iterations (nit, millions), appropriate sampling (thinning,
+      # thousands) and longer burnin. Post-process chains
+      PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.
+        geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
       # Output
       # Simulated number of populations
       Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE,
@@ -3752,16 +3737,14 @@
     # Calculate average posterior probability
     hauss.geneland.lpd <- rep(NA, hauss.geneland.nrun)
     for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-      hauss.geneland.path.mcmc <- paste("geneland/",
-        hauss.geneland.irun, "/", sep="")
+      hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/",
+        sep="")
       hauss.geneland.path.lpd <- paste(hauss.geneland.path.mcmc,
         "log.posterior.density.txt", sep="")
       hauss.geneland.lpd[hauss.geneland.irun] <-
         mean(scan(hauss.geneland.path.lpd)[-(1:hauss.geneland.burnin)]) }
-    # Sorts runs according to decreasing posterior probability
-    # the first one is the best
-    order(hauss.geneland.lpd, decreasing=TRUE)
-    [1] 5 1 4 3 2 # Run 5 is the best here
+    order(hauss.geneland.lpd, decreasing=TRUE) # Sorts runs according to decre-
+    [1] 5 1 4 3 2 # Run 5 is the best here     # asing posterior probability
     hauss.geneland.lpd # Here the runs are unsorted
     [1] -645.0238 -782.7912 -676.9559 -664.9947 -601.7902 # Run 5 wins
 	\end{spluscode}
@@ -3772,12 +3755,14 @@
 \end{frame}
 
 \begin{frame}{MCMC chain, number of clusters and their map}{MCMC did not converge yet --- too few generations, the most likely solution is K=4 followed by K=5. Final product is map of distribution of genetic clusters.}
-	\includegraphics[width=\textwidth]{geneland1.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{geneland1.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Map of posterior probability of belonging into cluster 1}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{geneland2.png}
+		\includegraphics[width=\textwidth-6cm]{geneland2.png}
 	\end{center}
 \end{frame}
 
@@ -3797,36 +3782,35 @@
 
 \begin{frame}[fragile]{Very basic mapping in R}
 	\begin{spluscode}
-    # Load libraries
-    library(sp)
+    library(sp) # Load libraries
     library(rworldmap) # Basic world maps
     library(TeachingDemos) # To be able to move text little bit
     library(RgoogleMaps) # Google and OpenStreetMaps
     library(mapplots) # Plot pie charts
     # Plot basic map with state boundaries within selected range
-    plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44),
-      asp=1, lwd=1.5)
+    plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
+      lwd=1.5)
     box() # Add frame around the map
     # Plot location points
-    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy
-      [["lat"]], pch=15:19, col="red", cex=4)
+    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy [["lat"]],
+      pch=15:19, col="red", cex=4)
     # Add text descriptions for points. Text is aside and with background
     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy
-      [["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
-      bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
-      pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
+      [["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg=
+      "white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4,
+      4), offset=0.75, cex=1.5)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Basic map}
 	\begin{spluscode}
     # Insert legend
-    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne",
-      "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o",
-      bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
+    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"),
+      col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey",
+      box.lwd=1.5, cex=1.5, title="Populations")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=5.5cm]{map.png}
+		\includegraphics[height=4cm]{map.png}
 	\end{center}
 \end{frame}
 
@@ -3906,8 +3890,7 @@
     class(hauss.pie) # Check it is matrix
     hauss.pie # See resulting matrix
     # Plot basic map with state boundaries within selected range
-    plot(x=getMap(resolution="high"), xlim=c(20, 23), ylim=c(41, 42),
-      asp=1, lwd=1.5)
+    plot(x=getMap(resolution="high"),xlim=c(20,23),ylim=c(41,42),asp=1,lwd=1.5)
     box() # Add frame around the map
     # Plot the pie charts
     for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other
@@ -3924,7 +3907,7 @@
       labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=6cm]{map_pie.png}
+		\includegraphics[height=5cm]{map_pie.png}
 	\end{center}
 \end{frame}
 
@@ -3958,30 +3941,27 @@
       labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=5.5cm]{map_pie_google.png}
+		\includegraphics[height=4.5cm]{map_pie_google.png}
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{OpenStreetMaps and data sets from mapproj}
+\begin{frame}[fragile]{Datasets from mapproj}
 	\begin{spluscode}
-    # Plot on OpenStreetMaps - server is commonly overloaded and does not
-    # respond correctly - in fact, it rarely works...
-    GetOsmMap(lonR=c(18, 24), latR=c(39, 44), scale=200000, destfile=
-      "osmmap.png", format="png", RETURNIMAGE=TRUE, GRAYSCALE=FALSE,
-      NEWMAP=TRUE, verbose=1)
     # Plot on data sets from mapproj package
     library(maps) # Various mapping tools (plotting, ...)
-    library(mapdata) # More detailed maps, but political boundaries often
-           # outdated, see https://CRAN.R-project.org/package=mapdata
-    library(mapproj) # Convert latitude/longitude into projected coordinates
+    # More detailed maps, but political boundaries often outdated, see
+    # https://CRAN.R-project.org/package=mapdata
+    library(mapdata)
+    library(mapproj)
+    # Convert latitude/longitude into projected coordinates
     # Plot a map, check parameters
     # Check among others "projection" and ?mapproject for its details
     map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE,
       col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
     # If you'd use projection, use mapproject to convert also coordinates!
-    # See ?mapproject for details
-    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy
-      [["lat"]], pch=15:19, col="red", cex=3)
+    ?mapproject # See for details
+    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]],
+      pch=15:19, col="red", cex=3)
 	\end{spluscode}
 \end{frame}
 
@@ -4021,8 +4001,7 @@
     plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
     plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
     plot(macedonia_roads, add=TRUE, col="orange")
-    plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
-    # Ends on next slide...
+    plot(macedonia_waterways, add=TRUE, col="blue", lwd=2) # Ends on next slide
 	\end{spluscode}
 \end{frame}
 
@@ -4042,15 +4021,16 @@
       bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
     # Add legend
-    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne",
-      "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o",
-      bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
-    # Results on next slide...
+    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"),
+      col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey",
+      box.lwd=1.5, cex=1.5, title="Populations")
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Plotting on SHP files IV and maps from mapproj}
-	\includegraphics[width=\textwidth]{mapy.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{mapy.png}
+	\end{center}
 \end{frame}
 
 \section{Structure}
@@ -4250,16 +4230,15 @@
     Structure.deltaK("list_k.txt", 5)
     graphics.off() # Close graphics
     Structure.cluster("list_k.txt", 5)
-    # Reordering ("alignment") of runs to get same clusters in same
-    # columns (prepare respective list_k files - one for each K)
+    # Reordering ("alignment") of runs to get same clusters in same columns
+    # (prepare respective list_k files - one for each K)
     # Preparing data for CLUMPP
     Structure.order("list_k_02.txt", 5)
     Structure.order("list_k_03.txt", 5)
     Structure.order("list_k_04.txt", 5)
     Structure.order("list_k_05.txt", 5)
     Structure.order("list_k_06.txt", 5)
-    Structure.order("list_k_07.txt", 5)
-    # Continue with CLUMPP and distruct...
+    Structure.order("list_k_07.txt", 5) # Continue with CLUMPP and distruct...
 	\end{spluscode}
 	\begin{itemize}
 		\item Details: \url{https://trapa.cz/en/structure-r-linux}
@@ -4267,7 +4246,9 @@
 \end{frame}
 
 \begin{frame}{Outputs of Structure-sum --- the best K~is 2, may be 3~--- stability of runs, good posterior probability}{Results from different data set, not from our toy}
-	\includegraphics[width=\textwidth]{structure.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-1.5cm]{structure.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}{Example of final Structure plot}{Drawn by distruct after alignment of Structure outputs by CLUMPP}
@@ -4362,7 +4343,9 @@
     grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
 	\end{spluscode}
 	\vfill
-	\includegraphics[width=\textwidth]{muscle.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-6cm]{muscle.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Align multiple genes}
@@ -4432,7 +4415,9 @@
 \end{frame}
 
 \begin{frame}{Checking the alignment}
-	\includegraphics[width=\textwidth]{checkalignment.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{checkalignment.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Cleaning the alignment}
@@ -4446,11 +4431,9 @@
     multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
     multialign.aln.ng
     # Do not confuse with function delete.gaps() from phyloch package
-    # Display the result
-    image.DNAbin(x=usflu.dna.ng)
+    image.DNAbin(x=usflu.dna.ng) # Display the result
     lapply(X=multialign.aln.ng, FUN=image.DNAbin)
     # Delete positions in alignment containing only missing data/N
-    # (rows as well as columns)
     ?ips::deleteEmptyCells # See help page for details
     ?phyloch::delete.empty.cells # See help page for details
     # Delete only empty columns/rows (usage as above)
@@ -4470,8 +4453,7 @@
 \begin{frame}[fragile]{Read and write tree and drop tips}
 	\begin{spluscode}
     # Read trees in NEWICK format - single or multiple tree(s)
-    oxalis.trees <- read.tree
-      (file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
+    oxalis.trees<-read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
     summary(oxalis.trees)
     length(oxalis.trees)
     names(oxalis.trees)
@@ -4480,8 +4462,7 @@
     oxalis.trees[[1]][["tip.label"]] # See tip labels
     # Drop a tip from multiPhylo
     plot.multiPhylo(x=oxalis.trees)
-    oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip,
-      tip="O._callosa_S15")
+    oxalis.trees.drop<-lapply(X=oxalis.trees,FUN=drop.tip,tip="O._callosa_S15")
     class(oxalis.trees.drop) <- "multiPhylo"
     plot.multiPhylo(x=oxalis.trees.drop)
     plot.phylo(hauss.nj) # Drop a tip from single tree
@@ -4494,20 +4475,18 @@
 \begin{frame}[fragile]{Extract clades from trees and drop extinct tips}
 	\begin{spluscode}
     # Interactively extract tree
-    # Plot source tree
-    plot.phylo(hauss.nj)
+    plot.phylo(hauss.nj) # Plot source tree
     nodelabels() # See node labels (numbers) - needed for some tasks
     # Select clade to extract by clicking on it
     hauss.nj.extracted <- extract.clade(phy=hauss.nj, interactive=TRUE)
     # See new extracted tree
     plot.phylo(hauss.nj.extracted)
     # Non-interactively extract tree
-    hauss.nj.extracted <- extract.clade(phy=hauss.nj, node=60,
-      interactive=FALSE)
+    hauss.nj.extracted <- extract.clade(phy=hauss.nj,node=60,interactive=FALSE)
     # See new extracted tree
     plot.phylo(hauss.nj.extracted)
-    # Drop "extinct" tips - those who don't reach end the tree
-    # tolerance is respective to the used metrics
+    # Drop "extinct" tips - those who don't reach end the tree tolerance is
+    # respective to the used metrics
     plot.phylo(hauss.nj)
     axisPhylo()
     hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.4)
@@ -4539,8 +4518,7 @@
 
 \begin{frame}[fragile]{Ladderize and (un)root the tree}
 	\begin{spluscode}
-    # Ladderize the tree
-    plot.phylo(hauss.nj)
+    plot.phylo(hauss.nj) # Ladderize the tree
     hauss.nj.ladderized <- ladderize(hauss.nj)
     plot.phylo(hauss.nj.ladderized)
     # Root the tree
@@ -4562,19 +4540,16 @@
 
 \begin{frame}[fragile]{Check tree and compute branch lengths and times}
 	\begin{spluscode}
-    # Check if the tree is ultrametric - is variance of distances
-    # of all tips to node 0? It is required for some analysis
+    # Check if the tree is ultrametric - is variance of distances of all tips
+    # to node 0? It is required for some analysis
     is.ultrametric()
     # Make tree ultrametric
-    chronos()
     ?chronos # Check it for mode how to calculate the lengths
     # chronos has more uses - it is mainly used for dating
     # Compute branch lengths for trees without branch lengths
     ?compute.brlen # Check it for mode how to calculate the lengths
-    compute.brlen()
     # Computes the branch lengths of a tree giving its branching
     # times (aka node ages or heights)
-    compute.brtime()
     ?compute.brtime # Check it for mode how to calculate the lengths
 	\end{spluscode}
 	\begin{itemize}
@@ -4619,8 +4594,7 @@
           oxalis.trees[[j]])
       }
     } # dist.topo can compare only two trees in one step... :-(
-    # Basic information about the distance matrix
-    dim(oxalis.trees.d)
+    dim(oxalis.trees.d) # Basic information about the distance matrix
     head.matrix(oxalis.trees.d)
 	\end{spluscode}
 \end{frame}
@@ -4670,7 +4644,9 @@
 \end{frame}
 
 \begin{frame}{Topographical distances among trees V~--- the matrices}
-	\includegraphics[width=\textwidth]{oxalis-dist.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-3cm]{oxalis-dist.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{PCoA from distance matrices of topographical differences among trees --- the code}{PC plots help to identify outliers --- trees with noticeably different topology}
@@ -4681,16 +4657,14 @@
     # Calculate the PCoA
     oxalis.trees.pcoa <- dudi.pco(d=quasieuclid(as.dist(oxalis.trees.d)),
       scannf=TRUE, full=TRUE)
-    # Plot PCoA
+    # Plot PCoA and add kernel densities
     s.label(dfxy=oxalis.trees.pcoa$li)
-    # Add kernel densities
     s.kde2d(dfxy=oxalis.trees.pcoa$li, cpoint=0, add.plot=TRUE)
     # Add histogram of eigenvalues
     add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
     # Add title to the plot
     title("PCoA of matrix of pairwise trees distances")
-    # Alternative function to plot PCA plot
-    scatter(x=oxalis.trees.pcoa, posieig="topleft")
+    scatter(x=oxalis.trees.pcoa, posieig="topleft") # Alternative plotting PCA
 	\end{spluscode}
 \end{frame}
 
@@ -4813,7 +4787,7 @@
       fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-2.75cm]{oxalis_density_phytools.png}
+		\includegraphics[width=\textwidth-8cm]{oxalis_density_phytools.png}
 	\end{center}
 \end{frame}
 
@@ -4838,7 +4812,7 @@
       show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=4cm]{oxalis-net.png}
+		\includegraphics[height=2.5cm]{oxalis-net.png}
 	\end{center}
 \end{frame}
 
@@ -4879,24 +4853,23 @@
 \begin{frame}[fragile]{Maximum parsimony --- code and result}
 	\begin{multicols}{2}
 		\vfil
-		\includegraphics[height=6cm]{parsimony.png}
+		\includegraphics[height=7cm]{parsimony.png}
 		\vfil
 		\begin{spluscode}
     # Conversion to phyDat
-    meles.phydat <-
-      as.phyDat(meles.dna)
+    meles.phydat<-as.phyDat(meles.dna)
     # Prepare starting tree
-    meles.tre.ini <- nj(dist.
-      dna(x=meles.dna, model="raw"))
+    meles.tre.ini <- nj(dist.dna
+      (x=meles.dna, model="raw"))
     # Maximum parsimony score
     ?parsimony # Parsimony details
     parsimony(tree=meles.tre.ini,
       data=meles.phydat)
     # Optimization
     # Maximum parsimony tree
-    meles.tre.pars <- optim.
-      parsimony(tree=meles.tre.
-      ini, data=meles.phydat)
+    meles.tre.pars <- optim.parsimony
+      (tree=meles.tre.ini,
+      data=meles.phydat)
     # Draw a tree
     plot.phylo(x=meles.tre.pars,
       type="clad", edge.width=2)
@@ -4909,19 +4882,17 @@
 \begin{frame}[fragile]{Compare two trees}
 	\begin{spluscode}
     # Compare topology of the species trees - basically outputs TRUE/FALSE
-    all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean,
-      use.edge.length=FALSE)
+    all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean, use.edge.length=FALSE)
     ?all.equal.phylo # Use to see comparison possibilities
     # Plot two trees with connecting lines
     # We need 2 column matrix with tip labels
     tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]),
-      sort(oxalis.tree.sp.mean[["tip.label"]])),
-      nrow=length(oxalis.tree.sp[["tip.label"]]), ncol=2)
+      sort(oxalis.tree.sp.mean[["tip.label"]])), nrow=length
+      (oxalis.tree.sp[["tip.label"]]), ncol=2)
     # Draw a tree - play with graphical parameters and use rotate=TRUE
     # to be able to adjust fit manually
-    cophyloplot(x=ladderize(oxalis.tree.sp),
-      y=ladderize(oxalis.tree.sp.mean), assoc=tips.labels,
-      use.edge.length=FALSE, space=60, length.line=1, gap=2,
+    cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean),
+      assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2,
       type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
     title("Comparing the trees\nParsimony super tree\tSpecies tree")
     legend("topleft", legend="Red lines\nconnect tips", text.col="red",
@@ -4951,11 +4922,10 @@
       assoc=(cbind(sort(oxalis.tree.sp$tip.label),
       sort(oxalis.tree.sp$tip.label))), rotate=TRUE)
     plot.cophylo(x=oxalis.cophylo, lwd=2, link.type="curved") # Plot it
-    title("\nComparisson of species tree (left) and parsimony supertree
-      (right)")
+    title("Comparison of species tree (left) and parsimony supertree (right)")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=4cm]{cophylo.png}
+		\includegraphics[height=3cm]{cophylo.png}
 	\end{center}
 \end{frame}
 
@@ -4977,7 +4947,7 @@
     dev.off() # Close graphical device to cancel par() settings
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=3cm]{lr.png}
+		\includegraphics[height=2cm]{lr.png}
 	\end{center}
 \end{frame}
 
@@ -5084,7 +5054,9 @@
     cor.test(x=primates.pic.body, y=primates.pic.longevity,
       alternative="greater", method="pearson")
 	\end{spluscode}
-	\includegraphics[width=\textwidth]{pic.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-5cm]{pic.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Test it}
@@ -5102,8 +5074,6 @@
                0.4319
     # Permutation procedure to test PIC
     lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
-    Regression through the origin
-    Permutation method = raw data
     Coefficients and parametric test results
                        Coefficient Std_error t-value Pr(>|t|)
     primates.pic.body     0.43193   0.28649  1.5077   0.2288
@@ -5192,8 +5162,7 @@
 	\begin{spluscode}
     # Calculate Moran's I
     # Slightly significant positive phylogenetic correlation among body mass
-    Moran.I(x=primates.body, weight=primates.weights,
-      alternative="greater")
+    Moran.I(x=primates.body, weight=primates.weights, alternative="greater")
     # Positive, but non-significant
     Moran.I(x=primates.longevity, weight=primates.weights,
       alternative="greater")
@@ -5206,8 +5175,7 @@
     # phylogenetic proximity between tips
     library(adephylo)
     abouheif.moran(x=cbind(primates.body, primates.longevity),
-      W=primates.weights, method="oriAbouheif", nrepet=1000,
-      alter="greater")
+      W=primates.weights, method="oriAbouheif", nrepet=1000, alter="greater")
 	\end{spluscode}
 \end{frame}
 
@@ -5246,8 +5214,7 @@
       (file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
     print.phylo(apiaceae.tree) # See it
     plot.phylo(apiaceae.tree) # See it
-    # Root the tree
-    apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
+    apiaceae.tree <- root(apiaceae.tree, "Aralia_elata") # Root the tree
     # Remove "_" from taxa names
     # plot.phylo() by default omits "_" from tip names
     apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ",
@@ -5264,12 +5231,12 @@
 
 \begin{frame}[fragile]{Modified tree}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{apiaceae_tree.png}
+		\includegraphics[width=\textwidth-5cm]{apiaceae_tree.png}
 	\end{center}
 	\begin{spluscode}
     # Decomposition of topographical distances (right plot)
-    table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart
-      (x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
+    table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree,
+      result="orthobasis")), treetype="cladogram")
 	\end{spluscode}
 \end{frame}
 
@@ -5325,7 +5292,9 @@
 \end{frame}
 
 \begin{frame}{Orthogram}
-	\includegraphics[width=\textwidth]{orthogram.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-4cm]{orthogram.png}
+	\end{center}
 	\begin{itemize}
 		\item Observed value is within permutations --- no significant inertia of the trait to phylogeny\ldots
 	\end{itemize}
@@ -5522,9 +5491,9 @@
     # Library needed to create phylo4d object required by ppca
     library(adephylo)
     # Calculate pPCA
-    primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(
-      primates.body, primates.longevity)), method="patristic",
-      center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
+    primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body,
+      primates.longevity)), method="patristic", center=TRUE, scale=TRUE,
+      scannf=TRUE, nfposi=1, nfnega=0)
     # Print results
     print(primates.ppca)
     # See summary information
@@ -5533,15 +5502,16 @@
     scatter(primates.ppca)
     # See decomposition of pPCA eigenvalues
     screeplot(primates.ppca)
-    # Plot pPCA results - global vs. local structure, decomposition
-    # of pPCA eigenvalues, PCA plot of variables and PCA scores
-    # for variables on phylogenetic tree
+    # Plot pPCA results - global vs. local structure, decomposition of pPCA
+    # eigenvalues, PCA plot of variables and PCA scores for variables on tree
     plot(primates.ppca)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree}
-	\includegraphics[width=\textwidth]{ppca.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-5cm]{ppca.png}
+	\end{center}
 \end{frame}
 
 \subsection{Ancestral state}
@@ -5555,17 +5525,16 @@
     library(ape)
     # See ?ace for possible settings and estimations
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
-      type="continuous", method="REML",
-      corStruct=corBrownian(value=1, phy=primates.tree))
-    # See result - reconstructions are in $ace slot
+      type="continuous", method="REML", corStruct=corBrownian(value=1,
+      phy=primates.tree)) # See result - reconstructions are in $ace slot
     # To be plotted on nodes - 1st column are node numbers
     primates.body.ace
     # Plot it
     plot.phylo(x=primates.tree, edge.width=2, cex=2)
-    tiplabels(round(primates.body, digits=3), adj=c(0, -1),
-      frame="none", col="blue", cex=2)
-    nodelabels(round(primates.body.ace$ace, digits=3),
-      frame="circle", bg="red", cex=1.5)
+    tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none",
+      col="blue", cex=2)
+    nodelabels(round(primates.body.ace$ace, digits=3), frame="circle",
+      bg="red", cex=1.5)
 	\end{spluscode}
 \end{frame}
 
@@ -5574,7 +5543,7 @@
 		\item ACE returns long numbers --- truncate them by e.g. \texttt{round(x=\ldots, digits=3)} (\texttt{x} is vector with ACE values)
 	\end{itemize}
 	\begin{center}
-		\includegraphics[height=6cm]{ace.png}
+		\includegraphics[height=5cm]{ace.png}
 	\end{center}
 \end{frame}
 
@@ -5585,9 +5554,8 @@
     # More possibilities
     plot.phylo(x=primates.tree,
       edge.width=2, cex=2)
-    # ML estimation of a continuous
-    # trait, can compute confidence
-    # interval (see further)
+    # ML estimation of a continuous trait,
+    # can compute confidence interval
     nodelabels(fastAnc(tree=
       primates.tree, x=primates.body))
     # ACE for Brownian evolution with
@@ -5610,7 +5578,7 @@
       digits=2), cex=1.5)
 		\end{spluscode}
 		\begin{center}
-			\includegraphics[height=4cm]{ancml.png}
+			\includegraphics[height=2cm]{ancml.png}
 		\end{center}
 		\vfill
 	\end{multicols}
@@ -5618,24 +5586,22 @@
 
 \begin{frame}[fragile]{Bayesian ancestral character estimation I}
 	\begin{spluscode}
-    primates.body.ace.bayes <- anc.Bayes(tree=primates.tree,
-      x=primates.body, ngen=100000) # Use more MCMC generations
+    primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body,
+      ngen=100000) # Use more MCMC generations
     primates.body.ace.bayes
-    # Get end of ancestral states from Bayesian posterior distribution
-    # (it should converge to certain values)
+    # Get end of ancestral states from Bayesian posterior distribution (it
+    # should converge to certain values)
     tail(primates.body.ace.bayes[["mcmc"]])
     primates.body.ace.bayes[["mcmc"]][1001,3:6]
     # Get means of ancestral states from Bayesian posterior distribution
     colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow
       (primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree
       $Nnode+length(primates.tree$tip.label))])
-    # Plot the likelihood from posterior distribution (it should converge
-    # to certain values)
+    # Plot the likelihood from posterior distribution (it should converge)
     plot(primates.body.ace.bayes)
-    # Plot the tree and reconstructed ancestral states
-    plot.phylo(x=primates.tree, edge.width=2, cex=2)
-    nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6],
-      digits=3), cex=1.5)
+    plot.phylo(x=primates.tree, edge.width=2, cex=2) # Plot the tree and states
+    nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3),
+      cex=1.5)
     ?phangorn::ancestral.pml # Another possibility
 	\end{spluscode}
 \end{frame}
@@ -5647,10 +5613,8 @@
     2.418557 2.569484 2.844268 3.584153
     tail(primates.body.ace.bayes[["mcmc"]]) # See end of the table
             gen     sig2        6        7        8        9     logLik
-    996   99500 2.328336 2.999055 2.875331 3.492034 4.220528  -9.178014
-    997   99600 2.998972 3.796833 2.938607 3.622099 3.690610 -10.166447
-    998   99700 2.677339 3.888228 3.200297 2.935587 3.585092  -9.467951
-    999   99800 1.960194 4.129754 3.196746 3.310278 3.425686  -9.780220
+     ...    ...      ...      ...      ...      ...      ...        ...
+     999  99800 1.960194 4.129754 3.196746 3.310278 3.425686  -9.780220
     1000  99900 1.636984 3.556224 2.701105 2.720756 2.965226  -9.770242
     1001 100000 1.588710'2.641937 3.279439 3.093420 3.670807' -7.538937
     primates.body.ace.bayes[["mcmc"]][1001,3:6] # See end of the table
@@ -5665,14 +5629,16 @@
 \end{frame}
 
 \begin{frame}{Bayesian ancestral character estimation III}{Likelihood of Bayesian posterior probability and the tree with reconstructions}
-	\includegraphics[width=\textwidth]{ancbayes.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-3cm]{ancbayes.png}
+	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Continuous map}
 	\begin{multicols}{2}
 		\vfill
 		\begin{center}
-			\includegraphics[height=5.5cm]{contmap.png}
+			\includegraphics[height=6cm]{contmap.png}
 		\end{center}
 		\vfill
 		\begin{spluscode}
@@ -5689,7 +5655,7 @@
 		\end{spluscode}
 		\vfill
 		\begin{center}
-			\includegraphics[height=2cm]{contmapbw.png}
+			\includegraphics[height=1.5cm]{contmapbw.png}
 		\end{center}
 		\vfill
 	\end{multicols}
@@ -5707,7 +5673,7 @@
       treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=4.5cm]{phylotable.png}
+		\includegraphics[height=3cm]{phylotable.png}
 	\end{center}
 \end{frame}
 
@@ -5719,7 +5685,7 @@
       fsize=1.2, ftype="i", main="95-percentile of longevity")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=5cm]{phenogram.png}
+		\includegraphics[height=3cm]{phenogram.png}
 	\end{center}
 \end{frame}
 
@@ -5796,7 +5762,9 @@
 \end{frame}
 
 \begin{frame}{Plotting traits on trees --- plots}
-	\includegraphics[width=\textwidth]{treeval.png}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{treeval.png}
+	\end{center}
 \end{frame}
 
 % \subsection{Disparity} % TODO Disparity
@@ -5964,8 +5932,7 @@
       print("Loop turn") # Some message for user
       print(i) # Print number of turn - note how it is increasing
       X <- X+i # Rise value of "X" by current value of "i" (previous line)
-      print(paste("Variable value:", X)) # Print current value of "X"
-      }
+      print(paste("Variable value:", X)) } # Print current value of "X"
     for (i in 10:5) { print(i) } # Can be descending...
     # Work on each item of a list object
     # Print length of each sequence in nothofagus.sequences
@@ -6023,7 +5990,7 @@
 
 \begin{frame}{Output of the if-else branching example}
 	\begin{center}
-		\includegraphics[height=7cm]{if-else.png}
+		\includegraphics[height=6.5cm]{if-else.png}
 	\end{center}
 \end{frame}
 
