@@ -422,12 +422,11 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 ## Multiple sequence alignment
 
 # Libraries
-library(colorspace)
-library(XML)
-library(phyloch) # Alignment with mafft, you can also try package ips
+library(phyloch) # Alignment with mafft and more tools
+library(ips)
 # Requires path to MAFFT binary - set it according to your installation
 # Read ?mafft and mafft's documentation
-meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+meles.mafft <- ips::mafft(x=meles.dna, method="localpair", maxiterate=100, options="--adjustdirection", exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
 meles.mafft
 class(meles.mafft)
 
@@ -459,7 +458,7 @@ multialign
 class(multialign)
 lapply(X=multialign, FUN=class)
 # Do the alignment
-multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+multialign.aln <- lapply(X=multialign, FUN=ips::mafft, method="localpair", maxiterate=100, exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
 # See result
 multialign.aln
 multialign.aln[[1]]
@@ -488,12 +487,11 @@ as.list.DNAbin()
 # Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
 
 # Delete all columns containing any gap
-library(ips)
-usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+usflu.dna.ng <- deleteGaps(x=usflu.dna, gap.max=nrow(usflu.dna)/4)
 usflu.dna.ng
 # See of settings of "nmax" value - threshold for gap deletion
 ?deleteGaps # "nmax=0" deletes all columns with any gap
-multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
+multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
 multialign.aln.ng
 # Do not confuse with function delete.gaps() from phyloch package
 # Display the result
