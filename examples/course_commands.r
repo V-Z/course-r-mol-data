@@ -571,6 +571,13 @@ arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, perc
 arabidopsis.fst[["Fsts"]]
 # Matrix of P values
 arabidopsis.fst[["Pvalues"]]
+# Save results - open in spreadsheet (e.g. LibreOffice Calc)
+write.table(x=arabidopsis.fst[["Fsts"]], file="arabidopsis_fst.tsv", quote=FALSE, sep="\t")
+# Correlation plot of pairwise Fst
+library(corrplot)
+corrplot(corr=arabidopsis.fst[["Fsts"]], method="circle", type="lower", col=funky(15), title="Correlation matrix of Fst among populations", is.corr=FALSE, diag=FALSE, outline=TRUE, order="alphabet", tl.pos="lt", tl.col="black")
+?corrplot # See for more options
+# Display in similar way also another Fst tables
 
 # TODO Estimates of population theta according to Kimmel et al. 1998
 # theta.msat(hauss.loci)
@@ -647,7 +654,7 @@ is.euclid(distmat=as.dist(m=hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
 # Show it
 hauss.dist.diss
 
-# Import custom distance matrix
+# Import custom distance matrix - distances.txt must exist of the disk
 MyDistance <- read.csv("distances.txt", header=TRUE, sep="\t", dec=".", row.names=1)
 MyDistance <- as.dist(MyDistance)
 class(MyDistance)
@@ -946,6 +953,8 @@ s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
 # Add histogram of Eigenvalues
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
+# Percentage of variance explained by each PC axis
+100*hauss.pcoa$eig/sum(hauss.pcoa$eig)
 
 # Colored display according to populations
 hauss.pcoa.col <- rainbow(length(levels(pop(hauss.genind)))) # Creates vector of colors according to populations
@@ -1051,6 +1060,8 @@ usflu.pca <- glPca(x=usflu.genlight, center=TRUE, scale=FALSE, loadings=TRUE)
 # Plot PCA
 scatter.glPca(x=usflu.pca, posi="bottomright")
 title("PCA of the US influenza data")
+# Loading plot - contribution of variables to the pattern observed
+loadingplot.glPca(x=usflu.pca)
 # Coloured plot
 colorplot(usflu.pca$scores, usflu.pca$scores, transp=TRUE, cex=4)
 title("PCA of the US influenza data")
@@ -1527,30 +1538,16 @@ library(gplots)
 library(corrplot)
 library(phytools)
 
-# Prepare matrix for distances
-oxalis.trees.d <- matrix(nrow=length(oxalis.trees), ncol=length(oxalis.trees))
-
-# Calculate pairwise topographic distances
-for (i in 1:length(oxalis.trees)) {
-	for (j in i:length(oxalis.trees)) {
-		print(c(i,j))
-		oxalis.trees.d[i,j] <- dist.topo(oxalis.trees[[i]], oxalis.trees[[j]])
-		}
-	}
+# Compute matrix of topological distances among phylogenetic trees
+?dist.topo # See details of available computing methods
+oxalis.trees.d <- dist.topo(x=oxalis.trees, method="score")
 
 # Basic information about the distance matrix
-dim(oxalis.trees.d)
-head.matrix(oxalis.trees.d)
-
-# Add names of columns and rows
-colnames(oxalis.trees.d) <- names(oxalis.trees)
-rownames(oxalis.trees.d) <- names(oxalis.trees)
-
-# Make matrix symetric
-oxalis.trees.d[lower.tri(oxalis.trees.d)] <- t(oxalis.trees.d)[lower.tri(oxalis.trees.d)]
+dim(as.matrix(oxalis.trees.d))
+head.matrix(as.matrix(oxalis.trees.d))
 
 # Create heatmaps using heatmap.2 function from gplots package
-heatmap.2(x=oxalis.trees.d, Rowv=FALSE, Colv="Rowv", dendrogram="none", symm=TRUE, scale="none", na.rm=TRUE, revC=FALSE, col=rainbow(15), cellnote=oxalis.trees.d, notecex=1, notecol="white", trace="row", linecol="black", labRow=names(oxalis.trees), labCol=names(oxalis.trees), key=TRUE, keysize=2, density.info="density", symkey=FALSE, main="Correlation matrix of topographical distances", xlab=names(oxalis.trees), ylab=names(oxalis.trees))
+heatmap.2(x=as.matrix(x=oxalis.trees.d), Rowv=FALSE, Colv="Rowv", dendrogram="none", symm=TRUE, scale="none", na.rm=TRUE, revC=FALSE, col=rainbow(15), cellnote=round(x=as.matrix(x=oxalis.trees.d), digits=2), notecex=1, notecol="white", trace="row", linecol="black", labRow=names(oxalis.trees), labCol=names(oxalis.trees), key=TRUE, keysize=2, density.info="density", symkey=FALSE, main="Correlation matrix of topographical distances", xlab="Trees", ylab="Trees")
 
 # Robinsons-Foulds distance
 oxalis.trees.d.rf <- multiRF(oxalis.trees)
@@ -1565,9 +1562,9 @@ corrplot(corr=oxalis.trees.d.rf, method="number", type="lower", add=TRUE, col=ra
 
 # PCoA from distance matrices of topographical differences among trees
 # Test if the distance matrix is Euclidean or not
-is.euclid(distmat=as.dist(oxalis.trees.d), plot=TRUE)
+is.euclid(distmat=oxalis.trees.d, plot=TRUE)
 # Calculate the PCoA
-oxalis.trees.pcoa <- dudi.pco(d=quasieuclid(as.dist(oxalis.trees.d)), scannf=TRUE, full=TRUE)
+oxalis.trees.pcoa <- dudi.pco(d=oxalis.trees.d, scannf=TRUE, full=TRUE)
 # Plot PCoA
 s.label(dfxy=oxalis.trees.pcoa$li)
 # Add kernel densities
@@ -1579,11 +1576,32 @@ title("PCoA of matrix of pairwise trees distances")
 # Alternative function to plot PCA plot
 scatter(x=oxalis.trees.pcoa, posieig="topleft")
 
+## kdetrees
+# Load library
+library(kdetrees)
+?kdetrees # See options
+# Run main function - play with parameter k
+oxalis.kde <- kdetrees(trees=oxalis.trees, k=0.4, distance="dissimilarity", topo.only=FALSE, greedy=TRUE)
+# See results
+oxalis.kde
+plot(oxalis.kde)
+hist(oxalis.kde)
+# See removed trees
+plot.multiPhylo(oxalis.kde[["outliers"]])
+# Save removed trees
+write.tree(phy=oxalis.kde[["outliers"]], file="oxalis_trees_outliers.nwk")
+# Save kdetrees report
+write.table(x=as.data.frame(x=oxalis.kde), file="oxalis_trees_scores.tsv", quote=FALSE, sep="\t")
+# Extract passing trees
+oxalis.trees.good <- oxalis.trees[names(oxalis.trees) %in% names(oxalis.kde[["outliers"]]) == FALSE]
+oxalis.trees.good
+# Save passing trees
+write.tree(phy=oxalis.trees.good, file="trees_good.nwk")
+
 ## Seeing trees in the forest
 
 # Root all trees
-oxalis.trees.rooted <- lapply(X=oxalis.trees, FUN=root, "O._fibrosa_S159", resolve.root=TRUE)
-class(oxalis.trees.rooted) <- "multiPhylo"
+oxalis.trees.rooted <- root.multiPhylo(phy=oxalis.trees, outgroup="O._fibrosa_S159", resolve.root=TRUE)
 # Consenus tree (50 % rule)
 oxalis.tree.con <- ape::consensus(oxalis.trees.rooted, p=0.5, check.labels=TRUE)
 print.phylo(oxalis.tree.con)
@@ -1605,12 +1623,12 @@ axisPhylo(side=1)
 
 # Parsimony super tree
 library(phytools)
-class(oxalis.trees.rooted) <- "multiPhylo"
 oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
 axisPhylo(side=1)
 ?phangorn::superTree # Similar function
+?phangorn::coalSpeciesTree # Has coalescence model to handle multiple individuals per species
 
 # Density tree
 # Prepare list of trees to show
@@ -1626,7 +1644,6 @@ is.binary.multiPhylo(hauss.nj.trees) # binary bifurcating.
 phangorn::densiTree(x=hauss.nj.trees, direction="downwards", scaleX=TRUE, col=rainbow(3), width=5, cex=1.5)
 densiTree(x=hauss.nj.trees, direction="upwards", scaleX=TRUE, width=5)
 densiTree(x=hauss.nj.trees, scaleX=TRUE, width=5, cex=1.5)
-# Compare this option with similar on following slide
 ?phangorn::densiTree
 ?phytools::densityTree
 # Another version for comparing several trees
@@ -1634,14 +1651,8 @@ phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRU
 phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 
-# # TODO STAR and STEAC species trees
-# install.packages("http://faculty.franklin.uga.edu/lliu/sites/faculty.franklin.uga.edu.lliu/files/phybase_1.5.tar.gz", repos=NULL) # See https://faculty.franklin.uga.edu/lliu/content/phybase
-# library(phybase)
-# is.binary.multiPhylo(phy=oxalis.trees.ultra)
-# oxalis.spstru <- matrix(data=0, ncol=length(oxalis.trees.ultra), nrow=length(oxalis.trees.ultra))
-# diag(oxalis.spstru) <- 1
-# oxalis.star <- star.sptree(trees=oxalis.trees.ultra, speciesname=oxalis.trees.ultra[[1]]$tip.label, taxaname=oxalis.trees.ultra[[1]]$tip.label, pecies.structure=oxalis.spstru, outgroup="O._fibrosa_S159", method="nj")
-# oxalis.steac <- steac.sptree(trees=oxalis.trees.ultra, speciesname=oxalis.trees.ultra[[1]]$tip.label, taxaname=oxalis.trees.ultra[[1]]$tip.label, species.structure=oxalis.spstru, outgroup="O._fibrosa_S159", method="nj")
+# TODO STAR and STEAC species trees
+# See https://github.com/lliu1871/phybase
 
 # Networks
 library(phangorn)
@@ -1684,7 +1695,7 @@ legend("topleft", legend="Red lines\nconnect tips", text.col="red", cex=0.75, bt
 # Alternative implementation
 oxalis.cophylo <- cophylo(tr1=oxalis.tree.sp, tr2=oxalis.tree.sp.mean, assoc=(cbind(sort(oxalis.tree.sp$tip.label), sort(oxalis.tree.sp$tip.label))), rotate=TRUE)
 plot.cophylo(x=oxalis.cophylo, lwd=2, link.type="curved")
-title("\nComparisson of species tree (left) and parsimony supertree (right)")
+title("Comparisson of species tree (left) and parsimony supertree (right)")
 
 ## More about plotting the trees
 ?plot.phylo # check it for various possibilities what to influence
@@ -1803,12 +1814,12 @@ carnivora.correlogram2 <- correlogram.formula(formula=SW+FW~Order/SuperFamily/Fa
 # See results
 carnivora.correlogram2
 # Plot it
-plot.correlogram(x=carnivora.correlogram, legend=TRUE, test.level=0.05, col=c("white", "black"))
+plot(x=carnivora.correlogram, legend=TRUE, test.level=0.05, col=c("white", "black"))
 # Plot it - test for both body masses
 # Two graphs
-plot.correlogramList(x=carnivora.correlogram2, lattice=TRUE, legend=TRUE, test.level=0.05)
+plot(x=carnivora.correlogram2, lattice=TRUE, legend=TRUE, test.level=0.05)
 # Only one graph
-plot.correlogramList(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
+plot(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
 
 ## Orthonormal Decomposition - phylogenetic eigenvector regression
 
