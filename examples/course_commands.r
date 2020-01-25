@@ -419,6 +419,93 @@ write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
 
+## Multiple sequence alignment
+
+# Libraries
+library(colorspace)
+library(XML)
+library(phyloch) # Alignment with mafft, you can also try package ips
+# Requires path to MAFFT binary - set it according to your installation
+# Read ?mafft and mafft's documentation
+meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+meles.mafft
+class(meles.mafft)
+
+# Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
+# read ?clustal and documentation of Clustal and Muscle to set correct parameters
+meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+meles.clustal
+class(meles.clustal)
+meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
+meles.muscle
+class(meles.muscle)
+# See option in muscle package
+?muscle::muscle
+
+# Remove gaps from alignment - destroy it
+meles.nogaps <- del.gaps(meles.muscle)
+?del.gaps # See for details
+
+# Plot the alignment - you can select which bases to plot and/or modify colors
+image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
+# Add grey dotted grid
+grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
+
+# Align multiple genes
+# Create a list of DNAbin objects to process
+multialign <- list(meles.dna, usflu.dna, usflu.dna2)
+# See it
+multialign
+class(multialign)
+lapply(X=multialign, FUN=class)
+# Do the alignment
+multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
+# See result
+multialign.aln
+multialign.aln[[1]]
+lapply(X=multialign.aln, FUN=class)
+# Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
+library(parallel)
+multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
+# mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
+# See result
+multialign.aln2
+lapply(X=multialign.aln2, FUN=class)
+?mclapply # See more options
+?clusterApply # See more options (parLapply should work on Windows)
+
+# Shortcut for plotting alignment
+image.DNAbin(x=meles.mafft)
+# Display aligned sequences with gaps
+image.DNAbin(x=usflu.dna)
+# Check the alignment
+checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
+checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE, plot=TRUE, what=1:4)
+?checkAlignment # See details
+# DNAbin can be techically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
+as.matrix.DNAbin()
+as.list.DNAbin()
+# Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
+
+# Delete all columns containing any gap
+library(ips)
+usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
+usflu.dna.ng
+# See of settings of "nmax" value - threshold for gap deletion
+?deleteGaps # "nmax=0" deletes all columns with any gap
+multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
+multialign.aln.ng
+# Do not confuse with function delete.gaps() from phyloch package
+# Display the result
+image.DNAbin(x=usflu.dna.ng)
+lapply(X=multialign.aln.ng, FUN=image.DNAbin)
+# Delete positions in alignment containing only missing data/N (rows as well as columns)
+?ips::deleteEmptyCells # See help page for details
+?phyloch::delete.empty.cells # See help page for details
+# Delete only empty columns/rows (usage as above)
+?ape::del.colgapsonly # See help page for details
+?ape::del.rowgapsonly # See help page for details
+
 ## Descriptive statistics
 
 # Get summary - names and sizes of populations, heterozygosity, some info about loci
@@ -1339,93 +1426,6 @@ Structure.order("list_k_07.txt", 5)
 # Go back to the original working directory
 # Go to YOUR OWN directory, same as on beginning
 setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
-
-## Multiple sequence alignment
-
-# Libraries
-library(colorspace)
-library(XML)
-library(phyloch) # Alignment with mafft, you can also try package ips
-# Requires path to MAFFT binary - set it according to your installation
-# Read ?mafft and mafft's documentation
-meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
-meles.mafft
-class(meles.mafft)
-
-# Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
-# read ?clustal and documentation of Clustal and Muscle to set correct parameters
-meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
-meles.clustal
-class(meles.clustal)
-meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
-meles.muscle
-class(meles.muscle)
-# See option in muscle package
-?muscle::muscle
-
-# Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle)
-?del.gaps # See for details
-
-# Plot the alignment - you can select which bases to plot and/or modify colors
-image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-# Add grey dotted grid
-grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
-
-# Align multiple genes
-# Create a list of DNAbin objects to process
-multialign <- list(meles.dna, usflu.dna, usflu.dna2)
-# See it
-multialign
-class(multialign)
-lapply(X=multialign, FUN=class)
-# Do the alignment
-multialign.aln <- lapply(X=multialign, FUN=phyloch::mafft, method="localpair", maxiterate=100, path="/usr/bin/mafft") # Change "path" to fit your path to mafft!
-# See result
-multialign.aln
-multialign.aln[[1]]
-lapply(X=multialign.aln, FUN=class)
-# Do the same in parallel (mclapply do the tasks in parallel, not one-by-one like lapply)
-library(parallel)
-multialign.aln2 <- mclapply(X=multialign, FUN=ape::muscle, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "path" to fit your path to muscle!
-# mclapply() relies on forking and hence is not available on Windows unless "mc.cores=1"
-# See result
-multialign.aln2
-lapply(X=multialign.aln2, FUN=class)
-?mclapply # See more options
-?clusterApply # See more options (parLapply should work on Windows)
-
-# Shortcut for plotting alignment
-image.DNAbin(x=meles.mafft)
-# Display aligned sequences with gaps
-image.DNAbin(x=usflu.dna)
-# Check the alignment
-checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
-checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE, plot=TRUE, what=1:4)
-?checkAlignment # See details
-# DNAbin can be techically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
-as.matrix.DNAbin()
-as.list.DNAbin()
-# Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
-
-# Delete all columns containing any gap
-library(ips)
-usflu.dna.ng <- deleteGaps(x=usflu.dna, nmax=0)
-usflu.dna.ng
-# See of settings of "nmax" value - threshold for gap deletion
-?deleteGaps # "nmax=0" deletes all columns with any gap
-multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, nmax=0)
-multialign.aln.ng
-# Do not confuse with function delete.gaps() from phyloch package
-# Display the result
-image.DNAbin(x=usflu.dna.ng)
-lapply(X=multialign.aln.ng, FUN=image.DNAbin)
-# Delete positions in alignment containing only missing data/N (rows as well as columns)
-?ips::deleteEmptyCells # See help page for details
-?phyloch::delete.empty.cells # See help page for details
-# Delete only empty columns/rows (usage as above)
-?ape::del.colgapsonly # See help page for details
-?ape::del.rowgapsonly # See help page for details
 
 ## Tree manipulations
 
