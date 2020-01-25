@@ -159,8 +159,8 @@
 	\begin{multicols}{4}
 		\begin{itemize}
 			\item \href{https://kate-editor.org/}{Kate}
-			\item \href{https://www.kde.org/applications/utilities/kwrite/}{KWrite}
-			\item \href{http://www.vim.org/}{Vim}
+			\item \href{https://kde.org/applications/utilities/org.kde.kwrite}{KWrite}
+			\item \href{https://www.vim.org/}{Vim}
 			\item \href{https://en.wikipedia.org/wiki/Emacs}{GNU Emacs}
 			\item \href{https://www.geany.org/}{Geany}
 			\item \href{https://bluefish.openoffice.nl/}{Bluefish}
@@ -243,7 +243,7 @@
 	\label{gui}
 	\begin{itemize}
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
-		\item RStudio \url{https://www.rstudio.com/} --- probably the most common, multi-platform, very powerful
+		\item RStudio \url{https://rstudio.com/products/rstudio/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\begin{itemize}
 			\item RKWard must be compiled for the same version as you use
@@ -291,8 +291,8 @@
 		\item Most of packages are available as pre-compiled and can be immediately installed from R --- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
 		\item Usually there are some problems every time new version of OS is released --- it takes time to modify and recompile packages for new version of OS
 		\item You have to check for new version of R manually
-		\item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
-		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac}{macOS}, but it requires some work to install it
+		\item RStudio is available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows.html}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac.html}{macOS}, but it requires some work to install it
 	\end{itemize}
 \end{frame}
 
@@ -313,7 +313,7 @@
 		\item Ubuntu (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/ubuntu/}
 		\item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://mirrors.nic.cz/R/}}, see \alert{CRAN Mirrors} at \url{https://CRAN.R-project.org/mirrors.html}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
-		\item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is also available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -329,7 +329,7 @@
 		\end{itemize}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
 		\item Install packages \texttt{patterns-openSUSE-devel\_basis} and \texttt{gcc-fortran} for compilation of R packages when installing them from R (only some R packages are available in openSUSE repositories)
-		\item RStudio is also available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is also available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -337,7 +337,7 @@
 	\begin{itemize}
 		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/README}
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
-		\item RStudio is available from its \href{https://www.rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -353,14 +353,20 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 13,600 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,600 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 15,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,800 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,000 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
 		\item Some packages are available from more resources
 		\item Same name for function can be used in different packages (there is no central index) --- to distinguish them call functions like this: \texttt{muscle::read.fasta()} vs. \texttt{seqinr::read.fasta()} --- call function \texttt{read.fasta()} from package \texttt{muscle} \alert{or} \texttt{seqinr} (and their parameters can be different\ldots) --- see further
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{CRAN keeps growing\ldots}
+	\begin{center}
+		\includegraphics[height=6.5cm]{cran.png}
+	\end{center}
 \end{frame}
 
 \subsection{Let's start with R}
@@ -1052,7 +1058,7 @@
 		\begin{itemize}
 			\item Do not confuse with \href{https://en.wikipedia.org/wiki/VCard}{vCard} (\texttt{*.vcf}, \texttt{*.vcard}) storing virtual business cards and address books
 			\item Bioinformatics plain text format storing gene variants, annotations, quality data and more information
-			\item Used by software like \href{https://samtools.github.io/bcftools/}{Bcftools}, \href{https://software.broadinstitute.org/gatk/}{GATK}, \href{https://broadinstitute.github.io/picard/}{Picard}, \href{https://vcftools.github.io/}{VCFtools},~\ldots
+			\item Used by software like \href{https://samtools.github.io/bcftools/}{Bcftools}, \href{https://gatk.broadinstitute.org/hc/en-us}{GATK}, \href{https://broadinstitute.github.io/picard/}{Picard}, \href{https://vcftools.github.io/}{VCFtools},~\ldots
 			\item Complex structure, sequences are not stored as in FASTA, but as SNP variants on respective positions --- useful to store processed NGS/HTS data (e.g. from Illumina machines)
 			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression application
 			\item Several versions and variants (including binary BCF, \texttt{*.bcf}), sometimes there are problems with interoperability
@@ -1154,7 +1160,7 @@
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
 	\begin{multicols}{2}
 		\begin{itemize}
-			\item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{http://grunwaldlab.cgrb.oregonstate.edu/poppr-r-package-population-genetics}{poppr}
+			\item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{https://grunwaldlab.github.io/poppr/}{poppr}
 			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{http://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
 			\item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
 			\item Most of methods are available for polyploids (although not all)
@@ -1750,7 +1756,7 @@
 \subsection{}
 
 \begin{frame}{Import your own data}
-	\begin{block}{Tasks}
+	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Prior to import into R, \alert{ensure your data are correct} --- same decimal separator everywhere, consistent structure of CSV/TSV, no syntactic problems in FASTA/NEXUS/NEWICK,~\ldots
 			\item Import some of your data into R
@@ -1760,7 +1766,7 @@
 			\end{itemize}
 			\item \textbf{Check your data after import} to ensure they were correctly read
 		\end{enumerate}
-	\end{block}
+	\end{exampleblock}
 	\begin{itemize}
 		\item Upcoming chapters can serve like inspiration (not exhaustive) how to process your data in R, what is possible to do with them\ldots
 		\item Previous examples are not covering all possibilities\ldots
@@ -4278,7 +4284,7 @@
 	\begin{itemize}
 		\item Good alignment is basic condition for any analysis of DNA sequences
 		\item DNA/RNA and protein sequences must be aligned prior any subsequent analysis (tree building,~\ldots)
-		\item R doesn't have any possibility for visual editing (use rather software like \href{https://www.geneious.com/}{Geneious}, \href{https://www.qiagenbioinformatics.com/products/clc-sequence-viewer/}{CLC Sequence Viewer} or \href{http://www.mbio.ncsu.edu/bioedit/bioedit.html}{BioEdit})
+		\item R doesn't have any possibility for visual editing (use rather software like \href{http://ugene.net/}{Unipro UGENE} \href{https://www.geneious.com/}{Geneious} or \href{https://digitalinsights.qiagen.com/products-overview/analysis-and-visualization/qiagen-clc-genomics-workbench/}{CLC Genomics Workbench}
 		\item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
 		\begin{itemize}
 			\item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python --- only matters what user likes, knows and wish to do with the results\ldots
@@ -4793,7 +4799,7 @@
 
 % \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
 % 	\begin{itemize}
-% 		\item Package \href{https://github.com/bomeara/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
+% 		\item Package \href{https://github.com/lliu1871/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
 % 	\end{itemize}
 % 	\begin{spluscode}
 %
@@ -5778,12 +5784,12 @@
 \section{}
 
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
-	\begin{block}{Tasks}
+	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Try to do some analyses with another introduced toy data
 			\item Try some of the introduced analyses with your own custom imported data
 		\end{enumerate}
-	\end{block}
+	\end{exampleblock}
 	\begin{itemize}
 		\item Working code can be easily recycled to process another data in similar way
 		\item R is always moving forward --- new and new options are arising --- be opened for news and search them on the Internet
@@ -6066,13 +6072,13 @@
 
 \begin{frame}[allowframebreaks]{Where to look for the help}
 	\label{help}
-	\begin{block}{Question must have certain form!}
+	\begin{alertblock}{Question must have certain form!}
 			Before asking, \alert{ensure your question is in answerable form} --- slide~\ref{howtoask}.
 		\begin{itemize}
 			\item Sloppily asked question can't be answered at all\ldots
 			\item Check documentation, manuals and search the Internet before asking
 		\end{itemize}
-	\end{block}
+	\end{alertblock}
 	\begin{itemize}
 		\item R homepage \url{https://www.r-project.org/} and packages \url{https://CRAN.R-project.org/web/packages/} (with documentation and links)
 		\item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
@@ -6146,13 +6152,13 @@
 		\item APE home page \url{http://ape-package.ird.fr/}
 		\item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
 		\item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
-		\item Poppr documentation \url{http://grunwaldlab.cgrb.oregonstate.edu/primer-population-genetic-analyses-r/installation}
+		\item Poppr documentation \url{https://grunwaldlab.github.io/poppr/reference/poppr-package.html}
 		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12558}{Kamvar et al}
 		\item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
 		\item R Programming \url{https://en.wikibooks.org/wiki/R_Programming}
-		\item RStudio Cheat Sheets \url{https://www.rstudio.com/resources/cheatsheets/} and Online learning resources \url{https://www.rstudio.com/online-learning/}
+		\item RStudio Cheat Sheets \url{https://rstudio.com/resources/cheatsheets/} and Online learning resources \url{https://education.rstudio.com/learn/}
 		\item R-bloggers --- aggregation of R blogs \url{https://www.r-bloggers.com/}
 		\item R on The Molecular Ecologist \url{https://www.molecularecologist.com/category/software/r/}
 		\item R tutorial \url{https://www.r-tutor.com/}
@@ -6245,9 +6251,7 @@
 		\item \href{https://CRAN.R-project.org/package=bayou}{bayou}: Bayesian fitting of Ornstein-Uhlenbeck models to phylogeny
 		\item \href{https://CRAN.R-project.org/package=betapart}{betapart}: partitioning beta diversity into turnover and nestedness components
 		\item \href{https://CRAN.R-project.org/package=Biodem}{Biodem}: biodemography
-		\item \href{https://CRAN.R-project.org/package=BioGeoBEARS}{BioGeoBEARS}: probabilistic inference of both historical biogeography as well as comparison of different models of range evolution
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/Biostrings.html}{Biostrings}: string matching algorithms, and other utilities, for fast manipulation of large biological sequences or sets of sequences
-		\item \href{https://CRAN.R-project.org/package=cati}{cati}: community assembly processes using trait values of individuals or populations
 		\item \href{https://CRAN.R-project.org/package=convevol}{convevol}: quantifies and assesses the significance of convergent evolution
 		\item \href{https://CRAN.R-project.org/package=corHMM}{corHMM}: analysis of binary character evolution
 		\item \href{https://CRAN.R-project.org/package=DAMOCLES}{DAMOCLES}: maximum likelihood of a~dynamical model of community assembly
@@ -6260,7 +6264,6 @@
 		\item \href{https://CRAN.R-project.org/package=ecodist}{ecodist}: dissimilarity-based functions for ecological analysis, spatial and community data
 		\item \href{https://CRAN.R-project.org/package=evobiR}{evobiR}: comparative and population genetic analyses
 		\item \href{https://CRAN.R-project.org/package=expands}{expands}: expanding ploidy and allele-frequency on nested subpopulations
-		\item \href{https://CRAN.R-project.org/package=expoTree}{expoTree}: calculates the density dependent likelihood of a~phylogenetic tree
 		\item \href{https://CRAN.R-project.org/package=fields}{fields}: tools for spatial data
 		\item \href{https://CRAN.R-project.org/package=genetics}{genetics}: population genetics
 		\item \href{https://CRAN.R-project.org/package=genotypeR}{genotypeR}: design of genotyping markers from VCF files, output of markers for multiplexing on various platforms, various QA/QC and analysis
@@ -6270,7 +6273,6 @@
 		\item \href{https://CRAN.R-project.org/package=heatmaply}{heatmaply}: interactive cluster heat maps
 		\item \href{https://CRAN.R-project.org/package=HMPTrees}{HMPTrees}: models, compares, and visualizes populations of taxonomic tree objects
 		\item \href{https://CRAN.R-project.org/package=hwde}{hwde}: models and tests for departure from HWE and independence between loci
-		\item \href{https://CRAN.R-project.org/package=HWxtest}{HWxtest}: tests whether a~set of genotype counts fits the HW expectations
 		\item \href{https://CRAN.R-project.org/package=HyPhy}{HyPhy}: macroevolutionary phylogentic analysis of species trees and gene trees
 		\item \href{https://bioconductor.org/packages/release/bioc/html/IRanges.html}{IRanges}: infrastructure for manipulating intervals on sequences
 		\item \href{https://CRAN.R-project.org/package=iteRates}{iteRates}: iterates through a~phylogenetic tree to identify regions of rate variation
@@ -6300,7 +6302,7 @@
 		\item \href{https://CRAN.R-project.org/package=pcadapt}{pcadapt}: PCA and search for loci responsible for the grouping (no support for mixing ploidy levels), uses VCF
 		\item \href{https://CRAN.R-project.org/package=PCPS}{PCPS}: principal coordinates of phylogenetic structure
 		\item \href{https://CRAN.R-project.org/package=permute}{permute}: restricted permutation designs
-		\item \href{https://github.com/bomeara/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
+		\item \href{https://github.com/lliu1871/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
 		\item \href{https://CRAN.R-project.org/package=phyclust}{phyclust}: phylogenetic clustering
 		\item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling
 		\item \href{https://CRAN.R-project.org/package=PHYLOGR}{PHYLOGR}: manipulation and analysis of phylogenetically simulated data sets and phylogenetically based analyses using GLS
