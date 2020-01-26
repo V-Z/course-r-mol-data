@@ -978,6 +978,50 @@ colorplot(xy=hauss.pcoa$li[c(1, 2)], X=hauss.pcoa$li, transp=TRUE, cex=3, xlab="
 title(main="PCoA, axes 1 and 2")
 abline(v=0, h=0, col="grey", lty=2)
 
+## SNP
+
+# Plot of missing data (white) and number of 2nd alleles
+glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
+# Sum of the number of second allele in each SNP
+usflu.freq <- glSum(usflu.genlight)
+# Plot distribution of (second) allele frequencies
+hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele frequencies", main="Distribution of (second) allele frequencies")
+lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red", lwd=3 )
+# Mean number of second allele in each SNP
+usflu.mean <- glMean(usflu.genlight)
+usflu.mean <- c(usflu.mean, 1-usflu.mean)
+# Plot distribution of allele frequencies - play with parameters to get nice image
+hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele frequencies", main="Distribution of allele frequencies", nclass=20)
+lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2, lwd=3)
+
+# Number of missing values in each locus
+usflu.na.density <- density(glNA(usflu.genlight), bw=10) # Play with bw parameter to get optimal image
+# Set range of xlim parameter from 0 to the length of original alignment
+plot(x=usflu.na.density, type="n", xlab="Position in the alignment", main="Location of the missing values (NA)", xlim=c(0, 1701))
+polygon(c(usflu.na.density$x, rev(usflu.na.density$x)), c(usflu.na.density$y, rep(0, length(usflu.na.density$x))), col=transp("blue", alpha=0.3))
+points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2, col="blue")
+
+# PCA - select number of retained PC axes, about 10 here
+usflu.pca <- glPca(x=usflu.genlight, center=TRUE, scale=FALSE, loadings=TRUE)
+# Plot PCA
+scatter.glPca(x=usflu.pca, posi="bottomright")
+title("PCA of the US influenza data")
+# Loading plot - contribution of variables to the pattern observed
+loadingplot.glPca(x=usflu.pca)
+# Coloured plot
+colorplot(usflu.pca$scores, usflu.pca$scores, transp=TRUE, cex=4)
+title("PCA of the US influenza data")
+abline(h=0, v=0, col="grey")
+add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio=0.3)
+# Calculate phylogenetic tree
+usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
+# Plot colored phylogenetic tree
+plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
+tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
+title("NJ tree of the US influenza data")
+# Add legend
+legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
+
 ## Clustering analysis
 
 # Graphical web interface for DAPC
@@ -1038,50 +1082,6 @@ compoplot(hauss.dapc3, xlab="Individuals", leg=FALSE)
 loadingplot(hauss.dapc3$var.contr)
 # alfa-score - according to number of PC axis
 optim.a.score(hauss.dapc3)
-
-## SNP
-
-# Plot of missing data (white) and number of 2nd alleles
-glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
-# Sum of the number of second allele in each SNP
-usflu.freq <- glSum(usflu.genlight)
-# Plot distribution of (second) allele frequencies
-hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele frequencies", main="Distribution of (second) allele frequencies")
-lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red", lwd=3 )
-# Mean number of second allele in each SNP
-usflu.mean <- glMean(usflu.genlight)
-usflu.mean <- c(usflu.mean, 1-usflu.mean)
-# Plot distribution of allele frequencies - play with parameters to get nice image
-hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele frequencies", main="Distribution of allele frequencies", nclass=20)
-lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2, lwd=3)
-
-# Number of missing values in each locus
-usflu.na.density <- density(glNA(usflu.genlight), bw=10) # Play with bw parameter to get optimal image
-# Set range of xlim parameter from 0 to the length of original alignment
-plot(x=usflu.na.density, type="n", xlab="Position in the alignment", main="Location of the missing values (NA)", xlim=c(0, 1701))
-polygon(c(usflu.na.density$x, rev(usflu.na.density$x)), c(usflu.na.density$y, rep(0, length(usflu.na.density$x))), col=transp("blue", alpha=0.3))
-points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2, col="blue")
-
-# PCA - select number of retained PC axes, about 10 here
-usflu.pca <- glPca(x=usflu.genlight, center=TRUE, scale=FALSE, loadings=TRUE)
-# Plot PCA
-scatter.glPca(x=usflu.pca, posi="bottomright")
-title("PCA of the US influenza data")
-# Loading plot - contribution of variables to the pattern observed
-loadingplot.glPca(x=usflu.pca)
-# Coloured plot
-colorplot(usflu.pca$scores, usflu.pca$scores, transp=TRUE, cex=4)
-title("PCA of the US influenza data")
-abline(h=0, v=0, col="grey")
-add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio=0.3)
-# Calculate phylogenetic tree
-usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
-# Plot colored phylogenetic tree
-plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
-tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
-title("NJ tree of the US influenza data")
-# Add legend
-legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 ## Moran's I
 # Load required library

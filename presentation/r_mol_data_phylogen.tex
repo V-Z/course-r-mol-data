@@ -923,7 +923,7 @@
 		\item \textbf{Protein sequences} --- not used in the course
 		\begin{itemize}
 			\item Apart similar usage as with DNA/RNA (sequence analysis) it is possible to work with the structure and conformation of the proteins
-			\item R (especially \href{https://bioconductor.org/}{Bioconductor}) has plenty of packages for specialized protein analyses and more
+			\item R (especially \href{https://bioconductor.org/}{Bioconductor}) has plenty of packages for specialized protein analysis and more
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Nucleic_acid_sequence}{Nucleic acid sequences}} (in nearly any form) --- DNA or RNA
 		\begin{itemize}
@@ -1708,7 +1708,7 @@
 
 \begin{frame}[fragile]{Remove non-biallelic loci}
 	\begin{itemize}
-		\item This is commonly done with SNPs as many downstream analyses are well defined only for biallelic loci
+		\item This is commonly done with SNPs as many downstream analysis are well defined only for biallelic loci
 	\end{itemize}
 	\begin{spluscode}
     # Create vector of loci to keep
@@ -3098,17 +3098,71 @@
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Most of examples were shown with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
-			\item Try some of the introduced analyses with your own custom imported data
+			\item Most of examples of basic analysis were shown with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analysis with another imported data
+			\item Try some of the introduced analysis with your own custom imported data
 			\item Try at least 2--3 analysis according to your interests
 		\end{enumerate}
 	\end{exampleblock}
 	\begin{itemize}
-		\item Of course, following chapters will show more possible analyses\ldots
+		\item Of course, following chapters will show more possible analysis\ldots
 		\item Previous examples are not covering all possibilities\ldots
 		\item It is crucial to be able to edit the introduced commands to be able to handle your data
 		\item Check help pages of the functions for more options what to do with your data
 	\end{itemize}
+\end{frame}
+
+\section{SNP}
+
+\begin{frame}{Single Nucleotide Polymorphism}{Special methods for large next-generation sequencing data}
+	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+\end{frame}
+
+\begin{frame}[fragile]{Special functions to work with huge SNP data sets}
+	\begin{spluscode}
+    # Plot of missing data (white) and number of 2nd alleles
+    glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
+    # Sum of the number of second allele in each SNP
+    usflu.freq <- glSum(usflu.genlight)
+    # Plot distribution of (second) allele frequencies
+    hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele frequencies",
+      main="Distribution of (second) allele frequencies")
+    lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red",
+      lwd=3 )
+    # Mean number of second allele in each SNP
+    usflu.mean <- glMean(usflu.genlight)
+    usflu.mean <- c(usflu.mean, 1-usflu.mean)
+    # Plot distribution of allele frequencies
+    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele
+      frequencies", main="Distribution of allele frequencies", nclass=20)
+    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2,
+      lwd=3)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Number of missing values in each locus}
+	\begin{spluscode}
+    # Play with bw parameter to get optimal image
+    usflu.na.density <- density(glNA(usflu.genlight), bw=10)
+    # Set range of xlim parameter from 0 to the length of original alignment
+    plot(x=usflu.na.density, type="n", xlab="Position in the alignment",
+      main="Location of the missing values (NA)", xlim=c(0, 1701))
+    polygon(c(usflu.na.density$x, rev(usflu.na.density$x)),
+      c(usflu.na.density$y, rep(0, length(usflu.na.density$x))),
+      col=transp("blue", alpha=0.3))
+    points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2,
+      col="blue")
+	\end{spluscode}
+	\begin{itemize}
+		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
+		\item Lets keep hoping in fast development of computers\ldots
+		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library unavailable on Windows --- add parameter \texttt{parallel=FALSE} to be able to use them
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{flu_alleles.png}
+	\end{center}
 \end{frame}
 
 \section{DAPC}
@@ -3282,60 +3336,6 @@
 \begin{frame}{Another DAPC example}
 	\begin{center}
 		\includegraphics[width=\textwidth-6cm]{dapc.png}
-	\end{center}
-\end{frame}
-
-\section{SNP}
-
-\begin{frame}{Single Nucleotide Polymorphism}{Special methods for large next-generation sequencing data}
-	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
-\end{frame}
-
-\begin{frame}[fragile]{Special functions to work with huge SNP data sets}
-	\begin{spluscode}
-    # Plot of missing data (white) and number of 2nd alleles
-    glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
-    # Sum of the number of second allele in each SNP
-    usflu.freq <- glSum(usflu.genlight)
-    # Plot distribution of (second) allele frequencies
-    hist(x=usflu.freq, proba=TRUE, col="gold", xlab="Allele frequencies",
-      main="Distribution of (second) allele frequencies")
-    lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red",
-      lwd=3 )
-    # Mean number of second allele in each SNP
-    usflu.mean <- glMean(usflu.genlight)
-    usflu.mean <- c(usflu.mean, 1-usflu.mean)
-    # Plot distribution of allele frequencies
-    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele
-      frequencies", main="Distribution of allele frequencies", nclass=20)
-    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2,
-      lwd=3)
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Number of missing values in each locus}
-	\begin{spluscode}
-    # Play with bw parameter to get optimal image
-    usflu.na.density <- density(glNA(usflu.genlight), bw=10)
-    # Set range of xlim parameter from 0 to the length of original alignment
-    plot(x=usflu.na.density, type="n", xlab="Position in the alignment",
-      main="Location of the missing values (NA)", xlim=c(0, 1701))
-    polygon(c(usflu.na.density$x, rev(usflu.na.density$x)),
-      c(usflu.na.density$y, rep(0, length(usflu.na.density$x))),
-      col=transp("blue", alpha=0.3))
-    points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2,
-      col="blue")
-	\end{spluscode}
-	\begin{itemize}
-		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
-		\item Lets keep hoping in fast development of computers\ldots
-		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library unavailable on Windows --- add parameter \texttt{parallel=FALSE} to be able to use them
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
-	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{flu_alleles.png}
 	\end{center}
 \end{frame}
 
@@ -3822,7 +3822,7 @@
 	\begin{multicols}{2}
 		\begin{itemize}
 			\item Monte Carlo Markov Chains (MCMC) require usually millions of generations (iterations, \texttt{nit)} to find optimal solution
-			\item Beginning ($\sim$10--20\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analyses and it is discarded
+			\item Beginning ($\sim$10--20\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analysis and it is discarded
 			\item Geneland allows to set density of sampling among generations (\texttt{thinning}) --- it is not necessary to sample every generation
 			\item Within millions of generations we can sample every 1000--10000$^{th}$ generation
 			\item Denser sampling produces smoother data, but can consume too much disk space\ldots
@@ -4320,7 +4320,7 @@
 		\item Let's use modern multi-core CPUs and plenty of RAM in current computers --- parallelisation saves time
 		\item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
 		\item When using it, cite \href{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0070651}{Besnier \& Glover 2013}
-		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
+		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
 		\item Authors recommend to run it without GUI and not on Windows\ldots
 		\item For this chapter start new R project in new working directory
 	\end{itemize}
@@ -4607,7 +4607,7 @@
 
 \subsection{Seeing trees in the forest}
 
-\begin{frame}[allowframebreaks]{Topographical distances among matrices --- implementations}
+\begin{frame}[allowframebreaks]{Topographical distances among trees I --- implementations}
 	\begin{itemize}
 		\item Robinsons-Foulds distance in \texttt{phytools::multiRF}
 		\begin{itemize}
@@ -4638,6 +4638,10 @@
     dim(as.matrix(oxalis.trees.d))
     head.matrix(as.matrix(oxalis.trees.d))
 	\end{spluscode}
+	\begin{itemize}
+		\item There are more options how to display the differences and identify (and possibly exclude) outlying trees --- heatmap, PCoA, hierarchical clustering (e.g. package \href{https://CRAN.R-project.org/package=dbscan}{dbscan}),~\ldots
+		\item Sources of incongruencies among trees: low-quality DNA/laboratory mistake, problem with alignment/gene tree reconstruction, gene duplication and \href{https://en.wikipedia.org/wiki/Sequence_homology}{paralogy} (e.g. in polyploids), \href{https://en.wikipedia.org/wiki/Incomplete_lineage_sorting}{ILS}, \href{https://en.wikipedia.org/wiki/Horizontal_gene_transfer}{HGT},~\ldots{ } --- such problems must be inspected
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees III}{Post process the matrix and plot it}
@@ -4773,7 +4777,7 @@
 \begin{frame}[fragile]{Species tree --- all trees must be ultrametric}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=5.75cm]{oxalis-sp.png}
+			\includegraphics[height=6.5cm]{oxalis-sp.png}
 		\end{center}
 		\begin{spluscode}
     # Chronos scale trees
@@ -4800,7 +4804,7 @@
 \begin{frame}[fragile]{Parsimony super tree}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=5.75cm]{oxalis-pars.png}
+			\includegraphics[height=6.5cm]{oxalis-pars.png}
 		\end{center}
 		\begin{spluscode}
     library(phytools)
@@ -4872,25 +4876,9 @@
 % 	\end{spluscode}
 % \end{frame}
 
-\begin{frame}[fragile]{Networks}
-	\begin{spluscode}
-    library(phangorn)
-    oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-    plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
-      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
-      show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
-    plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE,
-      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
-      show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[height=2.5cm]{oxalis-net.png}
-	\end{center}
-\end{frame}
-
 \begin{frame}[fragile]{Kronoviz --- see all trees on same scale}
 	\begin{multicols}{2}
-		\includegraphics[height=5.5cm]{kronoviz.png}
+		\includegraphics[height=6.5cm]{kronoviz.png}
 		\begin{spluscode}
     kronoviz(x=oxalis.trees.rooted,
       layout=length(oxalis.trees.
@@ -4909,6 +4897,22 @@
 	\end{multicols}
 \end{frame}
 
+\begin{frame}[fragile]{Networks}
+	\begin{spluscode}
+    library(phangorn)
+    oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
+    plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
+    plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
+	\end{spluscode}
+	\begin{center}
+		\includegraphics[height=2.5cm]{oxalis-net.png}
+	\end{center}
+\end{frame}
+
 \subsection{MP}
 
 \begin{frame}{Maximum parsimony --- theory}
@@ -4925,7 +4929,7 @@
 \begin{frame}[fragile]{Maximum parsimony --- code and result}
 	\begin{multicols}{2}
 		\vfil
-		\includegraphics[height=7cm]{parsimony.png}
+		\includegraphics[height=6.75cm]{parsimony.png}
 		\vfil
 		\begin{spluscode}
     # Conversion to phyDat
@@ -4975,7 +4979,7 @@
 \begin{frame}{Cophyloplot comparing two trees}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=4.25cm]{cophyloplot.png}
+			\includegraphics[height=4.5cm]{cophyloplot.png}
 		\end{center}
 		\begin{itemize}
 			\item \texttt{ladderize()} pre-sorts tips in the tree --- it can help to \texttt{cophyloplot()} to reduce crossings
@@ -4998,7 +5002,7 @@
     title("Comparison of species tree (left) and parsimony supertree (right)")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=3cm]{cophylo.png}
+		\includegraphics[height=3.25cm]{cophylo.png}
 	\end{center}
 \end{frame}
 
@@ -5018,14 +5022,16 @@
     dev.off() # Close graphical device to cancel par() settings
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=2cm]{lr.png}
+		\includegraphics[height=2.25cm]{lr.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Highlighted labels}
 	\begin{multicols}{2}
 		\vfill
-		\includegraphics[height=5cm]{highlight.png}
+		\begin{center}
+			\includegraphics[height=6.5cm]{highlight.png}
+		\end{center}
 		\vfill
 		\begin{spluscode}
     # Load tree in text format
@@ -5849,8 +5855,9 @@
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Try to do some analyses with another introduced toy data
-			\item Try some of the introduced analyses with your own custom imported data
+			\item Try to do some analysis with another introduced toy data
+			\item Try some of the introduced analysis with your own custom imported data
+			\item Try at least 2--3 analysis preferably with your own data according to your interest
 		\end{enumerate}
 	\end{exampleblock}
 	\begin{itemize}
@@ -6253,9 +6260,9 @@
 		\item \href{https://CRAN.R-project.org/package=adegenet}{adegenet}: exploration of genetic and genomic data
 		\item \href{https://CRAN.R-project.org/package=adephylo}{adephylo}: multivariate tools to analyze comparative data
 		\item \href{https://CRAN.R-project.org/package=akima}{akima}: cubic spline interpolation methods for irregular and regular grids data
-		\item \href{https://CRAN.R-project.org/package=ape}{ape}: analyses of phylogenetics and evolution
+		\item \href{https://CRAN.R-project.org/package=ape}{ape}: analysis of phylogenetics and evolution
 		\item \href{https://CRAN.R-project.org/package=BiocManager}{BiocManager}: access the Bioconductor project package repository
-		\item \href{https://CRAN.R-project.org/package=caper}{caper}: phylogenetic comparative analyses
+		\item \href{https://CRAN.R-project.org/package=caper}{caper}: phylogenetic comparative analysis
 		\item \href{https://CRAN.R-project.org/package=corrplot}{corrplot}: graphical display of a~correlation or general matrix
 		\item \href{https://CRAN.R-project.org/package=devtools}{devtools}: package development tools, access to GitHub
 		\item \href{https://CRAN.R-project.org/package=gee}{gee}: generalized estimation equation solver
@@ -6324,16 +6331,16 @@
 		\item \href{https://CRAN.R-project.org/package=DDD}{DDD}: diversity-dependent diversification
 		\item \href{https://CRAN.R-project.org/package=dendextend}{dendextend}: extending dendrogram objects, comparing trees
 		\item \href{https://CRAN.R-project.org/package=distory}{distory}: geodesic distance between phylogenetic trees
-		\item \href{https://CRAN.R-project.org/package=diversitree}{diversitree}: comparative phylogenetic analyses of diversification
+		\item \href{https://CRAN.R-project.org/package=diversitree}{diversitree}: comparative phylogenetic analysis of diversification
 		\item \href{https://CRAN.R-project.org/package=diveRsity}{diveRsity}: calculation of both genetic diversity partition statistics, genetic differentiation statistics, and locus informativeness for ancestry assignment
 		\item \href{https://CRAN.R-project.org/package=dplyr}{dplyr}: various manipulations with data frames
 		\item \href{https://CRAN.R-project.org/package=ecodist}{ecodist}: dissimilarity-based functions for ecological analysis, spatial and community data
-		\item \href{https://CRAN.R-project.org/package=evobiR}{evobiR}: comparative and population genetic analyses
+		\item \href{https://CRAN.R-project.org/package=evobiR}{evobiR}: comparative and population genetic analysis
 		\item \href{https://CRAN.R-project.org/package=expands}{expands}: expanding ploidy and allele-frequency on nested subpopulations
 		\item \href{https://CRAN.R-project.org/package=fields}{fields}: tools for spatial data
 		\item \href{https://CRAN.R-project.org/package=genetics}{genetics}: population genetics
 		\item \href{https://CRAN.R-project.org/package=genotypeR}{genotypeR}: design of genotyping markers from VCF files, output of markers for multiplexing on various platforms, various QA/QC and analysis
-		\item \href{https://CRAN.R-project.org/package=geomorph}{geomorph}: geometric morphometric analyses of 2D/3D landmark data
+		\item \href{https://CRAN.R-project.org/package=geomorph}{geomorph}: geometric morphometric analysis of 2D/3D landmark data
 		\item \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree}: visualization and annotation of phylogenetic trees (\href{https://guangchuangyu.github.io/software/ggtree/documentation/}{documentation})
 		\item \href{https://CRAN.R-project.org/package=HardyWeinberg}{HardyWeinberg}: statistical tests and graphics for HWE
 		\item \href{https://CRAN.R-project.org/package=heatmap.plus}{heatmap.plus}: advanced options to plot heatmaps
@@ -6361,7 +6368,7 @@
 		\item \href{https://CRAN.R-project.org/package=ouch}{ouch}: Ornstein-Uhlenbeck models for evolution along a~phylogenetic tree
 		\item \href{https://CRAN.R-project.org/package=OUwie}{OUwie}: analysis of evolutionary rates in an OU framework
 		\item \href{https://r-forge.r-project.org/projects/paleophylo/}{paleoPhylo}: assess how speciation, extinction and character change contribute to biodiversity
-		\item \href{https://CRAN.R-project.org/package=paleotree}{paleotree}: paleontological and phylogenetic analyses of evolution
+		\item \href{https://CRAN.R-project.org/package=paleotree}{paleotree}: paleontological and phylogenetic analysis of evolution
 		\item \href{https://CRAN.R-project.org/package=paleoTS}{paleoTS}: analyze paleontological time-series
 		\item \href{https://CRAN.R-project.org/package=pastis}{pastis}: phylogenetic assembly with soft taxonomic inferences
 		\item \href{https://CRAN.R-project.org/package=PBD}{PBD}: protracted birth-death model of diversification
@@ -6371,7 +6378,7 @@
 		\item \href{https://github.com/lliu1871/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
 		\item \href{https://CRAN.R-project.org/package=phyclust}{phyclust}: phylogenetic clustering
 		\item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling
-		\item \href{https://CRAN.R-project.org/package=PHYLOGR}{PHYLOGR}: manipulation and analysis of phylogenetically simulated data sets and phylogenetically based analyses using GLS
+		\item \href{https://CRAN.R-project.org/package=PHYLOGR}{PHYLOGR}: manipulation and analysis of phylogenetically simulated data sets and phylogenetically based analysis using GLS
 		\item \href{https://CRAN.R-project.org/package=phyloland}{phyloland}: models a~space colonization process mapped onto a~phylogeny
 		\item \href{https://CRAN.R-project.org/package=phylolm}{phylolm}: phylogenetic linear models and phylogenetic generalized linear models
 		\item \href{https://CRAN.R-project.org/package=phyloTop}{phyloTop}: calculating and viewing topological properties of phylogenetic trees
