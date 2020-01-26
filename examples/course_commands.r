@@ -1083,6 +1083,55 @@ loadingplot(hauss.dapc3$var.contr)
 # alfa-score - according to number of PC axis
 optim.a.score(hauss.dapc3)
 
+## Structure
+
+# Inspiration: https://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
+# Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
+# get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
+# Set working directory
+setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/")
+getwd()
+# Load ParallelStructure package
+library(ParallelStructure)
+# See manual for the R package and Structure http://pritchardlab.stanford.edu/structure.html
+?parallel_structure
+# Run Structure
+parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path="~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47, numloci=12, plot_output=1, label=1, popdata=1, popflag=1, phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0, extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1, printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0, linkage=0, locprior=0, inferalpha=1)
+
+# When running on Windows, parallel support may be missing - install Rmpi library required by ParallelStructure for parallelisation on Windows
+install.packages("Rmpi")
+library(Rmpi)
+# Instead of parallel_structure() use MPI_structure() with same arguments
+MPI_structure(...) # Same arguments as on previous slide
+# If this fails, look for some UNIX machine...
+
+# Postprocess results with Structure sum R script by Dorothee Ehrich
+source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
+# Create new directory with result files results_job_*_f and set working directory accordingly
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
+dir()
+# Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://soubory.trapa.cz/rcourse/list_k.txt
+# See documentation for details. Functions take as an argument list_k file and number of populations
+Structure.table("list_k.txt", 5)
+Structure.simil("list_k.txt", 5)
+Structure.deltaK("list_k.txt", 5)
+graphics.off() # Close graphics
+Structure.cluster("list_k.txt", 5)
+# Reordering ("alignment") of runs to get same clusters in same columns (prepare respective list_k files - one for each K)
+# Preparing data for CLUMPP
+Structure.order("list_k_02.txt", 5)
+Structure.order("list_k_03.txt", 5)
+Structure.order("list_k_04.txt", 5)
+Structure.order("list_k_05.txt", 5)
+Structure.order("list_k_06.txt", 5)
+Structure.order("list_k_07.txt", 5)
+# Continue with CLUMPP and distruct
+# Details: https://trapa.cz/en/structure-r-linux
+
+# Go back to the original working directory
+# Go to YOUR OWN directory, same as on beginning
+setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
+
 ## Moran's I
 # Load required library
 library(spdep)
@@ -1393,55 +1442,6 @@ points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=1
 shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
 # Add legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
-
-## Structure
-
-# Inspiration: https://www.molecularecologist.com/913/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/
-# Install ParallelStructure, see https://r-forge.r-project.org/R/?group_id=1636 and http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0070651
-# get input data from https://soubory.trapa.cz/rcourse/hauss_stru.in and joblist https://soubory.trapa.cz/rcourse/joblist.txt
-# Set working directory
-setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/")
-getwd()
-# Load ParallelStructure package
-library(ParallelStructure)
-# See manual for the R package and Structure http://pritchardlab.stanford.edu/structure.html
-?parallel_structure
-# Run Structure
-parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path="~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47, numloci=12, plot_output=1, label=1, popdata=1, popflag=1, phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0, extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1, printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0, linkage=0, locprior=0, inferalpha=1)
-
-# When running on Windows, parallel support may be missing - install Rmpi library required by ParallelStructure for parallelisation on Windows
-install.packages("Rmpi")
-library(Rmpi)
-# Instead of parallel_structure() use MPI_structure() with same arguments
-MPI_structure(...) # Same arguments as on previous slide
-# If this fails, look for some UNIX machine...
-
-# Postprocess results with Structure sum R script by Dorothee Ehrich
-source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
-# Create new directory with result files results_job_*_f and set working directory accordingly
-setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
-dir()
-# Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://soubory.trapa.cz/rcourse/list_k.txt
-# See documentation for details. Functions take as an argument list_k file and number of populations
-Structure.table("list_k.txt", 5)
-Structure.simil("list_k.txt", 5)
-Structure.deltaK("list_k.txt", 5)
-graphics.off() # Close graphics
-Structure.cluster("list_k.txt", 5)
-# Reordering ("alignment") of runs to get same clusters in same columns (prepare respective list_k files - one for each K)
-# Preparing data for CLUMPP
-Structure.order("list_k_02.txt", 5)
-Structure.order("list_k_03.txt", 5)
-Structure.order("list_k_04.txt", 5)
-Structure.order("list_k_05.txt", 5)
-Structure.order("list_k_06.txt", 5)
-Structure.order("list_k_07.txt", 5)
-# Continue with CLUMPP and distruct
-# Details: https://trapa.cz/en/structure-r-linux
-
-# Go back to the original working directory
-# Go to YOUR OWN directory, same as on beginning
-setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
 
 ## Tree manipulations
 
