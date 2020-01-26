@@ -500,26 +500,28 @@
 
 \begin{frame}[allowframebreaks]{Popular object classes (we are going to use)}
 	\begin{itemize}
-		\item \texttt{dist} --- distance matrices
-		\item \texttt{genind} --- stores various genetic information for individuals
-		\item \texttt{genpop} --- like genind, but on population level
-		\item \texttt{genlight} --- variant of genind to store large multiple genomes
-		\item \texttt{SNPbin} --- stores large SNP data for single genome
-		\item \texttt{DNAbin} --- stores DNA sequences (aligned or not)
-		\item \texttt{vcfR} --- imported (and possibly edited) VCF
-		\item \texttt{haplotype} --- unique sequences from DNAbin
+		\item \texttt{AAbin} ---stores amino acid sequences (aligned or not)
 		\item \texttt{alignment} --- aligned sequences (seqinr)
-		\item \texttt{phyDat} --- \enquote{preparation} of data for some phylogenetic analysis
-		\item \texttt{loci} --- extension of data frame (DF), stores information about loci
+		\item \texttt{dapc} --- results of DAPC
+		\item \texttt{dist} --- distance matrices
+		\item \texttt{DNAbin} --- stores DNA sequences (aligned or not)
+		\item \texttt{genind} --- stores various genetic information for individuals
+		\item \texttt{genlight} --- variant of genind to store large multiple genomes
+		\item \texttt{genpop} --- like genind, but on population level
+		\item \texttt{haplonet} --- networks without reticulation
+		\item \texttt{haplotype} --- unique sequences from DNAbin
 		\item \texttt{hclust} --- output of hierarchical clustering, can be converted to phylo
-		\item \texttt{treeshape} --- derived from hclust
+		\item \texttt{loci} --- extension of data frame (DF), stores information about loci
+		\item \texttt{matching} --- binary phylogenetic trees
+		\item \texttt{matrix} --- general matrix (numeric or not)
+		\item \texttt{pco}; \texttt{dudi} --- results of PCA, PCoA,~\ldots
+		\item \texttt{phyDat} --- \enquote{preparation} of data for some phylogenetic analysis
 		\item \texttt{phylo} --- phylogenetic information, typically trees
 		\item \texttt{phylo4} --- derived from phylo (more data), S4 instead of S3
-		\item \texttt{matching} --- binary phylogenetic trees
-		\item \texttt{haplonet} --- networks without reticulation
+		\item \texttt{SNPbin} --- stores large SNP data for single genome
 		\item \texttt{spca} --- results of sPCA
-		\item \texttt{pco}; \texttt{dudi} --- results of PCA, PCoA,~\ldots
-		\item \texttt{dapc} --- results of DAPC
+		\item \texttt{treeshape} --- derived from hclust
+		\item \texttt{vcfR} --- imported (and possibly edited) VCF
 		\item and more\ldots~common task is converting among formats\ldots
 		\item \ldots not all formats are (easily) convertible among each other\ldots
 		\item To get information about content of each data type see \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
@@ -646,7 +648,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Basic operations with data III}
+\begin{frame}[fragile]{Basic operations with data III} % TODO Add more operations
 	\begin{spluscode}
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
@@ -734,9 +736,9 @@
     # packages in smaller groups or one by one
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
       "akima", "ape", "BiocManager", "caper", "corrplot", "devtools",
-      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice",
-      "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme",
-      "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase",
+      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
+      "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools",
+      "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase",
       "phytools", "picante", "plotrix", "poppr", "raster", "rgdal",
       "RgoogleMaps", "Rmpi", "rworldmap",  "rworldxtra", "seqinr",
       "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP",
@@ -753,16 +755,15 @@
 	\label{phyloch}
 	\begin{itemize}
 		\item Check \url{http://www.christophheibl.de/Rpackages.html}
-		\item Package phyloch is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R
+		\item Package phyloch is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
 	\end{itemize}
 	\begin{spluscode}
     # If not done already, install required packages first
-    install.packages(pkgs=c("ape", "colorspace", "XML"),
-      dependencies=TRUE)
+    install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
     # It is possible to specify direct path
     # Local or web URL - be careful about correct path) to package source
-    install.packages(pkgs="http://www.christophheibl.de/
-      phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+    install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz",
+      repos=NULL, type="source")
     # If above command fails on Windows, try
     install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip",
       repos=NULL)
@@ -1155,6 +1156,9 @@
 		\item Some R functions have problems with spaces and special (non-alphanumeric and accented) characters --- Avoid them!
 		\item One of the most common source of errors --- \textbf{when the command fails, double check paths} (and Internet connection, if applicable) --- for another common problems see slide~\ref{problems}
 	\end{itemize}
+	\begin{alertblock}{Working in dedicated directory}
+		\textbf{R} always work in some directory (see by \texttt{getwd()}) and by default load input files from there (see them by \texttt{dir()}) and save output there --- relative paths starts there. This is common source of confusion and errors for beginners.
+	\end{alertblock}
 \end{frame}
 
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
@@ -1444,6 +1448,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item RNA or protein sequences can be handed in same way --- see \texttt{?read.dna} and \texttt{?read.FASTA}
+		\item For sequences there is R class \texttt{DNAbin}, for protein \texttt{AAbin} --- they are handled in same way
 		\item Do not confuse \texttt{read.nexus.data} (reads sequences) and \texttt{read.nexus} (reads trees)
 	\end{itemize}
 \end{frame}
@@ -1744,7 +1749,7 @@
 	\end{spluscode}
 \end{frame}
 
-\subsection{}
+\subsection{Tasks}
 
 \begin{frame}{Import your own data}
 	\begin{exampleblock}{Tasks}
@@ -1754,6 +1759,7 @@
 			\begin{itemize}
 				\item Be inspired by previous slides --- edit commands to fit your needs and process your data
 				\item R is extremely flexible, but not everything is figured out within one minute\ldots
+				\item Import preferably your data --- you'll later use them to perform selected analysis
 			\end{itemize}
 			\item \textbf{Check your data after import} to ensure they were correctly read
 		\end{enumerate}
@@ -1802,7 +1808,6 @@
 		\item MAFFT is available from (same author) in packages \href{https://CRAN.R-project.org/package=ips}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} --- both read and write \texttt{DNAbin}
 	\end{itemize}
 	\begin{spluscode}
-    library(phyloch) # Alignment with mafft and more tools
     library(ips)
     # Requires path to MAFFT binary - set it according to your installation
     # read ?mafft and mafft's documentation
@@ -1925,23 +1930,39 @@
 
 \begin{frame}[fragile]{Cleaning the alignment}
 	\begin{spluscode}
-    # Delete all columns containing any gap
+    # Delete all columns/rows containing only gaps or missing data (N, ?, -)
+    usflu.dna <- deleteEmptyCells(DNAbin=usflu.dna)
+    ?ips::deleteEmptyCells # See help page for details
+    ?phyloch::delete.empty.cells # See help page for details
+    # Delete all columns containing at least 25% of gaps
     usflu.dna.ng <- deleteGaps(x=usflu.dna, gap.max=nrow(usflu.dna)/4)
     usflu.dna.ng
+    # Do not confuse with function delete.gaps() from phyloch package
     # See of settings of "nmax" value - threshold for gap deletion
     ?deleteGaps # "nmax=0" deletes all columns with any gap
     multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
     multialign.aln.ng
-    # Do not confuse with function delete.gaps() from phyloch package
-    image.DNAbin(x=usflu.dna.ng) # Display the result
-    lapply(X=multialign.aln.ng, FUN=image.DNAbin)
-    # Delete positions in alignment containing only missing data/N
-    ?ips::deleteEmptyCells # See help page for details
-    ?phyloch::delete.empty.cells # See help page for details
-    # Delete only empty columns/rows (usage as above)
-    ?ape::del.colgapsonly # See help page for details
+    # Delete every line (sample) containing at least 20% of missing data
+    usflu.dna.ng <- del.rowgapsonly(x=usflu.dna.ng, threshold=0.2,
+      freq.only=FALSE)
     ?ape::del.rowgapsonly # See help page for details
 	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Cleaning the alignment}
+	\begin{spluscode}
+    # Delete every alignment position having at least 20% of missing data
+    usflu.dna.ng <- del.colgapsonly(x=usflu.dna.ng, threshold=0.2,
+      freq.only=FALSE)
+    ?ape::del.colgapsonly # See help page for details
+    # Display the result
+    image.DNAbin(x=usflu.dna.ng)
+    lapply(X=multialign.aln.ng, FUN=image.DNAbin)
+	\end{spluscode}
+	\begin{itemize}
+		\item \enquote{Strictness} of alignment cleaning depends on following steps --- NJ (and another distance-based methods) doesn't like more than $\sim$10--15\% of missing data, but some tree builders are able to work with gaps --- check their documentation\ldots
+		\item Automated cleanup is useful especially if batch processing plenty of genes
+	\end{itemize}
 \end{frame}
 
 \section{Basic analysis}
@@ -2670,8 +2691,8 @@
       method="complete"))
     plot(hclust(d=hauss.dist.pop,
       method="complete"))
-    plot(hclust(d=hauss.dist.
-      bruvo, method="complete"))
+    plot(hclust(d=hauss.dist.bruvo,
+      method="complete"))
 		\end{spluscode}
 		\vfil
 		\begin{itemize}
@@ -2848,11 +2869,17 @@
 \begin{frame}[fragile]{Nicer trees}
 	\begin{spluscode}
     # As tip label we use only symbols - see ?points for graphical details
-    tiplabels(frame="none", pch=rep(0:4,times=c(13,17,2,6,9)), lwd=2, cex=2)
+    tiplabels(frame="none", pch=rep(0:4, times=c(13, 17, 2, 6, 9)), lwd=2,
+      cex=2)
     # Plot a legend explaining symbols
     legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"),
       border="black", pch=0:4, pt.lwd=2, pt.cex=2, bty="o", bg="lightgrey",
       box.lwd=2, cex=1.2, title="Populations")
+    # See more options...
+    ?plot.phylo
+    ?nodelabels
+    ?legend
+    ?axis.phylo
 	\end{spluscode}
 \end{frame}
 
@@ -2930,7 +2957,7 @@
 	\begin{spluscode}
     # Root the tree - "outgroup" is name of accession (in quotation
     # marks) or number (position within phy object)
-    usflu.tree.rooted <- root(phy=usflu.tree, outgroup=1)
+    usflu.tree.rooted <- root.phylo(phy=usflu.tree, outgroup=1)
     # Plot it
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("Rooted NJ tree")
@@ -2950,7 +2977,7 @@
 	\begin{spluscode}
     # Calculate it
     usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=
-      function(EEE) root(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
+      function(EEE) root.phylo(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
     # Plot the tree
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("NJ tree + bootstrap values")
@@ -3066,13 +3093,14 @@
 	\end{center}
 \end{frame}
 
-\subsection{}
+\subsection{Tasks}
 
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Most of examples were shown with the \textit{Taraxacum haussknechtii} microsatellite dataset --- try to do some analyses with another imported data
 			\item Try some of the introduced analyses with your own custom imported data
+			\item Try at least 2--3 analysis according to your interests
 		\end{enumerate}
 	\end{exampleblock}
 	\begin{itemize}
@@ -4546,14 +4574,14 @@
     print.phylo(hauss.nj)
     # resolve.root=TRUE ensures root will be bifurcating (needed here)
     # (without this parameter it sometimes doesn't work)
-    hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10)
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=10)
     print.phylo(hauss.nj.rooted)
     plot.phylo(hauss.nj.rooted)
     # Root the tree interactive
     plot.phylo(hauss.nj)
-    hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE)
     plot.phylo(hauss.nj.rooted)
-    unroot() # Unroot the tree
+    unroot.phylo() # Unroot the tree
     is.rooted() # Check if it is rooted
 	\end{spluscode}
 \end{frame}
@@ -4615,6 +4643,7 @@
 \begin{frame}[fragile]{Topographical distances among trees III}{Post process the matrix and plot it}
 	\begin{itemize}
 		\item There are several methods for calculating distance matrices among the trees --- some take branch lengths into account, some only topology
+		\item There are plenty of heatmap functions, like \texttt{heatmap}, \texttt{heatmap.plus::heatmap.plus}, and more\ldots
 	\end{itemize}
 	\begin{spluscode}
     # Create heat maps using heatmap.2 function from gplots package
@@ -5254,7 +5283,7 @@
       (file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
     print.phylo(apiaceae.tree) # See it
     plot.phylo(apiaceae.tree) # See it
-    apiaceae.tree <- root(apiaceae.tree, "Aralia_elata") # Root the tree
+    apiaceae.tree <- root.phylo(apiaceae.tree, "Aralia_elata") # Root the tree
     # Remove "_" from taxa names
     # plot.phylo() by default omits "_" from tip names
     apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ",
@@ -6291,6 +6320,7 @@
 		\item \href{https://CRAN.R-project.org/package=convevol}{convevol}: quantifies and assesses the significance of convergent evolution
 		\item \href{https://CRAN.R-project.org/package=corHMM}{corHMM}: analysis of binary character evolution
 		\item \href{https://CRAN.R-project.org/package=DAMOCLES}{DAMOCLES}: maximum likelihood of a~dynamical model of community assembly
+		\item \href{https://CRAN.R-project.org/package=dbscan}{dbscan}: implementation of several density-based algorithms (\href{https://en.wikipedia.org/wiki/DBSCAN}{DBSCAN}, \href{https://en.wikipedia.org/wiki/OPTICS_algorithm}{OPTICS}, etc.)
 		\item \href{https://CRAN.R-project.org/package=DDD}{DDD}: diversity-dependent diversification
 		\item \href{https://CRAN.R-project.org/package=dendextend}{dendextend}: extending dendrogram objects, comparing trees
 		\item \href{https://CRAN.R-project.org/package=distory}{distory}: geodesic distance between phylogenetic trees
@@ -6448,7 +6478,7 @@
 % DW index - rare alleles
 % https://cran.r-project.org/web/packages/phangorn/vignettes/
 % https://github.com/JClavel/Examples
-% http://popgen.nescent.org/
+% https://popgen.nescent.org/
 % https://wurmlab.github.io/genomicscourse/2016-SIB/practicals/population_genetics/popgen
 % https://botany.natur.cuni.cz/cevnate/navody/
 % http://www.phytools.org/eqg/
@@ -6460,19 +6490,15 @@
 % https://www.molecularecologist.com/2016/02/quick-and-dirty-tree-building-in-r/
 % https://www.molecularecologist.com/2016/01/genomics-of-hybridization-part-ii-top-three-of-2015/
 % https://www.molecularecologist.com/2015/07/pca-of-multilocus-genotypes-in-r/
-% https://www.molecularecologist.com/2015/04/visualizing-linkage-disequilibrium-in-r/
 % https://www.molecularecologist.com/2015/03/f-statistics-manhattan-plots-in-r/
 % https://www.molecularecologist.com/2015/01/a-population-genetic-r-evolution/
 % https://www.molecularecologist.com/2014/11/admixture-maps-in-r-for-dummies/
 % https://www.molecularecologist.com/2013/10/random-drift-and-phenotypic-evolution/
 % https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492 - https://datadryad.org/resource/doi:10.5061/dryad.2s8d0f9
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
-% https://cran.r-project.org/web/packages/dbscan/ - https://en.wikipedia.org/wiki/DBSCAN and https://en.wikipedia.org/wiki/OPTICS_algorithm
-% https://cran.r-project.org/web/packages/evobiR/
 % https://github.com/emmanuelparadis/psmcr
 % - Nahradit SPCA jinou verzí (z adephylo?).
 % - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
-% - Nejdříve pracovat s jednotlivými stromy, pak až s multiPhylo
 % - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
 % - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy

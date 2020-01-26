@@ -65,7 +65,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 update.packages(repos=getOption("repos")) # Updates installed packages
 update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
@@ -422,7 +422,6 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 ## Multiple sequence alignment
 
 # Libraries
-library(phyloch) # Alignment with mafft and more tools
 library(ips)
 # Requires path to MAFFT binary - set it according to your installation
 # Read ?mafft and mafft's documentation
@@ -486,23 +485,27 @@ as.matrix.DNAbin()
 as.list.DNAbin()
 # Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
 
-# Delete all columns containing any gap
+# Delete all columns/rows containing only gaps or missing data (N, ?, -)
+usflu.dna <- deleteEmptyCells(DNAbin=usflu.dna)
+?ips::deleteEmptyCells # See help page for details
+?phyloch::delete.empty.cells # See help page for details
+# Delete all columns containing at least 25% of gaps
 usflu.dna.ng <- deleteGaps(x=usflu.dna, gap.max=nrow(usflu.dna)/4)
 usflu.dna.ng
+# Do not confuse with function delete.gaps() from phyloch package
 # See of settings of "nmax" value - threshold for gap deletion
 ?deleteGaps # "nmax=0" deletes all columns with any gap
 multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
 multialign.aln.ng
-# Do not confuse with function delete.gaps() from phyloch package
+# Delete every line (sample) containing at least 20% of missing data
+usflu.dna.ng <- del.rowgapsonly(x=usflu.dna.ng, threshold=0.2, freq.only=FALSE)
+?ape::del.rowgapsonly # See help page for details
+# Delete every alignment position having at least 20% of missing data
+usflu.dna.ng <- del.colgapsonly(x=usflu.dna.ng, threshold=0.2, freq.only=FALSE)
+?ape::del.colgapsonly # See help page for details
 # Display the result
 image.DNAbin(x=usflu.dna.ng)
 lapply(X=multialign.aln.ng, FUN=image.DNAbin)
-# Delete positions in alignment containing only missing data/N (rows as well as columns)
-?ips::deleteEmptyCells # See help page for details
-?phyloch::delete.empty.cells # See help page for details
-# Delete only empty columns/rows (usage as above)
-?ape::del.colgapsonly # See help page for details
-?ape::del.rowgapsonly # See help page for details
 
 ## Descriptive statistics
 
@@ -856,6 +859,10 @@ nodelabels(text=round(hauss.boot/10), frame="none", bg="white")
 tiplabels(frame="none", pch=rep(x=0:4, times=c(13, 17, 2, 6, 9)), lwd=2, cex=2)
 # Plot a legend explainindg symbols
 legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=0:4, pt.lwd=2, pt.cex=2, bty="o", bg="lightgrey", box.lwd=2, cex=1.2, title="Populations")
+?plot.phylo
+?nodelabels
+?legend
+?axis.phylo
 
 # Bruvo's distance - NJ
 hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
@@ -894,7 +901,7 @@ tiplabels(text=usflu.annot$year, bg=num2col(usflu.annot$year, col.pal=usflu.pal)
 legend(x="bottomright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Root the tree - "outgroup" is name of accession (in quotation marks) or number (position within phy object)
-usflu.tree.rooted <- root(phy=usflu.tree, outgroup=1)
+usflu.tree.rooted <- root.phylo(phy=usflu.tree, outgroup=1)
 # Plot it
 plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("Rooted NJ tree")
@@ -907,7 +914,7 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 
 # Bootstrap rooted tree
 # Calculate it
-usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=function(EEE) root(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
+usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=function(EEE) root.phylo(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
 # Plot the tree
 plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
 title("NJ tree + bootstrap values")
@@ -1506,15 +1513,15 @@ plot.phylo(hauss.nj.ladderized)
 # Root the tree
 plot.phylo(hauss.nj)
 print.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
 print.phylo(hauss.nj.rooted)
 plot.phylo(hauss.nj.rooted)
 # Root the tree interactive
 plot.phylo(hauss.nj)
-hauss.nj.rooted <- root(phy=hauss.nj, interactive=TRUE)
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE)
 plot.phylo(hauss.nj.rooted)
 # Unroot the tree
-unroot()
+unroot.phylo()
 # Check if it is rooted
 is.rooted()
 
@@ -1652,7 +1659,7 @@ phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradien
 phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 
 # TODO STAR and STEAC species trees
-# See https://github.com/lliu1871/phybase
+# https://github.com/lliu1871/phybase
 
 # Networks
 library(phangorn)
@@ -1830,7 +1837,7 @@ apiaceae.tree <- read.nexus(file="https://soubory.trapa.cz/rcourse/apiaceae_mrba
 print.phylo(apiaceae.tree)
 plot.phylo(apiaceae.tree)
 # Root the tree
-apiaceae.tree <- root(apiaceae.tree, "Aralia_elata")
+apiaceae.tree <- root.phylo(phy=apiaceae.tree, outgroup="Aralia_elata")
 # Remove "_" from taxa names
 # plot.phylo() by default omits "_" from tip names
 apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ", x=apiaceae.tree$tip.label)
@@ -1903,13 +1910,6 @@ compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(valu
 # # x can be vector, matric or df
 # apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
 # mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
-
-# # TODO when several traits are analyzed on a tree, the variance-covariance matrix of their orthonormal contrasts can be partitioned into a phylogenetic (A) and a phenotypic (P ) components
-# # http://evolution.gs.washington.edu/phylip.html
-# primates.varcomp <- varCompPhylip(x=cbind(primates.body, primates.longevity), phy=primates.tree, exec="~/bin/phylip/exe/contrast")
-# mantel.test(m1=primates.varcomp$varA, m2=primates.varcomp$varE, nperm=1000, graph=TRUE, alternative="two.sided")
-# mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000)
-# plot(mantel.randtest(m1=as.dist(primates.varcomp$varA), m2=as.dist(primates.varcomp$varE), nrepet=1000))
 
 ## Phylogenetic Signal
 
@@ -2229,7 +2229,7 @@ anova(meles.fit.ini, meles.fit)
 AIC(meles.fit.ini)
 AIC(meles.fit)
 # Extrakce a nakreslení stromu
-meles.tre4 <- root(meles.fit$tree,1)
+meles.tre4 <- root.phylo(meles.fit$tree,1)
 plot(meles.tre4, show.tip=FALSE, edge.width=2)
 title("Maximum-likelihood tree")
 axisPhylo()
