@@ -47,7 +47,7 @@
 % Syntax higlight
 \usepackage{minted}
 \usemintedstyle{vim} % Styles are listed by pygmentize -L styles; languages are listed by pygmentize -L lexers
-\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Gray, fontfamily=tt, gobble=4, numbersep=-3pt}
+\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=DimGray, fontfamily=tt, gobble=4, numbersep=-3pt}
 % Change line number style
 \renewcommand{\theFancyVerbLine}{
 	\sffamily
@@ -2977,7 +2977,8 @@
 	\begin{spluscode}
     # Calculate it
     usflu.boot <- boot.phylo(phy=usflu.tree.rooted, x=usflu.dna, FUN=
-      function(EEE) root.phylo(nj(dist.dna(EEE, model="TN93")), outgroup=1), B=1000)
+      function(EEE) root.phylo(nj(dist.dna(EEE, model="TN93")), outgroup=1),
+      B=1000)
     # Plot the tree
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
     title("NJ tree + bootstrap values")
@@ -4605,6 +4606,46 @@
 	\end{itemize}
 \end{frame}
 
+\subsection{MP}
+
+\begin{frame}{Maximum parsimony --- theory}
+	\label{MP}
+	\begin{itemize}
+		\item \href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
+		\item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
+		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed --- it doesn't always guarantee to find the most probable tree
+		\item To speed up calculations, initial tree (usually NJ --- slide~\ref{NJ}) is used to start the search
+		\item With rising performance of computers, it uses to be replaced maximum likelihood or Bayesian methods
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Maximum parsimony --- code and result}
+	\begin{multicols}{2}
+		\vfil
+		\includegraphics[height=6.75cm]{parsimony.png}
+		\vfil
+		\begin{spluscode}
+    # Conversion to phyDat
+    meles.phydat<-as.phyDat(meles.dna)
+    # Prepare starting tree
+    meles.tre.ini <- nj(dist.dna
+      (x=meles.dna, model="raw"))
+    # Maximum parsimony score
+    ?parsimony # Parsimony details
+    parsimony(tree=meles.tre.ini,
+      data=meles.phydat)
+    # Optimization
+    # Maximum parsimony tree
+    meles.tre.pars <- optim.parsimony
+      (tree=meles.tre.ini,
+      data=meles.phydat)
+    # Draw a tree
+    plot.phylo(x=meles.tre.pars,
+      type="clad", edge.width=2)
+		\end{spluscode}
+	\end{multicols}
+\end{frame}
+
 \subsection{Seeing trees in the forest}
 
 \begin{frame}[allowframebreaks]{Topographical distances among trees I --- implementations}
@@ -4911,46 +4952,6 @@
 	\begin{center}
 		\includegraphics[height=2.5cm]{oxalis-net.png}
 	\end{center}
-\end{frame}
-
-\subsection{MP}
-
-\begin{frame}{Maximum parsimony --- theory}
-	\label{MP}
-	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
-		\item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
-		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed --- it doesn't always guarantee to find the most probable tree
-		\item To speed up calculations, initial tree (usually NJ --- slide~\ref{NJ}) is used to start the search
-		\item With rising performance of computers, it uses to be replaced maximum likelihood or Bayesian methods
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Maximum parsimony --- code and result}
-	\begin{multicols}{2}
-		\vfil
-		\includegraphics[height=6.75cm]{parsimony.png}
-		\vfil
-		\begin{spluscode}
-    # Conversion to phyDat
-    meles.phydat<-as.phyDat(meles.dna)
-    # Prepare starting tree
-    meles.tre.ini <- nj(dist.dna
-      (x=meles.dna, model="raw"))
-    # Maximum parsimony score
-    ?parsimony # Parsimony details
-    parsimony(tree=meles.tre.ini,
-      data=meles.phydat)
-    # Optimization
-    # Maximum parsimony tree
-    meles.tre.pars <- optim.parsimony
-      (tree=meles.tre.ini,
-      data=meles.phydat)
-    # Draw a tree
-    plot.phylo(x=meles.tre.pars,
-      type="clad", edge.width=2)
-		\end{spluscode}
-	\end{multicols}
 \end{frame}
 
 \subsection{Comparisons}
