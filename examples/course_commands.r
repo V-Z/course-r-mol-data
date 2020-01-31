@@ -7,7 +7,7 @@ require(sos) # More comprehensive search from packages
 findFn("DAPC") # Search for function name
 
 ## Set working directory
-setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
+setwd("~/dokumenty/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
 getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
@@ -422,6 +422,7 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 ## Multiple sequence alignment
 
 # Libraries
+library(ape)
 library(ips)
 # Requires path to MAFFT binary - set it according to your installation
 # Read ?mafft and mafft's documentation
@@ -610,6 +611,24 @@ microbov.bar <- sapply(X=microbov.inbr, FUN=mean)
 # Plot it
 hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle")
 
+## AMOVA
+# From package pegas (doesn't directly show percentage of variance)
+hauss.pop <- pop(hauss.genind)
+hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
+# See results
+hauss.amova
+# For more complicated hierarchy
+?poppr::poppr.amova
+# For mixed-ploidy dat sets
+?StAMPP::stamppAmova
+
+## MSN based on Bruvo's distance
+bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
+?bruvo.msn # See details...
+?msn.poppr # For another data types
+?imsn # Interactive creation of MSN
+imsn() # Try it
+
 ## Genetic distances
 
 # See ?dist.gene for details about methods of this distance constructions
@@ -785,24 +804,6 @@ title("UPGMA tree")
 # Test quality - tests correlation of original distance in the matrix and reconstructed distance from hclust object
 plot(x=as.vector(usflu.dist), y=as.vector(as.dist(cophenetic(usflu.upgma))), xlab="Original pairwise distances", ylab="Pairwise distances on the tree", main="Is UPGMA appropriate?", pch=20, col=transp(col="black", alpha=0.1), cex=2)
 abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), col="red")
-
-## AMOVA
-# From package pegas (doesn't directly show percentage of variance)
-hauss.pop <- pop(hauss.genind)
-hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
-# See results
-hauss.amova
-# For more complicated hierarchy
-?poppr::poppr.amova
-# For mixed-ploidy dat sets
-?StAMPP::stamppAmova
-
-## MSN based on Bruvo's distance
-bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
-?bruvo.msn # See details...
-?msn.poppr # For another data types
-?imsn # Interactive creation of MSN
-imsn() # Try it
 
 ## NJ
 
@@ -1024,6 +1025,8 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 
 ## Clustering analysis
 
+library(adegenet)
+
 # Graphical web interface for DAPC
 adegenetServer("DAPC")
 
@@ -1108,7 +1111,7 @@ MPI_structure(...) # Same arguments as on previous slide
 # Postprocess results with Structure sum R script by Dorothee Ehrich
 source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
 # Create new directory with result files results_job_*_f and set working directory accordingly
-setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
+setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
 dir()
 # Prepare file list_k.txt containing on each line K and name of output "_f" file - get it from https://soubory.trapa.cz/rcourse/list_k.txt
 # See documentation for details. Functions take as an argument list_k file and number of populations
@@ -1130,7 +1133,7 @@ Structure.order("list_k_07.txt", 5)
 
 # Go back to the original working directory
 # Go to YOUR OWN directory, same as on beginning
-setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
+setwd("~/dokumenty/vyuka/r_mol_data/examples/")
 
 ## Moran's I
 # Load required library
@@ -2151,7 +2154,7 @@ plot(sapply(XX, CC)) # See the result
 
 ## RAxML
 meles.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
-meles.raxml <- phyloch::raxml(x=meles.nogaps, runs=10, file="meles.raxml", path="/home/vojta/bin/")
+meles.raxml <- phyloch::raxml(x=meles.nogaps, runs=10, file="meles.raxml", path="~/bin/")
 
 ## Extra
 axisGeo() # package phyloch - adds scale in geological time, has many options

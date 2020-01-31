@@ -1186,7 +1186,7 @@
 \begin{frame}[fragile]{Load data}
 	\begin{spluscode}
     # Source data
-    pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
+        pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
     H01  He 269/269 198/198 221/223 419/419 197/197 196/196 ...
     H02  He 275/283 198/198 221/223 419/419 193/193 168/190 ...
     ... ...     ...     ...     ...     ...     ...     ... ...
@@ -1774,12 +1774,6 @@
 
 \begin{frame}[fragile]{Multiple sequence alignment}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
-	\vfill
-	\begin{spluscode}
-    # Go back to the original working directory
-    # Go to YOUR OWN directory, same as on beginning
-    setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/")
-	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Multiple sequence alignment}
@@ -1808,6 +1802,7 @@
 		\item MAFFT is available from (same author) in packages \href{https://CRAN.R-project.org/package=ips}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} --- both read and write \texttt{DNAbin}
 	\end{itemize}
 	\begin{spluscode}
+    library(ape)
     library(ips)
     # Requires path to MAFFT binary - set it according to your installation
     # read ?mafft and mafft's documentation
@@ -2376,6 +2371,67 @@
 	\end{multicols}
 \end{frame}
 
+\subsection{AMOVA}
+
+\begin{frame}{AMOVA I}
+	\begin{itemize}
+		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+		\item Some implementations can partition variance into various levels
+		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
+		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
+		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
+		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{AMOVA II}
+	\begin{spluscode}
+    hauss.pop <- pop(hauss.genind)
+    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
+      nperm=1000, is.squared=TRUE)
+    # See results
+    hauss.amova
+    ...
+                    SSD      MSD df
+    hauss.pop  30.71923 7.679809  4
+    Error     119.58100 2.847167 42
+    Total     150.30023 3.267396 46
+    ...
+    Variance components:
+               sigma2 P.value
+    hauss.pop 0.55738       0 # From here we can calculate the percentage
+    Error     2.84717
+    ...
+	\end{spluscode}
+\end{frame}
+
+\subsection{MSN}
+
+\begin{frame}[fragile]{Minimum Spanning Network}{Package poppr, based on Bruvo's distance (for SSRs)}
+	\label{MSN}
+	\begin{multicols}{2}
+		\begin{center}
+			\includegraphics[height=5.5cm]{msn.png}
+		\end{center}
+		\begin{spluscode}
+    ?bruvo.msn # See details...
+		\end{spluscode}
+		\columnbreak
+		\begin{spluscode}
+    bruvo.msn(gid=hauss.genind,
+      replen=rep(2, 12), loss=TRUE,
+      palette=rainbow, vertex.label
+      ="inds", gscale=TRUE,
+      wscale=TRUE, showplot=TRUE)
+    ?msn.poppr # For another data types
+    ?imsn # Interactive creation of MSN
+		\end{spluscode}
+		\begin{center}
+			\includegraphics[width=3cm]{msn-bruvo_no_labels.png}
+		\end{center}
+	\end{multicols}
+\end{frame}
+
 \subsection{Genetic distances}
 
 \begin{frame}[fragile]{Basic distances}
@@ -2731,67 +2787,6 @@
 	\vfil
 	All points in the right graph should be clustered along the red line\ldots
 	\vfill
-\end{frame}
-
-\subsection{AMOVA}
-
-\begin{frame}{AMOVA I}
-	\begin{itemize}
-		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
-		\item Some implementations can partition variance into various levels
-		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
-		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
-		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
-		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{AMOVA II}
-	\begin{spluscode}
-    hauss.pop <- pop(hauss.genind)
-    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
-      nperm=1000, is.squared=TRUE)
-    # See results
-    hauss.amova
-    ...
-                    SSD      MSD df
-    hauss.pop  30.71923 7.679809  4
-    Error     119.58100 2.847167 42
-    Total     150.30023 3.267396 46
-    ...
-    Variance components:
-               sigma2 P.value
-    hauss.pop 0.55738       0 # From here we can calculate the percentage
-    Error     2.84717
-    ...
-	\end{spluscode}
-\end{frame}
-
-\subsection{MSN}
-
-\begin{frame}[fragile]{Minimum Spanning Network}{Package poppr, based on Bruvo's distance (for SSRs)}
-	\label{MSN}
-	\begin{multicols}{2}
-		\begin{center}
-			\includegraphics[height=5.5cm]{msn.png}
-		\end{center}
-		\begin{spluscode}
-    ?bruvo.msn # See details...
-		\end{spluscode}
-		\columnbreak
-		\begin{spluscode}
-    bruvo.msn(gid=hauss.genind,
-      replen=rep(2, 12), loss=TRUE,
-      palette=rainbow, vertex.label
-      ="inds", gscale=TRUE,
-      wscale=TRUE, showplot=TRUE)
-    ?msn.poppr # For another data types
-    ?imsn # Interactive creation of MSN
-		\end{spluscode}
-		\begin{center}
-			\includegraphics[width=3cm]{msn-bruvo_no_labels.png}
-		\end{center}
-	\end{multicols}
 \end{frame}
 
 \subsection{NJ (and UPGMA) tree}
@@ -3546,8 +3541,7 @@
     source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
     # Create new directory with result files results_job_*_f and set
     # working directory accordingly
-    setwd("/home/vojta/dokumenty/vyuka/r_mol_data/examples/structure
-      /structure_sum/")
+    setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
 	\end{spluscode}
 	\begin{itemize}
 		\item When using it, cite \href{https://onlinelibrary.wiley.com/doi/full/10.1111/j.1471-8286.2006.01380.x}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net), see \href{https://soubory.trapa.cz/rcourse/structure-sum-2011.pdf}{manual}
@@ -3606,6 +3600,12 @@
 
 \begin{frame}{Spatial analysis and genetic data}{Correlation of genes and space, spatial structure of genotypes}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\vfill
+	\begin{spluscode}
+    # Go back to the original working directory
+    # Go to YOUR OWN directory, same as on beginning
+    setwd("~/dokumenty/vyuka/r_mol_data/examples/")
+	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
@@ -4849,8 +4849,6 @@
 		\end{center}
 		\begin{spluscode}
     library(phytools)
-    class(oxalis.trees.rooted) <-
-      "multiPhylo"
     oxalis.tree.sp <- mrp.supertree
       (tree=oxalis.trees.rooted,
       method="optim.parsimony",
@@ -6479,6 +6477,10 @@
 \end{document}
 
 % TODO Missing topics
+%
+% Vypsat balíčky před každou kapitolu
+% Přeskládat alignmenty tak, aby kontroly a úpravy byly jen jednou
+% Setřídit kapitolu o stromech v prezentaci i ve skriptech
 %
 % More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
