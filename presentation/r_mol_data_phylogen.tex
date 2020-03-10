@@ -723,10 +723,9 @@
     install.packages(pkgs=c("pkg1", "pkg2", "pkg3", ...),
       repos=getOption("repos"), dependencies=TRUE)
     # Installed packages are "inactive" - the must by loaded to use them:
-    library(package) # Loads installed package (we will do it on the fly)
-    update.packages(repos=getOption("repos")) # Updates installed packages
-    # Update installed packages (by default from CRAN)
-    update.packages(ask=FALSE)
+    library(PackageName) # Loads installed package (we will do it on the fly)
+    # Updates installed packages (by default from CRAN)
+    update.packages(repos=getOption("repos"), ask=FALSE)
 	\end{spluscode}
 \end{frame}
 
@@ -752,6 +751,29 @@
 	\end{spluscode}
 \end{frame}
 
+\begin{frame}[fragile]{Install Geneland package}
+	\label{Geneland}
+	\begin{itemize}
+		\item Since version 4, not in CRAN anymore, check its \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual}, \href{https://github.com/gilles-guillot/Geneland}{GitHub} and homepage \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
+		\item On Windows install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} first to be able to compile source package on Windows
+	\end{itemize}
+	\begin{spluscode}
+    # Other packages used when using Geneland
+    # Needed is PBSmapping or mapproj for conversion of coordinates
+    # GUI uses for parallelisation snow and Rmpi
+    # RgoogleMaps (requires rgdal) can be used to plot output on top of Google
+    # map, maptools, shapefiles (requires foreign) and tripack on GIS layer
+    install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps",
+      "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"),
+      repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+    # Install Geneland from GitHub
+    # Devtools package is required to install from GitHub
+    if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
+    # Install Geneland itself
+    devtools::install_github("gilles-guillot/Geneland")
+	\end{spluscode}
+\end{frame}
+
 \begin{frame}[fragile]{Install phyloch package}{Example of installation of package not available in any repository}
 	\label{phyloch}
 	\begin{itemize}
@@ -771,26 +793,25 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Install Geneland package}
-	\label{Geneland}
+\begin{frame}[fragile]{Bioconductor}
+	\label{bioc}
 	\begin{itemize}
-		\item Since version 4, not in CRAN anymore, check \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual}, \href{https://github.com/gilles-guillot/Geneland}{GitHub} and \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
-		\item On Windows install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} to compile source package
+		\item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
+		\item To install it, add appropriate repositories (repository has its own version number not strictly following R, see \href{https://bioconductor.org/install}{web}) and \textbf{use Bioconductor's special helper package}
+		\item Explore available packages: \href{https://bioconductor.org/packages/}{https://bioconductor.org/packages/release/BiocViews.html}
 	\end{itemize}
 	\begin{spluscode}
-    # Other packages used when using Geneland
-    # Needed is PBSmapping or mapproj for conversion of coordinates
-    # GUI uses for parallelisation snow and Rmpi
-    # RgoogleMaps (requires rgdal) can be used to plot output on top of Google
-    # map, maptools, shapefiles (requires foreign) and tripack on GIS layer
-    install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps",
-      "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"),
-      repos="https://mirrors.nic.cz/R/", dependencies="Imports")
-    # Install Geneland from GitHub
-    # Devtools package is required to install from GitHub
-    if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
-    # Install Geneland itself
-    devtools::install_github("gilles-guillot/Geneland")
+    # Install CRAN package BiocManager used to manage Bioconductor packages
+    if (!requireNamespace("BiocManager")) install.packages("BiocManager")
+    ?BiocManager::install # See options
+    # Install Bioconductor packages
+    BiocManager::install("muscle") # Simplest usage
+    BiocManager::install(pkgs=c("Biostrings", "muscle"))
+    # Update installed packages
+    BiocManager::install()
+    # Search for Bioconductor packages
+    BiocManager::available() # List everything
+    ?BiocManager::available # See options
 	\end{spluscode}
 \end{frame}
 
@@ -798,44 +819,20 @@
 	\label{sources-diff}
 	\begin{spluscode}
     # Standard installation
-    install.packages(pkgs=c("adegenet", "poppr", "phytools"))
-    update.packages(ask=FALSE) # Update packages
+    install.packages(c("adegenet", "poppr", "phytools"))
+    update.packages() # Update packages
     # Installation from custom repository (example for our course)
     install.packages(pkgs="ParallelStructure",
       repos="https://r-forge.r-project.org/")
     ?install.packages # See help for details
     # Install CRAN package BiocManager used to manage Bioconductor packages
-    if (!requireNamespace("BiocManager"))
-      install.packages("BiocManager")
-    BiocManager::install() # Update installed packages
-    BiocManager::install()
+    if (!requireNamespace("BiocManager")) install.packages("BiocManager")
     # Install Bioconductor packages
     BiocManager::install("muscle") # Simplest usage
     BiocManager::install(pkgs=c("Biostrings", "muscle"))
     ?BiocManager::install # See more options
+    BiocManager::install() # Update installed packages
 	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Bioconductor}
-	\label{bioc}
-	\begin{itemize}
-		\item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
-		\item To install it, add appropriate repositories (repository has its own version number not strictly following R, see \href{https://bioconductor.org/install}{web}) and \textbf{use Bioconductor's special helper package} (recommended by Bioconductor):
-	\end{itemize}
-	\begin{spluscode}
-    # Install CRAN package BiocManager used to manage Bioconductor packages
-    if (!requireNamespace("BiocManager"))
-      install.packages("BiocManager")
-    BiocManager::install()
-    # Update installed packages
-    BiocManager::install()
-    # Search for Bioconductor packages
-    BiocManager::available() # List everything
-    ?BiocManager::available # See options
-	\end{spluscode}
-	\begin{itemize}
-		\item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
-	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Non-R software}
@@ -880,6 +877,10 @@
 		\item proj \url{https://proj4.org/download.html}
 		\begin{itemize}
 			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+		\end{itemize}
+		\item Rtools \url{https://cran.r-project.org/bin/windows/Rtools/}
+		\begin{itemize}
+			\item \alert{On Windows only} --- to be able to compile source packages on Windows
 		\end{itemize}
 		\item Structure \url{https://web.stanford.edu/group/pritchardlab/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} --- not part of the course)
 		\begin{itemize}

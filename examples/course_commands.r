@@ -67,18 +67,10 @@ options() # Generic function to modify various settings
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
 install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
-update.packages(repos=getOption("repos")) # Updates installed packages
-update.packages(ask=FALSE) # Update installed packages (by default from CRAN)
+# Updates installed packages (by default from CRAN)
+update.packages(repos=getOption("repos"), ask=FALSE)
 # Upgrade all packages e.g. from R 3.5 to 3.6
 install.packages(pkgs=installed.packages()) # Packages installed manually from different resources must be reinstalled manually
-
-# Install package phyloch not available in any repository
-# If not done already, install required packages first
-install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
-# It is possible to specify direct path (local or web URL) to package source
-install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
-# If above command fails on Windows, try
-install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # Other packages used when using Geneland
@@ -93,7 +85,28 @@ if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
 # Install Geneland itself
 devtools::install_github("gilles-guillot/Geneland")
 
+# Install package phyloch not available in any repository
+# If not done already, install required packages first
+install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
+# It is possible to specify direct path (local or web URL) to package source
+install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+# If above command fails on Windows, try
+install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
+
 # We will load packages by library(package) one by one when needed...
+
+## Bioconductor
+# Install CRAN package BiocManager used to manage Bioconductor packages
+if (!requireNamespace("BiocManager")) install.packages("BiocManager")
+?BiocManager::install # See options
+# Install Bioconductor packages
+BiocManager::install("muscle") # Simplest usage
+BiocManager::install(pkgs=c("Biostrings", "muscle"))
+# Update installed packages
+BiocManager::install()
+# Search for Bioconductor packages
+BiocManager::available() # List everything
+?BiocManager::available # See options
 
 # Standard installation
 install.packages(c("adegenet", "poppr", "phytools"))
@@ -102,21 +115,6 @@ update.packages() # Update packages
 # Installation from custom repository
 install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
-
-## Bioconductor
-# Install CRAN package BiocManager used to manage Bioconductor packages
-if (!requireNamespace("BiocManager"))
-	install.packages("BiocManager")
-BiocManager::install()
-# Search for Bioconductor packages
-BiocManager::available() # List everything
-?BiocManager::available # See options
-# Update installed packages
-BiocManager::install()
-# Install Bioconductor packages
-BiocManager::install("muscle") # Simplest usage
-BiocManager::install(pkgs=c("Biostrings", "muscle"))
-?BiocManager::install # See more options
 
 ## Libraries for population genetic analysis
 
