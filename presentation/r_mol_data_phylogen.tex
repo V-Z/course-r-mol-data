@@ -9,12 +9,12 @@
 		pdfsubject={Course about phylogeny and evolution in R},
 		pdfcreator={XeLaTeX},
 		pdfkeywords={R, evolution, phylogeny, molecular data},
-		linkcolor=Tomato, % Navigation menu links on pages and in navigation menus
-		anchorcolor=SaddleBrown, % Not in use?
-		citecolor=Goldenrod, % Not in use?
-		filecolor=DarkMagenta, % Not in use?
-		menucolor=Sienna, % Not in use?
-		urlcolor=DarkTurquoise, % Links with \href and \url
+		linkcolor=Crimson, % Navigation menu links on pages and in navigation menus
+		anchorcolor=Magenta, % Not in use?
+		citecolor=Magenta, % Not in use?
+		filecolor=Magenta, % Not in use?
+		menucolor=Magenta, % Not in use?
+		urlcolor=DodgerBlue, % Links with \href and \url
 		pdftex},
 	url={hyphens, lowtilde} % Allow line breaks within URLs
 	]{beamer}
@@ -83,7 +83,7 @@
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=1.5cm]{rlogo.jpg}}
-\date{January 27 to 30, 2020}
+\date{March 16 to 20, 2020}
 
 \begin{document}
 
@@ -99,13 +99,14 @@
 
 \begin{frame}{The course information}
 	\begin{itemize}
-		\item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2020}
+		\item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2020-cb}
+% 		\begin{itemize}
+% 			\item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2020}
+% 		\end{itemize}
+% 		\item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
+		\item In \href{https://wstag.jcu.cz/portal/studium/prohlizeni.html?pc_lang=en}{IS STAG} as KBO/148 \enquote{Courses of work with molecular data in R}
 		\begin{itemize}
-			\item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2020}
-		\end{itemize}
-		\item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
-		\begin{itemize}
-			\item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
+% 			\item Česky: \url{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16}
 			\item For students having subscribed the subject, requirements are on next slide
 		\end{itemize}
 		\item Working version is available at \url{https://github.com/V-Z/course-r-mol-data} --- feel free to contribute, request new parts or report bugs
@@ -1380,9 +1381,6 @@
 \subsection{Notes about data}
 
 \begin{frame}[fragile]{Another data manipulation}
-	\begin{itemize}
-		\item SNPs can be into genind imported in same way as AFLP (PA)
-	\end{itemize}
 	\begin{spluscode}
     genind2df() # adegenet - export into data frame
     genind2genalex() # poppr - export for genalex
@@ -1398,6 +1396,7 @@
     # read manual pages (?...) of the functions before usage
 	\end{spluscode}
 	\begin{itemize}
+		\item SNPs can be into genind imported in same way as AFLP (PA)
 		\item \texttt{alleles2loci()} is very useful when each allele is in separated columns (not like in our case where one column contains one loci with all alleles) --- saves time needed to change input file formatting
 	\end{itemize}
 \end{frame}
@@ -3598,7 +3597,7 @@
 
 \section{Spatial analysis}
 
-\begin{frame}{Spatial analysis and genetic data}{Correlation of genes and space, spatial structure of genotypes}
+\begin{frame}[fragile]{Spatial analysis and genetic data}{Correlation of genes and space, spatial structure of genotypes}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 	\vfill
 	\begin{spluscode}
