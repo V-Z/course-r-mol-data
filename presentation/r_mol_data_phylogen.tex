@@ -774,24 +774,23 @@
 \begin{frame}[fragile]{Install Geneland package}
 	\label{Geneland}
 	\begin{itemize}
-		\item Since version 4, not in CRAN anymore, check \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual} and \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
+		\item Since version 4, not in CRAN anymore, check \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual}, \href{https://github.com/gilles-guillot/Geneland}{GitHub} and \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
+		\item On Windows install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} to compile source package
 	\end{itemize}
 	\begin{spluscode}
-    # Install package Geneland (since version 4 not available in CRAN)
-    # It is possible to specify direct path to package source
-    install.packages("https://i-pri.org/special/Biostatistics/Software/
-      Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
-    # If above command fails on Windows, try
-    install.packages("https://i-pri.org/special/Biostatistics/Software/
-      Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
     # Other packages used when using Geneland
     # Needed is PBSmapping or mapproj for conversion of coordinates
     # GUI uses for parallelisation snow and Rmpi
-    # RgoogleMaps (requires rgdal) can be used to plot Geneland output
-    # on top of Google map, maptools, shapefiles and tripack on GIS layer
+    # RgoogleMaps (requires rgdal) can be used to plot output on top of Google
+    # map, maptools, shapefiles (requires foreign) and tripack on GIS layer
     install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps",
       "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+    # Install Geneland from GitHub
+    # Devtools package is required to install from GitHub
+    if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
+    # Install Geneland itself
+    devtools::install_github("gilles-guillot/Geneland")
 	\end{spluscode}
 \end{frame}
 

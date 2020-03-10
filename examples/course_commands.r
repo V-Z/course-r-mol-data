@@ -81,15 +81,17 @@ install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
-# It is possible to specify direct path (local or web URL) to package source
-install.packages("https://i-pri.org/special/Biostatistics/Software/Geneland/distrib/Geneland_4.0.8.tar.gz", repos=NULL, type="source")
-# If above command fails on Windows, try
-install.packages("https://i-pri.org/special/Biostatistics/Software/Geneland/distrib/Geneland_4.0.8.zip", repos=NULL)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelisation snow and Rmpi
 # RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools, shapefiles (requires foreign) and tripack on GIS layer
 install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+# On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/
+# Install Geneland from GitHub
+# Devtools package is required to install from GitHub
+if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
+# Install Geneland itself
+devtools::install_github("gilles-guillot/Geneland")
 
 # We will load packages by library(package) one by one when needed...
 
