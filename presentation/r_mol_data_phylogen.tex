@@ -47,7 +47,7 @@
 % Syntax higlight
 \usepackage{minted}
 \usemintedstyle{vim} % Styles are listed by pygmentize -L styles; languages are listed by pygmentize -L lexers
-\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=DimGray, fontfamily=tt, gobble=4, numbersep=-3pt}
+\newminted{splus}{linenos, fontsize=\footnotesize, bgcolor=Gray, fontfamily=tt, gobble=4, numbersep=-3pt}
 % Change line number style
 \renewcommand{\theFancyVerbLine}{
 	\sffamily
@@ -83,7 +83,7 @@
 \title{Molecular data in R}
 \subtitle{Phylogeny, evolution \& R}
 \titlegraphic{\includegraphics[width=1.5cm]{rlogo.jpg}}
-\date{March 16 to 20, 2020}
+\date{October 19 to 23, 2020}
 
 \begin{document}
 
@@ -101,7 +101,7 @@
 	\begin{itemize}
 		\item The course page: \url{https://trapa.cz/en/course-molecular-data-r-2020-cb}
 % 		\begin{itemize}
-% 			\item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2020}
+% 			\item Česky: \url{https://trapa.cz/cs/kurz-molekularni-data-r-2021}
 % 		\end{itemize}
 % 		\item Subject in SIS: \url{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16}
 		\item In \href{https://wstag.jcu.cz/portal/studium/prohlizeni.html?pc_lang=en}{IS STAG} as KBO/148 \enquote{Courses of work with molecular data in R}
@@ -336,7 +336,7 @@
 
 \begin{frame}{Linux --- RedHat, Fedora and derivatives like CENTOS, Scientific Linux, etc.}
 	\begin{itemize}
-		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/README}
+		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/}
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
 		\item RStudio is available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
@@ -865,7 +865,7 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
+		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/} % FIXME Link doesn't exist
 		\begin{itemize}
 			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows, macOS and Linux have more options for parallelisation)
 			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
@@ -975,7 +975,7 @@
 		\begin{itemize}
 			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
 			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
-			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/people}{Karol Marhold} and his team
+			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
 			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
 			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
 			\item Partial mitochondrial sequence of mm18 control region of \textit{Meles meles} (Mustelidae) from \href{https://www.nature.com/articles/hdy201445}{Frantz et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/608602125}{GenBank}
@@ -1165,8 +1165,8 @@
 \begin{frame}[fragile]{Population genetics and phylogenetics in R}{Microsatellites, AFLP, SNP \& sequences}
 	\begin{multicols}{2}
 		\begin{itemize}
-			\item Now we will use mainly packages \href{http://adegenet.r-forge.r-project.org/}{adegenet} and \href{https://grunwaldlab.github.io/poppr/}{poppr}
-			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{http://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
+			\item Now we will use mainly packages \href{https://adegenet.r-forge.r-project.org/}{adegenet} and \href{https://grunwaldlab.github.io/poppr/}{poppr}
+			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{https://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
 			\item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
 			\item Most of methods are available for polyploids (although not all)
 			\item Some methods are unavailable for dominant (presence/absence) data
@@ -1418,19 +1418,19 @@
 	\begin{spluscode}
     # Reading FASTA (read.dna() reads also another formats, see ?read.dna)
     # Sequences of flu viruses from various years from USA (Adegenet toy data)
-    usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/
+    usflu.dna <- read.dna(file="https://adegenet.r-forge.r-project.org/
       files/usflu.fasta", format="fasta")
     class(usflu.dna) # Check the object
     usflu.dna # Check the object
     # Another possibility (only for FASTA alignments, same result):
-    usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org
+    usflu.dna2 <- fasta2DNAbin(file="https://adegenet.r-forge.r-project.org
       /files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
     class(usflu.dna2) # Check the object
     usflu.dna2 # Check the object
     as.character(usflu.dna2)[1:5,1:10] # Check the object
     dim(usflu.dna2) # Does it have correct size?
     # Read annotations
-    usflu.annot <- read.csv("http://adegenet.r-forge.r-project.org/files/
+    usflu.annot <- read.csv("https://adegenet.r-forge.r-project.org/files/
       usflu.annot.csv", header=TRUE, row.names=1)
     head(usflu.annot) # See result
 	\end{spluscode}
@@ -1500,7 +1500,7 @@
 
 \begin{frame}[fragile]{Importing SNP}
 	\begin{itemize}
-		\item Import from \href{http://zzz.bwh.harvard.edu/plink/}{PLINK} requires saving of data with option \href{http://zzz.bwh.harvard.edu/plink/dataman.shtml#recode}{\enquote{-recodeA}}
+		\item Import from \href{http://zzz.bwh.harvard.edu/plink/}{PLINK} requires saving of data with option \href{http://zzz.bwh.harvard.edu/plink/dataman.shtml#recode}{\enquote{-{-}recodeA}}
 	\end{itemize}
 	\begin{spluscode}
     read.PLINK(file="PLINKfile", ...) # See ?read.PLINK
@@ -1510,7 +1510,7 @@
 	\end{itemize}
 	\begin{spluscode}
     usflu.genlight <- fasta2genlight
-      (file="http://adegenet.r-forge.r-project.org/files/usflu.fasta",
+      (file="https://adegenet.r-forge.r-project.org/files/usflu.fasta",
       quiet=FALSE, saveNbAlleles=TRUE)
     usflu.genlight # See genlight
     ?fasta2genlight # Function has several options to speed up reading
@@ -1780,7 +1780,7 @@
 	\begin{itemize}
 		\item Good alignment is basic condition for any analysis of DNA sequences
 		\item DNA/RNA and protein sequences must be aligned prior any subsequent analysis (tree building,~\ldots)
-		\item R doesn't have any possibility for visual editing (use rather software like \href{http://ugene.net/}{Unipro UGENE} \href{https://www.geneious.com/}{Geneious} or \href{https://digitalinsights.qiagen.com/products-overview/analysis-and-visualization/qiagen-clc-genomics-workbench/}{CLC Genomics Workbench}
+		\item R doesn't have any possibility for visual editing (use rather software like \href{http://ugene.net/}{Unipro UGENE}, \href{https://www.geneious.com/}{Geneious} or \href{https://digitalinsights.qiagen.com/products-overview/analysis-and-visualization/qiagen-clc-genomics-workbench/}{CLC Genomics Workbench}
 		\item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
 		\begin{itemize}
 			\item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python --- only matters what user likes, knows and wish to do with the results\ldots
@@ -2178,10 +2178,10 @@
 			\item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
 		\end{itemize}
 		\item \texttt{H} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} --- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size
-		\item \texttt{G} --- \href{http://www.genetics.org/content/118/4/705}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
+		\item \texttt{G} --- \href{https://www.genetics.org/content/118/4/705}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
 		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
 		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
-		\item \texttt{Hexp} --- \href{http://www.genetics.org/content/89/3/583}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
+		\item \texttt{Hexp} --- \href{https://www.genetics.org/content/89/3/583}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
 		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
 		\begin{itemize}
 			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
@@ -2527,12 +2527,12 @@
 		\textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
 		\href{https://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & \alert{No}\\
 			& \texttt{diss.dist} & & \\
-		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{http://www.genetics.org/content/89/3/583.short}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
+		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{https://www.genetics.org/content/89/3/583.short}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
 			& & Genetic Drift & \\
 		\href{https://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
-		\href{http://www.genetics.org/node/324318.full}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
+		\href{https://www.genetics.org/content/106/3/575}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
 		Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- & Yes\\
-		\href{http://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2004.02209.x/full}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
+		\href{https://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2004.02209.x/full}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
 	\end{tabular}
 	\vfill
 	\begin{spluscode}
@@ -3207,7 +3207,7 @@
 		\item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
 		\item Finally it runs discriminant analysis (DA) to maximize differences among groups
 		\item Various modes of displaying of results --- \enquote{Structure-like}, \enquote{PCA-like} and more
-		\item More information at \url{http://adegenet.r-forge.r-project.org/} and \texttt{adegenetTutorial("dapc")}
+		\item More information at \url{https://adegenet.r-forge.r-project.org/} and \texttt{adegenetTutorial("dapc")}
 		\item If following commands would seem too complicated to you, try web interface by this command:
 	\end{itemize}
 	\begin{spluscode}
@@ -3426,7 +3426,7 @@
 		\item Let's use modern multi-core CPUs and plenty of RAM in current computers --- parallelisation saves time
 		\item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
 		\item When using it, cite \href{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0070651}{Besnier \& Glover 2013}
-		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analysis-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
+		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
 		\item Authors recommend to run it without GUI and not on Windows\ldots
 		\item For this chapter start new R project in new working directory
 	\end{itemize}
@@ -3533,7 +3533,7 @@
 
 \begin{frame}[fragile]{Post process Structure results --- select the best K}
 	\begin{itemize}
-		\item Using Structure-sum-2011 R script by \href{https://en.uit.no/om/enhet/ansatte/person?p_document_id=41186&p_dimension_id=88165}{Dorothee Ehrich}
+		\item Using Structure-sum-2011 R script by \href{https://en.uit.no/ansatte/person?p_document_id=41186}{Dorothee Ehrich}
 	\end{itemize}
 	\begin{spluscode}
     # Load the script
@@ -4288,7 +4288,7 @@
 		\end{spluscode}
 		\begin{itemize}
 			\item Google recently started to require \href{https://developers.google.com/maps/documentation/maps-static/intro}{API key}, it doesn't work without it\ldots
-			\item See \href{http://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
+			\item See \href{https://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
 			\item Many on-line map services do require (paid) API key\ldots
 		\end{itemize}
 		\begin{center}
@@ -5904,7 +5904,7 @@
 			\item It can be tricky to get desired figure --- some magic use to be needed\ldots
 		\end{itemize}
 		\item There are \href{https://CRAN.R-project.org/web/views/Graphics.html}{plenty of graphical packages}
-		\item Advanced functions we used internally by used packages are \href{https://CRAN.R-project.org/package=lattice}{lattice} (\href{http://lattice.r-forge.r-project.org/}{web}), \href{https://CRAN.R-project.org/package=gplots}{gplot} and \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2} (\href{https://ggplot2.tidyverse.org/}{web})
+		\item Advanced functions we used internally by used packages are \href{https://CRAN.R-project.org/package=lattice}{lattice} (\href{https://lattice.r-forge.r-project.org/}{web}), \href{https://CRAN.R-project.org/package=gplots}{gplot} and \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2} (\href{https://ggplot2.tidyverse.org/}{web})
 		\begin{itemize}
 			\item They have enormous possibilities, it is large topic for another long course\ldots
 		\end{itemize}
@@ -5942,7 +5942,7 @@
 		\item In command line (Linux/macOS/Windows/\ldots) use
 		\begin{itemize}
 			\item \texttt{Rscript myscript.r} to work \textbf{interactively} --- all output is written to the terminal (screen; as usual), user can be asked for some values,~\ldots
-			\item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} --- all output is written into file \texttt{myscript.Rout}, terminal (screen) is clean and user can not influence the script anyhow --- e.g. on \href{https://www.metacentrum.cz/en/}{MetaCentrum} --- be sure the script doesn't require user input and works correctly
+			\item \texttt{R CMD BATCH myscript.r} to let it run \textbf{non-interactively} --- all output is written into file \texttt{myscript.Rout}, terminal (screen) is clean and user can not influence the script anyhow --- e.g. on \href{https://www.metacentrum.cz/}{MetaCentrum} --- be sure the script doesn't require user input and works correctly
 		\end{itemize}
 		\item Script ends when there is any error or on the end of the file
 		\item When working on both Windows and macOS/Linux, take care about end of lines, and in case of usage of accented characters (e.g. for labels) also about encoding
@@ -6152,9 +6152,9 @@
 		\item R phylogeny mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-phylo}
 		\item R genetics mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-genetics}
 		\item Bioconductor home page \url{https://bioconductor.org/} and support forum \url{https://support.bioconductor.org/}
-		\item Adegenet help mailing list \url{http://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
-		\item Poppr forum \url{https://groups.google.com/forum/\#!forum/poppr}
-		\item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{http://r.789695.n4.nabble.com/})
+		\item Adegenet help mailing list \url{https://lists.r-forge.r-project.org/cgi-bin/mailman/listinfo/adegenet-forum} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
+		\item Poppr forum \url{https://groups.google.com/g/poppr/about}
+		\item R help mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-help} (web interface \url{https://r.789695.n4.nabble.com/})
 		\item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
 		\item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
 		\item R at StackOverflow StackExchange (for programmers) \url{https://stackoverflow.com/questions/tagged/r}
@@ -6208,21 +6208,22 @@
 		\item Books about R \url{https://www.r-project.org/doc/bib/R-books.html}
 		\item List of R documentation \url{https://CRAN.R-project.org/manuals.html}
 		\item Bioconductor help pages \url{https://master.bioconductor.org/help/}
-		\item R phylo wiki \url{https://www.r-phylo.org/wiki/Main_Page}
+		\item R phylogenetics wiki \url{https://www.r-phylo.org/wiki/Main_Page}
 		\item R phylogenetics at CRAN \url{https://CRAN.R-project.org/web/views/Phylogenetics.html}
 		\item Integrated documentation search \url{https://www.rdocumentation.org/}
+		\item Better interface to R and packages documentation and integrated search \url{https://rdrr.io/}
 		\item RForge package repository \url{https://r-forge.r-project.org/} (with documentation)
 		\item Little Book of R for Bioinformatics \url{https://a-little-book-of-r-for-bioinformatics.readthedocs.org/en/latest/}
 		\item Little Book of R for Multivariate Analysis \url{https://little-book-of-r-for-multivariate-analysis.readthedocs.org/en/latest/}
 		\item Little Book of R for Biomedical Statistics \url{https://a-little-book-of-r-for-biomedical-statistics.readthedocs.org/en/latest/}
 		\item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/en/latest/}
-		\item Adegenet web \url{http://adegenet.r-forge.r-project.org/} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
+		\item Adegenet web \url{https://adegenet.r-forge.r-project.org/} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
 		\item APE home page \url{http://ape-package.ird.fr/}
 		\item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
 		\item Phytools \url{http://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
 		\item Poppr documentation \url{https://grunwaldlab.github.io/poppr/reference/poppr-package.html}
 		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12558}{Kamvar et al}
-		\item ade4 home page \url{http://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{http://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
+		\item ade4 home page \url{https://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{https://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
 		\item R Programming \url{https://en.wikibooks.org/wiki/R_Programming}
@@ -6396,7 +6397,7 @@
 		\item \href{https://CRAN.R-project.org/package=rdryad}{rdryad}: access for Dryad web services
 		\item \href{https://CRAN.R-project.org/package=reshape2}{reshape2}: restructure and aggregate data
 		\item \href{https://github.com/ramnathv/rMaps}{rMaps}: interactive maps
-		\item \href{https://CRAN.R-project.org/package=rphast}{rphast}: interface to PHAST software for comparative genomics
+		\item \href{https://github.com/CshlSiepelLab/RPHAST}{rphast}: interface to PHAST software for comparative genomics
 		\item \href{https://r-forge.r-project.org/projects/rmesquite/}{RMesquite}: interoperability with Mesquite
 		\item \href{https://CRAN.R-project.org/package=Rphylip}{Rphylip}: interface for PHYLIP
 		\item \href{https://bioconductor.org/packages/release/bioc/html/Rsamtools.html}{Rsamtools}: BAM, FASTA, BCF and tabix file import and manipulations
@@ -6410,9 +6411,8 @@
 		\item \href{https://CRAN.R-project.org/package=spatstat}{spatstat}: spatial point pattern analysis
 		\item \href{https://r-forge.r-project.org/projects/splits/}{splits}: delimiting species and automated taxonomy at many levels of biological organization
 		\item \href{https://CRAN.R-project.org/package=strap}{strap}: stratigraphic analysis of phylogenetic trees, palaeontology
-		\item \href{https://CRAN.R-project.org/package=strataG}{strataG}: analyzing stratified population genetic data by vast range of methods, very powerful
+		\item \href{https://github.com/cran/strataG}{strataG}: analyzing stratified population genetic data by vast range of methods, very powerful
 		\item \href{https://CRAN.R-project.org/package=stringi}{stringi} and \href{https://CRAN.R-project.org/package=stringr}{stringr}: character string processing, internally used by many packages
-		\item \href{https://CRAN.R-project.org/package=surface}{surface}: fitting Hansen models to investigate convergent evolution
 		\item \href{https://CRAN.R-project.org/package=SYNCSA}{SYNCSA}: analysis of metacommunities based on functional traits and phylogeny of the community components
 		\item \href{https://CRAN.R-project.org/package=taxize}{taxize}: taxonomic information from around the web
 		\item \href{https://CRAN.R-project.org/package=TESS}{TESS}: simulation of reconstructed phylogenetic trees under tree-wide time-heterogeneous birth-death processes and estimation of diversification parameters under the same model
