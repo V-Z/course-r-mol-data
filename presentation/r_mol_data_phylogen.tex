@@ -173,7 +173,7 @@
 			\item And \href{https://en.wikipedia.org/wiki/List_of_text_editors}{more}\ldots
 		\end{itemize}
 	\end{multicols}
-	\vfil
+	\vfill
 	\begin{itemize}
 		\item The best option is to use text editor of selected R GUI (slide~\ref{gui})\ldots
 	\end{itemize}
@@ -183,12 +183,12 @@
 	\begin{itemize}
 		\item Commands from file \texttt{course\_commands.r} can be mostly directly launched without editing them, but before you do so\ldots
 		\begin{enumerate}
-			\item \textbf{Read} the command and all comments around, do not blindly launch it
+			\item \textbf{Read} the command and all comments around, \textbf{do not blindly launch} it
 			\item Ensure you understand, what is \textbf{aim} of the command (what it is supposed to do)
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
 			\item Ensure you understand \textbf{syntax} of the command (its grammatical structure and what and how it technically does)
 		\end{enumerate}
-		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command
+		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command --- \textbf{read also comments} around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
 	\end{itemize}
 \end{frame}
@@ -201,9 +201,9 @@
 			\item Analyzing phylogeny and evolution and basic theory
 			\begin{itemize}
 				\item DNA sequences, SNP, SSRs, AFLP, VCF,~\ldots
+				\item Alignments
 				\item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony,~\ldots
 				\item Character evolution, ancestral state reconstructions,~\ldots
-				\item Alignments
 				\item Manipulations with trees
 			\end{itemize}
 			\item Plotting
@@ -217,7 +217,7 @@
 			\item Detailed theory behind used methods
 			\item Programming in~R
 			\item Other software related to the methods used (with exceptions of applications called from R)
-			\item Other areas of R usage (ecology, biomedicine,~\ldots)
+			\item Other areas of R usage (ecology, biomedicine, proteomics,~\ldots)
 		\end{itemize}
 	\end{multicols}
 \end{frame}
@@ -243,6 +243,7 @@
 \begin{frame}[allowframebreaks]{Graphical user interfaces (GUI)}
 	\label{gui}
 	\begin{itemize}
+		\item Most users use some GUI --- it is more convenient than plain command line
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://rstudio.com/products/rstudio/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
@@ -254,6 +255,7 @@
 		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
 		\item Java GUI for R \url{https://rforge.net/JGR/} --- Java (multi-platform, but with all Java issues like memory consumption)
 		\item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
+		\item And more\ldots
 		\item Pick one you like (from above list or any else) and install it\ldots
 	\end{itemize}
 \end{frame}
@@ -344,8 +346,8 @@
 
 \begin{frame}{Important note about names of directories}
 	\begin{itemize}
-		\item \alert{There must not be any spaces or accented characters in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution)
-		\item If the user has e.g. on Windows path like \texttt{C:/Documents and Settings/Šíleně úpějící kůoň/kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems\ldots
+		\item \alert{There \textbf{must not} be \textbf{any spaces or accented characters} in the path to R working directory or local R library}, otherwise some R functions can fail (and there is no other solution than creating new directory/user)
+		\item If the user has e.g. on Windows (where the problem is the biggest) path like \texttt{C:/Documents and Settings/Šíleně úpějící kůoň/kurzíček}, change it to something like \texttt{C:/Users/username/rcourse}, otherwise user can experience a~lot of problems\ldots
 		\item It might be required to make a~new user on the computer\ldots
 		\item Similarly on macOS and Linux, avoid directory names with spaces and accented characters
 	\end{itemize}
@@ -354,9 +356,9 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 15,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,800 packages)
-		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,000 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 16,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,900 packages)
+		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
 		\item Some packages are available from more resources
@@ -439,11 +441,31 @@
 			\item Usage
 			\item Comments on arguments
 			\item Details
+			\item Output value(s)
 			\item About author(s)
 			\item References to cite
 			\item Example code
 		\end{itemize}
 	\end{multicols}
+	\vfill
+\end{frame}
+
+\begin{frame}{Importance of working directory}
+	\begin{itemize}
+	 \item Very important point to get familiar with in R
+		\item Default place to load/save, import/export data/results
+		\begin{itemize}
+			\item It changes paths --- one of the most common mistakes --- something (input file,~\ldots) is not found because of wrong path
+			\item Private folder for particular R project (task) prevents unwanted inferences with another tools/projects
+		\end{itemize}
+		\item Without saving and loading the R data next time, it is not possible to do any longer work or to check the work in the future
+		\item \alert{Get used that R \textbf{always} work in some directory and by default saves/loads files there}
+		\begin{itemize}
+		 \item When starting RStudio/RKWard, R usually starts in user's home directory or so
+		\end{itemize}
+		\item RStudio and RKWard also save session information (list of opened files,~\ldots) --- very convenient
+		\item Regularly save your work to prevent looses in case of crash or any other accident
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Where we are?}
@@ -458,24 +480,10 @@
     ls() # Lists currently available R objects
 	\end{spluscode}
 	\begin{itemize}
-		\item In Windows (\textbf{File | working directory}) or in RStudio (\textbf{Session | Set working directory}) set it in menu or by above command
+		\item In Windows plain R (\textbf{File | working directory}), in RStudio (\textbf{Session | Set working directory}) or in RKWard (\textbf{Workspace | Set Working Directory}) set it in menu or by the above command
 		\item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/macOS)
-		\item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time
+		\item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time (files can be renamed)
 		\item RStudio and RKWard help with this very much
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Importance of working directory}
-	\begin{itemize}
-		\item Default place to load/save, import/export data/results
-		\begin{itemize}
-			\item It changes paths --- one of the most common mistakes --- something is not found because of wrong path
-			\item Private folder for particular R project (task) prevents unwanted inferences with another tools/projects
-		\end{itemize}
-		\item Without saving and loading the R data next time, it is not possible to do any longer work or to check the work in the future
-		\item \alert{Get used that R \textbf{always} work in some directory and by default saves/loads files there}
-		\item RStudio and RKWard also save session information (list of opened files,~\ldots) --- very convenient
-		\item Regularly save your work to prevent looses in case of crash or any other accident
 	\end{itemize}
 \end{frame}
 
@@ -483,10 +491,11 @@
 
 \begin{frame}{Types of objects}
 	\begin{itemize}
-		\item \textbf{Vectors} --- numbers or characters
+		\item As any programming language, R has plenty of types of objects (variables) with different features, usage and aims
+		\item \textbf{Vectors} --- numbers, characters, boolean
 		\item \textbf{Matrices} --- columns are of same type (numeric, character, etc.) and the same length
 		\item \textbf{Arrays} --- like matrices, but with possibly more dimensions
-		\item \textbf{Data frames} --- more general --- columns can be of different type
+		\item \textbf{Data frames} --- more general --- columns can be of different type (\enquote{sheet of Excel})
 		\item \textbf{Lists} --- ordered collections of objects (vectors, matrices,~\ldots) --- not necessarily of the same type
 		\item \textbf{Factors} --- a~vector of levels, e.g. populations, colors, etc.
 		\item More \enquote{advanced} objects to store plots, genetic data,~\ldots
@@ -502,7 +511,7 @@
 \begin{frame}[allowframebreaks]{Popular object classes (we are going to use)}
 	\begin{itemize}
 		\item \texttt{AAbin} ---stores amino acid sequences (aligned or not)
-		\item \texttt{alignment} --- aligned sequences (seqinr)
+		\item \texttt{alignment} --- aligned sequences (package seqinr)
 		\item \texttt{dapc} --- results of DAPC
 		\item \texttt{dist} --- distance matrices
 		\item \texttt{DNAbin} --- stores DNA sequences (aligned or not)
@@ -516,7 +525,7 @@
 		\item \texttt{matching} --- binary phylogenetic trees
 		\item \texttt{matrix} --- general matrix (numeric or not)
 		\item \texttt{pco}; \texttt{dudi} --- results of PCA, PCoA,~\ldots
-		\item \texttt{phyDat} --- \enquote{preparation} of data for some phylogenetic analysis
+		\item \texttt{phyDat} --- \enquote{preparation} of data for some phylogenetic analysis (usually sequences and characters)
 		\item \texttt{phylo} --- phylogenetic information, typically trees
 		\item \texttt{phylo4} --- derived from phylo (more data), S4 instead of S3
 		\item \texttt{SNPbin} --- stores large SNP data for single genome
@@ -526,6 +535,7 @@
 		\item and more\ldots~common task is converting among formats\ldots
 		\item \ldots not all formats are (easily) convertible among each other\ldots
 		\item To get information about content of each data type see \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
+		\item Common task is conversion among various formats --- functions commonly require different input format
 	\end{itemize}
 \end{frame}
 
@@ -624,14 +634,17 @@
     is.matrix(y) # Is it matrix? Try is.<TAB><TAB>
     # TAB key shows available functions and objects starting by typed text
     y # Prints the matrix
+    dim(y) # Dimensions of "y"
     y[,2] # Prints second column
-    y[3,] # Prints third row
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Basic operations with data II}
 	\begin{spluscode}
+    y[3,] # Prints third row
     y[4,3] # Prints element from fourth row and third column
+    c(x, y[4,]) # Concatenate "x" and 4th row of "y"
+    x2 <- c(x, 3, 2, 1) # Concatenate "x" and values "3", "2" and "1"
     x <- y[2,] # Replaces "x" by second row of "y" (no warning)
     rm(x) # Deletes x (no warning)
     y[,1:3] # Prints first through third column of the matrix
@@ -641,42 +654,95 @@
     colnames(y) <- c("A", "B", "C", "D") # Set column names
     # Objects and functions are without quotation marks; files and text with
     colnames(y) # Prints column names, use rownames() in very same way
+    y # See modified object
     y[,"C"] # Prints column C (R is case sensitive!)
-    t(y) # Transposes the matrix
-    y <- as.data.frame(y) # Turns into DF (see other functions as.*)
-    y[y==17] <- "NA" # Removes values of 17 (NA = not available = missing)
-    y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
+    y[,c("C", "B")] # Extract columns "C" and "B"
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Basic operations with data III} % TODO Add more operations
+\begin{frame}[fragile]{Basic operations with data III}
+	\label{iris}
 	\begin{spluscode}
+    t(y) # Transposes the matrix
+    diag(y) # Get diagonal of the matrix
+    # Replace diagonal by repetition of values 50 and 100
+    diag(y) <- rep(x=c(50, 100), times=2)
+    y # See modified object
+    y <- as.data.frame(y) # Turns into DF (see other functions as.*)
+    class(y) # Is it data frame now?
+    y[y==17] <- "NA" # Removes values of 17 (NA = not available = missing)
+    y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
+    # This can be conveniently done in RStudio/RKWard
     save(list=ls(), file="test.RData") # Saves all objects during the work
     load("test.RData") # Loads saved R environment with all objects
-    # Use to edit matrices, data frames, functions, ...
-    fix(y)
+    fix(y) # Use to edit matrices, data frames, functions, ...
+    rm(y) # Removing...
 	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Some basic statistics}
+	\begin{spluscode}
+    summary(iris) # Basic summary statistics
+    # Boxplot comparing sepal lengths of the three species
+    boxplot(formula=iris$Sepal.Length~iris$Species)
+    setosa <- iris[which(iris$Species=="setosa"),] # Extract only setosa
+    # Testing correlation between sepal length and width of setosa
+    cor.test(x=setosa$Sepal.Length, y=setosa$Sepal.Width)
+    # Plot correlation between sepal length and width of setosa
+    plot(x=setosa$Sepal.Length, y=setosa$Sepal.Width, main="Sepals",
+      xlab="Length", ylab="Width", pch=16, cex=1.5, col="red")
+    # Add linear model line
+    abline(reg=lm(setosa$Sepal.Width~setosa$Sepal.Length), col='brown', lwd=3)
+    # Add sepal width mean and standard deviation
+    abline(h=mean(setosa$Sepal.Width), col="green", lwd=2, lty=2)
+    abline(h=mean(setosa$Sepal.Width) + sd(setosa$Sepal.Width), col="green",
+      lwd=2, lty=3)
+    abline(h=mean(setosa$Sepal.Width) - sd(setosa$Sepal.Width), col="green",
+      lwd=2, lty=3)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}{Figures from previous basic statistics}
+	\begin{center}
+		\includegraphics[width=\textwidth-2cm]{iris.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Practice basic operations I}
+	\begin{exampleblock}{Tasks I}
+		\begin{enumerate}
+			\item Load R training dataset \texttt{iris} (\texttt{data(iris)}) and read about it (\texttt{?iris}).
+			\item Explore it --- print it, display only beginning of data (\texttt{head()}). How many rows and columns does it have? Which variables? Which species (\texttt{levels()})?
+			\item Extract from \texttt{iris} dataset only sepal lengths and save it as new vector.
+			\item Extract from \texttt{iris} dataset petal length and species and save it as new data frame.
+			\item Extract from \texttt{iris} dataset lines 10--20.
+			\item Read help of \texttt{rep} function and
+			\begin{enumerate}
+				\item Create repetition of five times value of \enquote{A}.
+				\item Create repetition of five times vector of \enquote{1, 3}.
+			\end{enumerate}
+		\end{enumerate}
+	\end{exampleblock}
+\end{frame}
+
+\begin{frame}{Practice basic operations II}
+	\begin{exampleblock}{Tasks II}
+		\begin{enumerate}
+			\item Read help of \texttt{seq} function and create sequence from 5 to 20 with steps of 0.5 and save it as new vector.
+			\item Extract from that vector $2^{nd}$, $4^{th}$ and $8^{th}$ position and save it as new vector.
+			\item Remove from that vector $2^{nd}$ element.
+			\item Concatenate previous two vectors into new vector.
+			\item What is difference between \texttt{iris["Sepal.Width"]}, \texttt{iris[2]}, \texttt{iris[["Sepal.Width"]]} and \texttt{iris\$Sepal.Width}? Compare. What are the different ways good for?
+			\item Try similar tasks as on slide~\ref{iris} with another species and characters. Try to improve the plots.
+		\end{enumerate}
+	\end{exampleblock}
 \end{frame}
 
 \subsection{Packages for our work}
 
-\begin{frame}{Repositories}
-	\begin{itemize}
-		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
-		\item Repositories doesn't have to be set as global options, e.g. Bioconductor has its own way to manage packages
-		\item Similar concepts as app stores of Android, iOS, etc.
-	\end{itemize}
-	\begin{block}{Installation of packages in GUI}
-		\begin{itemize}
-			\item \textbf{RStudio:} set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
-			\item \textbf{RKWard:} go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{R-Packages}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages and plugins\ldots}, click to \textbf{Install\ldots}, select and install desired packages\ldots
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-\begin{frame}{Theory for packages and their management}
+\begin{frame}{Packages, repositories and their management}
 	\begin{itemize}
 		\item Standalone plain R doesn't have enough tools for most of scientific disciplines --- only basic methods and tools for programmers, including for package management
 		\item Users/developers contribute by making extra packages extending computational possibilities --- one of biggest R advantages --- it then has unlimited possibilities
@@ -688,6 +754,20 @@
 			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff}) or use special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
 		\end{enumerate}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}{Repositories}
+	\begin{itemize}
+		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
+		\item Repositories don't have to be set as global options, e.g. Bioconductor (slide~\ref{bioc}) has its own way to manage packages
+		\item Similar concepts as app stores of Android, iOS, etc.
+	\end{itemize}
+	\begin{block}{Installation of packages in GUI}
+		\begin{itemize}
+			\item \textbf{RStudio:} set repositories by command from slide~\ref{repos} and in bottom right pane select \textbf{Packages} and click on \textbf{Install Packages\ldots}
+			\item \textbf{RKWard:} go to menu \textbf{Settings | Configure 'RKWard'} and select \textbf{R-Packages}. Add URLs of repositories from slide~\ref{repos}. \textbf{OK}. Go to menu \textbf{Settings | Manage R packages and plugins\ldots}, click to \textbf{Install\ldots}, select and install desired packages\ldots
+		\end{itemize}
+	\end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Set repositories}
@@ -706,7 +786,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 3.5 to 3.6), user must reinstall all packages
+		\item After upgrade of R (e.g. from 3.6 to 4.0), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -714,7 +794,7 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
-		\item After upgrade of R (e.g. from 3.5 to 3.6), all packages must be reinstalled
+		\item After upgrade of R (e.g. from 3.6 to 4.0), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
@@ -746,7 +826,7 @@
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     # Regularly update installed packages
     update.packages(ask=FALSE)
-    # Upgrade all packages e.g. from R 3.5 to 3.6
+    # Upgrade all packages e.g. from R 3.6 to 4.0
     install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
@@ -850,6 +930,7 @@
 		\item Gdal \url{https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries}
 		\begin{itemize}
 			\item Recommended for conversion of coordinates for Geneland (from slide~\ref{GenelandUse}), loading of SHP files, etc.
+			\item Optional for Windows users, Linux users should use \texttt{gdal} and respective development (\texttt{-dev(el)}) packages
 		\end{itemize}
 		\item GIMP \url{https://www.gimp.org/}
 		\begin{itemize}
@@ -867,7 +948,7 @@
 		\end{itemize}
 		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/} % FIXME Link doesn't exist
 		\begin{itemize}
-			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows, macOS and Linux have more options for parallelisation)
+			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows; macOS and Linux have more options for parallelisation)
 			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
 		\end{itemize}
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
@@ -877,6 +958,7 @@
 		\item proj \url{https://proj4.org/download.html}
 		\begin{itemize}
 			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+			\item Optional for Windows users, Linux users should use \texttt{proj} and respective development (\texttt{-dev(el)}) packages
 		\end{itemize}
 		\item Rtools \url{https://cran.r-project.org/bin/windows/Rtools/}
 		\begin{itemize}

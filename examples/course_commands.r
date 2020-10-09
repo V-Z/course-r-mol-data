@@ -29,9 +29,12 @@ x # See modified object
 y <- matrix(data=5:20, nrow=4, ncol=4) # Creates a matrix
 is.matrix(y) # Is it matrix? Try is.<TAB><TAB> TAB key shows available functions and objects starting by typed text
 y # Prints the matrix
+dim(y) # Dimensions of "y"
 y[,2] # Prints second column
 y[3,] # Prints third row
 y[4,3] # Prints element from fourth row and third column
+c(x, y[4,]) # Concatenate "x" and 4th row of "y"
+x2 <- c(x, 3, 2, 1) # Concatenate "x" and values "3", "2" and "1"
 x <- y[2,] # Replaces "x" by second row of "y" (no warning) - R doesn't ask neither notifies when overwriting objects! Be careful!
 x # See modified object
 rm(x) # Deletes x (no warning)
@@ -43,17 +46,43 @@ y # See modified object
 summary(y) # Basic statistics - according to columns
 colnames(y) <- c("A", "B", "C", "D") # Set column names - Objects and functions are without quotation marks; files, text with
 colnames(y) # Prints column names, use rownames() in same way
+y # See modified object
 y[,"C"] # Prints column C (R is case sensitive!)
+y[,c("C", "B")] # Extract columns "C" and "B"
 t(y) # Transposes the matrix
+diag(y) # Get diagonal of the matrix
+diag(y) <- rep(x=c(50, 100), times=2) # Replace diagonal by repetition of values 50 and 100
+y # See modified object
 y <- as.data.frame(y) # Turns into DF (see other functions as.*)
+class(y) # Is it data frame now?
 y[y==17] <- "NA" # Removes values of 17
 y # See modified object
 y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
+# When loading saved project, you have to load again libraries and scripts (see further), data objects are restored
+# This can be conveniently done in RStudio/RKWard
 save(list=ls(), file="test.RData") # Saves all objects during the work
 load("test.RData") # Loads saved R environment with all objects
 # When loading saved project, you have to load again libraries and scripts (see further), data objects are restored
 fix(y) # Use to edit matrices, data frames, functions, ...
-rm(y)
+rm(y) # Removing...
+
+## Some basic statistics
+# Basic summary statistics
+summary(iris)
+# Boxplot comparing sepal lengths of the three species
+boxplot(formula=iris$Sepal.Length~iris$Species)
+# Extract only setosa
+setosa <- iris[which(iris$Species=="setosa"),]
+# Testing correlation between sepal length and width of setosa
+cor.test(x=setosa$Sepal.Length, y=setosa$Sepal.Width)
+# Plot correlation between sepal length and width of setosa
+plot(x=setosa$Sepal.Length, y=setosa$Sepal.Width, main="Sepals", xlab="Length", ylab="Width", pch=16, cex=1.5, col="red")
+# Add linear model line
+abline(reg=lm(formula=setosa$Sepal.Width~setosa$Sepal.Length), col='brown', lwd=3)
+# Add sepal width mean and standard deviation
+abline(h=mean(setosa$Sepal.Width), col="green", lwd=2, lty=2)
+abline(h=mean(setosa$Sepal.Width) + sd(setosa$Sepal.Width), col="green", lwd=2, lty=3)
+abline(h=mean(setosa$Sepal.Width) - sd(setosa$Sepal.Width), col="green", lwd=2, lty=3)
 
 ## Packages and repositories
 
