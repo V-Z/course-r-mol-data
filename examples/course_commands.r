@@ -145,15 +145,6 @@ update.packages() # Update packages
 install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
-## Libraries for population genetic analysis
-
-# Load needed libraries
-library(ape)
-library(ade4)
-library(adegenet)
-library(pegas)
-library(poppr)
-
 ## Data
 
 # R training data
@@ -175,6 +166,17 @@ data(shorebird) # Loading the data
 ?adegenet::rupica
 ?ape::carnivora
 ?caper::shorebird
+
+## Libraries for loading data and population genetic analysis
+
+# Load needed libraries
+library(ape)
+library(ade4)
+library(adegenet)
+library(pegas)
+library(poppr)
+
+## Work with data
 
 # Load training data
 hauss.loci <- read.loci("https://soubory.trapa.cz/rcourse/haussknechtii_ssrs.txt", header=TRUE, loci.sep="\t", allele.sep="/", col.pop=2, col.loci=3:14, row.names=1)
@@ -213,12 +215,12 @@ hauss.loci.cor <- genind2loci(hauss.genind.cor)
 write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t", allele.sep="/")
 
 # Read data sets from various software
-read.genalex() # poppr - reads *.csv file
-read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
-read.genetix() # adegenet - reads *.gtx files, only haploid/diploid data
-read.genepop() # adegenet - reads *.gen files, only haploid/diploid data
-read.structure() # adegenet - reads *.str files, only haploid/diploid data
-import2genind() # adegenet - more automated version of above functions
+?read.genalex # poppr - reads *.csv file
+?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
+?read.genetix # adegenet - reads *.gtx files, only haploid/diploid data
+?read.genepop # adegenet - reads *.gen files, only haploid/diploid data
+?read.structure # adegenet - reads *.str files, only haploid/diploid data
+?import2genind # adegenet - more automated version of above functions
 
 # Import of triploid (polyploid) microsattelites
 tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
@@ -249,38 +251,38 @@ aflp.genind
 summary(amara.aflp)
 
 # Some useful functions for data manipulations
-genind2df() # adegenet - export into data frame
-genind2genalex() # poppr - export for genalex
-splitcombine() # poppr - edits population hierarchy
-popsub() # poppr - extracts only selected population(s)
-clonecorrect() # poppr - corrects for clones
-informloci() # poppr - removes uninformative loci
-seppop() # adegenet - separates populations from genind or genlight object
-seploc() # adegenet - splits genind, genpop or genlight by markers
-alleles2loci() # pegas - transforms a matrix of alleles into "loci"
+?genind2df # adegenet - export into data frame
+?genind2genalex # poppr - export for genalex
+?splitcombine # poppr - edits population hierarchy
+?popsub # poppr - extracts only selected population(s)
+?clonecorrect # poppr - corrects for clones
+?informloci # poppr - removes uninformative loci
+?seppop # adegenet - separates populations from genind or genlight object
+?seploc # adegenet - splits genind, genpop or genlight by markers
+?alleles2loci # pegas - transforms a matrix of alleles into "loci"
 # seppop and seploc return lists of objects - for further analysis
-# read manual pages (?...) of the functions before usage
+# read manuals (?...) of the functions before usage
 
 # Reading FASTA (reads also another formats, see ?read.dna), sequences of flu viruses from various years from USA (Adegenet toy data)
-usflu.dna <- read.dna(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
+usflu.dna <- read.dna(file="https://adegenet.r-forge.r-project.org/files/usflu.fasta", format="fasta")
 # Check the object
 class(usflu.dna)
 usflu.dna
 # Another possibility (only for FASTA alignments, same result):
-usflu.dna2 <- fasta2DNAbin(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
+usflu.dna2 <- fasta2DNAbin(file="https://adegenet.r-forge.r-project.org/files/usflu.fasta") # Normally keeps only SNP - see ?fasta2DNAbin
 # Check the object
 class(usflu.dna2)
 usflu.dna2
 as.character(usflu.dna2)[1:5,1:10]
 dim(usflu.dna2) # Does it have correct size?
 # Read anotations
-usflu.annot <- read.csv("http://adegenet.r-forge.r-project.org/files/usflu.annot.csv", header=TRUE, row.names=1)
+usflu.annot <- read.csv("https://adegenet.r-forge.r-project.org/files/usflu.annot.csv", header=TRUE, row.names=1)
 head(usflu.annot)
 # Convert DNAbin to genind - only polymorphic loci are retained
 usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
 usflu.genind # Check it
-# Read sequence data in NEXUS
-read.nexus.data(file="sequences.nex")
+# Read sequence data in NEXUS (similar to reading FASTA)
+?read.nexus.data
 
 # Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
 meles.dna <- read.GenBank(access.nb=c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
@@ -296,7 +298,7 @@ choosebank() # Genetic banks available for seqinr
 choosebank("embl") # Choose some bank
 # Query selected database - there are much possibilities
 ?query # See how to construct the query
-nothofagus <- query(listname="nothofagus", query="SP=Nothofagus AND K=rbcl", verbose=TRUE)
+nothofagus <- query(listname="nothofagus", query="SP=Nothofagus AND K=rbcL", verbose=TRUE)
 # See the sequences information
 nothofagus$req
 # Get the sequences as a list
@@ -313,10 +315,9 @@ nothofagus.dna <- as.DNAbin.list(nothofagus.sequences)
 nothofagus.dna # See it
 
 # Importing SNP
-read.PLINK(file="PLINKfile", ...)
 ?read.PLINK # See it for available options
 # Extract SNP from FASTA alignment
-usflu.genlight <- fasta2genlight(file="http://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
+usflu.genlight <- fasta2genlight(file="https://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
 # See result
 usflu.genlight
 # If it crashes (on Windows), try to add parameter "parallel=FALSE"
@@ -347,12 +348,10 @@ ape::GC.content(x=meles.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
 seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]), wordsize=3)
 # View sequences - all must be of the same length
-image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-# Function "image" requires as input matrix, so that sequences must be of same length
-image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-# Direct function to display the sequences
+# Function "image.DNAbin" requires as input matrix, so that sequences must be of same length
 image.DNAbin(x=usflu.dna)
-image.DNAbin(x=as.matrix(meles.dna))
+# Sequences must be of same length - as.matrix.DNAbin() can help
+image.DNAbin(x=as.matrix.DNAbin(meles.dna))
 
 # VCF
 # Required library

@@ -985,7 +985,7 @@
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Isozyme}{Isozymes}} --- forms of proteins differing in electrophoresis by their weight and/or charge
 		\begin{itemize}
 			\item Typically coded as presence/absence (1/0) data
-			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) matrices
+			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) data matrices
 		\end{itemize}
 		\item \textbf{Fragmentation data} --- length polymorphism
 		\begin{itemize}
@@ -1010,8 +1010,8 @@
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Nucleic_acid_sequence}{Nucleic acid sequences}} (in nearly any form) --- DNA or RNA
 		\begin{itemize}
-			\item From \enquote{classical} Sanger sequencing --- long individual reads
-			\item From modern \href{https://en.wikipedia.org/wiki/DNA_sequencing\#High-throughput_methods}{HTS (NGS)} --- \href{https://en.wikipedia.org/wiki/Pyrosequencing}{454 pyrosequencing}, \href{https://en.wikipedia.org/wiki/Illumina_dye_sequencing}{Illumina},~\ldots{ }methods
+			\item From \enquote{classical} Sanger sequencing --- long individual reads (of single/few genes)
+			\item From \enquote{modern} \href{https://en.wikipedia.org/wiki/DNA_sequencing\#High-throughput_methods}{HTS (NGS)} --- \href{https://en.wikipedia.org/wiki/Pyrosequencing}{454 pyrosequencing}, \href{https://en.wikipedia.org/wiki/Illumina_dye_sequencing}{Illumina},~\ldots{ }methods
 			\begin{itemize}
 				\item Probably most used are \href{https://en.wikipedia.org/wiki/Restriction_site_associated_DNA_markers}{RADseq} scanning whole genome, \href{https://bsapubs.onlinelibrary.wiley.com/doi/abs/10.3732/apps.1400042}{HybSeq} and other \href{https://en.wikipedia.org/wiki/Exome_sequencing}{target enrichment} methods using specific probes to sequence only single/low-copy nuclear markers, \href{https://bsapubs.onlinelibrary.wiley.com/doi/abs/10.3732/ajb.1100335}{Genome Skimming} getting the most abundant part of the genome (plastid and mitochondrial sequences and ITS1-5.8S rRNA-ITS2 region), \href{https://en.wikipedia.org/wiki/Genotyping_by_sequencing}{Genotyping by sequencing (GBS)}; and their variants
 				\item There are special tools to process raw data from the machines --- not part of the course
@@ -1031,7 +1031,7 @@
 \begin{frame}[fragile]{R training data}
 	\begin{itemize}
 		\item R packages commonly contain training data to illustrate its abilities
-		\item We will use some of them during the course
+		\item We will use some of them during the course (we already used \texttt{iris})
 		\item We will also use data provided by the teacher and/or his colleagues
 	\end{itemize}
 	\begin{spluscode}
@@ -1053,7 +1053,7 @@
 
 \begin{frame}[allowframebreaks]{Our data\ldots}
 	\begin{itemize}
-		\item We will use
+		\item We will use\ldots
 		\begin{itemize}
 			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
 			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
@@ -1067,7 +1067,7 @@
 		\end{itemize}
 		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
 		\begin{itemize}
-			\item Examples are shown mainly with microsatellites, but AFLP and another presence-absence (1/0) data are used in same way --- try it
+			\item Examples are shown mainly with microsatellites, but another (sequencing, presence/absence,~\ldots) data are used in same way --- try it
 		\end{itemize}
 		\item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
 		\item Extraction of SNP from DNA is useful in case of huge data sets --- for smaller data sets it is not necessary
@@ -1082,34 +1082,45 @@
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
 		\begin{itemize}
+			\item Sequences (usually short from Illumina) mapped to reference
+			\item Each file contains data for single sample
+			\item Contains also information about mapping quality etc., complex structure
 			\item Compressed version of SAM (see below)
+			\item Special applications are needed to work with BAM files
 			\item Suffix \texttt{*.bam}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}} (Comma Separated Values)
 		\begin{itemize}
 			\item \enquote{One sheet of Excel}
-			\item Common format to store data (traits, coordinates,~\ldots), similar to TSV
+			\item Common format to store data (traits, coordinates,~\ldots), similar to TSV (see below)
 			\item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks --- it is important to check structure before import into R (and very it after import)
 			\item Suffix usually \texttt{*.csv}
+			\item Can have many formatting forms --- carefully set parameter of import function
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTA_format}{\textbf{FASTA}}
 		\begin{itemize}
 			\item Simple and popular text format to store genetic sequences (DNA, RNA, proteins)
+			\item Each file contains one or more sequences
 			\item \textbf{Line 1} of every records starts with \texttt{>} and contain name/description of the sequence (e.g. \texttt{> Seq 1}), \textbf{line 2+} contain(s) the sequence (\texttt{ATCG...}) --- until end of file or next line starting with \texttt{>}
-			\item Suffix usually \texttt{*.fasta} (generic, also \texttt{*.fas}, \texttt{*.fa}, \texttt{*.seq}, \texttt{*.fsa}), \texttt{*.fna} (nucleic acid), \texttt{*.ffn} (nucleotides, coding regions), \texttt{*.faa} (amino acids), \texttt{*.frn} (non-coding RNA)
+			\item Each sequence can be on single line, on multiple lines
+			\item Can store also alignments (practically sequences of same length, with marked gaps and missing data)
+			\item Larger sequences are sometimes compressed
+			\item Suffix usually \texttt{*.fasta} (generic, also \texttt{*.fas}, \texttt{*.fa}, \texttt{*.seq}, \texttt{*.fsa}), \texttt{*.fna} (nucleic acid), \texttt{*.ffn} (nucleotides, coding regions), \texttt{*.faa} (amino acids), \texttt{*.frn} (non-coding RNA),~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTQ_format}{\textbf{FASTQ}}
 		\begin{itemize}
 			\item Text based format to store sequences (mainly nucleotides)
 			\item Every record consists of \textbf{4~lines}: (\textbf{1}) sequence ID (with possible description) starting with \texttt{@}, (\textbf{2}) the sequence (\texttt{ATCG...}), (\textbf{3}) \texttt{+} optionally followed by the same ID as line 1, and (\textbf{4}) quality values for nucleotides from line 2
-			\item Common format for output of modern high throughput sequencing machines (e.g. Illumina)
-			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression application
+			\item Probably the most common format for output of modern high throughput sequencing machines (e.g. Illumina), each file contains huge number of sequences
+			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression methods
 			\item Suffix usually \texttt{*.fastq}, \texttt{*.fq}, \texttt{*.fastq.gz}, \texttt{*.fq.gz},~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Newick_format}{\textbf{NEWICK}}
 		\begin{itemize}
 			\item Every line contains one tree represented by brackets, optionally with numbers (separated by \texttt{:}) labeling nodes and/or branches (bootstrap supports, likelihoods, branch lengths, ages,~\ldots)
+			\item File can contain one or more trees
 			\item E.g. \texttt{(A,B,(C,D)E)F;} or \texttt{(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);}
+			\item Simple logic, but very hard to read by human
 			\item Suffix usually \texttt{*.newick}, \texttt{*.nwk}, \texttt{*.tre},~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
@@ -1122,6 +1133,7 @@
 		\item \href{https://en.wikipedia.org/wiki/SAM_(file_format)}{\textbf{SAM}} (Sequence Alignment Map)
 		\begin{itemize}
 			\item Text-based format for storing biological sequences aligned to a~reference sequence
+			\item Each file contains data for one sample
 			\item Structure is relatively complex
 			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{https://www.htslib.org/}{SAMtools}
 			\item Suffix usually \texttt{*.sam}
@@ -1144,7 +1156,7 @@
 			\item Bioinformatics plain text format storing gene variants, annotations, quality data and more information
 			\item Used by software like \href{https://samtools.github.io/bcftools/}{Bcftools}, \href{https://gatk.broadinstitute.org/hc/en-us}{GATK}, \href{https://broadinstitute.github.io/picard/}{Picard}, \href{https://vcftools.github.io/}{VCFtools},~\ldots
 			\item Complex structure, sequences are not stored as in FASTA, but as SNP variants on respective positions --- useful to store processed NGS/HTS data (e.g. from Illumina machines)
-			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression application
+			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression methods
 			\item Several versions and variants (including binary BCF, \texttt{*.bcf}), sometimes there are problems with interoperability
 			\item Suffix usually \texttt{*.vcf} or \texttt{*.vcf.gz}
 		\end{itemize}
@@ -1336,12 +1348,12 @@
 
 \begin{frame}[fragile]{Import existing data set from popular software}
 	\begin{spluscode}
-    read.genalex() # poppr - reads *.csv file
-    read.fstat() # adegenet - reads *.dat files, only haploid/diploid data
-    read.genetix() # adegenet - reads *.gtx files, only ha/diploid data
-    read.genepop() # adegenet - reads *.gen files, only ha/diploid data
-    read.structure() # adegenet - reads *.str files, only ha/diploids
-    import2genind() # adegenet - more automated version of above functions
+    ?read.genalex # poppr - reads *.csv file
+    ?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
+    ?read.genetix # adegenet - reads *.gtx files, only ha/diploid data
+    ?read.genepop # adegenet - reads *.gen files, only ha/diploid data
+    ?read.structure # adegenet - reads *.str files, only ha/diploids
+    ?import2genind # adegenet - more automated version of above functions
 	\end{spluscode}
 	\begin{alertblock}{One function rules them all\ldots}
 		\begin{footnotesize}
@@ -1398,7 +1410,7 @@
 
 \subsection{AFLP}
 
-\begin{frame}[fragile]{Import of AFLP data --- background}
+\begin{frame}[fragile]{Import of presence/absence (e.g. AFLP) data --- background}
 	Two files --- AFLP data with individual names, and populations
 	\vfill
 	\begin{multicols}{2}
@@ -1464,18 +1476,18 @@
 
 \begin{frame}[fragile]{Another data manipulation}
 	\begin{spluscode}
-    genind2df() # adegenet - export into data frame
-    genind2genalex() # poppr - export for genalex
-    splitcombine() # poppr - edits population hierarchy
-    popsub() # poppr - extracts only selected population(s)
-    clonecorrect() # poppr - corrects for clones
-    informloci() # poppr - removes uninformative loci
-    seppop() # adegenet - separates populations from genind or genlight
-    seploc() # adegenet - splits genind, genpop or genlight by markers
-    alleles2loci() # pegas - transforms a matrix of alleles into "loci"
+    ?genind2df # adegenet - export into data frame
+    ?genind2genalex # poppr - export for genalex
+    ?splitcombine # poppr - edits population hierarchy
+    ?popsub # poppr - extracts only selected population(s)
+    ?clonecorrect # poppr - corrects for clones
+    ?informloci # poppr - removes uninformative loci
+    ?seppop # adegenet - separates populations from genind or genlight
+    ?seploc # adegenet - splits genind, genpop or genlight by markers
+    ?alleles2loci # pegas - transforms a matrix of alleles into "loci"
     # seppop and seploc return lists of genind objects - for further
     # analysis using special functions to work on lists (see further)
-    # read manual pages (?...) of the functions before usage
+    # read manuals (?...) of the functions before usage
 	\end{spluscode}
 	\begin{itemize}
 		\item SNPs can be into genind imported in same way as AFLP (PA)
@@ -1485,7 +1497,7 @@
 
 \begin{frame}{Notes about getting data into R}
 	\begin{itemize}
-		\item When importing fragmentation data, we somehow use function \texttt{read.table()} --- it is important to understand it
+		\item When importing fragmentation, character, etc. data, we somehow use function \texttt{read.table()} --- it is important to understand it
 		\item I~recommend to use TAB (TSV --- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
 		\item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by \enquote{\texttt{/}}, \enquote{\texttt{|}} or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
 		\item \textbf{Do not use} underscores (\enquote{\texttt{\_}}) or minuses (\enquote{\texttt{-}}) to name objects in R --- only numbers, Latin letters or dots
@@ -1524,8 +1536,8 @@
     # When converting DNAbin to genind, the sequences must be aligned!
     usflu.genind <- DNAbin2genind(x=usflu.dna, pop=usflu.annot[["year"]])
     usflu.genind # Check it
-    # Read sequence data in NEXUS
-    read.nexus.data(file="sequences.nex")
+    # Read sequence data in NEXUS (similar to reading FASTA)
+    ?read.nexus.data
 	\end{spluscode}
 	\begin{itemize}
 		\item RNA or protein sequences can be handed in same way --- see \texttt{?read.dna} and \texttt{?read.FASTA}
@@ -1554,7 +1566,7 @@
     meles.genind # Check it
 	\end{spluscode}
 	\begin{itemize}
-		\item To query on-line database as through web we use \href{https://CRAN.R-project.org/package=seqinr}{seqinr} (next slide)
+		\item To query on-line database as through web we use \href{https://CRAN.R-project.org/package=seqinr}{seqinr} (next slide) or \href{https://CRAN.R-project.org/package=rentrez}{rentrez}
 	\end{itemize}
 \end{frame}
 
@@ -1585,7 +1597,7 @@
 		\item Import from \href{http://zzz.bwh.harvard.edu/plink/}{PLINK} requires saving of data with option \href{http://zzz.bwh.harvard.edu/plink/dataman.shtml#recode}{\enquote{-{-}recodeA}}
 	\end{itemize}
 	\begin{spluscode}
-    read.PLINK(file="PLINKfile", ...) # See ?read.PLINK
+    ?read.PLINK # How to read PLINK files
 	\end{spluscode}
 	\begin{itemize}
 		\item Extracting SNP from alignments reads FASTA alignments and keep only SNPs. The method is relatively efficient even for large data sets with several genomes:
@@ -1641,13 +1653,11 @@
     seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]),
       wordsize=3)
     # View sequences - all must be of the same length
-    image(x=usflu.dna, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-    # Function "image" requires as input matrix
+    # Function "imag.DNAbine" requires as input matrix
     # So that sequences must be of same length
-    image(x=as.matrix(meles.dna), c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-    # Direct function to display the sequences
     image.DNAbin(x=usflu.dna)
-    image.DNAbin(x=as.matrix(meles.dna))
+    # Sequences must be of same length - as.matrix.DNAbin() can help
+    image.DNAbin(x=as.matrix.DNAbin(meles.dna))
 	\end{spluscode}
 \end{frame}
 
