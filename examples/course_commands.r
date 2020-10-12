@@ -664,12 +664,9 @@ imsn() # Try it
 
 ## Genetic distances
 
-# See ?dist.gene for details about methods of this distance constructions
-hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
-hauss.dist.g
-
-# Euclidean distance for individuals (plain ordinary distance matrix)
-hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=TRUE, upper=TRUE)
+# Simple dissimilarity distance matrix
+?dist.gene # Details about methods of this distance constructions
+hauss.dist <- dist.gene(x=hauss.genind@tab, method="pairwise")
 hauss.dist
 
 # Nei's distance (not Euclidean) for populations (other methods are available, see ?dist.genpop)
@@ -750,7 +747,7 @@ usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
 usflu.dist
 class(usflu.dist)
 dim(as.matrix(usflu.dist))
-gunnera.dist <- dist.dna(x=gunnera.dna, model="F81")
+gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="F81")
 gunnera.dist
 class(gunnera.dist)
 dim(as.matrix(gunnera.dist))
@@ -766,7 +763,7 @@ usflu.distr <- Reduce(f="+", x=usflu.dists)
 class(usflu.distr)
 usflu.distr
 # It is possible to use just basic dist function on whole genlight object (might require a lot of RAM)
-usflu.distg <- dist(as.matrix(usflu.genlight))
+usflu.distg <- dist.gene(as.matrix(usflu.genlight))
 
 # Distances in mixed-ploidy data sets
 # stamppNeisD requires population factor in genlight
@@ -821,7 +818,8 @@ heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
 ?heatmap # Other options
 
 ## Hierarchical clustering
-# According to distance used - see ?hclust for available methods
+# According to distance used
+?hclust # How to use hierarchical clustering
 plot(hclust(d=hauss.dist, method="complete"))
 plot(hclust(d=hauss.dist.pop, method="complete"))
 plot(hclust(d=hauss.dist.bruvo, method="complete"))
@@ -984,14 +982,14 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 ## PCoA
 
 # Calculate it - based on various distance matrix
-hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE, scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE, nf=3)
+hauss.pcoa <- dudi.pco(d=dist.gene(x=scaleGen(x=hauss.genind, center=TRUE, scale=FALSE, truenames=TRUE), method="pairwise"), scannf=FALSE, nf=3)
 # Basic display
 s.label(dfxy=hauss.pcoa$li, clabel=0.75)
 # To plot different axes use for example "...dfxy=hauss.pcoa$li[c(2, 3)]..."
 # Add kernel density
 s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE)
 # Add histogram of Eigenvalues
-add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
+add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="topleft", sub="Eigenvalues")
 # Percentage of variance explained by each PC axis
 100*hauss.pcoa$eig/sum(hauss.pcoa$eig)
 
@@ -1046,7 +1044,7 @@ title("PCA of the US influenza data")
 abline(h=0, v=0, col="grey")
 add.scatter.eig(usflu.pca$eig[1:40], 2, 1, 2, posi="topright", inset=0.05, ratio=0.3)
 # Calculate phylogenetic tree
-usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight)))
+usflu.tree.genlight <- nj(dist.gene(as.matrix(usflu.genlight)))
 # Plot colored phylogenetic tree
 plot.phylo(x=usflu.tree.genlight, typ="fan", show.tip=FALSE)
 tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal), cex=4)
@@ -1056,8 +1054,10 @@ legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal)
 
 ## Clustering analysis
 
+# Needed library
 library(adegenet)
-
+# Tutorial, more information about DAPC
+adegenetTutorial("dapc")
 # Graphical web interface for DAPC
 adegenetServer("DAPC")
 

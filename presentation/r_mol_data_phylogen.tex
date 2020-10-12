@@ -710,6 +710,8 @@
 	\end{center}
 \end{frame}
 
+\subsection{Tasks}
+
 \begin{frame}{Practice basic operations I}
 	\begin{exampleblock}{Tasks I}
 		\begin{enumerate}
@@ -2048,6 +2050,8 @@
 	\end{itemize}
 \end{frame}
 
+\subsection{Tasks}
+
 \begin{frame}[fragile]{Practice alignment}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
@@ -2558,10 +2562,9 @@
 \begin{frame}[fragile]{Basic distances}
 	\label{distances}
 	\begin{spluscode}
-    # See ?dist.gene for details about methods of this distance
-    hauss.dist.g <- dist.gene(x=hauss.genind@tab, method="pairwise")
-    # Euclidean distance for individuals (plain ordinary distance matrix)
-    hauss.dist <- dist(x=hauss.genind, method="euclidean", diag=T, upper=T)
+    # Simple dissimilarity distance matrix
+    ?dist.gene # Details about methods of this distance constructions
+    hauss.dist <- dist.gene(x=hauss.genind@tab, method="pairwise")
     # Nei's distance (not Euclidean) for populations (other methods are
     # available, see ?dist.genpop)
     hauss.dist.pop <- dist.genpop(x=hauss.genpop, method=1, diag=T, upper=T)
@@ -2708,7 +2711,7 @@
     class(usflu.dist)
     dim(as.matrix(usflu.dist))
     # Create another distance matrix
-    gunnera.dist <- dist.dna(x=gunnera.dna, model="F81")
+    gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="F81")
     # Check it
     gunnera.dist
     class(gunnera.dist)
@@ -2732,7 +2735,7 @@
     usflu.distr
     # It is possible to use just basic dist function on whole genlight object
     # (might require a lot of RAM)
-    usflu.distg <- dist(as.matrix(usflu.genlight))
+    usflu.distg <- dist.gene(as.matrix(usflu.genlight))
 	\end{spluscode}
 	\vfil
 	Rationale of this approach is to save resources when dividing whole data set into smaller blocks --- useful for huge data, not for all of the cases
@@ -2857,10 +2860,12 @@
 
 \begin{frame}[fragile]{Hierarchical clustering --- UPGMA and others}
 	\begin{multicols}{2}
-		\includegraphics[height=7cm]{hierclust.png}
+		\includegraphics[height=6.5cm]{hierclust.png}
 		\begin{spluscode}
     # According to distance used
-    # see ?hclust for methods
+    # How to use hierarchical
+    # clustering
+    ?hclust
     plot(hclust(d=hauss.dist,
       method="complete"))
     plot(hclust(d=hauss.dist.pop,
@@ -2899,12 +2904,11 @@
 \end{frame}
 
 \begin{frame}{UPGMA is not the best choice here\ldots}
-	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{upgma.png}
-	\end{center}
-	\vfil
 	All points in the right graph should be clustered along the red line\ldots
-	\vfill
+	\vfil
+	\begin{center}
+		\includegraphics[width=\textwidth-3.5cm]{upgma.png}
+	\end{center}
 \end{frame}
 
 \subsection{NJ (and UPGMA) tree}
@@ -2955,6 +2959,7 @@
     # Another possibility
     hauss.aboot <- aboot(x=hauss.genind, tree="nj", distance=nei.dist,
       sample=100) # Bootstrap values are in slot node.label
+    ?aboot # Package poppr
 	\end{spluscode}
 \end{frame}
 
@@ -2962,7 +2967,7 @@
 	\begin{spluscode}
     # Plot the tree, explicitly display node labels
     plot.phylo(x=hauss.aboot, show.node.label=TRUE)
-    ?aboot # Package poppr
+    ?plot.phylo # See details...
     ## Plot a nice tree with colored tips
     plot.phylo(x=hauss.nj, type="unr", show.tip=F, edge.width=3, main="NJ")
     # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
@@ -2994,6 +2999,9 @@
     ?legend
     ?axis.phylo
 	\end{spluscode}
+	\begin{itemize}
+		\item Functions in \href{https://CRAN.R-project.org/package=ape}{ape} (\texttt{plot.phylo} and others), \href{https://CRAN.R-project.org/package=adegenet}{adegenet} and another packages provide plenty of options to manipulate and display trees, for users of \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2}, \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree} is an interesting alternative
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{Choose your tree\ldots}
@@ -3153,13 +3161,13 @@
 \begin{frame}[fragile]{PCoA I}
 	\label{pcoa}
 	\begin{spluscode}
-    hauss.pcoa <- dudi.pco(d=dist(x=scaleGen(x=hauss.genind, center=TRUE,
-      scale=FALSE, truenames=TRUE), method="euclidean"), scannf=FALSE, nf=3)
+    hauss.pcoa <- dudi.pco(d=dist.gene(x=scaleGen(x=hauss.genind, center=TRUE,
+      scale=FALSE, truenames=TRUE), method="pairwise"), scannf=FALSE, nf=3)
     s.label(dfxy=hauss.pcoa$li, clabel=0.75) # Basic display
     # To plot different axes use for example dfxy=hauss.pcoa$li[c(2, 3)]
     s.kde2d(dfxy=hauss.pcoa$li, cpoint=0, add.plot=TRUE) # Add kernel density
     # Add histogram of Eigenvalues
-    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft",
+    add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="topleft",
       sub="Eigenvalues")
     # Percentage of variance explained by each PC axis
     100*hauss.pcoa$eig/sum(hauss.pcoa$eig)
@@ -3203,7 +3211,7 @@
 
 \begin{frame}{PCoA --- Bruvo and colorplot}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{pcoa-dalsi.png}
+		\includegraphics[width=\textwidth-2.5cm]{pcoa-dalsi.png}
 	\end{center}
 \end{frame}
 
@@ -3294,7 +3302,7 @@
     abline(h=0, v=0, col="gray")
     add.scatter.eig(usflu.pca[["eig"]][1:40], 2, 1, 2, posi="topright",
       inset=0.05, ratio=0.3)
-    usflu.tree.genlight <- nj(dist(as.matrix(usflu.genlight))) # Get the tree
+    usflu.tree.genlight <- nj(dist.gene(as.matrix(usflu.genlight))) # Get tree
     # Plot colored phylogenetic tree
     plot.phylo(x=usflu.tree.genlight, type="fan", show.tip=FALSE)
     tiplabels(pch=20, col=num2col(usflu.annot[["year"]], col.pal=usflu.pal),
@@ -3309,7 +3317,7 @@
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-5.5cm]{flu_pcoa_nj.png}
+		\includegraphics[width=\textwidth]{flu_pcoa_nj.png}
 	\end{center}
 \end{frame}
 
@@ -3326,11 +3334,13 @@
 		\item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
 		\item Finally it runs discriminant analysis (DA) to maximize differences among groups
 		\item Various modes of displaying of results --- \enquote{Structure-like}, \enquote{PCA-like} and more
-		\item More information at \url{https://adegenet.r-forge.r-project.org/} and \texttt{adegenetTutorial("dapc")}
-		\item If following commands would seem too complicated to you, try web interface by this command:
+		\item More information at \url{https://adegenet.r-forge.r-project.org/}
+		\item If following commands would seem too complicated to you, try web interface
 	\end{itemize}
 	\begin{spluscode}
+    library(adegenet)
     adegenetServer("DAPC") # Recommended to open in Google Chrome/Chromium
+    adegenetTutorial("dapc") # Tutorial, more information about DAPC
 	\end{spluscode}
 \end{frame}
 
@@ -3485,6 +3495,24 @@
 	\begin{center}
 		\includegraphics[width=\textwidth-6cm]{dapc.png}
 	\end{center}
+\end{frame}
+
+\subsection{Tasks}
+
+\begin{frame}{Try DAPC}
+	\begin{exampleblock}{Tasks}
+		\begin{enumerate}
+			\item Try DAPC with \texttt{microbov} dataset (\texttt{data(microbov)}, see \texttt{?microbov}), the U.S. flu dataset (the \texttt{usflu.genind} object), or some other data according to your choice.
+			\begin{enumerate}
+				\item Try K-means clustering as well as DAPC itself.
+				\item Try various Ks (if appropriate).
+				\item Try various displays.
+			\end{enumerate}
+			\item Interpret the results.
+			\item When is DAPC good tool and when should you avoid it?
+			\item Which data can you cluster using K-means clustering?
+		\end{enumerate}
+	\end{exampleblock}
 \end{frame}
 
 \section{Structure}
@@ -6536,7 +6564,8 @@
 		\item \href{https://CRAN.R-project.org/package=taxize}{taxize}: taxonomic information from around the web
 		\item \href{https://CRAN.R-project.org/package=TESS}{TESS}: simulation of reconstructed phylogenetic trees under tree-wide time-heterogeneous birth-death processes and estimation of diversification parameters under the same model
 		\item \href{https://CRAN.R-project.org/package=tmap}{tmap}: various thematic maps
-		\item \href{https://CRAN.R-project.org/package=treebase}{treebase}:  discovery, access and manipulation of TreeBASE phylogeny
+		\item \href{https://CRAN.R-project.org/package=treebase}{treebase}: discovery, access and manipulation of TreeBASE phylogeny
+		\item \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{treeio}: read, parse and write various tree formats
 		\item \href{https://CRAN.R-project.org/package=TreePar}{TreePar}: estimating birth and death rates based on phylogeny
 		\item \href{https://CRAN.R-project.org/package=TreeSearch}{TreeSearch}: search for phylogenetic trees that are optimal using a~user-defined criterion
 		\item \href{https://CRAN.R-project.org/package=TreeSim}{TreeSim}: simulating phylogenetic trees
