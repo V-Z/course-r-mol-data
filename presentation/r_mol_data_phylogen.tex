@@ -3538,6 +3538,7 @@
 		\item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
 		\item Relatively complicated tool requiring plenty of work\ldots
 		\item Here is shown processing option using \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure}, another option is package \href{https://CRAN.R-project.org/package=strataG}{strataG} (see \texttt{?strataG::structure})
+		\item \alert{Does not work (at all) on Windows} (although see further).
 	\end{itemize}
 \end{frame}
 
@@ -3745,13 +3746,13 @@
 \section{Spatial analysis}
 
 \begin{frame}[fragile]{Spatial analysis and genetic data}{Correlation of genes and space, spatial structure of genotypes}
-	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
-	\vfill
 	\begin{spluscode}
-    # Go back to the original working directory
+    # After working on STRUCTURE go back to the original working directory
     # Go to YOUR OWN directory, same as on beginning
     setwd("~/dokumenty/vyuka/r_mol_data/examples/")
 	\end{spluscode}
+	\vfill
+	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 \end{frame}
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
@@ -3759,6 +3760,7 @@
 		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
 		\item \href{https://en.wikipedia.org/wiki/Mantel_test}{Mantel test} --- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
 		\item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
+		\item Plenty of options with plotting maps, including interactive maps (e.g. with \href{https://rstudio.github.io/leaflet/}{R Leaflet})
 		\item There are unlimited possibilities with connections with GIS software --- check specialized courses and literature
 	\end{itemize}
 \end{frame}
@@ -3781,7 +3783,8 @@
 
 \begin{frame}[fragile]{Calculation of Moran's \textit{I} I}
 	\begin{spluscode}
-    library(spdep) # Load required library
+    library(adegenet) # Load required libraries
+    library(spdep)
     # Creates connection network
     hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5, d1=0,
       d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
@@ -3792,7 +3795,6 @@
       alternative="greater", randomisation=TRUE)
     Moran's I test under randomisation
     data:  hauss.pcoa$li[, 1]
-    weights: hauss.connectivity
     Moran I statistic standard deviate = -18.514, p-value = 1
     alternative hypothesis: greater
     sample estimates:
@@ -3874,9 +3876,9 @@
                  # Rupicapra rupicapra from French Prealps
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
+    ?chooseCN # See for more details - select the best "type" for your data
     chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE,
       edit.nb=FALSE, ...) # Play with settings little bit...
-    ?chooseCN # See for more details - select the best "type" for your data
 	\end{spluscode}
 \end{frame}
 
@@ -3986,7 +3988,7 @@
 		\item Detects genetic boundaries among georeferenced genotypes (or populations)
 		\item For more information see \texttt{adegenetTutorial("basics")}
 		\item Requires every point to have unique coordinates --- in case of population data it is better to work with populations, not individuals (but it is not ideal)
-		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation}
+		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation} --- it is used by a lot of spatial analysis, especially by tools relying on Bayesian statistics
 	\end{itemize}
 	\begin{spluscode}
     # Calculates Monmonier's function (for threshold use 'd')
@@ -4003,6 +4005,7 @@
 		\begin{itemize}
 			\item In simplest case, all points have certain area and all points within this area are closer to the respective \enquote{main} point than to any other \enquote{neighbor} point
 			\item Extreme differences among size of areas make computational problems and results are unstable --- this typically occurs when calculations are done on individual level an there are large distances among populations
+			\item The more similar sizes of polygons and the more even distribution of samples, the more stable and reliable results we get
 		\end{itemize}
 	\end{multicols}
 \end{frame}
@@ -4033,14 +4036,15 @@
 
 \begin{frame}[fragile]{Monmonier notes}
 	\begin{itemize}
-		\item Sometimes it is needed to get rid of random noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}):
+		\item Sometimes it is needed to get rid of (random) noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}) by something like:
 	\end{itemize}
 	\begin{spluscode}
-    monmonier(..., dist=dudi.pco(d=dist(x=GenindObject$tab),
+    monmonier(..., dist=dudi.pco(d=dist.gene(x=GenindObject$tab),
       scannf=FALSE, nf=1)$li, ...)
 	\end{spluscode}
 	\begin{itemize}
 		\item Generally (when dataset is bigger and more diverse) it is recommended to run it several times (parameter \texttt{nrun}) --- there will be several iterations
+		\item When running \texttt{monmonier(\ldots)} when it asks for threshold of sorted local distances, try several values and see differences in output
 		\item See \texttt{?plot.monmonier} for various graphical parameters to customize the plot
 		\item Use \texttt{points()} to add for example colored symbols of samples and/or \texttt{text()} to add text labels
 	\end{itemize}
@@ -4048,21 +4052,25 @@
 
 \subsection{Mantel test}
 
-\begin{frame}{Mantel test}
+\begin{frame}[fragile]{Mantel test}
 	\begin{itemize}
 		\item Originally created for biomedicine to test correlation between treatment and diseases
 		\item \enquote{Only} correlation of two matrices --- no biologically relevant underlying model --- because of that it is heavily criticized (mainly in ecology)
 		\item It is universal method usable for plenty of tasks
 		\item Test of spatial and genetic relationships is probably one of few biologically relevant applications
-		\item Package vegan (set of ecological tools) has implementation to test genetic similarity in various distance classes --- not only overall result --- very useful
+		\item Package \href{https://CRAN.R-project.org/package=vegan}{vegan} (set of ecological tools) has implementation to test genetic similarity in various distance classes --- not only overall result --- very useful
+		\item Distance matrix can be calculated as simple Euclidean geometric distance by \texttt{dist()}, or for larger areas by geodesic distance along Earth surface (e.g. \texttt{pegas::geod()}), or using special package like \href{https://CRAN.R-project.org/package=geosphere}{geosphere}
 	\end{itemize}
+	\begin{spluscode}
+    library(pegas) # Geodesic distance
+	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Mantel test --- isolation by distance}
 	\begin{spluscode}
     # Geographical distance
-    hauss.gdist <- dist(x=hauss.genind$other$xy, method="euclidean", diag=TRUE,
-      upper=TRUE)
+    hauss.gdist <- as.dist(m=geod(lon=hauss.genind$other$xy$lon,
+      lat=hauss.genind$other$xy$lat), diag=TRUE, upper=TRUE)
     # Mantel test
     hauss.mantel <- mantel.randtest(m1=hauss.dist, m2=hauss.gdist, nrepet=1000)
     hauss.mantel # See text output
@@ -4109,7 +4117,7 @@
 \begin{frame}{Plot of Mantel Correlogram Analysis}
 	\vfil
 	\begin{center}
-		\includegraphics[width=\textwidth-5.5cm]{mantel-cor.png}
+		\includegraphics[width=\textwidth-4cm]{mantel-cor.png}
 	\end{center}
 	\vfil
 	Correlation (genetic similarity) in several distance classes (positive \textbf{[up]} in short distance \textbf{[left]}, negative \textbf{[down]} in long \textbf{[right]}; \textbf{[full]} --- significant, \textbf{[empty]} --- not significant) --- see \texttt{?mantel.correlog} for details
@@ -4122,16 +4130,16 @@
     Mantel Correlogram Analysis
     Call:
     mantel.correlog(D.eco = hauss.dist, D.geo = hauss.gdist, XY = NULL,
-     n.class = 0, break.pts = NULL, cutoff = FALSE, r.type = "pearson",
-     nperm = 1000, mult = "holm", progressive = TRUE)
+      n.class = 0, break.pts = NULL, cutoff = FALSE, r.type = "pearson",
+      nperm = 1000, mult = "holm", progressive = TRUE)
             class.index     n.dist Mantel.cor Pr(Mantel) Pr(corrected)
-    D.cl.1     0.054757 532.000000   0.409545     0.0010      0.000999 ***
-    D.cl.2     0.164271   0.000000         NA         NA            NA
-    D.cl.3     0.273784  52.000000   0.028055     0.2797      0.279720
-    D.cl.4     0.383298   0.000000         NA         NA            NA
-    D.cl.5     0.492812 466.000000  -0.097214     0.0160      0.031968 *
-    D.cl.6     0.602325  36.000000  -0.086288     0.0140      0.041958 *
-    D.cl.7     0.711839 108.000000  -0.044109     0.1568      0.313686
+    D.cl.1     4.697165 532.000000   0.400101     0.0010      0.000999 ***
+    D.cl.2    14.091494   0.000000         NA         NA            NA
+    D.cl.3    23.485823   0.000000         NA         NA            NA
+    D.cl.4    32.880153  52.000000   0.079433     0.0490      0.048951 *
+    D.cl.5    42.274482 466.000000  -0.128236     0.0010      0.002997 **
+    D.cl.6    51.668811   0.000000         NA         NA            NA
+    D.cl.7    61.063140  36.000000  -0.027890     0.2547      0.254745
        ...          ...        ...        ...        ...           ...
     ---
     Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
@@ -4635,6 +4643,16 @@
 	\begin{center}
 		\includegraphics[width=\textwidth-2cm]{mapy.png}
 	\end{center}
+\end{frame}
+
+\subsection{Tasks}
+
+\begin{frame}{Practicing working with spatial data}
+	\begin{exampleblock}{Tasks}
+		\begin{enumerate}
+			\item 
+		\end{enumerate}
+	\end{exampleblock}
 \end{frame}
 
 \section{Trees}

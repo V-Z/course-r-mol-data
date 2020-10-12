@@ -1162,12 +1162,13 @@ Structure.order("list_k_07.txt", 5)
 # Continue with CLUMPP and distruct
 # Details: https://trapa.cz/en/structure-r-linux
 
-# Go back to the original working directory
+# After working on STRUCTURE go back to the original working directory
 # Go to YOUR OWN directory, same as on beginning
 setwd("~/dokumenty/vyuka/r_mol_data/examples/")
 
 ## Moran's I
-# Load required library
+# Load required libraries
+library(adegenet)
 library(spdep)
 # Creates connection network
 hauss.connectivity <- chooseCN(xy=hauss.genind$other$xy, type=5, d1=0, d2=1, plot.nb=TRUE, result.type="listw", edit.nb=FALSE)
@@ -1191,8 +1192,8 @@ moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 # Explore various networks
 data(rupica)
 # Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
-chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
 ?chooseCN # See for more details - select the best "type" for your data
+chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
 
 # Calculates sPCA - here is only 1 positive and 3 negative factors
 hauss.spca <- spca(obj=hauss.genind, cn=hauss.connectivity, scale=TRUE, scannf=TRUE)
@@ -1260,8 +1261,10 @@ legend("bottomright", leg="Genetic boundaries\namong populations")
 ?legend
 
 ## Mantel test - isolation by distance
+# Geodesic distance
+library(pegas)
 # Geographical distance
-hauss.gdist <- dist(x=hauss.genind$other$xy, method="euclidean", diag=TRUE, upper=TRUE)
+hauss.gdist <- as.dist(m=geod(lon=hauss.genind$other$xy$lon, lat=hauss.genind$other$xy$lat), diag=TRUE, upper=TRUE)
 # Mantel test
 hauss.mantel <- mantel.randtest(m1=hauss.dist, m2=hauss.gdist, nrepet=1000)
 hauss.mantel # See text output
