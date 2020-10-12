@@ -534,6 +534,17 @@ lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 
 ## Descriptive statistics
 
+# Load needed libraries
+library(ape) # Analysis of phylogenetics and evolution
+library(ade4) # Analysis of ecological data, multivariate methods
+library(adegenet) # Exploratory analysis of genetic and genomic data
+library(pegas) # Population and evolutionary genetics
+library(poppr) # Population genetic analysis, including populations with mixed reproduction
+library(hierfstat) # Hierarchical F-statistics
+library(corrplot) # Visualization of correlation matrix
+library(StAMPP) # Statistical analysis of mixed ploidy populations
+library(philentropy) # Various genetic distances
+
 # Get summary - names and sizes of populations, heterozygosity, some info about loci
 hauss.summ <- summary(hauss.genind)
 hauss.summ
@@ -581,14 +592,13 @@ lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 # Fit, Fst and Fis for each locus
 # For Fst, fstat and theta.msat the loci object must contain population column
 Fst(x=hauss.loci, pop=1)
-# multilocus estimators of variance components and F-statistics, alternative to Fst
-library(hierfstat)
-fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
-# Nei's pairwise Fst between all pairs of populations. Difference in res.type="dist"/"matrix" is only in format of output
-pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
+# Nei's pairwise Fst between all pairs of populations.
+pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
 # For mixed ploidy data sets
 # stamppFst requires population factor in genlight (here, population code consists of first three letters of individual's name)
 indNames(arabidopsis.genlight)
+# Population code consists of first three letters of individual's name - extract the population name part
+substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
 pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
 pop(arabidopsis.genlight) # Check it
 popNames(arabidopsis.genlight)
@@ -602,7 +612,6 @@ arabidopsis.fst[["Pvalues"]]
 # Save results - open in spreadsheet (e.g. LibreOffice Calc)
 write.table(x=arabidopsis.fst[["Fsts"]], file="arabidopsis_fst.tsv", quote=FALSE, sep="\t")
 # Correlation plot of pairwise Fst
-library(corrplot)
 corrplot(corr=arabidopsis.fst[["Fsts"]], method="circle", type="lower", col=funky(15), title="Correlation matrix of Fst among populations", is.corr=FALSE, diag=FALSE, outline=TRUE, order="alphabet", tl.pos="lt", tl.col="black")
 ?corrplot # See for more options
 # Display in similar way also another Fst tables
@@ -760,7 +769,6 @@ usflu.distr
 usflu.distg <- dist(as.matrix(usflu.genlight))
 
 # Distances in mixed-ploidy data sets
-library(StAMPP) # Load required library
 # stamppNeisD requires population factor in genlight
 # Nei's 1972 distance between individuals (use pop=TRUE to calculate among populations)
 arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
@@ -785,7 +793,6 @@ dim(arabidopsis.genomat)
 class(arabidopsis.genomat)
 
 # Over 40 distances from philentropy package
-library(philentropy) # Load the library
 getDistMethods() # See available distances
 ?distance # See details of distances
 # Calculate e.g. Jaccard index for AFLP data

@@ -2157,10 +2157,29 @@
 
 \subsection{First look at the data}
 
+\begin{frame}[fragile]{Load needed libraries}
+	\begin{spluscode}
+    library(ape) # Analysis of phylogenetics and evolution
+    library(ade4) # Analysis of ecological data, multivariate methods
+    library(adegenet) # Exploratory analysis of genetic and genomic data
+    library(pegas) # Population and evolutionary genetics
+    # Population genetic analysis, including populations with mixed
+    # reproduction
+    library(poppr)
+    library(hierfstat) # Hierarchical F-statistics
+    library(corrplot) # Visualization of correlation matrix
+    library(StAMPP) # Statistical analysis of mixed ploidy populations
+    library(philentropy) # Various genetic distances
+	\end{spluscode}
+	\begin{itemize}
+		\item Of course, there are plenty of another options\ldots
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Descriptive statistics I}
 	\label{popgenindx}
 	\begin{itemize}
-		\item We will now work mainly with diploid SSRs of \textit{Taraxacum haussknechtii}, you can try other data examples by yourselves
+		\item We will now work mainly with diploid SSRs of \textit{Taraxacum haussknechtii}, you can \textbf{try with other data} examples by \textbf{yourselves}
 	\end{itemize}
 	\begin{spluscode}
     # Get summary - names and sizes of populations,
@@ -2341,7 +2360,7 @@
 	\begin{itemize}
 		\item Functions return tables of F-statistics values for populations/loci (roughly 0~--- no structure, 1~--- fully structured)
 		\item The different \href{https://en.wikipedia.org/wiki/F-statistics}{F-statistics} look at different levels of population structure. F$_{IT}$ is the inbreeding coefficient of an individual relative to the total population; F$_{IS}$ is the inbreeding coefficient of an individual relative to the subpopulation and averaging them; and F$_{ST}$ is the effect of subpopulations compared to the total population
-		\item For \texttt{Fst}, \texttt{fstat} and \texttt{theta.msat} the loci object \textbf{must} contain population column
+		\item For \texttt{Fst}, \texttt{theta.msat} and another similar functions the data object \textbf{must} contain population column (see manual of respective function)
 	\end{itemize}
 	\begin{spluscode}
     # Fit, Fst and Fis for each locus
@@ -2355,57 +2374,59 @@
 
 \begin{frame}[fragile]{F-statistics II}
 	\begin{spluscode}
-    # Multilocus estimators of variance components and F-statistics,
-    # alternative to Fst
-    library(hierfstat)
-    fstat(x=hauss.genind, pop=NULL, fstonly=FALSE)
-                pop       Ind
-    Total 0.1589501 0.2582641
-    pop   0.0000000 0.1180834
+    # Convert Adegent's genind to format of hierfstat package
+    ?genind2hierfstat
     # Nei's pairwise Fst between all pairs of populations.
     # 0 = no structure; 1 = maximal difference
-    pairwise.fst(x=hauss.genind, pop=NULL, res.type="matrix")
-               He         Ne         Oh         Pr         Sk
-    He 0.00000000 0.19960826 0.11391904 0.09404571 0.11184561
-    Ne 0.19960826 0.00000000 0.07265306 0.19220430 0.10112859
-    Oh 0.11391904 0.07265306 0.00000000 0.05302854 0.06287497
-    Pr 0.09404571 0.19220430 0.05302854 0.00000000 0.10436469
-    Sk 0.11184561 0.10112859 0.06287497 0.10436469 0.00000000
+    pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
+           He     Ne     Oh     Pr     Sk
+    He     NA 0.3204 0.1824 0.1942 0.1599
+    Ne 0.3204     NA 0.1210 0.2548 0.1229
+    Oh 0.1824 0.1210     NA 0.1038 0.0833
+    Pr 0.1942 0.2548 0.1038     NA 0.1407
+    Sk 0.1599 0.1229 0.0833 0.1407     NA
 	\end{spluscode}
+	\begin{itemize}
+		\item Check also another functions of \href{https://CRAN.R-project.org/package=hierfstat}{hierfstat} package, there are more options
+		\item Hierfstat package implements F$_{ST}$ only for haploid and diploid populations, \href{https://CRAN.R-project.org/package=StAMPP}{StAMPP} (next slide) also for another ploidies and mixed ploidy data
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{F-statistics for mixed ploidy data I}
-	\begin{spluscode}
-    # stamppFst requires population factor in genlight (here, population
-    # code consists of first three letters of individual's name)
-    indNames(arabidopsis.genlight)
-    pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
-      start=1, stop=3)
-    pop(arabidopsis.genlight) # Check it
-    popNames(arabidopsis.genlight)
-    arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight,
-      nboots=100, percent=95, nclusters=1)
-    # For large data use higher nclusters to parallelize calculations
-    ?StAMPP::stamppFst # See method details
-    arabidopsis.fst[["Fsts"]] # Matrix of Fst among populations
-    arabidopsis.fst[["Pvalues"]] # Matrix of P values
-    # Save results - open in spreadsheet (e.g. LibreOffice Calc)
-    write.table(x=arabidopsis.fst[["Fsts"]], file="arabidopsis_fst.tsv",
-      quote=FALSE, sep="\t")
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{F-statistics for mixed ploidy data II}
 	\begin{itemize}
-		\item Methods from StAMPP package (the same is the case for any method working somehow with distances) are sensitive to missing data\ldots
+		\item Methods from \href{https://CRAN.R-project.org/package=StAMPP}{StAMPP} package (the same is the case for any method working somehow with distances) are sensitive to missing data\ldots
 		\begin{itemize}
 			\item Carefully filter the VCF before doing any analysis
 		\end{itemize}
 		\item Populations must be already defined in the genlight object
 	\end{itemize}
 	\begin{spluscode}
+    # stamppFst requires population factor in genlight (here, population
+    # code consists of first three letters of individual's name)
+    indNames(arabidopsis.genlight)
+    # Population code consists of first three letters of individual's name -
+    # extract the population name part
+    substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
+    pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight),
+      start=1, stop=3)
+    pop(arabidopsis.genlight) # Check it
+    popNames(arabidopsis.genlight)
+    ?StAMPP::stamppFst # See method details
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{F-statistics for mixed ploidy data II}
+	\begin{spluscode}
+    # Calcultaing the Fst
+    arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight,
+      nboots=100, percent=95, nclusters=1)
+    # For large data use higher nclusters to parallelize calculations
+    arabidopsis.fst[["Fsts"]] # Matrix of Fst among populations
+    arabidopsis.fst[["Pvalues"]] # Matrix of P values
+    # Save results - open in spreadsheet (e.g. LibreOffice Calc)
+    write.table(x=arabidopsis.fst[["Fsts"]], file="arabidopsis_fst.tsv",
+      quote=FALSE, sep="\t")
     # Correlation plot of pairwise Fst
-    library(corrplot)
     corrplot(corr=arabidopsis.fst[["Fsts"]], method="circle", type="lower",
       col=funky(15), title="Correlation matrix of Fst among populations",
       is.corr=FALSE, diag=FALSE, outline=TRUE, order="alphabet", tl.pos="lt",
@@ -2720,8 +2741,6 @@
 
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets I}
 	\begin{spluscode}
-    # Load required library
-    library(StAMPP)
     # stamppNeisD requires population factor in genlight Nei's 1972 distance
     # between individuals (use pop=TRUE to calculate among populations)
     arabidopsis.dist <- stamppNeisD(geno=arabidopsis.genlight, pop=FALSE)
@@ -2763,7 +2782,6 @@
 		\item For example \href{https://en.wikipedia.org/wiki/Jaccard_index}{Jaccard index} is used to compare binary (presence/absence) data like \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP}
 	\end{itemize}
 	\begin{spluscode}
-    library(philentropy) # Load the library
     getDistMethods() # See available distances
     ?distance # See details of distances
     # Calculate e.g. Jaccard index for AFLP data
