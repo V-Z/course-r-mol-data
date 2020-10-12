@@ -1060,7 +1060,7 @@
 			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
 			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
 			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
-			\item Partial mitochondrial sequence of mm18 control region of \textit{Meles meles} (Mustelidae) from \href{https://www.nature.com/articles/hdy201445}{Frantz et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/608602125}{GenBank}
+			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
 			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
 			\item Phylogeny of selected species of Apiaceae reconstructed from several concatenated plastid genes downloaded from \href{https://www.ncbi.nlm.nih.gov/}{GenBank} and simulated trait
 			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?cape::shorebird})
@@ -1548,24 +1548,20 @@
 
 \begin{frame}[fragile]{Import sequences from GenBank}
 	\begin{itemize}
-		\item Data from \url{https://www.ncbi.nlm.nih.gov/popset/608602125} (\textit{Meles meles}, phylogeographical study of \href{https://www.nature.com/articles/hdy201445}{Frantz et al. 2014})
+		\item Data from \url{https://www.ncbi.nlm.nih.gov/popset/22854787} (\textit{Gunnera} spp., phylogenetic study of \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al. 2002})
 	\end{itemize}
 	\begin{spluscode}
     # Importing sequences according to sequence ID
-    meles.dna <- read.GenBank(c("KJ161355.1", "KJ161354.1", "KJ161353.1",
-      "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1",
-      "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1",
-      "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1",
-      "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1",
-      "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
-    meles.dna
-    class(meles.dna)
-    # Converts DNAbin to genind - extracts SNP - for large data sets can be
-    # computationally very intensive
-    meles.genind <- DNAbin2genind(meles.dna)
-    meles.genind # Check it
+    gunnera.dna <- read.GenBank(c("AF447749.1", "AF447748.1", "AF447747.1",
+      "AF447746.1", "AF447745.1", "AF447744.1", "AF447743.1", "AF447742.1",
+      "AF447741.1", "AF447740.1", "AF447739.1", "AF447738.1", "AF447737.1",
+      "AF447736.1", "AF447735.1", "AF447734.1", "AF447733.1", "AF447732.1",
+      "AF447731.1", "AF447730.1", "AF447729.1", "AF447728.1"))
+    gunnera.dna
+    class(gunnera.dna)
 	\end{spluscode}
 	\begin{itemize}
+		\item To be converted into \texttt{genind} (useful for many population genetic analysis), sequences in \texttt{DNAbin} must be aligned (from slide~\ref{alignment})
 		\item To query on-line database as through web we use \href{https://CRAN.R-project.org/package=seqinr}{seqinr} (next slide) or \href{https://CRAN.R-project.org/package=rentrez}{rentrez}
 	\end{itemize}
 \end{frame}
@@ -1623,17 +1619,17 @@
     # alignment - snpposi.plot requi-
     # res input data in form of matrix
     snpposi.plot(x=as.matrix(
-      meles.dna), codon=FALSE)
+      usflu.dna), codon=FALSE)
     # Position of polymorphism within
     # alignment-differentiating codons
-    snpposi.plot(as.matrix(meles.dna))
+    snpposi.plot(as.matrix(usflu.dna))
     # When converting DNAbin to genind
     # only polymorphic loci are kept -
     # threshold for polymorphism can
     # be arbitrary (polyThres=...)
-    meles.genind <- DNAbin2genind(x=
-      meles.dna, polyThres=0.01)
-    meles.genind # See it
+    usflu.genind2 <- DNAbin2genind(x=
+      usflu.dna, polyThres=0.01)
+    usflu.genind2 # See it
 		\end{spluscode}
 		\begin{flushright}
 			\includegraphics[height=7cm]{snpposi.png}
@@ -1644,26 +1640,26 @@
 \begin{frame}[fragile]{Checking sequences}
 	\begin{spluscode}
     # Test is distribution of SNPs is random (1000 permutations)
-    snpposi.test(as.matrix(meles.dna))
-    pegas::nuc.div(x=meles.dna) # Nucleotide diversity
-    ape::base.freq(x=meles.dna) # Base frequencies
-    ape::GC.content(x=meles.dna) # GC content
+    snpposi.test(as.matrix(usflu.dna))
+    pegas::nuc.div(x=usflu.dna) # Nucleotide diversity
+    ape::base.freq(x=usflu.dna) # Base frequencies
+    ape::GC.content(x=usflu.dna) # GC content
     # Number of times any dimer/trimer/etc oligomers occur in a sequence
     # Note: count() requires single sequence as DNAbin/character
-    seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]),
+    seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]),
       wordsize=3)
     # View sequences - all must be of the same length
     # Function "imag.DNAbine" requires as input matrix
     # So that sequences must be of same length
     image.DNAbin(x=usflu.dna)
     # Sequences must be of same length - as.matrix.DNAbin() can help
-    image.DNAbin(x=as.matrix.DNAbin(meles.dna))
+    image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{\textit{Meles} sequences}
+\begin{frame}{U.S. flu sequences}
 	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{sequences_meles.png}
+		\includegraphics[width=\textwidth-2.5cm]{sequences_usflu.png}
 	\end{center}
 \end{frame}
 
@@ -1829,10 +1825,10 @@
     # Export of DNA sequences into FASTA format
     write.dna(x=usflu.dna, file="usflu.fasta", format="fasta",
       append=FALSE, nbcol=6)
-    seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna),
-      file.out="meles.fasta", open="w")
+    seqinr::write.fasta(sequences=gunnera.dna, names=names(gunnera.dna),
+      file.out="gunnera.fasta", open="w")
     # Export DNA sequences as NEXUS
-    write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
+    write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
     write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz") # Export VCF
     # Export tree(s) (objects of class phylo)
     write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # In NEWICK
@@ -1898,8 +1894,9 @@
     # Requires path to MAFFT binary - set it according to your installation
     # read ?mafft and mafft's documentation
     # Change "exec" to fit your path to mafft!
-    meles.mafft <- mafft(x=meles.dna, method="localpair", maxiterate=100,
+    gunnera.mafft <- mafft(x=gunnera.dna, method="localpair", maxiterate=100,
       options="--adjustdirection", exec="/usr/bin/mafft")
+    gunnera.mafft
 	\end{spluscode}
 \end{frame}
 
@@ -1907,39 +1904,38 @@
 
 \begin{frame}[fragile]{Clustal, MUSCLE and T-Coffee from ape}
 	\begin{spluscode}
-    meles.mafft
-    class(meles.mafft)
+    class(gunnera.mafft)
+    image.DNAbin(gunnera.mafft)
     # read ?clustal and documentation of Clustal, Muscle and T-Coffee
     # when using them to set correct parameters
-    meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1,
+    gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=0.1,
       gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to clustal!
-    meles.clustal
-    class(meles.clustal)
-    meles.muscle <- muscle(x=meles.dna, exec="muscle", quiet=FALSE,
+    gunnera.clustal
+    class(gunnera.clustal)
+    image.DNAbin(gunnera.clustal)
+    gunnera.muscle <- muscle(x=gunnera.dna, exec="muscle", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to muscle!
-    meles.muscle
-    class(meles.muscle)
+    gunnera.muscle
+    class(gunnera.muscle)
+    image.DNAbin(gunnera.muscle)
     ?muscle::muscle # See option in muscle package
-    # Remove gaps from alignment - destroy it
-    meles.nogaps <- del.gaps(meles.muscle)
-    ?del.gaps # See for details
 	\end{spluscode}
 \end{frame}
 
 \subsection{Multiple genes}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
+	\begin{center}
+		\includegraphics[width=\textwidth-5cm]{muscle.png}
+	\end{center}
+	\vfil
 	\begin{spluscode}
-    # Plot the alignment select bases to plot and/or modify colors
-    image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-    # Add gray dotted grid
-    grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
+    # Remove gaps from alignment - destroy it
+    gunnera.nogaps <- del.gaps(gunnera.muscle)
+    ?del.gaps # See for details
 	\end{spluscode}
 	\vfill
-	\begin{center}
-		\includegraphics[width=\textwidth-6cm]{muscle.png}
-	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Align multiple genes}
@@ -1948,7 +1944,7 @@
 	\end{itemize}
 	\begin{spluscode}
     # Create a list of DNAbin objects to process
-    multialign <- list(meles.dna, usflu.dna, usflu.dna2)
+    multialign <- list(gunnera.dna, usflu.dna, usflu.dna2)
     # See it
     multialign
     class(multialign)
@@ -1989,13 +1985,11 @@
 
 \begin{frame}[fragile]{Checking the alignment}
 	\begin{spluscode}
-    # Shortcut for plotting alignment
-    image.DNAbin(x=meles.mafft)
-    # Display aligned sequences with gaps
-    image.DNAbin(x=usflu.dna)
+    # Plotting alignment
+    image.DNAbin(x=gunnera.mafft)
     # Check the alignment
     checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
-    checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE,
+    checkAlignment(x=as.matrix.DNAbin(x=gunnera.clustal), check.gaps=TRUE,
       plot=TRUE, what=1:4)
     ?checkAlignment # See details
     # DNAbin can be technically list or matrix - some functions require
@@ -2017,20 +2011,21 @@
 \begin{frame}[fragile]{Cleaning the alignment}
 	\begin{spluscode}
     # Delete all columns/rows containing only gaps or missing data (N, ?, -)
-    usflu.dna <- deleteEmptyCells(DNAbin=usflu.dna)
+    gunnera.mafft <- deleteEmptyCells(DNAbin=gunnera.mafft)
     ?ips::deleteEmptyCells # See help page for details
     ?phyloch::delete.empty.cells # See help page for details
     # Delete all columns containing at least 25% of gaps
-    usflu.dna.ng <- deleteGaps(x=usflu.dna, gap.max=nrow(usflu.dna)/4)
-    usflu.dna.ng
+    gunnera.mafft.ng <- deleteGaps(x=gunnera.mafft, gap.max=nrow(gunnera.mafft)/4)
+    gunnera.mafft.ng
     # Do not confuse with function delete.gaps() from phyloch package
     # See of settings of "nmax" value - threshold for gap deletion
     ?deleteGaps # "nmax=0" deletes all columns with any gap
     multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
     multialign.aln.ng
     # Delete every line (sample) containing at least 20% of missing data
-    usflu.dna.ng <- del.rowgapsonly(x=usflu.dna.ng, threshold=0.2,
+    gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.2,
       freq.only=FALSE)
+    gunnera.mafft.ng
     ?ape::del.rowgapsonly # See help page for details
 	\end{spluscode}
 \end{frame}
@@ -2038,17 +2033,31 @@
 \begin{frame}[fragile]{Cleaning the alignment}
 	\begin{spluscode}
     # Delete every alignment position having at least 20% of missing data
-    usflu.dna.ng <- del.colgapsonly(x=usflu.dna.ng, threshold=0.2,
+    gunnera.mafft.ng <- del.colgapsonly(x=gunnera.mafft.ng, threshold=0.2,
       freq.only=FALSE)
+    gunnera.mafft.ng
     ?ape::del.colgapsonly # See help page for details
     # Display the result
-    image.DNAbin(x=usflu.dna.ng)
+    image.DNAbin(x=gunnera.mafft.ng)
     lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 	\end{spluscode}
+	\vfil
 	\begin{itemize}
 		\item \enquote{Strictness} of alignment cleaning depends on following steps --- NJ (and another distance-based methods) doesn't like more than $\sim$10--15\% of missing data, but some tree builders are able to work with gaps --- check their documentation\ldots
 		\item Automated cleanup is useful especially if batch processing plenty of genes
 	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Practice alignment}
+	\begin{exampleblock}{Tasks}
+		\begin{enumerate}
+			\item Download (import from on-line database or your file from disk) sequences of ITS (or other variable gene if you prefer) of your favourite organism.
+			\item Check the imported data.
+			\item Align sequences with your preferred aligner.
+			\item Trim the alignment --- delete columns/rows with too much missing data. Think about various thresholds and their implications.
+			\item Compare outputs of several aligners and/or different parameters (gap penalty etc.)
+		\end{enumerate}
+	\end{exampleblock}
 \end{frame}
 
 \section{Basic analysis}
@@ -2678,11 +2687,11 @@
     class(usflu.dist)
     dim(as.matrix(usflu.dist))
     # Create another distance matrix
-    meles.dist <- dist.dna(x=meles.dna, model="F81")
+    gunnera.dist <- dist.dna(x=gunnera.dna, model="F81")
     # Check it
-    meles.dist
-    class(meles.dist)
-    dim(as.matrix(meles.dist))
+    gunnera.dist
+    class(gunnera.dist)
+    dim(as.matrix(gunnera.dist))
 	\end{spluscode}
 \end{frame}
 
@@ -4717,21 +4726,21 @@
 		\vfil
 		\begin{spluscode}
     # Conversion to phyDat
-    meles.phydat<-as.phyDat(meles.dna)
+    gunnera.phydat<-as.phyDat(gunnera.dna)
     # Prepare starting tree
-    meles.tre.ini <- nj(dist.dna
-      (x=meles.dna, model="raw"))
+    gunnera.tre.ini <- nj(dist.dna
+      (x=gunnera.dna, model="raw"))
     # Maximum parsimony score
     ?parsimony # Parsimony details
-    parsimony(tree=meles.tre.ini,
-      data=meles.phydat)
+    parsimony(tree=gunnera.tre.ini,
+      data=gunnera.phydat)
     # Optimization
     # Maximum parsimony tree
-    meles.tre.pars <- optim.parsimony
-      (tree=meles.tre.ini,
-      data=meles.phydat)
+    gunnera.tre.pars <- optim.parsimony
+      (tree=gunnera.tre.ini,
+      data=gunnera.phydat)
     # Draw a tree
-    plot.phylo(x=meles.tre.pars,
+    plot.phylo(x=gunnera.tre.pars,
       type="clad", edge.width=2)
 		\end{spluscode}
 	\end{multicols}

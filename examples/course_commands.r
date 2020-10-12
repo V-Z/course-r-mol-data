@@ -284,13 +284,10 @@ usflu.genind # Check it
 # Read sequence data in NEXUS (similar to reading FASTA)
 ?read.nexus.data
 
-# Importing DNA sequences from GeneBank - according to sequence ID, data from http://www.ncbi.nlm.nih.gov/popset/608602125
-meles.dna <- read.GenBank(access.nb=c("KJ161355.1", "KJ161354.1", "KJ161353.1", "KJ161352.1", "KJ161351.1", "KJ161350.1", "KJ161349.1", "KJ161348.1", "KJ161347.1", "KJ161346.1", "KJ161345.1", "KJ161344.1", "KJ161343.1", "KJ161342.1", "KJ161341.1", "KJ161340.1", "KJ161339.1", "KJ161338.1", "KJ161337.1", "KJ161336.1", "KJ161335.1", "KJ161334.1", "KJ161333.1", "KJ161332.1", "KJ161331.1", "KJ161330.1", "KJ161329.1", "KJ161328.1"))
-meles.dna
-class(meles.dna)
-# Converts DNAbin to genind - extracts SNP - for large data sets can be computationally very intensive
-meles.genind <- DNAbin2genind(meles.dna)
-meles.genind # Check it
+# Importing DNA sequences from GeneBank - according to sequence ID, data from https://www.ncbi.nlm.nih.gov/popset/22854787
+gunnera.dna <- read.GenBank(access.nb=c("AF447749.1", "AF447748.1", "AF447747.1", "AF447746.1", "AF447745.1", "AF447744.1", "AF447743.1", "AF447742.1", "AF447741.1", "AF447740.1", "AF447739.1", "AF447738.1", "AF447737.1", "AF447736.1", "AF447735.1", "AF447734.1", "AF447733.1", "AF447732.1", "AF447731.1", "AF447730.1", "AF447729.1", "AF447728.1"))
+gunnera.dna
+class(gunnera.dna)
 
 # Query on-line sequence databases
 library(seqinr)
@@ -329,29 +326,29 @@ usflu.genlight
 
 # Checking SNPs
 # Position of polymorphism within alignment - snpposi.plot() requires input data in form of matrix
-snpposi.plot(x=as.matrix(meles.dna), codon=FALSE)
+snpposi.plot(x=as.matrix(usflu.dna), codon=FALSE)
 # Position of polymorphism within alignment - differentiating codons
-snpposi.plot(as.matrix(meles.dna))
+snpposi.plot(as.matrix(usflu.dna))
 # When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary (polyThres=...)
-meles.genind <- DNAbin2genind(x=meles.dna, polyThres=0.01)
-meles.genind # See it
+usflu.genind2 <- DNAbin2genind(x=usflu.dna, polyThres=0.01)
+usflu.genind2 # See it
 # Test is distribution of SNP is random (1000 permutations)
-snpposi.test(x=as.matrix(meles.dna))
+snpposi.test(x=as.matrix(usflu.dna))
 
 # Check sequences
 # Nucleotide diversity
-pegas::nuc.div(x=meles.dna)
+pegas::nuc.div(x=usflu.dna)
 # Base frequencies
-ape::base.freq(x=meles.dna)
+ape::base.freq(x=usflu.dna)
 # GC content
-ape::GC.content(x=meles.dna)
+ape::GC.content(x=usflu.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
-seqinr::count(seq=as.character.DNAbin(meles.dna[["KJ161328.1"]]), wordsize=3)
+seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]), wordsize=3)
 # View sequences - all must be of the same length
 # Function "image.DNAbin" requires as input matrix, so that sequences must be of same length
 image.DNAbin(x=usflu.dna)
 # Sequences must be of same length - as.matrix.DNAbin() can help
-image.DNAbin(x=as.matrix.DNAbin(meles.dna))
+image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
 
 # VCF
 # Required library
@@ -438,9 +435,9 @@ hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerA
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
 # Export of DNA sequences into FASTA format
 write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6)
-seqinr::write.fasta(sequences=meles.dna, names=names(meles.dna), file.out="meles.fasta", open="w")
+seqinr::write.fasta(sequences=gunnera.dna, names=names(gunnera.dna), file.out="gunnera.fasta", open="w")
 # Export DNA sequnces as NEXUS
-write.nexus.data(x=meles.dna, file="meles.nexus", format="dna")
+write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
 # Export VCF
 write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
 # Export trees (objects of class phylo)
@@ -452,35 +449,34 @@ write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXU
 # Libraries
 library(ape)
 library(ips)
+
 # Requires path to MAFFT binary - set it according to your installation
 # Read ?mafft and mafft's documentation
-meles.mafft <- ips::mafft(x=meles.dna, method="localpair", maxiterate=100, options="--adjustdirection", exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
-meles.mafft
-class(meles.mafft)
+gunnera.mafft <- ips::mafft(x=gunnera.dna, method="localpair", maxiterate=100, options="--adjustdirection", exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
+gunnera.mafft # See results
+class(gunnera.mafft)
+image.DNAbin(gunnera.mafft) # Plot the alignment
 
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
 # read ?clustal and documentation of Clustal and Muscle to set correct parameters
-meles.clustal <- ape::clustal(x=meles.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
-meles.clustal
-class(meles.clustal)
-meles.muscle <- ape::muscle(x=meles.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
-meles.muscle
-class(meles.muscle)
+gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
+gunnera.clustal # See results
+class(gunnera.clustal)
+image.DNAbin(gunnera.clustal) # Plot the alignment
+gunnera.muscle <- ape::muscle(x=gunnera.dna, exec="muscle", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to muscle!
+gunnera.muscle # See results
+class(gunnera.muscle)
+image.DNAbin(gunnera.muscle) # Plot the alignment
 # See option in muscle package
 ?muscle::muscle
 
 # Remove gaps from alignment - destroy it
-meles.nogaps <- del.gaps(meles.muscle)
+gunnera.nogaps <- del.gaps(gunnera.muscle)
 ?del.gaps # See for details
-
-# Plot the alignment - you can select which bases to plot and/or modify colors
-image(x=meles.muscle, c("a", "t", "c" ,"g", "n"), col=rainbow(5))
-# Add grey dotted grid
-grid(nx=ncol(meles.muscle), ny=nrow(meles.muscle), col="lightgrey")
 
 # Align multiple genes
 # Create a list of DNAbin objects to process
-multialign <- list(meles.dna, usflu.dna, usflu.dna2)
+multialign <- list(gunnera.dna, usflu.dna, usflu.dna2)
 # See it
 multialign
 class(multialign)
@@ -501,39 +497,39 @@ lapply(X=multialign.aln2, FUN=class)
 ?mclapply # See more options
 ?clusterApply # See more options (parLapply should work on Windows)
 
-# Shortcut for plotting alignment
-image.DNAbin(x=meles.mafft)
-# Display aligned sequences with gaps
-image.DNAbin(x=usflu.dna)
+# Plotting alignment
+image.DNAbin(x=gunnera.mafft)
 # Check the alignment
 checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
-checkAlignment(x=as.matrix.DNAbin(x=meles.dna), check.gaps=TRUE, plot=TRUE, what=1:4)
+checkAlignment(x=as.matrix.DNAbin(x=gunnera.clustal), check.gaps=TRUE, plot=TRUE, what=1:4)
 ?checkAlignment # See details
-# DNAbin can be techically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
+# DNAbin can be technically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
 as.matrix.DNAbin()
 as.list.DNAbin()
 # Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
 
 # Delete all columns/rows containing only gaps or missing data (N, ?, -)
-usflu.dna <- deleteEmptyCells(DNAbin=usflu.dna)
+gunnera.mafft <- deleteEmptyCells(DNAbin=gunnera.mafft)
 ?ips::deleteEmptyCells # See help page for details
 ?phyloch::delete.empty.cells # See help page for details
 # Delete all columns containing at least 25% of gaps
-usflu.dna.ng <- deleteGaps(x=usflu.dna, gap.max=nrow(usflu.dna)/4)
-usflu.dna.ng
+gunnera.mafft.ng <- deleteGaps(x=gunnera.mafft, gap.max=nrow(gunnera.mafft)/4)
+gunnera.mafft.ng
 # Do not confuse with function delete.gaps() from phyloch package
 # See of settings of "nmax" value - threshold for gap deletion
 ?deleteGaps # "nmax=0" deletes all columns with any gap
 multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
 multialign.aln.ng
 # Delete every line (sample) containing at least 20% of missing data
-usflu.dna.ng <- del.rowgapsonly(x=usflu.dna.ng, threshold=0.2, freq.only=FALSE)
+gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.2, freq.only=FALSE)
+gunnera.mafft.ng
 ?ape::del.rowgapsonly # See help page for details
 # Delete every alignment position having at least 20% of missing data
-usflu.dna.ng <- del.colgapsonly(x=usflu.dna.ng, threshold=0.2, freq.only=FALSE)
+gunnera.mafft.ng <- del.colgapsonly(x=gunnera.mafft.ng, threshold=0.2, freq.only=FALSE)
+gunnera.mafft.ng
 ?ape::del.colgapsonly # See help page for details
 # Display the result
-image.DNAbin(x=usflu.dna.ng)
+image.DNAbin(x=gunnera.mafft.ng)
 lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 
 ## Descriptive statistics
@@ -745,10 +741,10 @@ usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
 usflu.dist
 class(usflu.dist)
 dim(as.matrix(usflu.dist))
-meles.dist <- dist.dna(x=meles.dna, model="F81")
-meles.dist
-class(meles.dist)
-dim(as.matrix(meles.dist))
+gunnera.dist <- dist.dna(x=gunnera.dna, model="F81")
+gunnera.dist
+class(gunnera.dist)
+dim(as.matrix(gunnera.dist))
 
 # Distances and genlight object. Pairwise genetic distances for each data block (genlight objects with whole genome data) - sensitive to missing data
 usflu.dists.l <- seploc(usflu.genlight, n.block=10, parallel=FALSE)
@@ -1705,17 +1701,17 @@ dev.off()
 
 ## Maximum parsimony
 # Conversion to phyDat for phangorn
-meles.phydat <- as.phyDat(meles.dna)
+gunnera.phydat <- as.phyDat(gunnera.dna)
 # Prepare starting tree
-meles.tre.ini <- nj(dist.dna(x=meles.dna, model="raw"))
+gunnera.tre.ini <- nj(dist.dna(x=gunnera.dna, model="raw"))
 # Parsimony
 ?parsimony
 # Returns maximum parsimony score
-parsimony(tree=meles.tre.ini, data=meles.phydat)
+parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
 # Optimisation - returns maximum parsimony tree
-meles.tre.pars <- optim.parsimony(tree=meles.tre.ini, data=meles.phydat)
+gunnera.tre.pars <- optim.parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
 # Draw a tree
-plot.phylo(x=meles.tre.pars, type="cladogram", edge.width=2)
+plot.phylo(x=gunnera.tre.pars, type="cladogram", edge.width=2)
 title("Maximum-parsimony tree of Meles")
 
 ## Compare two trees
@@ -2181,8 +2177,8 @@ plot(sapply(XX, CC)) # See the result
 # TODO more topics
 
 ## RAxML
-meles.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
-meles.raxml <- phyloch::raxml(x=meles.nogaps, runs=10, file="meles.raxml", path="~/bin/")
+gunnera.raxml <- raxml(DNAbin=usflu.dna, N="autoFC", exec="~/bin/")
+gunnera.raxml <- phyloch::raxml(x=gunnera.nogaps, runs=10, file="gunnera.raxml", path="~/bin/")
 
 ## Extra
 axisGeo() # package phyloch - adds scale in geological time, has many options
@@ -2224,43 +2220,43 @@ polysattest2 <- deleteLoci(polysattest2, "loc2")
 
 ## ML
 # Konverze dat do formátu pro phangorn
-meles.dna2 <- as.phyDat(meles.dna)
-class(meles.dna2)
-meles.dna2
-meles.tre.ini <- nj(dist.dna(meles.dna,model="TN93"))
-meles.tre.ini
-pml(meles.tre.ini, meles.dna2, k=4)
+gunnera.dna2 <- as.phyDat(gunnera.dna)
+class(gunnera.dna2)
+gunnera.dna2
+gunnera.tre.ini <- nj(dist.dna(gunnera.dna,model="TN93"))
+gunnera.tre.ini
+pml(gunnera.tre.ini, gunnera.dna2, k=4)
 # Inicializace optimalizační procedury
 ?pml
-table(as.character(meles.dna2))
+table(as.character(gunnera.dna2))
 # Nalezení chybějících dat
-meles.na.posi <- which(apply(as.character(meles.dna),2, function(e) any(!e %in% c("a","t","g","c"))))
+gunnera.na.posi <- which(apply(as.character(gunnera.dna),2, function(e) any(!e %in% c("a","t","g","c"))))
 # Graf chybějících dat
-meles.na.density <- apply(as.character(meles.dna),2, function(e) sum(!e %in% c("a","t","g","c")))
-plot(meles.na.density, type="l", col="blue", xlab="Position in HA segment", ylab="Number of NAs")
+gunnera.na.density <- apply(as.character(gunnera.dna),2, function(e) sum(!e %in% c("a","t","g","c")))
+plot(gunnera.na.density, type="l", col="blue", xlab="Position in HA segment", ylab="Number of NAs")
 # Odstranění chybějících dat
-meles.dna3 <- meles.dna[,-na.posi]
+gunnera.dna3 <- gunnera.dna[,-na.posi]
 # Alignment dat bez chybějících hodnot
-meles.dna3
-table(as.character(meles.dna3))
+gunnera.dna3
+table(as.character(gunnera.dna3))
 # Konverze alignmentu do formátu pro výpočet ML
 # Znovu spočítat likelihood
-meles.dna4 <- as.phyDat(meles.dna3)
-meles.tre.ini <- nj(dist.dna(meles.dna3,model="TN93"))
-meles.fit.ini <- pml(meles.tre.ini, meles.dna4, k=4)
-meles.fit.ini
-meles.fit <- optim.pml(meles.fit.ini, optNni=TRUE, optBf=TRUE, optQ=TRUE, optGamma=TRUE)
-meles.fit
-class(meles.fit)
-names(meles.fit)
-meles.fit$tree
+gunnera.dna4 <- as.phyDat(gunnera.dna3)
+gunnera.tre.ini <- nj(dist.dna(gunnera.dna3,model="TN93"))
+gunnera.fit.ini <- pml(gunnera.tre.ini, gunnera.dna4, k=4)
+gunnera.fit.ini
+gunnera.fit <- optim.pml(gunnera.fit.ini, optNni=TRUE, optBf=TRUE, optQ=TRUE, optGamma=TRUE)
+gunnera.fit
+class(gunnera.fit)
+names(gunnera.fit)
+gunnera.fit$tree
 # Porovnání starého a nového fitu
-anova(meles.fit.ini, meles.fit)
+anova(gunnera.fit.ini, gunnera.fit)
 # AIC - nižší = lepší
-AIC(meles.fit.ini)
-AIC(meles.fit)
+AIC(gunnera.fit.ini)
+AIC(gunnera.fit)
 # Extrakce a nakreslení stromu
-meles.tre4 <- root.phylo(meles.fit$tree,1)
-plot(meles.tre4, show.tip=FALSE, edge.width=2)
+gunnera.tre4 <- root.phylo(gunnera.fit$tree,1)
+plot(gunnera.tre4, show.tip=FALSE, edge.width=2)
 title("Maximum-likelihood tree")
 axisPhylo()
