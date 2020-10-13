@@ -1379,6 +1379,7 @@ library(rworldmap) # Basic world maps
 library(TeachingDemos) # To be able to move text little bit
 library(RgoogleMaps) # Google maps
 library(mapplots) # Plot pie charts
+library(adegenet)
 # Plot basic map with state boundaries within selected range
 plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=1.5)
 box() # Add frame around the map
@@ -1389,17 +1390,16 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 # Insert legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
-# Google map is produced into a file. Parametr markers contain data frame with coordinates and possibly with another information
+# Google map is produced into a file
 # Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/intro
-hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, markers=hauss.coord, maptype="terrain", API_console_key="XXX")
-# Plot saved map
-PlotOnStaticMap(MyMap=hauss.gmap)
+?GetMap # See all options
 ?PlotOnStaticMap # See all options
-# Other option of adding points and labels
-hauss.gmap2 <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap2.png", zoom=8, maptype="satellite", API_console_key="XXX")
-PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
-PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
-PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
+# Download map
+hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, maptype="satellite")
+# Plot saved map, with extra data
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
 # Google maps have their own internal scaling, adding of points by standard functions will not work correctly
 
 # Pie charts on a map
@@ -1420,48 +1420,47 @@ text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=
 
 # Pie charts on Google map
 # Prepare list to store recalculated coordinates
-hauss.gmap2.coord <- list()
+hauss.gmap.coord <- list()
 # Calcualtion of coordinates to form required by Google Maps
-for (LC in 1:5) { hauss.gmap2.coord[[LC]] <- LatLon2XY.centered(MyMap=hauss.gmap2, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC], lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
-hauss.gmap2.coord # See result
+for (LC in 1:5) { hauss.gmap.coord[[LC]] <- LatLon2XY.centered(MyMap=hauss.gmap, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC], lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
+hauss.gmap.coord # See result
 # Plot plain map
-PlotOnStaticMap(MyMap=hauss.gmap2)
+PlotOnStaticMap(MyMap=hauss.gmap)
 # Plot pie charts
-for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]$newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]), radius=25, col=topo.colors(n=3, alpha=0.7)) }
+for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap.coord[[LP]]$newX, y=hauss.gmap.coord[[LP]]$newY, labels=names(hauss.pie[LP,]), radius=25, col=topo.colors(n=3, alpha=0.7)) }
 # Alternative option to plot pie charts
-for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]$newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=3, alpha=0.5) ) }
+for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap.coord[[LF]]$newX, ypos=hauss.gmap.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30, col=heat.colors(n=3, alpha=0.5) ) }
 # Add population text labels
-PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 
 library(maps) # Various mapping tools (plotting, ...)
-library(mapdata) # More detailed maps, but political boundaries often outdated, see http://cran.r-project.org/web/packages/mapdata/
+library(mapdata) # More detailed maps, but political boundaries often outdated, see https://CRAN.R-project.org/package=mapdata
 library(mapproj) # Converts latitude/longitude into projected coordinates
 # Plot a map, check parameters, among others projection and ?mapproject for its details
-map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE, col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
+map(database="world", boundary=TRUE, interior=TRUE, fill=TRUE, col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
 # If you'd use projection, use - mapproject() to convert also coordinates! See ?mapproject for details
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=3)
 
 # Plotting on SHP files
 library(maptools)
+library(rgdal)
 # Load SHP file
 # Data from http://download.geofabrik.de/europe/macedonia.html
 # R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
 dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
-# There are several functions readShape* - select appropriate according to data stored in respective SHP file
 # Check correct import by plotting all layers
-# TODO readShapeLines is deprecated; use rgdal::readOGR or sf::st_read
-macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
+macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
 plot(macedonia_building)
-macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
+macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
 plot(macedonia_landuse)
-macedonia_natural <- readShapeLines(fn="macedonia_natural.shp")
+macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
 plot(macedonia_natural)
-macedonia_railways <- readShapeLines(fn="macedonia_railways.shp")
+macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
 plot(macedonia_railways)
-macedonia_roads <- readShapeLines(fn="macedonia_roads.shp")
+macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
 plot(macedonia_roads)
-macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
+macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
 plot(macedonia_waterways)
 # Plot all layers into single image, add more information
 plot(macedonia_building)
@@ -1472,7 +1471,7 @@ plot(macedonia_roads, add=TRUE, col="orange")
 plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
 # Add state boundaries
 plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=5, add=TRUE) # Or e.g.
-map(database="worldHires", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
+map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
 # Add sampling points
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
 # Add description of psampling points

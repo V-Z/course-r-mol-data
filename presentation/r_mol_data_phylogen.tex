@@ -4392,6 +4392,18 @@
 
 \subsection{Plotting maps}
 
+\begin{frame}{Mapping overview}
+	\begin{itemize}
+		\item There are plenty of options, only some basic options are shown\ldots
+		\item Some packages offer basic (state) maps
+		\item It is possible to use various on-line maps
+		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefiles} (SHP) used in specialized GIS software can be used as base layer to plot points etc. to that map
+		\item Interactive maps can be created with libraries like \href{https://CRAN.R-project.org/package=leaflet}{leaflet}
+		\item It is possible to plot to maps not only point and/or text labels, but also pie charts, bar charts, or e.g. \href{http://blog.phytools.org/2019/03/projecting-phylogenetic-tree-onto-map.html}{plot phylogeny to the map}
+		\item Much more options are available in specialized mapping packages, especially with connections with GIS (e.g. \href{https://qgis.org/}{QGIS} or \href{https://grass.osgeo.org/}{GRASS GIS})
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Very basic mapping in R}
 	\begin{spluscode}
     library(sp) # Load libraries
@@ -4399,18 +4411,18 @@
     library(TeachingDemos) # To be able to move text little bit
     library(RgoogleMaps) # Google and OpenStreetMaps
     library(mapplots) # Plot pie charts
+    library(adegenet)
     # Plot basic map with state boundaries within selected range
-    plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
-      lwd=1.5)
+    plot(x=getMap(resolution="high"),xlim=c(19,24),ylim=c(39,44),asp=1,lwd=1.5)
     box() # Add frame around the map
     # Plot location points
-    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy [["lat"]],
+    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]],
       pch=15:19, col="red", cex=4)
     # Add text descriptions for points. Text is aside and with background
     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy
-      [["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg=
-      "white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4,
-      4), offset=0.75, cex=1.5)
+      [["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
+      bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1,
+      3, 2, 4, 4), offset=0.75, cex=1.5)
 	\end{spluscode}
 \end{frame}
 
@@ -4426,68 +4438,43 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Google map}
+\begin{frame}[fragile]{Google map basics}
 	\begin{multicols}{2}
 		\begin{spluscode}
-    # Google map is produced into a
-    # file. Parameter markers contain
-    # data frame with coordinates and
-    # possibly with more information
-    hauss.gmap <- GetMap(center=c(lat=
-      41, lon=21), size=c(640, 640),
-      destfile="gmap.png", zoom=8,
-      markers=hauss.coord, maptype=
-      "terrain", API_console_key="XXX")
-    # Plot the map
-    PlotOnStaticMap(MyMap=hauss.gmap)
+    # Basic help for Google maps
+    ?GetMap
+    ?PlotOnStaticMap
 		\end{spluscode}
 		\begin{itemize}
-			\item Google recently started to require \href{https://developers.google.com/maps/documentation/maps-static/intro}{API key}, it doesn't work without it\ldots
+			\item For larger/complex maps Google requires \href{https://developers.google.com/maps/documentation/maps-static/intro}{API key}
 			\item See \href{https://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
+			\item Map is first downloaded with \texttt{GetMap()} into R object, and then plotted with \texttt{PlotOnStaticMap()} or with another function
 			\item Many on-line map services do require (paid) API key\ldots
 		\end{itemize}
 		\begin{center}
-			\includegraphics[height=4.5cm]{gmap1.jpg}
+			\includegraphics[height=6.5cm]{gmap.jpg}
 		\end{center}
 	\end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{More options for Google map}
-	\begin{multicols}{2}
-		\begin{spluscode}
-    hauss.gmap2 <- GetMap(center=c(
-      lat=41, lon=21), size=c(640,
-      640), destfile="gmap2.png",
-      zoom=8, maptype="satellite",
-      API_console_key="XXX")
-    PlotOnStaticMap(MyMap=hauss.gmap2,
-      lat=hauss.genpop@other$xy[["lat"
-      ]], lon=hauss.genpop@other$xy
-      [["lon"]], FUN=points, pch=19,
-      col="blue", cex=5)
-    PlotOnStaticMap(MyMap=hauss.gmap2,
-      lat=hauss.genpop@other$xy[["lat"
-      ]], lon=hauss.genpop@other$xy
-      [["lon"]], add=TRUE, FUN=points,
-      pch=19, col="red", cex=3)
-    PlotOnStaticMap(MyMap=hauss.gmap2,
-      lat=hauss.genpop@other$xy[["lat"
-      ]], lon=hauss.genpop@other$xy
-		\end{spluscode}
-		\begin{spluscode}
-      [["lon"]], add=TRUE, FUN=text,
-      labels=as.vector(popNames(
-      hauss.genind)), pos=4, cex=3,
-      col="white")
-    # Google maps have their own
-    # internal scaling, adding of
-    # points by standard functions
-    # will not work correctly
-		\end{spluscode}
-		\begin{center}
-			\includegraphics[height=3.5cm]{gmap2.jpg}
-		\end{center}
-	\end{multicols}
+\begin{frame}[fragile]{Plotting Google map}
+	\begin{spluscode}
+    # Download map
+    hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640),
+      destfile="gmap.png", zoom=8, maptype="satellite")
+    # Plot saved map, with extra data
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue",
+      cex=5)
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19,
+      col="red", cex=3)
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text,
+      labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
+    # Google maps have their own internal scaling, adding of points by
+    # standard functions will not work correctly
+	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Adding pie charts to map I}
@@ -4505,42 +4492,52 @@
     plot(x=getMap(resolution="high"),xlim=c(20,23),ylim=c(41,42),asp=1,lwd=1.5)
     box() # Add frame around the map
     # Plot the pie charts
-    for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other
-      $xy[["lon"]])[L], y=as.vector(hauss.genpop@other$xy[["lat"]])[L],
-      labels=names(hauss.pie[L,]), radius=0.1, col=topo.colors(3)) }
-    ?add.pie # See more options
+    for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(
+      hauss.genpop@other$xy[["lon"]])[L], y=as.vector(
+      hauss.genpop@other$xy[["lat"]])[L], labels=names(hauss.pie[L,]),
+      radius=0.1, col=topo.colors(3)) }
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Adding pie charts to map II}
-	\begin{spluscode}
+	\begin{multicols}{2}
+		\begin{spluscode}
+    ?add.pie # See more options
     # Add population labels
-    text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]],
-      labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[height=5cm]{map_pie.png}
-	\end{center}
+    text(
+      x=hauss.genpop@other$xy[["lon"]],
+      y=hauss.genpop@other$xy[["lat"]],
+      labels=
+      as.vector(popNames(hauss.genind)),
+      col="red", cex=2)
+		\end{spluscode}
+		\begin{itemize}
+			\item As usually, play with colours and display options\ldots
+		\end{itemize}
+		\begin{center}
+			\includegraphics[height=6cm]{map_pie.png}
+		\end{center}
+	\end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Pie charts on Google map I}
 	\begin{spluscode}
     # Prepare list to store recalculated coordinates
-    hauss.gmap2.coord <- list()
+    hauss.gmap.coord <- list()
     # Calculation of coordinates to form required by Google Maps
-    for (LC in 1:5) { hauss.gmap2.coord[[LC]] <- LatLon2XY.centered(MyMap=
-      hauss.gmap2, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC],
+    for (LC in 1:5) { hauss.gmap.coord[[LC]] <- LatLon2XY.centered(MyMap=
+      hauss.gmap, lat=as.vector(hauss.genpop@other$xy[["lat"]])[LC],
       lon=as.vector(hauss.genpop@other$xy[["lon"]])[LC], zoom=8) }
-    hauss.gmap2.coord # See result
+    hauss.gmap.coord # See result
     # Plot plain map
-    PlotOnStaticMap(MyMap=hauss.gmap2)
+    PlotOnStaticMap(MyMap=hauss.gmap)
     # Plot pie charts
-    for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap2.coord[[LP]]
-      $newX, y=hauss.gmap2.coord[[LP]]$newY, labels=names(hauss.pie[LP,]),
+    for (LP in 1:5) { add.pie(z=hauss.pie[LP,], x=hauss.gmap.coord[[LP]]
+      $newX, y=hauss.gmap.coord[[LP]]$newY, labels=names(hauss.pie[LP,]),
       radius=25, col=topo.colors(n=3, alpha=0.7)) }
     # Alternative option to plot pie charts
-    for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap2.coord[[LF]]
-      $newX, ypos=hauss.gmap2.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30,
+    for (LF in 1:5) { plotrix::floating.pie(xpos=hauss.gmap.coord[[LF]]
+      $newX, ypos=hauss.gmap.coord[[LF]]$newY, x=hauss.pie[LF,], radius=30,
       col=heat.colors(n=3, alpha=0.5) ) }
 	\end{spluscode}
 \end{frame}
@@ -4548,12 +4545,12 @@
 \begin{frame}[fragile]{Pie charts on Google map II}
 	\begin{spluscode}
     # Add population text labels
-    PlotOnStaticMap(MyMap=hauss.gmap2, lat=hauss.genpop@other$xy[["lat"]],
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
       lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text,
       labels=as.vector(popNames(hauss.genind)), cex=2.5, col="white")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=4.5cm]{map_pie_google.png}
+		\includegraphics[height=4.5cm]{map_pie_google.jpg}
 	\end{center}
 \end{frame}
 
@@ -4568,7 +4565,7 @@
     # Convert latitude/longitude into projected coordinates
     # Plot a map, check parameters
     # Check among others "projection" and ?mapproject for its details
-    map(database="worldHires", boundary=TRUE, interior=TRUE, fill=TRUE,
+    map(database="world", boundary=TRUE, interior=TRUE, fill=TRUE,
       col="lightgrey", plot=TRUE, xlim=c(16, 27), ylim=c(37, 46))
     # If you'd use projection, use mapproject to convert also coordinates!
     ?mapproject # See for details
@@ -4580,32 +4577,30 @@
 \begin{frame}[fragile]{Plotting on SHP files I}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
-		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} and unpack them into R working directory
-		\item Data were originally downloaded from \url{https://download.geofabrik.de/europe/macedonia.html}
+		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (from \url{https://download.geofabrik.de/europe/macedonia.html}) and unpack them into R working directory
 		\item R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
 	\end{itemize}
 	\begin{spluscode}
     library(maptools)
+    library(rgdal)
     dir() # Verify required files are unpacked in the working directory
-    # There are several functions readShape* - select appropriate
-    # according to data stored in respective SHP file
     # Check correct import by plotting all layers
-    macedonia_building <- readShapeLines(fn="macedonia_buildings.shp")
-    plot(macedonia_building) # Continues on next slide...
+    macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
+    plot(macedonia_building)
+    macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
+    plot(macedonia_landuse)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Plotting on SHP files II}
 	\begin{spluscode}
-    macedonia_landuse <- readShapeLines(fn="macedonia_landuse.shp")
-    plot(macedonia_landuse)
-    macedonia_natural <- readShapeLines(fn="macedonia_natural.shp")
+    macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
     plot(macedonia_natural)
-    macedonia_railways <- readShapeLines(fn="macedonia_railways.shp")
+    macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
     plot(macedonia_railways)
-    macedonia_roads <- readShapeLines(fn="macedonia_roads.shp")
+    macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
     plot(macedonia_roads)
-    macedonia_waterways <- readShapeLines(fn="macedonia_waterways.shp")
+    macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
     plot(macedonia_waterways)
     # Plot all layers into single image, add more information
     plot(macedonia_building)
@@ -4613,7 +4608,8 @@
     plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
     plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
     plot(macedonia_roads, add=TRUE, col="orange")
-    plot(macedonia_waterways, add=TRUE, col="blue", lwd=2) # Ends on next slide
+    plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+    # Now we can add few more data, next slide
 	\end{spluscode}
 \end{frame}
 
@@ -4622,11 +4618,11 @@
     # Add state boundaries
     plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
       lwd=5, add=TRUE) # Or e.g.
-    map(database="worldHires", boundary=TRUE, interior=TRUE, fill=FALSE,
+    map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE,
       col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
     # Add sampling points
-    points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
-      xy[["lat"]], pch=15:19, col="red", cex=4)
+    points(x=hauss.genpop@other$xy[["lon"]],
+      y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
     # Add description of sampling points
     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
       xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
@@ -4634,23 +4630,27 @@
       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
     # Add legend
     legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"),
-      col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey",
-      box.lwd=1.5, cex=1.5, title="Populations")
+      col="red", border="black", pch=15:19, pt.cex=2, bty="o",
+      bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Plotting on SHP files IV and maps from mapproj}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{mapy.png}
+		\includegraphics[width=\textwidth-3.5cm]{mapy.png}
 	\end{center}
 \end{frame}
 
 \subsection{Tasks}
 
-\begin{frame}{Practicing working with spatial data}
+\begin{frame}{Practicing work with spatial data}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item 
+			\item Try some with the spatial analysis with adegenet's alpine \textit{Rupicapra} dataset (see \texttt{?adegenet::rupica}), or cats from Nancy (see \texttt{?adegenet::nancycats}), or with any other (your) data.
+			\item Plot some of the above dataset, or some your data to map. Try several mapping options.
+			\item Which problems can you encounter when doing spatial analysis or plotting maps over large spatial scale (level of continents and above), close to equator or in polar regions?
+			\item What are possible problems when computing distances among sampling sites?
+			\item Search the Internet for another options how to plot maps in R which could be suitable for your data.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
