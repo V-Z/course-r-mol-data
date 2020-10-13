@@ -1481,41 +1481,45 @@ legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="re
 
 ## Tree manipulations
 
-# Read trees in NEWICK format - single or multiple tree(s)
-oxalis.trees <- read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
-summary(oxalis.trees)
-length(oxalis.trees)
-names(oxalis.trees)
-# Export trees in NEWICK format
-write.tree(phy=oxalis.trees, file="trees.nwk")
+# Library
+library(ape)
 
-# Drop a tip from multiPhylo
-plot.multiPhylo(x=oxalis.trees)
-# See tip labels
-oxalis.trees[[1]][["tip.label"]]
-oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, tip="O._callosa_S15")
-class(oxalis.trees.drop) <- "multiPhylo"
-plot.multiPhylo(x=oxalis.trees.drop)
-
-# Drop a tip
+# Root the tree
 plot.phylo(hauss.nj)
-hauss.nj[["tip.label"]]
-hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
-plot.phylo(hauss.nj.drop)
-
-# Interactively extract tree
-# Plot source tree
+print.phylo(hauss.nj)
+tiplabels() # Shows tip numbers
+# root.phylo accepts either tip number or tip label
+# resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
+# outgroup can be single value or vector of multiple tips
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=16) # Or
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup="H16") # Or
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=c("H42", "H43"))
+# root.multiPhylo() is an alias for root.phylo() for class multiPhylo
+print.phylo(hauss.nj.rooted)
+plot.phylo(hauss.nj.rooted)
+# Check if it is rooted - returns TRUE/FALSE
+is.rooted(hauss.nj.rooted)
+is.rooted(hauss.nj)
+# Root the tree interactively
 plot.phylo(hauss.nj)
-# See node labels (numbers) - needed for some tasks
+hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE) # Click to selected tip
+plot.phylo(hauss.nj.rooted)
+# Unroot the tree
+?unroot.phylo
+# root(), unroot() and is.rooted() works with single or multiple trees (class phylo or multiPhylo)
+
+# Rotate (swap) clade
+# plot.phylo plots tree in exact order as it is in the phylo object
+plot.phylo(hauss.nj)
 nodelabels()
-# Select clade to extract by clicking on it
-hauss.nj.extracted <- extract.clade(phy=hauss.nj, interactive=TRUE)
-# See new extracted tree
-plot.phylo(hauss.nj.extracted)
-# Non-interactively extract tree
-hauss.nj.extracted <- extract.clade(phy=hauss.nj, node=60, interactive=FALSE)
-# See new extracted tree
-plot.phylo(hauss.nj.extracted)
+hauss.nj.rotated <- ape::rotate(phy=hauss.nj, node=74)
+plot.phylo(hauss.nj.rotated)
+nodelabels()
+
+# Ladderize the tree - step-wise rotation of nodes
+plot.phylo(hauss.nj)
+hauss.nj.ladderized <- ladderize(hauss.nj)
+plot.phylo(hauss.nj.ladderized)
 
 # Drop "extinct" tips - those who don't reach end the tree
 # tolerance is respective to the used metrics
@@ -1523,8 +1527,35 @@ plot.phylo(hauss.nj)
 axisPhylo()
 hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.4)
 plot.phylo(hauss.nj.fossil)
+# See details
+?drop.fossil
+
+# Extract clade, part of tree
+# Plot source tree
+plot.phylo(hauss.nj)
+# See node labels (numbers) - needed for some tasks
+nodelabels()
+# Non-interactively extract clade
+hauss.nj.extracted <- extract.clade(phy=hauss.nj, node=60)
+# See new extracted tree
+plot.phylo(hauss.nj.extracted)
+# Interactive extraction
+plot.phylo(hauss.nj)
+# Select clade to extract by clicking on it
+hauss.nj.extracted <- extract.clade(phy=hauss.nj, interactive=TRUE)
+# See new extracted tree
+plot.phylo(hauss.nj.extracted)
+# See more options
+?extract.clade
+?keep.tip # Does the opposite - keeps only selected tip(s)
 
 # Bind two trees into one
+# Bind donor "y" tree to a given position of the "x" tree
+?bind.tree # See options
+plot.phylo(hauss.nj.fossil)
+nodelabels()
+plot.phylo(hauss.nj.extracted)
+nodelabels()
 hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted, where="root", position=0, interactive=FALSE)
 plot.phylo(hauss.nj.bind)
 # Bind two trees interactively
@@ -1534,46 +1565,69 @@ plot.phylo(hauss.nj.fossil)
 hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted, interactive=TRUE)
 plot.phylo(hauss.nj.bind)
 
-# Rotate tree
-# plot.phylo plots tree in exact order as it is in the phylo object
-plot.phylo(hauss.nj)
-nodelabels()
-hauss.nj.rotated <- ape::rotate(phy=hauss.nj, node="70")
-plot.phylo(hauss.nj.rotated)
+# Work with multiple trees
+# Read tree(s) in NEWICK format - single or multiple tree(s)
+oxalis.trees <- read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
+oxalis.trees
+lapply(X=oxalis.trees, FUN=print.phylo)
+plot.multiPhylo(x=oxalis.trees) # See all trees
+summary(oxalis.trees)
+length(oxalis.trees)
+names(oxalis.trees)
+# Export trees in NEWICK format
+write.tree(phy=oxalis.trees, file="trees.nwk")
+# Export trees in NEXUS format
+write.nexus(oxalis.trees, file="trees.nexus")
+# Root all trees
+oxalis.trees.rooted <- root.multiPhylo(phy=oxalis.trees, outgroup="O._fibrosa_S159", resolve.root=TRUE)
+lapply(X=oxalis.trees.rooted, FUN=print.phylo)
+plot.multiPhylo(x=oxalis.trees) # See all trees
 
-# Ladderize the tree
+# Drop a tip
 plot.phylo(hauss.nj)
-hauss.nj.ladderized <- ladderize(hauss.nj)
-plot.phylo(hauss.nj.ladderized)
+hauss.nj[["tip.label"]]
+tiplabels()
+hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47) # Or
+hauss.nj.drop <- drop.tip(phy=hauss.nj, tip="H31") # Or
+hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=c("H18", "H29", "H31"))
+plot.phylo(hauss.nj.drop)
 
-# Root the tree
-plot.phylo(hauss.nj)
-print.phylo(hauss.nj)
-hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=10) # resolve.root=TRUE ensures root will be bifurcating (without this parameter it sometimes doesn't work)
-print.phylo(hauss.nj.rooted)
-plot.phylo(hauss.nj.rooted)
-# Root the tree interactive
-plot.phylo(hauss.nj)
-hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE)
-plot.phylo(hauss.nj.rooted)
-# Unroot the tree
-unroot.phylo()
-# Check if it is rooted
-is.rooted()
+# Drop a tip from multiPhylo
+plot.multiPhylo(x=oxalis.trees)
+# See tip labels
+oxalis.trees[[1]][["tip.label"]]
+oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, tip="O._callosa_S15")
+class(oxalis.trees.drop) <- "multiPhylo"
+plot.multiPhylo(x=oxalis.trees.drop)
+lapply(X=oxalis.trees.drop, FUN=print.phylo)
 
 # Check if the tree is ultrametric - is variance of distances of all tips to node 0? It is required for some analysis
-is.ultrametric()
-# Make tree ultrametric
-chronos()
-?chronos # Check it for mode how to calculate the lengths
+is.ultrametric(oxalis.trees)
+
+# Fitting a chronogram to a phylogenetic tree whose branch lengths are in number of substitution per sites - force tree to be ultrametric
+?chronos
 
 # Compute branch lengths for trees without branch lengths
-compute.brlen()
-?compute.brlen # Check it for mode how to calculate the lengths
+?compute.brlen
 
 # Computes the branch lengths of a tree giving its branching times (aka node ages or heights)
-compute.brtime()
-?compute.brtime # Check it for mode how to calculate the lengths
+?compute.brtime
+
+## Maximum parsimony
+library(phangorn)
+# Conversion to phyDat for phangorn
+gunnera.phydat <- as.phyDat(gunnera.mafft.ng)
+# Prepare starting tree
+gunnera.tre.ini <- nj(dist.dna(x=gunnera.mafft.ng, model="raw"))
+# Parsimony details
+?parsimony
+# Returns maximum parsimony score
+parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
+# Optimisation - returns maximum parsimony tree
+gunnera.tre.pars <- optim.parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
+# Draw a tree
+plot.phylo(x=gunnera.tre.pars, type="cladogram", edge.width=2)
+title("Maximum-parsimony tree of Gunnera spp.")
 
 ## Topographical distances among trees
 
@@ -1605,6 +1659,7 @@ corrplot(corr=oxalis.trees.d.rf, method="number", type="lower", add=TRUE, col=ra
 
 # PCoA from distance matrices of topographical differences among trees
 # Test if the distance matrix is Euclidean or not
+library(ade4)
 is.euclid(distmat=oxalis.trees.d, plot=TRUE)
 # Calculate the PCoA
 oxalis.trees.pcoa <- dudi.pco(d=oxalis.trees.d, scannf=TRUE, full=TRUE)
@@ -1643,9 +1698,7 @@ write.tree(phy=oxalis.trees.good, file="trees_good.nwk")
 
 ## Seeing trees in the forest
 
-# Root all trees
-oxalis.trees.rooted <- root.multiPhylo(phy=oxalis.trees, outgroup="O._fibrosa_S159", resolve.root=TRUE)
-# Consenus tree (50 % rule)
+# Consenus tree (50% rule)
 oxalis.tree.con <- ape::consensus(oxalis.trees.rooted, p=0.5, check.labels=TRUE)
 print.phylo(oxalis.tree.con)
 # Plot the tree
@@ -1657,7 +1710,8 @@ axisPhylo(side=1)
 oxalis.trees.ultra <- lapply(X=oxalis.trees.rooted, FUN=chronos, model="correlated")
 class(oxalis.trees.ultra) <- "multiPhylo"
 # Mean distances
-oxalis.tree.sp.mean <- speciesTree(oxalis.trees.ultra, mean)
+?speciesTree # See underlying method
+oxalis.tree.sp.mean <- speciesTree(x=oxalis.trees.ultra, FUN=mean)
 print.phylo(oxalis.tree.sp.mean)
 # Plot the tree
 plot.phylo(oxalis.tree.sp.mean, edge.width=2, label.offset=0.01)
@@ -1666,12 +1720,22 @@ axisPhylo(side=1)
 
 # Parsimony super tree
 library(phytools)
+?mrp.supertree # See details
 oxalis.tree.sp <- mrp.supertree(tree=oxalis.trees.rooted, method="optim.parsimony", rooted=TRUE)
 print.phylo(oxalis.tree.sp)
 plot.phylo(oxalis.tree.sp, edge.width=2, label.offset=0.01)
 axisPhylo(side=1)
 ?phangorn::superTree # Similar function
 ?phangorn::coalSpeciesTree # Has coalescence model to handle multiple individuals per species
+
+# TODO STAR and STEAC species trees
+# https://github.com/lliu1871/phybase
+
+# Networks
+library(phangorn)
+oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
+plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
+plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 3D
 
 # Density tree
 # Prepare list of trees to show
@@ -1694,34 +1758,10 @@ phytools::densityTree(trees=oxalis.trees.ultra, fix.depth=TRUE, use.gradient=TRU
 phytools::densityTree(trees=oxalis.trees.ultra[1:3], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 phytools::densityTree(trees=oxalis.trees.ultra[c(2,4,6,7)], fix.depth=TRUE, use.gradient=TRUE, alpha=0.5, lwd=4) # Nice selection
 
-# TODO STAR and STEAC species trees
-# https://github.com/lliu1871/phybase
-
-# Networks
-library(phangorn)
-oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
-plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 3D
-
 # Plot all trees on same scale
 kronoviz(x=oxalis.trees.rooted, layout=length(oxalis.trees.rooted), horiz=TRUE)
 # Close graphical device to cancel division of plotting device
 dev.off()
-
-## Maximum parsimony
-# Conversion to phyDat for phangorn
-gunnera.phydat <- as.phyDat(gunnera.dna)
-# Prepare starting tree
-gunnera.tre.ini <- nj(dist.dna(x=gunnera.dna, model="raw"))
-# Parsimony
-?parsimony
-# Returns maximum parsimony score
-parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
-# Optimisation - returns maximum parsimony tree
-gunnera.tre.pars <- optim.parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
-# Draw a tree
-plot.phylo(x=gunnera.tre.pars, type="cladogram", edge.width=2)
-title("Maximum-parsimony tree of Meles")
 
 ## Compare two trees
 # Compare topology of the species trees - basically outputs TRUE/FALSE
@@ -1730,6 +1770,7 @@ all.equal.phylo(oxalis.tree.sp, oxalis.tree.sp.mean, use.edge.length=FALSE)
 # Plot two trees with connecting lines
 # We need 2 column matrix with tip labels
 tips.labels <- matrix(data=c(sort(oxalis.tree.sp[["tip.label"]]), sort(oxalis.tree.sp.mean[["tip.label"]])), nrow=length(oxalis.tree.sp[["tip.label"]]), ncol=2)
+tips.labels
 # Draw a tree - play with graphical parameters and use rotate=TRUE
 # to be able to adjust fit manually
 cophyloplot(x=ladderize(oxalis.tree.sp), y=ladderize(oxalis.tree.sp.mean), assoc=tips.labels, use.edge.length=FALSE, space=60, length.line=1, gap=2, type="phylogram", rotate=TRUE, col="red", lwd=1.5, lty=2)
@@ -1751,7 +1792,7 @@ dev.off() # Close graphical device to cancel par() settings
 
 # Nice tiplabels and higlighted tiplabel
 # Load tree in text format
-trape <- read.tree(text = "((Homo, Pan), Gorilla);")
+trape <- read.tree(text="((Homo, Pan), Gorilla);")
 # Plot the tree
 plot.phylo(x=trape, show.tip.label=FALSE)
 # Add colored tip labels
@@ -1760,7 +1801,7 @@ tiplabels(trape[["tip.label"]], bg=c("white", "black", "white"), col=c("black", 
 nodelabels(text=c("6.4 Ma", "5.4 Ma"), frame="circle", bg="yellow")
 # Add scale bar
 add.scale.bar()
-# Note vectors for tip/nodelabels
+# Note vectors for tip/node labels
 
 ## PIC
 

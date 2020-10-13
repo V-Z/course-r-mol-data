@@ -4657,59 +4657,118 @@
 
 \section{Trees}
 
-\begin{frame}{Manipulation, display and analysis of sets of trees}{Work with individual trees and sets of trees, finding species trees from multiple gene trees}
+\begin{frame}[fragile]{Manipulation, display and analysis of sets of trees}{Work with individual trees and sets of trees, finding species trees from multiple gene trees}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\begin{spluscode}
+    # Library
+    library(ape)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}{Working with phylogenetic trees in R}
+	\begin{itemize}
+		\item To import one or more tree(s) in \href{https://en.wikipedia.org/wiki/Newick_format}{NEWICK} (\texttt{*.tre}, \texttt{*.nwk},~\ldots) use \texttt{read.tree()}, for trees in \href{https://en.wikipedia.org/wiki/Nexus_file}{NEXUS} (\texttt{*.nex}, \texttt{*.nexus},~\ldots) use \texttt{read.nexus()}
+		\item To export tree in NEWICK use \texttt{write.tree()}, in NEXUS use \texttt{write.nexus()}
+		\item Another tree (ape's class \texttt{phylo}) formats can be imported/exported/manipulated with e.g. functions from \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{treeio} package
+		\item Some functions manipulating trees can work only in single tree (class \texttt{phylo}), some can work with multiple trees (class \texttt{multiPhylo})
+		\item \href{https://CRAN.R-project.org/package=ape}{ape} has plenty of \texttt{*.multiPhylo} functions to handle tree sets (e.g. \texttt{root.phylo} vs. \texttt{root.multiPhylo})
+		\item If the function needed does not work with multiple trees, use \texttt{lapply()} (see further examples)
+	\end{itemize}
 \end{frame}
 
 \subsection{Manipulations}
 
-\begin{frame}[fragile]{Read and write tree and drop tips}
+\begin{frame}[fragile]{Rooting and unrooting trees I}
 	\begin{spluscode}
-    # Read trees in NEWICK format - single or multiple tree(s)
-    oxalis.trees<-read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
-    summary(oxalis.trees)
-    length(oxalis.trees)
-    names(oxalis.trees)
-    # Export trees in NEWICK format
-    write.tree(phy=oxalis.trees, file="trees.nwk")
-    oxalis.trees[[1]][["tip.label"]] # See tip labels
-    # Drop a tip from multiPhylo
-    plot.multiPhylo(x=oxalis.trees)
-    oxalis.trees.drop<-lapply(X=oxalis.trees,FUN=drop.tip,tip="O._callosa_S15")
-    class(oxalis.trees.drop) <- "multiPhylo"
-    plot.multiPhylo(x=oxalis.trees.drop)
-    plot.phylo(hauss.nj) # Drop a tip from single tree
-    hauss.nj[["tip.label"]] # See tip labels (and numbers)
-    hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47)
-    plot.phylo(hauss.nj.drop)
+    plot.phylo(hauss.nj)
+    print.phylo(hauss.nj)
+    tiplabels() # Shows tip numbers
+    # root.phylo accepts either tip number or tip label
+    # resolve.root=TRUE ensures root will be bifurcating
+    # (without this parameter it sometimes doesn't work)
+    # outgroup can be single value or vector of multiple tips
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE,
+      outgroup=16) # Or
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE,
+      outgroup="H16") # Or
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE,
+      outgroup=c("H42", "H43"))
+    # root.multiPhylo() is an alias for root.phylo() for class multiPhylo
+    print.phylo(hauss.nj.rooted)
+    plot.phylo(hauss.nj.rooted)
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Extract clades from trees and drop extinct tips}
+\begin{frame}[fragile]{Rooting and unrooting trees II \& swap clade}
 	\begin{spluscode}
-    # Interactively extract tree
-    plot.phylo(hauss.nj) # Plot source tree
-    nodelabels() # See node labels (numbers) - needed for some tasks
-    # Select clade to extract by clicking on it
-    hauss.nj.extracted <- extract.clade(phy=hauss.nj, interactive=TRUE)
-    # See new extracted tree
-    plot.phylo(hauss.nj.extracted)
-    # Non-interactively extract tree
-    hauss.nj.extracted <- extract.clade(phy=hauss.nj,node=60,interactive=FALSE)
-    # See new extracted tree
-    plot.phylo(hauss.nj.extracted)
-    # Drop "extinct" tips - those who don't reach end the tree tolerance is
-    # respective to the used metrics
+    # Check if it is rooted - returns TRUE/FALSE
+    is.rooted(hauss.nj.rooted)
+    is.rooted(hauss.nj)
+    # Root the tree interactively - click to selected tip
+    plot.phylo(hauss.nj)
+    hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE)
+    plot.phylo(hauss.nj.rooted)
+    ?unroot.phylo # Unroot the tree
+    # root(), unroot() and is.rooted() works with single or multiple trees
+    # (class phylo or multiPhylo)
+    # Rotate (swap) clade
+    # plot.phylo plots tree in exact order as it is in the phylo object
+    plot.phylo(hauss.nj)
+    nodelabels()
+    hauss.nj.rotated <- ape::rotate(phy=hauss.nj, node=74)
+    plot.phylo(hauss.nj.rotated)
+    nodelabels()
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Ladderize tree, drop fossil (extinct) tips}
+	\begin{spluscode}
+    plot.phylo(hauss.nj)
+    # Ladderize the tree - step-wise rotation of nodes
+    hauss.nj.ladderized <- ladderize(hauss.nj)
+    # Topology is unchanged, nodes are only rotated
+    plot.phylo(hauss.nj.ladderized)
+    # Drop "extinct" tips - those who don't reach end the tree
+    # tolerance is respective to the used metrics
     plot.phylo(hauss.nj)
     axisPhylo()
     hauss.nj.fossil <- drop.fossil(phy=hauss.nj, tol=0.4)
     plot.phylo(hauss.nj.fossil)
+    # See details
+    ?drop.fossil
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Join two trees, rotate tree}
+\begin{frame}[fragile]{Extract clade, part of tree}
 	\begin{spluscode}
-    # Bind two trees into one
+    # Plot source tree
+    plot.phylo(hauss.nj)
+    # See node labels (numbers) - needed for some tasks
+    nodelabels()
+    # Non-interactively extract clade
+    hauss.nj.extracted <- extract.clade(phy=hauss.nj, node=60)
+    # See new extracted tree
+    plot.phylo(hauss.nj.extracted)
+    # Interactive extraction
+    plot.phylo(hauss.nj)
+    # Select clade to extract by clicking on it
+    hauss.nj.extracted <- extract.clade(phy=hauss.nj, interactive=TRUE)
+    # See new extracted tree
+    plot.phylo(hauss.nj.extracted)
+    # See more options
+    ?extract.clade
+    ?keep.tip # Does the opposite - keeps only selected tip(s)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Bind two trees into one}
+	\begin{spluscode}
+    # Bind donor "y" tree to a given position of the "x" tree
+    ?bind.tree # See options
+    plot.phylo(hauss.nj.fossil)
+    nodelabels()
+    plot.phylo(hauss.nj.extracted)
+    nodelabels()
     hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted,
       where="root", position=0, interactive=FALSE)
     plot.phylo(hauss.nj.bind)
@@ -4720,50 +4779,65 @@
     hauss.nj.bind <- bind.tree(x=hauss.nj.fossil, y=hauss.nj.extracted,
       interactive=TRUE)
     plot.phylo(hauss.nj.bind)
-    # Rotate tree
-    # plot.phylo plots tree in exact order as it is in the phylo object
-    plot.phylo(hauss.nj)
-    nodelabels()
-    hauss.nj.rotated <- rotate(phy=hauss.nj, node="70")
-    plot.phylo(hauss.nj.rotated)
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Ladderize and (un)root the tree}
+\begin{frame}[fragile]{Work with multiple trees}
 	\begin{spluscode}
-    plot.phylo(hauss.nj) # Ladderize the tree
-    hauss.nj.ladderized <- ladderize(hauss.nj)
-    plot.phylo(hauss.nj.ladderized)
-    # Root the tree
-    plot.phylo(hauss.nj)
-    print.phylo(hauss.nj)
-    # resolve.root=TRUE ensures root will be bifurcating (needed here)
-    # (without this parameter it sometimes doesn't work)
-    hauss.nj.rooted <- root.phylo(phy=hauss.nj, resolve.root=TRUE, outgroup=10)
-    print.phylo(hauss.nj.rooted)
-    plot.phylo(hauss.nj.rooted)
-    # Root the tree interactive
-    plot.phylo(hauss.nj)
-    hauss.nj.rooted <- root.phylo(phy=hauss.nj, interactive=TRUE)
-    plot.phylo(hauss.nj.rooted)
-    unroot.phylo() # Unroot the tree
-    is.rooted() # Check if it is rooted
+    # Read tree(s) in NEWICK format - single or multiple tree(s)
+    oxalis.trees <- read.tree("https://soubory.trapa.cz/rcourse/oxalis.nwk")
+    oxalis.trees
+    lapply(X=oxalis.trees, FUN=print.phylo)
+    plot.multiPhylo(x=oxalis.trees) # See all trees
+    summary(oxalis.trees)
+    length(oxalis.trees)
+    names(oxalis.trees)
+    # Export trees in NEWICK format
+    write.tree(phy=oxalis.trees, file="trees.nwk")
+    # Export trees in NEXUS format
+    write.nexus(oxalis.trees, file="trees.nexus")
+    # Root all trees
+    oxalis.trees.rooted <- root.multiPhylo(phy=oxalis.trees,
+      outgroup="O._fibrosa_S159", resolve.root=TRUE)
+    lapply(X=oxalis.trees.rooted, FUN=print.phylo)
+    plot.multiPhylo(x=oxalis.trees) # See all trees
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Check tree and compute branch lengths and times}
+\begin{frame}[fragile]{Drop a tip}
 	\begin{spluscode}
-    # Check if the tree is ultrametric - is variance of distances of all tips
-    # to node 0? It is required for some analysis
-    is.ultrametric()
-    # Make tree ultrametric
-    ?chronos # Check it for mode how to calculate the lengths
-    # chronos has more uses - it is mainly used for dating
+    plot.phylo(hauss.nj)
+    hauss.nj[["tip.label"]]
+    tiplabels()
+    hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=47) # Or
+    hauss.nj.drop <- drop.tip(phy=hauss.nj, tip="H31") # Or
+    hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=c("H18", "H29", "H31"))
+    plot.phylo(hauss.nj.drop)
+    # Drop a tip from multiPhylo
+    plot.multiPhylo(x=oxalis.trees)
+    # See tip labels
+    oxalis.trees[[1]][["tip.label"]]
+    oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip,
+      tip="O._callosa_S15")
+    class(oxalis.trees.drop) <- "multiPhylo"
+    plot.multiPhylo(x=oxalis.trees.drop)
+    lapply(X=oxalis.trees.drop, FUN=print.phylo)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Branch lengths and ultrametricity of the tree}
+	\begin{spluscode}
+    # Check if the tree is ultrametric - is variance of distances of all
+    # tips to node 0? It is required for some analysis
+    is.ultrametric(oxalis.trees)
+    # Fitting a chronogram to a phylogenetic tree whose branch lengths are
+    # in number of substitution per sites - force tree to be ultrametric
+    ?chronos
     # Compute branch lengths for trees without branch lengths
-    ?compute.brlen # Check it for mode how to calculate the lengths
-    # Computes the branch lengths of a tree giving its branching
-    # times (aka node ages or heights)
-    ?compute.brtime # Check it for mode how to calculate the lengths
+    ?compute.brlen
+    # Computes the branch lengths of a tree giving its branching times
+    # (aka node ages or heights)
+    ?compute.brtime
 	\end{spluscode}
 	\begin{itemize}
 		\item Class \texttt{multiPhylo} is just a~\texttt{list} of \texttt{phylo} objects to store multiple trees --- you can perform most of analysis on it as on \texttt{phylo}, commonly using \texttt{lapply} (afterward use \texttt{class(x) <- "multiPhylo"})
@@ -4780,32 +4854,31 @@
 		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed --- it doesn't always guarantee to find the most probable tree
 		\item To speed up calculations, initial tree (usually NJ --- slide~\ref{NJ}) is used to start the search
 		\item With rising performance of computers, it uses to be replaced maximum likelihood or Bayesian methods
+		\item Still underlying plenty of analysis, not only reconstruction of phylogeny
 	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Maximum parsimony --- code and result}
 	\begin{multicols}{2}
-		\vfil
 		\includegraphics[height=6.75cm]{parsimony.png}
-		\vfil
 		\begin{spluscode}
-    # Conversion to phyDat
-    gunnera.phydat<-as.phyDat(gunnera.dna)
+    library(phangorn)
+    # Conversion to phyDat for phangorn
+    gunnera.phydat <-
+      as.phyDat(gunnera.mafft.ng)
     # Prepare starting tree
-    gunnera.tre.ini <- nj(dist.dna
-      (x=gunnera.dna, model="raw"))
-    # Maximum parsimony score
+    gunnera.tre.ini <- nj(dist.dna(
+      x=gunnera.mafft.ng, model="raw"))
     ?parsimony # Parsimony details
+    # Returns maximum parsimony score
     parsimony(tree=gunnera.tre.ini,
       data=gunnera.phydat)
-    # Optimization
-    # Maximum parsimony tree
+    # Optimisation - returns MP tree
     gunnera.tre.pars <- optim.parsimony
       (tree=gunnera.tre.ini,
       data=gunnera.phydat)
-    # Draw a tree
     plot.phylo(x=gunnera.tre.pars,
-      type="clad", edge.width=2)
+      type="cladogram", edge.width=2)
 		\end{spluscode}
 	\end{multicols}
 \end{frame}
@@ -4828,6 +4901,8 @@
 			\item We get matrix of pairwise differences among trees (from multiple genes), we need display and analyze it
 		\end{itemize}
 		\item Set of tools for identifying discordant phylogenetic trees are e.g. in package \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}
+		\item Other approach are phylogenetic networks searching consensus among phylogenetic trees
+		\item In any case, there are plenty of options how to display the differences among the trees
 	\end{itemize}
 \end{frame}
 
@@ -4895,6 +4970,7 @@
 \begin{frame}[fragile]{PCoA from distance matrices of topographical differences among trees --- the code}{PC plots help to identify outliers --- trees with noticeably different topology}
 	\begin{spluscode}
     # Test if the distance matrix is Euclidean or not
+    library(ade4)
     is.euclid(distmat=oxalis.trees.d, plot=TRUE)
     [1] TRUE # If FALSE, we can use e.g. quasieuclid() to make it Euclidean
     # Calculate the PCoA
@@ -4916,31 +4992,6 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Consensus tree}
-	\begin{multicols}{2}
-		\begin{center}
-			\includegraphics[height=5.75cm]{oxalis-cons.png}
-		\end{center}
-		\begin{spluscode}
-    # Root all trees
-    oxalis.trees.rooted <-
-      root.multiPhylo(phy=oxalis.trees,
-      outgroup="O._fibrosa_S159",
-      resolve.root=TRUE)
-    # Consensus tree (50 % rule)
-    oxalis.tree.con <- consensus
-      (oxalis.trees.rooted, p=0.5,
-      check.labels=TRUE)
-    print.phylo(oxalis.tree.con)
-    # Plot the tree
-    plot.phylo(oxalis.tree.con,
-      edge.width=2, label.offset=0.3)
-    axisPhylo(side=1)
-    # What a nice tree... :-P
-		\end{spluscode}
-	\end{multicols}
-\end{frame}
-
 \begin{frame}[fragile]{kdetrees --- identification of outlying trees I}
 	\begin{itemize}
 		\item Distance-based method of identification of trees with significantly different topology
@@ -4952,8 +5003,8 @@
     library(kdetrees)
     ?kdetrees # See options
     # Run main function - play with parameter k
-    oxalis.kde <- kdetrees(trees=oxalis.trees, k=0.4, distance="dissimilarity",
-      topo.only=FALSE, greedy=TRUE)
+    oxalis.kde <- kdetrees(trees=oxalis.trees, k=0.4,
+      distance="dissimilarity", topo.only=FALSE, greedy=TRUE)
     # See results
     oxalis.kde
     plot(oxalis.kde)
@@ -4979,6 +5030,30 @@
 	\end{spluscode}
 \end{frame}
 
+\begin{frame}[fragile]{Consensus tree}
+	\begin{multicols}{2}
+		\begin{center}
+			\includegraphics[height=7cm]{oxalis-cons.png}
+		\end{center}
+		\begin{itemize}
+		 \item Very basic method simply collapsing all nodes with lower than required (typically 50--75\%) identity
+		 \item There is no underlying model, only comparison of topologies
+		\end{itemize}
+		\begin{spluscode}
+    # Consensus tree (50% rule)
+    oxalis.tree.con <- consensus
+      (oxalis.trees.rooted, p=0.5,
+      check.labels=TRUE)
+    print.phylo(oxalis.tree.con)
+    # Plot the tree
+    plot.phylo(oxalis.tree.con,
+      edge.width=2, label.offset=0.3)
+    axisPhylo(side=1)
+    # What a nice tree... :-P
+		\end{spluscode}
+	\end{multicols}
+\end{frame}
+
 \begin{frame}[fragile]{Species tree --- all trees must be ultrametric}
 	\begin{multicols}{2}
 		\begin{center}
@@ -4991,9 +5066,9 @@
       FUN=chronos, model="correlated")
     class(oxalis.trees.ultra) <-
       "multiPhylo"
-    # Mean distances
+    ?speciesTree # Mean distances
     oxalis.tree.sp.mean <- speciesTree
-      (oxalis.trees.ultra, mean)
+      (x=oxalis.trees.ultra, FUN=mean)
     # Plot the tree
     plot.phylo(oxalis.tree.sp.mean,
       edge.width=2, label.offset=0.01)
@@ -5013,6 +5088,7 @@
 		\end{center}
 		\begin{spluscode}
     library(phytools)
+    ?mrp.supertree # See details
     oxalis.tree.sp <- mrp.supertree
       (tree=oxalis.trees.rooted,
       method="optim.parsimony",
@@ -5029,6 +5105,33 @@
 		\end{spluscode}
 	\end{multicols}
 \end{frame}
+
+% \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
+% 	\begin{itemize}
+% 		\item Package \href{https://github.com/lliu1871/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
+% 	\end{itemize}
+% 	\begin{spluscode}
+%
+% 	\end{spluscode}
+% \end{frame}
+
+\begin{frame}[fragile]{Networks}
+	\begin{spluscode}
+    library(phangorn)
+    oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
+    plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
+    plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE,
+      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
+      show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
+	\end{spluscode}
+	\begin{center}
+		\includegraphics[height=3cm]{oxalis-net.png}
+	\end{center}
+\end{frame}
+
+\subsection{Comparisons}
 
 \begin{frame}[fragile]{Density tree I}
 	\begin{spluscode}
@@ -5070,22 +5173,16 @@
 	\end{center}
 \end{frame}
 
-% \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
-% 	\begin{itemize}
-% 		\item Package \href{https://github.com/lliu1871/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
-% 	\end{itemize}
-% 	\begin{spluscode}
-%
-% 	\end{spluscode}
-% \end{frame}
-
 \begin{frame}[fragile]{Kronoviz --- see all trees on same scale}
 	\begin{multicols}{2}
-		\includegraphics[height=6.5cm]{kronoviz.png}
+		\begin{center}
+			\includegraphics[height=6.5cm]{kronoviz.png}
+		\end{center}
 		\begin{spluscode}
     kronoviz(x=oxalis.trees.rooted,
-      layout=length(oxalis.trees.
-      rooted), horiz=TRUE)
+      layout=length(
+      oxalis.trees.rooted),
+      horiz=TRUE)
     # Close graphical device to
     # cancel division of plotting
     # device
@@ -5099,24 +5196,6 @@
 		\vfil
 	\end{multicols}
 \end{frame}
-
-\begin{frame}[fragile]{Networks}
-	\begin{spluscode}
-    library(phangorn)
-    oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
-    plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
-      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
-      show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
-    plot(x=oxalis.tree.net, planar=FALSE, type="3D", use.edge.length=TRUE,
-      show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,
-      show.nodes=TRUE, edge.color= "black", tip.color="blue") # 3D
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[height=2.5cm]{oxalis-net.png}
-	\end{center}
-\end{frame}
-
-\subsection{Comparisons}
 
 \begin{frame}[fragile]{Compare two trees}
 	\begin{spluscode}
@@ -5213,9 +5292,21 @@
       "5.4 Ma"), frame="circle",
       bg="yellow")
     add.scale.bar() # Add scale bar
-    # Note vectors for tip/nodelabels
+    # Note vectors for tip/node labels
 		\end{spluscode}
 	\end{multicols}
+\end{frame}
+
+\subsection{Tasks}
+
+\begin{frame}{Trees tasks}
+	\begin{exampleblock}{Tasks}
+		\begin{enumerate}
+			\item Import/export some tree(s), preferably your data you are working with. Try various plotting options.
+			\item Try various displays of some tree(s) from phytools dataset (see \texttt{data(package="phytools")}).
+			\item Use some method to analyze Apicomplexa trees (see \texttt{?kdetrees::apicomplexa}). Find discordant trees and try to construct species tree from the set of gene trees.
+		\end{enumerate}
+	\end{exampleblock}
 \end{frame}
 
 \section{Evolution}
