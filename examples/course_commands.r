@@ -1858,22 +1858,24 @@ lmorigin(formula=shorebird.pic.fmass~shorebird.pic.eggmass, nperm=1000)
 # Autocorrelation coefficient to quantify whether the distribution of a trait among a set of species is affected or not by their phylogenetic relationships
 # In the absence of phylogenetic autocorrelation, the mean expected value of I and its variance are known - it is thus possible to test the null hypothesis of the absence of dependence among observations
 # Let's choose weights as wij = 1/dij, where the d’s is the distances measured on the tree - cophenetic() calculates cophenetic distances
-primates.weights <- 1/cophenetic(primates.tree) # can be just cophenetic(primates.tree) or some other transformation
+shorebird.weights <- 1/cophenetic(shorebird.tree) # can be just cophenetic(shorebird.tree) or some other transformation
 # See it
-primates.weights
-class(primates.weights)
+class(shorebird.weights)
+head(shorebird.weights)
 # Set diagonal to 0
-diag(primates.weights) <- 0
+diag(shorebird.weights) <- 0
 # Calculate Moran's I
-Moran.I(x=primates.body, weight=primates.weights, alternative="greater") # Slighly significant positive phylogenetic correlation among body mass
-Moran.I(x=primates.longevity, weight=primates.weights, alternative="greater") # Positive, but non-significant
+Moran.I(x=shorebird.data[["M.Mass"]], weight=shorebird.weights, alternative="greater") # Significant, but super small, positive phylogenetic correlation among body mass
+Moran.I(x=shorebird.data[["F.Mass"]], weight=shorebird.weights, alternative="greater") # Significant, but super small, positive phylogenetic correlation among body mass
 
 # Test of Moran's with randomisation procedure
-gearymoran(bilis=primates.weights, X=data.frame(primates.body, primates.longevity), nrepet=1000) # Body is significant - nonrandom, longevity not (random)
+library(ade4)
+?gearymoran
+gearymoran(bilis=shorebird.weights, X=shorebird.data[,2:5], nrepet=1000) # For all characters significant, but very small
 
 # Test of Abouheif designed to detect phylogenetic autocorrelation in a quantitative trait - in fact Moran's I test using a particular phylogenetic proximity between tips
 library(adephylo)
-abouheif.moran(x=cbind(primates.body, primates.longevity), W=primates.weights, method="oriAbouheif", nrepet=1000, alter="greater")
+abouheif.moran(x=shorebird.data[,2:5], W=shorebird.weights, method="oriAbouheif", nrepet=1000, alter="greater")
 
 # correlogram can be used to visualize the results of phylogenetic autocorrelative analysis
 # Loads training data set
@@ -1881,6 +1883,7 @@ data(carnivora)
 # Look at the data
 head(carnivora)
 # Calculate the correlogram
+?correlogram.formula
 carnivora.correlogram <- correlogram.formula(formula=SW~Order/SuperFamily/Family/Genus, data=carnivora)
 # See results
 carnivora.correlogram

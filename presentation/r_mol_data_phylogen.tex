@@ -5432,32 +5432,35 @@
 	\begin{spluscode}
     # Let's choose weights as wij = 1/dij, where the d’s is the distances
     # measured on the tree - cophenetic() calculates cophenetic distances
-    # can be just cophenetic(primates.tree) or some other transformation
-    primates.weights <- 1/cophenetic(primates.tree)
-    primates.weights # See it
-    class(primates.weights)
-    diag(primates.weights) <- 0 # Set diagonal to 0
+    # can be just cophenetic(shorebird.tree) or some other transformation
+    shorebird.weights <- 1/cophenetic(shorebird.tree)
+    # See it
+    class(shorebird.weights)
+    head(shorebird.weights)
+    # Set diagonal to 0
+    diag(shorebird.weights) <- 0
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Testing of Moran's~\textit{I}}
 	\begin{spluscode}
     # Calculate Moran's I
-    # Slightly significant positive phylogenetic correlation among body mass
-    Moran.I(x=primates.body, weight=primates.weights, alternative="greater")
-    # Positive, but non-significant
-    Moran.I(x=primates.longevity, weight=primates.weights,
+    # Significant, but super small, positive phylogenetic correlation
+    Moran.I(x=shorebird.data[["M.Mass"]], weight=shorebird.weights,
       alternative="greater")
-    # Test of Moran's with randomization procedure
-    # Body is significant - nonrandom, longevity not (random)
-    gearymoran(bilis=primates.weights, X=data.frame(primates.body,
-      primates.longevity), nrepet=1000)
-    # Test of Abouheif designed to detect phylogenetic autocorrelation in
-    # a quantitative trait - in fact Moran's I test using a particular
+    Moran.I(x=shorebird.data[["F.Mass"]], weight=shorebird.weights,
+      alternative="greater")
+    # Test of Moran's with randomisation procedure
+    library(ade4)
+    ?gearymoran
+    # For all characters significant, but very small
+    gearymoran(bilis=shorebird.weights, X=shorebird.data[,2:5], nrepet=1000)
+    # Test of Abouheif designed to detect phylogenetic autocorrelation
+    # in a quantitative trait - in fact Moran's I test using a particular
     # phylogenetic proximity between tips
     library(adephylo)
-    abouheif.moran(x=cbind(primates.body, primates.longevity),
-      W=primates.weights, method="oriAbouheif", nrepet=1000, alter="greater")
+    abouheif.moran(x=shorebird.data[,2:5], W=shorebird.weights,
+      method="oriAbouheif", nrepet=1000, alter="greater")
 	\end{spluscode}
 \end{frame}
 
@@ -5466,6 +5469,7 @@
     data(carnivora) # Loads training data set
     head(carnivora) # Look at the data
     # Calculate the correlogram
+    ?correlogram.formula
     carnivora.correlogram <- correlogram.formula
       (formula=SW~Order/SuperFamily/Family/Genus, data=carnivora)
     carnivora.correlogram # See results
