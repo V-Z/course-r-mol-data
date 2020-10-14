@@ -5343,132 +5343,83 @@
 		\item If we assume that a~continuous trait evolves randomly in any direction (i.e. the \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion} model), then the \enquote{\href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}} between two species is expected to have a~normal distribution with mean zero, and variance proportional to the time since divergence
 	\end{itemize}
 	\begin{spluscode}
-    # Prepare the data # Body mass of primates
-    primates.body <- c(4.09434, 3.61092, 2.37024, 2.02815, 1.46968)
-    # Longevity of primates
-    primates.longevity <- c(4.74493, 3.3322, 3.3673, 2.89037, 2.30259)
-    # Add names to the values
-    names(primates.body) <- names(primates.longevity) <- c("Homo", "Pongo",
-      "Macaca", "Ateles", "Galago")
-    # Create a tree in Newick format
-    primates.tree <- read.tree(text="((((Homo:0.21, Pongo:0.21):0.28,
-      Macaca:0.49):0.13, Ateles:0.62):0.38, Galago:1.00);")
-    plot.phylo(primates.tree)
+    library(ape) # Load library
+    data(shorebird, package="caper") # Load training data
+    ?caper::shorebird # See it
+    head(shorebird.data) # See the data part
+    shorebird.tree # See the phylogeny
+    plot.phylo(shorebird.tree)
+    # The tree must be fully bifurcating for most of methods
+    shorebird.tree <- multi2di(phy=shorebird.tree)
+    plot.phylo(shorebird.tree) # See result
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{PIC and its plotting}
 	\begin{spluscode}
-    primates.pic.body <- pic(x=primates.body, phy=primates.tree,
-      scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
-    primates.pic.longevity <- pic(x=primates.longevity, phy=primates.tree,
-      scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
+    shorebird.pic.fmass <- pic(x=shorebird.data[["F.Mass"]], phy=
+      shorebird.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
+    shorebird.pic.eggmass <- pic(x=shorebird.data[["Egg.Mass"]], phy=
+      shorebird.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
     # Plot a tree with PIC values
-    plot.phylo(x=primates.tree, edge.width=2, cex=1.5)
-    nodelabels(round(primates.pic.body, digits=3), adj=c(0, -0.5),
-      frame="none")
-    nodelabels(round(primates.pic.longevity, digits=3), adj=c(0, 1),
-      frame="none")
+    plot.phylo(x=shorebird.tree, edge.width=2)
+    nodelabels(round(shorebird.pic.fmass, digits=3), adj=c(0, -0.5),
+      frame="none", col="red")
+    nodelabels(round(shorebird.pic.eggmass, digits=3), adj=c(0, 1),
+      frame="none", col="red")
     add.scale.bar()
     # Plot PIC
-    plot(x=primates.pic.body, y=primates.pic.longevity, pch=16, cex=1.5)
+    plot(x=shorebird.pic.fmass, y=shorebird.pic.eggmass, pch=16, cex=1.5)
     abline(a=0, b=1, lty=2) # x=y line
-    # Correlation coefficient of both PICs
-    cor(x=primates.pic.body, y=primates.pic.longevity, method="pearson")
-    [1] -0.5179156
+    # Correlation of PIC of body mass and longevity
+    cor(x=shorebird.pic.fmass, y=shorebird.pic.eggmass, method="pearson")
+    [1] 0.879019
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Plot of PIC (on the tree)}
+\begin{frame}[fragile]{Plot of PIC (on the tree) and test the correlation}
 	\begin{spluscode}
-    # Testing if there is positive correlation
-    cor.test(x=primates.pic.body, y=primates.pic.longevity,
+    # Correlation test
+    cor.test(x=shorebird.pic.fmass, y=shorebird.pic.eggmass,
       alternative="greater", method="pearson")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-5cm]{pic.png}
+		\includegraphics[width=\textwidth-2cm]{pic.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Test it}
 	\label{pic-test}
 	\begin{spluscode}
-    lm(formula=primates.pic.longevity~primates.pic.body)
+    # Linear model of both PICs
+    lm(formula=shorebird.pic.fmass~shorebird.pic.eggmass)
     Coefficients:
-      (Intercept)  primates.pic.body
-           1.6957            -0.3081
-    # Because PICs have expected mean zero - such linear regressions
-    # should be done through the origin (the intercept is set to zero)
-    lm(formula=primates.pic.longevity~primates.pic.body-1)
+          (Intercept)  shorebird.pic.eggmass
+                2.636                  9.110
+    # Because PICs have expected mean zero - such linear regressions should
+    # be done through the origin (i.e. the intercept is set to zero)
+    lm(formula=shorebird.pic.fmass~shorebird.pic.eggmass-1)
     Coefficients:
-    primates.pic.body
-               0.4319
+          (Intercept)  shorebird.pic.eggmass
+                2.636                  9.110
     # Permutation procedure to test PIC
-    lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
-    Coefficients and parametric test results
-                       Coefficient Std_error t-value Pr(>|t|)
-    primates.pic.body     0.43193   0.28649  1.5077   0.2288
-    F-statistic: 2.273067 on 1 and 3 DF:
-      permutational p-value: 0.2377622
+    lmorigin(formula=shorebird.pic.fmass~shorebird.pic.eggmass, nperm=1000)
+    Coefficients and parametric test results 
+                          Coefficient Std_error t-value  Pr(>|t|)
+    shorebird.pic.eggmass     9.14518   0.60274  15.173 < 2.2e-16 ***
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Intraspecific variation}
 	\begin{itemize}
-		\item \texttt{pic.ortho()} requires list of measurements (vectors) for all taxa --- their lengths can differ
-		\item If we have sets of measurements in separated vectors (each vector has measurements for all taxa), we must for each \texttt{list} item use \texttt{cbind} to join columns and select appropriate line (from 1~to number of taxa)
-		\item In example below, \texttt{jitter()} adds random noise
-		\item Other usage is same in previous case\ldots
+		\item \texttt{pic.ortho()} requires list of measurements (numeric vectors) for all taxa --- their lengths can differ
+		\item We must for each \texttt{list} item provide numeric vector (construct by something like \texttt{values <- list(taxon1, taxon2, taxon3, \ldots)}), otherwise usage is same as with \texttt{pic()} --- plotting, tests, etc.
+		\item Transforming data into required form can require considerable work\ldots
 	\end{itemize}
 	\begin{spluscode}
-    # Preparing tips with fake random variable values
-    primates.pic.var <- list(cbind(primates.body, jitter(primates.body),
-      jitter(primates.body))[1,], cbind(primates.body, jitter(primates.
-      body), jitter(primates.body))[2,], cbind(primates.body, jitter(
-      primates.body), jitter(primates.body))[3,], cbind(primates.body,
-      jitter(primates.body), jitter(primates.body))[4,], cbind(
-      primates.body, jitter(primates.body), jitter(primates.body))[5,])
+    # See help
+    ?pic.ortho
 	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Explanation of the cbind trick}
-	\begin{spluscode}
-    cbind(primates.body, jitter(primates.body), jitter(primates.body))
-    Homo         4.09434 4.113074 4.038092
-    Pongo        3.61092 3.671217 3.558953
-    Macaca       2.37024 2.426757 2.430310
-    Ateles       2.02815 1.986006 2.091402
-    Galago       1.46968 1.494281 1.496831
-    cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,]
-      4.094340      4.072501      4.035324
-    cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,]
-      3.610920      3.572728      3.664654
-    class(cbind(primates.body, jitter(primates.body),
-      jitter(primates.body)))
-    [1] "matrix"
-    class(cbind(primates.body, jitter(primates.body),
-      jitter(primates.body))[1,])
-    [1] "numeric"
-    # jitter() adds random noise every time, so that the values differ
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Calculation of phylogenetic independent contrast with intraspecific variation}
-	\begin{spluscode}
-    # Check list of numeric vectors - required as input for pic.ortho()
-    primates.pic.var
-    primates.pic.var[[1]]
-    class(primates.pic.var)
-    class(primates.pic.var[[1]])
-    # Calculate for one character - this must be done for at least one more
-    # character and correlation of PICs must be tested
-    primates.pic.ortho <- pic.ortho(x=primates.pic.var, phy=primates.tree,
-      var.contrasts=FALSE, intra=FALSE)
-    primates.pic.var
-	\end{spluscode}
-	\begin{itemize}
-		\item Resulting vector (here \texttt{primates.pic.ortho}) can then be used in absolutely same way as output of classical \texttt{pic()} --- testing by \texttt{lmorigin()} (slide~\ref{pic-test}) etc.
-	\end{itemize}
 \end{frame}
 
 \subsection{Autocorrelation}

@@ -1805,62 +1805,53 @@ add.scale.bar()
 
 ## PIC
 
-# Prepare the data
-# Body mass of primates
-primates.body <- c(4.09434, 3.61092, 2.37024, 2.02815, 1.46968)
-# Longevity of primates
-primates.longevity <- c(4.74493, 3.3322, 3.3673, 2.89037, 2.30259)
-# Add names to the values
-names(primates.body) <- names(primates.longevity) <- c("Homo", "Pongo", "Macaca", "Ateles", "Galago")
-# Create a tree in Newick format
-primates.tree <- read.tree(text="((((Homo:0.21, Pongo:0.21):0.28, Macaca:0.49):0.13, Ateles:0.62):0.38, Galago:1.00);")
-plot.phylo(primates.tree)
+# Load library
+library(ape)
+
+# Load training data
+data(shorebird, package="caper")
+# See it
+?caper::shorebird
+# See the data part
+head(shorebird.data)
+# See the phylogeny
+shorebird.tree
+plot.phylo(shorebird.tree)
+# The tree must be fully bifurcating for most of methods
+shorebird.tree <- multi2di(phy=shorebird.tree)
+# See result
+plot.phylo(shorebird.tree)
 
 # PIC - phylogenetically independent contrasts
-primates.pic.body <- pic(x=primates.body, phy=primates.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
-primates.pic.longevity <- pic(x=primates.longevity, phy=primates.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
+shorebird.pic.fmass <- pic(x=shorebird.data[["F.Mass"]], phy=shorebird.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
+shorebird.pic.eggmass <- pic(x=shorebird.data[["Egg.Mass"]], phy=shorebird.tree, scaled=TRUE, var.contrasts=FALSE, rescaled.tree=FALSE)
 
 # Plot a tree with PIC values
-plot.phylo(x=primates.tree, edge.width=2, cex=1.5)
-nodelabels(round(primates.pic.body, digits=3), adj=c(0, -0.5), frame="none")
-nodelabels(round(primates.pic.longevity, digits=3), adj=c(0, 1), frame="none")
+plot.phylo(x=shorebird.tree, edge.width=2, cex=0.8)
+nodelabels(round(shorebird.pic.fmass, digits=3), adj=c(0, -0.5), frame="none", col="red")
+nodelabels(round(shorebird.pic.eggmass, digits=3), adj=c(0, 1), frame="none", col="red")
 add.scale.bar()
 
 # Plot PIC
-plot(x=primates.pic.body, y=primates.pic.longevity, pch=16, cex=1.5)
+plot(x=shorebird.pic.fmass, y=shorebird.pic.eggmass, pch=16, cex=1.5)
 abline(a=0, b=1, lty=2) # x=y line
 
 # Correlation of PIC of body mass and longevity
-cor(x=primates.pic.body, y=primates.pic.longevity, method="pearson")
+cor(x=shorebird.pic.fmass, y=shorebird.pic.eggmass, method="pearson")
 # Correlation test
-cor.test(x=primates.pic.body, y=primates.pic.longevity, alternative="greater", method="pearson")
+cor.test(x=shorebird.pic.fmass, y=shorebird.pic.eggmass, alternative="greater", method="pearson")
 # Linear model of both PICs
-lm(formula=primates.pic.longevity~primates.pic.body)
+lm(formula=shorebird.pic.fmass~shorebird.pic.eggmass)
 # Because PICs have expected mean zero - such linear regressions should be done through the origin (i.e. the intercept is set to zero)
-lm(formula=primates.pic.longevity~primates.pic.body-1)
+lm(formula=shorebird.pic.fmass~shorebird.pic.eggmass-1)
 
 # Permutation procedure to test PIC
-lmorigin(formula=primates.pic.longevity~primates.pic.body, nperm=1000)
+lmorigin(formula=shorebird.pic.fmass~shorebird.pic.eggmass, nperm=1000)
 
 # Intraspecific variation
-# PIC - orthonormal contrasts using the method
-# Preparing tips with fake random variable values
-primates.pic.var <- list(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[3,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[4,], cbind(primates.body, jitter(primates.body), jitter(primates.body))[5,])
-# Explanation of the cbind trick
-cbind(primates.body, jitter(primates.body), jitter(primates.body))
-cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,]
-cbind(primates.body, jitter(primates.body), jitter(primates.body))[2,]
-class(cbind(primates.body, jitter(primates.body), jitter(primates.body)))
-class(cbind(primates.body, jitter(primates.body), jitter(primates.body))[1,])
-# jitter() adds random noise every time, so that the values differ
-# Check list of numeric vectors - required as input for pic.ortho()
-primates.pic.var
-primates.pic.var[[1]]
-class(primates.pic.var)
-class(primates.pic.var[[1]])
-# Calculate for one character - this must be done for at least one more character and correlation of PICs must be tested
-primates.pic.ortho <- pic.ortho(x=primates.pic.var, phy=primates.tree, var.contrasts=FALSE, intra=FALSE)
-primates.pic.ortho
+# PIC - orthonormal contrasts
+# List of numerical vectors is required as an input, otherwise usage is same as with pic()
+?pic.ortho
 
 ## Phylogenetic autocorrelation
 
