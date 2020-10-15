@@ -2172,9 +2172,9 @@ for (i in 1:10) {
 for (i in 10:5) { print(i) } # Can be descending...
 
 # Work on each item of a list object
-# Print length of each sequence in nothofagus.sequences
-for (L in 1:length(nothofagus.sequences)) {
-	print(length(nothofagus.sequences[[L]]))
+# Print length of each sequence in gunnera.dna
+for (L in 1:length(gunnera.dna)) {
+	print(length(gunnera.dna[[L]]))
 	}
 
 # While loop - it is done while the condition is valid

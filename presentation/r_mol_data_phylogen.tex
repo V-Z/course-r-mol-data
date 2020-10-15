@@ -1065,7 +1065,7 @@
 			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
 			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
 			\item Phylogeny of selected species of Apiaceae reconstructed from several concatenated plastid genes downloaded from \href{https://www.ncbi.nlm.nih.gov/}{GenBank} and simulated trait
-			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?cape::shorebird})
+			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird})
 		\end{itemize}
 		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
 		\begin{itemize}
@@ -6046,6 +6046,17 @@
 % 	\end{spluscode}
 % \end{frame}
 
+\subsection{Tasks}
+
+\begin{frame}{Evolutionary tasks}
+	\begin{exampleblock}{Tasks}
+		\begin{enumerate}
+			\item Browse \url{http://blog.phytools.org/} and see if you find some interesting method to display your data. If so, try it.
+			\item See \texttt{data(package=c("adephylo", "geiger", "phytools"))}, select some training data set (or use your own data) and try at least 1--2 of the above methods.
+		\end{enumerate}
+	\end{exampleblock}
+\end{frame}
+
 \section{}
 
 \begin{frame}{Process more data}{Not all combinations and possibilities were shown\ldots}
@@ -6207,9 +6218,9 @@
       print(paste("Variable value:", X)) } # Print current value of "X"
     for (i in 10:5) { print(i) } # Can be descending...
     # Work on each item of a list object
-    # Print length of each sequence in nothofagus.sequences
-    for (L in 1:length(nothofagus.sequences)) {
-      print(length(nothofagus.sequences[[L]])) }
+    # Print length of each sequence in gunnera.dna
+    for (L in 1:length(gunnera.dna)) {
+      print(length(gunnera.dna[[L]])) }
     # While loop - it is done while the condition is valid
     # While value of "Q" is < 5 (starting from 0), print it and add 1
     Q <- 0
