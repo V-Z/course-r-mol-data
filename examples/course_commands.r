@@ -1901,51 +1901,34 @@ plot(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
 
 ## Orthonormal Decomposition - phylogenetic eigenvector regression
 
-# Prepare toy data
-# Load MrBayes tree in NEXUS format
-apiaceae.tree <- read.nexus(file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
-# See it
-print.phylo(apiaceae.tree)
-plot.phylo(apiaceae.tree)
-# Root the tree
-apiaceae.tree <- root.phylo(phy=apiaceae.tree, outgroup="Aralia_elata")
-# Remove "_" from taxa names
-# plot.phylo() by default omits "_" from tip names
-apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ", x=apiaceae.tree$tip.label)
-# Drop outgroup (Aralia and Hydrocotyle)
-# Click on last common ancestor of ingroup desired to be kept
-plot.phylo(apiaceae.tree)
-apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
-plot.phylo(apiaceae.tree)
 # Decomposition of topographical distances (right plot)
-library(adephylo)
 library(phylobase)
-table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree, result="orthobasis")), treetype="cladogram")
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(x=shorebird.tree, result="orthobasis")), treetype="cladogram")
+
 # Generate some random variable
 library(geiger)
-apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1, model="BM")[,,1]
+shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1, model="BM")[,,1]
 ?sim.char # See it for another possibilities to simulate data
 # Names for the values
-names(apiaceae.eco) <- apiaceae.tree[["tip.label"]]
-apiaceae.eco # See it
+names(shorebird.eco) <- shorebird.tree[["tip.label"]]
+shorebird.eco # See it
 
 # significant result - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
-anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree, method="patristic")[,1:2])))
-orthogram(x=apiaceae.eco, tre=apiaceae.tree, nrepet=1000, alter="two-sided")
+anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
+anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
+orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000, alter="two-sided")
 ?orthogram # See another calculation possibilities
+orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000, alter="two-sided")
 
 ## Phylogenetic Generalized Least Squares
 
-# Funkce pro correlation: corBlomberg(), corMartins(), corPagel(), corBrownian() - stejné parametry (kromě hodnoty 'value')
+# Functions corBlomberg, corBrownian, corMartins and corPagel from ape package create correlation matrix of evolution of continuous character according to the given tree - same parameters (except 'value')
 # Fitting an Ornstein-Uhlenbeck Motion model in PGLS
 library(nlme)
-library(ape)
-summary(gls(model=primates.longevity ~ primates.body, data=as.data.frame(cbind(primates.longevity, primates.body)), correlation=corBrownian(value=1, phy=primates.tree)))
+summary(gls(model=F.Mass ~ Egg.Mass, data=shorebird.data, correlation=corBrownian(value=1, phy=shorebird.tree)))
 
 # Implementation in caper package
 library(caper) # Load needed library
-data(shorebird) # Load training data
-?shorebird.data
 shorebird.pgls <- pgls(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["F.Mass"]], shorebird.data[["Egg.Mass"]], shorebird.data[["Species"]])), names.col=V3, vcv=TRUE))
 summary(shorebird.pgls) # See the result
 # See the plot of observer and fitted values
@@ -1957,19 +1940,19 @@ AIC(shorebird.pgls) # Akaike's information criterion (smaller = better)
 ## Generalized Estimating Equations
 
 # Calculate the model
-compar.gee(formula=primates.longevity ~ primates.body, phy=primates.tree)
-# or with correlation matrix:
-compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(value=1, phy=primates.tree, fixed=TRUE))
+compar.gee(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], phy=shorebird.tree)
+# or with correlation matrix
+compar.gee(formula=shorebird.data[["F.Mass"]] ~ shorebird.data[["Egg.Mass"]], corStruct=corMartins(value=1, phy=shorebird.tree, fixed=TRUE))
 # for corStruct there are similar functions corBlomberg, corMartins, corPagel, corBrownian - see manuals for differences
 
 # # TODO multiple phylogenetic regressions and residuals
 # # x can be matrix of data
-# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="BM")
-# phyl.resid(tree=primates.tree, x=primates.body, Y=primates.longevity, method="lambda")
+# phyl.resid(tree=shorebird.tree, x=primates.body, Y=primates.longevity, method="BM")
+# phyl.resid(tree=shorebird.tree, x=primates.body, Y=primates.longevity, method="lambda")
 
 # # TODO Ornstein-Uhlenbeck Model
 # # Simulation of evolution on phylogenetic tree
-# compar.ou(x=apiaceae.eco, phy=apiaceae.tree, alpha=100)
+# compar.ou(x=shorebird.eco, phy=shorebird.tree, alpha=100)
 
 # ## TODO Variance Partitioning
 # # vare: the estimated residual variance–covariance matrix;
@@ -1979,118 +1962,136 @@ compar.gee(formula=primates.longevity ~ primates.body, corStruct=corMartins(valu
 # # E: the residual value estimates;
 # # lik: the log-likelihood.
 # # x can be vector, matric or df
-# apiaceae.lynch <- compar.lynch(x=apiaceae.eco, G=vcv.phylo(phy=apiaceae.tree, model="Brownian", corr=TRUE))
+# apiaceae.lynch <- compar.lynch(x=shorebird.eco, G=vcv.phylo(phy=shorebird.tree, model="Brownian", corr=TRUE))
 # mantel.test(m1=apiaceae.lynch$vara, m2=apiaceae.lynch$vare, nperm=1000, graph=TRUE, alternative="two.sided")
 
 ## Phylogenetic Signal
 
 library(picante)
 # If Blomberg's values of 1 correspond to a Brownian motion process, which implies some degree of phylogenetic signal or conservatism. K values closer to zero correspond to a random or convergent pattern of evolution, while K values greater than 1 indicate strong phylogenetic signal and conservatism of traits.
-# Test for Bloomberg's K statistics
-Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
+# It requires named vector of trait values
+shorebird.mmass <- shorebird.data[["M.Mass"]]
+names(shorebird.mmass) <- rownames(shorebird.data)
+# Bloomberg's K statistics
+Kcalc(x=shorebird.mmass, phy=shorebird.tree, checkdata=TRUE)
 # Test with permutations
-phylosignal(x=apiaceae.eco, phy=apiaceae.tree, reps=1000, checkdata=TRUE)
-# sapply performs analysis on list of variables (numeric vectors)
-sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
-sapply(X=list(body=primates.body, longevity=primates.longevity), FUN=phylosignal, phy=primates.tree, reps=1000)
-# Alternative to use phylosignal with sapply:
-multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000)
-# Note sapply() and multiPhylosignal() return same data, but the matrices are transposed - use t() to transpose one to look like the other:
-t(multiPhylosignal(x=as.data.frame(cbind(primates.body, primates.longevity)), phy=primates.tree, reps=1000))
+phylosignal(x=shorebird.mmass, phy=shorebird.tree, reps=1000, checkdata=TRUE)
+# Analyze multiple traits in once with multiPhylosignal, it requires data frame of numerical values
+multiPhylosignal(x=shorebird.data[,2:5], phy=shorebird.tree, reps=1000)
 
 # When there are vectors with standard errors of measurements
 library(phytools)
 ?phylosig # See for details
 # Test for phylogenetic signal (here without SE)
-phylosig(tree=apiaceae.tree, x=apiaceae.eco, method="K", test=TRUE, nsim=1000)
-phylosig(tree=primates.tree, x=primates.body, method="lambda", test=TRUE)
+phylosig(tree=shorebird.tree, x=shorebird.mmass, method="K", test=TRUE, nsim=1000)
+plot(phylosig(tree=shorebird.tree, x=shorebird.mmass, method="K", test=TRUE, nsim=1000))
+phylosig(tree=shorebird.tree, x=shorebird.mmass, method="lambda", test=TRUE)
 # phylosig() can be used as an alternative to phylosignal() - the functions are similar in basic usage
 
 # Examples of usage of GLS for testing of phylogenetic signal
-summary(gls(model=primates.longevity ~ 1, data=as.data.frame(primates.longevity), correlation=corBrownian(value=1, phy=primates.tree)))
-summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
+summary(gls(model=shorebird.mmass ~ 1, correlation=corBrownian(value=1, phy=shorebird.tree)))
+summary(pgls(formula=shorebird.mmass ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 
 ## Phylogenetic PCA
 library(adephylo) # Library needed to create phylo4d object required by ppca
 # Calculate pPCA
-primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body, primates.longevity)), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
+shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
 # Print results
-print(primates.ppca)
+print(shorebird.ppca)
 # See summary information
-summary(primates.ppca)
+summary(shorebird.ppca)
 # See PCA scores for variables on phylogenetic tree
-scatter(primates.ppca)
+scatter(shorebird.ppca)
 # See decomposition of pPCA eigenvalues
-screeplot(primates.ppca)
+screeplot(shorebird.ppca)
 # Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree
-plot(primates.ppca)
+plot(shorebird.ppca)
 
 ## Ancestral state reconstruction
 
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
 library(ape)
-# See ?ace for possible settings
-primates.body.ace <- ace(x=primates.body, phy=primates.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=primates.tree))
+?ace # See for possible settings # FIXME ape::ace
+shorebird.mmass.ace <- ace(x=shorebird.mmass, phy=shorebird.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=shorebird.tree))
 # See result - reconstructions are in $ace - to be plotted on nodes - 1st column are node numbers
-primates.body.ace
-# Other implementations are available in packages geiger (functions fitContinuousMCMC and fitDiscrete), phangorn and more in ape (MPR)
+shorebird.mmass.ace
 # Plot it
-plot.phylo(x=primates.tree, lwd=2, cex=2)
-tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none", col="blue", cex=2)
-nodelabels(round(primates.body.ace$ace, digits=3), frame="circle", bg="red", cex=1.5)
+plot.phylo(x=shorebird.tree, lwd=2, cex=0.75)
+tiplabels(shorebird.mmass, adj=c(1, 0), frame="none", col="blue", cex=0.75)
+nodelabels(round(shorebird.mmass.ace[["ace"]], digits=1), frame="none", col="red", cex=0.75)
 # ACE returns long numbers - truncate them by e.g. 
 round(x=..., digits=3) # "x" is vector with ACE values
+# Other implementations are available in packages geiger, phangorn, ape, ...
+?MPR
+library(geiger)
+?fitContinuous # FIXME geiger::fitContinuous
+shorebird.mmass.fc <- fitContinuous(phy=shorebird.tree, dat=shorebird.mmass, model="BM")
+shorebird.mmass.fc
+?fitContinuousMCMC # Data are saved to the disk to files named according to 'outputName' # FIXME geiger::fitContinuousMCMC
+fitContinuousMCMC(phy=shorebird.tree, d=shorebird.mmass, model="BM", Ngens=10000000, sampleFreq=1000, printFreq=1000, outputName="shorebird.mmass.fcm")
+?fitDiscrete # FIXME geiger::fitDiscrete
+shorebird.mmass.fd <- fitDiscrete(phy=shorebird.tree, dat=shorebird.data["Mat.syst"], model="ER", transform="none")
+shorebird.mmass.fd
 
 library(phytools)
-# More possibilities
-plot.phylo(x=primates.tree, edge.width=2, cex=2)
+
 # ML estimation of a continuous trait, can compute confidence interval (used by some functions, see further)
-nodelabels(fastAnc(tree=primates.tree, x=primates.body))
+?fastAnc
+shorebird.mmass.fa <- fastAnc(tree=shorebird.tree, x=shorebird.mmass, vars=FALSE, CI=TRUE)
+shorebird.mmass.fa
+plot.phylo(x=shorebird.tree, edge.width=2, cex=0.75)
+tiplabels(shorebird.mmass, adj=c(1, 0), frame="none", col="blue", cex=0.75)
+nodelabels(round(shorebird.mmass.fa[["ace"]], digits=1), frame="none", col="red", cex=0.75)
+
 # ACE for Brownian evolution with directional trend
-plot.phylo(x=primates.tree, edge.width=2, cex=2)
-nodelabels(anc.trend(tree=primates.tree, x=primates.body, maxit=100000)$ace)
+?anc.trend # FIXME phytools::anc.trend
+shorebird.mmass.ac <- anc.trend(tree=shorebird.tree, x=shorebird.mmass, maxit=1000000)
+shorebird.mmass.ac
+
 # ACE for Brownian evolution using likelihood
-plot.phylo(x=primates.tree, edge.width=2, cex=2)
-nodelabels(round(anc.ML(tree=primates.tree, x=primates.body, maxit=100000, model="BM")$ace, digits=2), cex=1.5)
+?anc.ML # FIXME phytools::anc.ML
+shorebird.mmass.ml <- anc.ML(tree=shorebird.tree, x=shorebird.mmass, maxit=1000000, model="BM")
+shorebird.mmass.ml
 
 # Bayesian ancestral character estimation
-primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body, ngen=100000) # Use more MCMC generations
-primates.body.ace.bayes
+?anc.Bayes # FIXME phytools::anc.Bayes
+shorebird.mmass.bayes <- anc.Bayes(tree=shorebird.tree, x=shorebird.mmass, ngen=1000000) # Use more MCMC generations
+shorebird.mmass.bayes
 # Get end of ancestral states from Bayesian posterior distribution (it should converge to certain values)
-tail(primates.body.ace.bayes[["mcmc"]])
-primates.body.ace.bayes[["mcmc"]][1001,3:6]
+tail(shorebird.mmass.bayes[["mcmc"]])
+shorebird.mmass.bayes[["mcmc"]][1001,3:6]
 # Get means of ancestral states from Bayesian posterior distribution
-colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree$Nnode+length(primates.tree$tip.label))])
+colMeans(shorebird.mmass.bayes[["mcmc"]][201:nrow(shorebird.mmass.bayes[["mcmc"]]),as.character(1:shorebird.tree$Nnode+length(shorebird.tree$tip.label))])
 # Plot the ancestral states from posterior distribution (it should converge to certain values)
-plot(primates.body.ace.bayes)
+plot(shorebird.mmass.bayes)
 # Plot the tree and reconstructed ancestral states
-plot.phylo(x=primates.tree, edge.width=2, cex=2)
-nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
+plot.phylo(x=shorebird.tree, edge.width=2, cex=2)
+nodelabels(round(x=shorebird.mmass.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
 # Another possibility for ancestral character reconstruction
 ?phangorn::ancestral.pml
 
 # Continuous map
-library(phytools)
-contMap(tree=primates.tree, x=primates.body)
+?contMap
+contMap(tree=shorebird.tree, x=shorebird.mmass)
 # Change colors with setMap()
-primates.contmap <- setMap(x=contMap(primates.tree, primates.body), colors=c("white", "black"))
-plot(primates.contmap)
+shorebird.contmap <- setMap(x=contMap(tree=shorebird.tree, x=shorebird.mmass), colors=c("white", "black"))
+plot(shorebird.contmap)
 # See ?par for more settings
 
 ## Phenogram
 
 library(adephylo)
-table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame(cbind(primates.body, primates.longevity))), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
-phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2, ftype="i", colors="red", main="Longevity")
-fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity, fsize=1.2, ftype="i", main="95-percentile of longevity")
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data[,2:5]), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data[,2:5]), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
+phenogram(tree=shorebird.tree, x=shorebird.mmass, ftype="i", colors="red", main="Male mass")
+fancyTree(tree=shorebird.tree, type="phenogram95", x=shorebird.mmass, ftype="i", main="95-percentile of male mass")
 # 2 characters on 2 axis
-phylomorphospace(tree=primates.tree, X=cbind(primates.body, primates.longevity), label="horizontal", lwd=2, fsize=1.5)
+phylomorphospace(tree=shorebird.tree, X=shorebird.data[,2:3], label="horizontal", lwd=2)
 # 3D (3rd character is fake here)
 # 3 characters it a rotating cube
-phylomorphospace3d(tree=primates.tree, X=cbind(primates.body, primates.longevity, abs(primates.body-primates.longevity)), label=TRUE)
+phylomorphospace3d(tree=shorebird.tree, X=shorebird.data[,2:4], label=TRUE)
 # 2 characters on 2 axis
-fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primates.longevity), res=500, ftype="i")
+fancyTree(tree=shorebird.tree, type="scattergram", X=shorebird.data[,2:4], res=500, ftype="i")
 # See manuals for more settings
 ?fancyTree
 ?phenogram
@@ -2101,29 +2102,20 @@ fancyTree(tree=primates.tree, type="scattergram", X=cbind(primates.body, primate
 ?par
 
 # Ploting traits on trees
-# Load training data to display
-data(shorebird, package="caper")
-# See information about the data
-?caper::shorebird
-# Load library
-library(phytools)
-# Prepare named vector of values to plot
-shorebird.toplot <- shorebird.data[["Egg.Mass"]]
-names(shorebird.toplot) <- rownames(shorebird.data)
-shorebird.toplot # See it
+
 # See options for plotting functions
 ?plotTree.wBars
 ?dotTree
 ?plotSimmap
 # Plot the trees
-plotTree.wBars(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE)
-dotTree(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE, type="cladogram")
+plotTree.wBars(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE)
+dotTree(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE, type="cladogram")
 
 # ## TODO Disparity-through-time
-# disparity(phy=primates.tree, data=primates.body)
-# dtt(phy=primates.tree, data=primates.body, nsim=1000)
+# disparity(phy=shorebird.tree, data=primates.body)
+# dtt(phy=shorebird.tree, data=primates.body, nsim=1000)
 # # lineage-through-time plot
-# ltt(tree=primates.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
+# ltt(tree=shorebird.tree, plot=TRUE, drop.extinct=FALSE, log.lineages=TRUE, gamma=TRUE)
 
 ## Graphics
 # Output figure will be saved to the disk as OutputFile.png

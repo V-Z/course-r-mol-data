@@ -5491,52 +5491,29 @@
 
 \subsection{Decomposition}
 
-\begin{frame}[fragile]{Prepare toy data set (tree)}
+\begin{frame}[fragile]{Decomposition of topographical distances}
 	\begin{spluscode}
-    # Load MrBayes tree in NEXUS format
-    apiaceae.tree <- read.nexus
-      (file="https://soubory.trapa.cz/rcourse/apiaceae_mrbayes.nexus")
-    print.phylo(apiaceae.tree) # See it
-    plot.phylo(apiaceae.tree) # See it
-    apiaceae.tree <- root.phylo(apiaceae.tree, "Aralia_elata") # Root the tree
-    # Remove "_" from taxa names
-    # plot.phylo() by default omits "_" from tip names
-    apiaceae.tree$tip.label <- gsub(pattern="_", replacement=" ",
-      x=apiaceae.tree$tip.label)
-    # Drop outgroup (Aralia and Hydrocotyle)
-    # Click on last common ancestor of ingroup desired to be kept
-    plot.phylo(apiaceae.tree)
-    apiaceae.tree <- extract.clade(apiaceae.tree, interactive=TRUE)
-    plot.phylo(apiaceae.tree)
-    library(adephylo)
-    library(phylobase)
+    table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(
+      x=shorebird.tree, result="orthobasis")), treetype="cladogram")
 	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Modified tree}
 	\begin{center}
-		\includegraphics[width=\textwidth-5cm]{apiaceae_tree.png}
+		\includegraphics[width=\textwidth-3.5cm]{shorebird_tree_decomp.png}
 	\end{center}
-	\begin{spluscode}
-    # Decomposition of topographical distances (right plot)
-    table.phylo4d(x=phylo4d(x=apiaceae.tree, tip.data=treePart(x=apiaceae.tree,
-      result="orthobasis")), treetype="cladogram")
-	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Prepare toy data set (the variable)}
 	\begin{spluscode}
     # Generate some random variable
     library(geiger)
-    apiaceae.eco <- sim.char(phy=apiaceae.tree, par=0.1, nsim=1,
+    shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1,
       model="BM")[,,1]
     ?sim.char # See it for another possibilities to simulate data
     # Names for the values
-    names(apiaceae.eco) <- apiaceae.tree[["tip.label"]]
-    apiaceae.eco # See it
+    names(shorebird.eco) <- shorebird.tree[["tip.label"]]
+    shorebird.eco # See it
 	\end{spluscode}
 	\begin{itemize}
-		\item \texttt{sim.char()} creates an array (we keep only numeric vector of 1$^{st}$ simulation --- \texttt{[,,1]}) of simulated characters, with \texttt{model="BM"} under Brownian motion
+		\item \texttt{sim.char()} creates an array (we keep only numeric vector of 1$^{st}$ simulation --- \texttt{[,,1]}) of simulated characters, with \texttt{model="BM"} under \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion}
 		\item Many methods compare \textbf{names} of character values with \texttt{tip.label} slot of the tree to pair character values with correct taxa
 		\begin{itemize}
 			\item Otherwise values must be ordered in same way as in \texttt{tip.label} slot
@@ -5547,25 +5524,29 @@
 
 \begin{frame}[fragile]{Orthonormal decomposition - phylogenetic eigenvector regression}
 	\begin{spluscode}
-    anova(lm(apiaceae.eco ~ as.matrix(orthobasis.phylo(x=apiaceae.tree,
+    anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree,
       method="patristic")[,1:2])))
+    Analysis of Variance Table
+    Response: shorebird.eco
+                 Df Sum Sq Mean Sq F value    Pr(>F)
+    as.matrix...  2 226.61 113.306  54.045 8.918e-15 ***
+    Residuals    68 142.56   2.097
+    anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(
+      x=shorebird.tree, method="patristic")[,1:2])))
 	\end{spluscode}
 	\begin{itemize}
 		\item Significant result --- significant phylogenetic inertia (phylogenetic effect) --- the tendency for traits to resist evolutionary change despite environmental perturbations
 		\item \texttt{orthobasis.phylo()} return matrix, which is linear transformation of cophenetic distances --- columns 1~and 2~can be used to calculate phylogenetic variance --- it can be used to calculate linear regression
 	\end{itemize}
-	\begin{spluscode}
-                 Df   Sum Sq  Mean Sq F value Pr(>F)
-    as.matrix...  2 0.063689 0.031845  2.2275 0.1422
-    Residuals    15 0.214443 0.014296
-	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Orthonormal decomposition of variance of a~quantitative variable on an orthonormal basis}
 	\begin{spluscode}
-    orthogram(x=apiaceae.eco, tre=apiaceae.tree, nrepet=1000,
+    orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000,
       alter="two-sided")
     ?orthogram # See another calculation possibilities
+    orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000,
+      alter="two-sided")
 	\end{spluscode}
 	\begin{itemize}
 		\item Analyses one quantitative trait
@@ -5580,7 +5561,7 @@
 		\includegraphics[width=\textwidth-4cm]{orthogram.png}
 	\end{center}
 	\begin{itemize}
-		\item Observed value is within permutations --- no significant inertia of the trait to phylogeny\ldots
+		\item Observed value is out of permutations --- significant \href{https://en.wikipedia.org/wiki/Phylogenetic_inertia}{inertia of the trait to phylogeny}
 	\end{itemize}
 \end{frame}
 
@@ -5589,16 +5570,20 @@
 \begin{frame}[fragile]{Phylogenetic Generalized Least Squares}
 	\begin{itemize}
 		\item Model-based testing if there is significant correlation between two traits (after removing the phylogenetic component)
-		\item \texttt{nlme::gls} fits a~linear model using generalized least squares
+		\item \texttt{nlme::gls} fits a~linear model using \href{https://en.wikipedia.org/wiki/Generalized_least_squares}{generalized least squares}
 		\item Functions \texttt{corBlomberg}, \texttt{corBrownian}, \texttt{corMartins} and \texttt{corPagel} from \texttt{ape} package create correlation matrix of evolution of continuous character according to the given tree
 	\end{itemize}
 	\begin{spluscode}
     library(nlme)
-    library(ape)
-    summary(gls(model=primates.longevity ~ primates.body,
-      data=as.data.frame(cbind(primates.longevity, primates.body)),
-      correlation=corBrownian(value=1, phy=primates.tree)))
-	\end{spluscode}
+    summary(gls(model=F.Mass ~ Egg.Mass, data=shorebird.data,
+      correlation=corBrownian(value=1, phy=shorebird.tree)))
+      Generalized least squares fit by REML
+          AIC      BIC    logLik
+      798.813 805.5154 -396.4065
+                    Value Std.Error   t-value p-value
+    (Intercept) -2.384233  73.54508 -0.032419  0.9742
+    Egg.Mass     9.145185   0.60274 15.172606  0.0000
+\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Implementation in caper package}
@@ -5629,7 +5614,7 @@
 		\begin{itemize}
 			\item \texttt{pgls()} uses maximum likelihood to test for phylogenetic signal
 			\item The signal is clearly presented
-			\item Usually, tuning the model (possible data transformations and or changing model parameters) is necessary to find the best model --- AIC helps
+			\item Usually, tuning the model (possible data transformations and/or changing model parameters) is necessary to find the best model --- AIC helps
 			\item See \href{https://CRAN.R-project.org/package=caper}{caper manual} for details
 		\end{itemize}
 	\end{multicols}
@@ -5639,17 +5624,18 @@
 
 \begin{frame}[fragile]{Generalized Estimating Equations}
 	\begin{itemize}
-		\item Extension of GLM for correlated data --- usage is similar
+		\item Extension of GLM for correlated data, usage is similar
 		\item It is possible to use phylogeny or correlation matrix (typically based on phylogeny)
 	\end{itemize}
 	\vfil
 	\begin{spluscode}
     # Calculate the model
-    compar.gee(formula=primates.longevity ~ primates.body,
-      phy=primates.tree)
-    # or with correlation matrix:
-    compar.gee(formula=primates.longevity ~ primates.body,
-      corStruct=corMartins(value=1, phy=primates.tree, fixed=TRUE))
+    compar.gee(formula=shorebird.data[["F.Mass"]] ~
+      shorebird.data[["Egg.Mass"]], phy=shorebird.tree)
+    # or with correlation matrix
+    compar.gee(formula=shorebird.data[["F.Mass"]] ~
+      shorebird.data[["Egg.Mass"]], corStruct=corMartins(value=1,
+      phy=shorebird.tree, fixed=TRUE))
     # for corStruct there are similar functions corBlomberg, corMartins,
     # corPagel, corBrownian - see manuals for differences
 	\end{spluscode}
@@ -5657,20 +5643,22 @@
 
 \begin{frame}[fragile]{Not significant in this case\ldots}
 	\begin{spluscode}
-    Call: compar.gee(formula = primates.longevity ~
-      primates.body, phy = primates.tree)
-    Number of observations: 5
+    Call: compar.gee(formula = shorebird.data[["F.Mass"]] ~
+      shorebird.data[["Egg.Mass"]], phy = shorebird.tree)
+    Number of observations:  71 
     Model:
-                         Link: identity
-    Variance to Mean Relation: gaussian
-    QIC: 7.310142
+                          Link: identity 
+     Variance to Mean Relation: gaussian 
+    QIC: 449593.7 
     Summary of Residuals:
-           Min         1Q     Median         3Q        Max
-    -0.8031302 -0.0132754  0.0999588  0.1988258  0.2862064
+            Min          1Q      Median          3Q         Max 
+    -121.577831  -48.195170  -32.598282   -2.168055  295.586322 
     Coefficients:
-                   Estimate      S.E.        t Pr(T > |t|)
-    (Intercept)   1.0670417 0.5838429 1.827618   0.2695894
-    primates.body 0.8497249 0.2157006 3.939372   0.1101432
+                                  Estimate       S.E.           t  Pr(T > |t|)
+    (Intercept)                  -2.384233 41.1202553 -0.05798195 9.545638e-01
+    shorebird.data[["Egg.Mass"]]  9.145185  0.3370035 27.13676219 1.003642e-13
+    Estimated Scale Parameter:  6515.203
+    "Phylogenetic" df (dfP):  16.3298 
 	\end{spluscode}
 \end{frame}
 
@@ -5690,12 +5678,14 @@
 	\end{itemize}
 	\begin{spluscode}
     library(picante)
-    # Test for Bloomberg's K statistics
-    Kcalc(x=apiaceae.eco, phy=apiaceae.tree, checkdata=TRUE)
+    # It requires named vector of trait values
+    shorebird.mmass <- shorebird.data[["M.Mass"]]
+    names(shorebird.mmass) <- rownames(shorebird.data)
+    # Bloomberg's K statistics
+    Kcalc(x=shorebird.mmass, phy=shorebird.tree, checkdata=TRUE)
     # Test with permutations
-    phylosignal(x=apiaceae.eco, phy=apiaceae.tree, reps=1000,
-      checkdata=TRUE)
-	\end{spluscode}
+    phylosignal(x=shorebird.mmass, phy=shorebird.tree, reps=1000, checkdata=T)
+\end{spluscode}
 	\begin{itemize}
 		\item Blomberg's values of 1~correspond to a~Brownian motion process, which implies some degree of phylogenetic signal or conservatism
 		\item K~values closer to zero correspond to a~random or convergent pattern of evolution, while K~values greater than 1~indicate strong phylogenetic signal and conservatism of traits
@@ -5705,19 +5695,16 @@
 
 \begin{frame}[fragile]{Analyze multiple traits in once}
 	\begin{spluscode}
-    # sapply performs analysis on list of variables (numeric vectors)
-    sapply(X=list(body=primates.body, longevity=primates.longevity),
-      FUN=Kcalc, phy=primates.tree, checkdata=FALSE)
-    sapply(X=list(body=primates.body, longevity=primates.longevity),
-      FUN=phylosignal, phy=primates.tree, reps=1000)
-    # Alternative to use multiPhylosignal instead of sapply
-    multiPhylosignal(x=as.data.frame(cbind(primates.body,
-      primates.longevity)), phy=primates.tree, reps=1000)
-    # Note sapply() and multiPhylosignal() return same data, but the
-    # matrices are transposed - use t() to transpose one to look like
-    # the other:
-    t(multiPhylosignal(x=as.data.frame(cbind(primates.body,
-      primates.longevity)), phy=primates.tree, reps=1000))
+    # multiPhylosignal requires data frame of numerical values
+    multiPhylosignal(x=shorebird.data[,2:5], phy=shorebird.tree, reps=1000)
+                    K PIC.variance.obs PIC.variance.rnd.mean PIC.variance.P...
+    M.Mass   1.089419     5.139489e+02          3.278559e+03    0.000999001...
+    F.Mass   1.092474     6.316701e+02          3.993696e+03    0.000999001...
+    Egg.Mass 1.139078     4.160653e+00          2.783029e+01    0.000999001...
+    Cl.size  0.673523     8.397776e-03          3.323744e-02    0.000999001...
+    # See help
+    ?phylosignal
+    ?multiPhylosignal
 	\end{spluscode}
 \end{frame}
 
@@ -5733,27 +5720,28 @@
     library(phytools)
     ?phylosig # See for details
     # Test for phylogenetic signal (here without SE)
-    phylosig(tree=apiaceae.tree, x=apiaceae.eco, method="K", test=TRUE,
+    phylosig(tree=shorebird.tree, x=shorebird.mmass, method="K", test=TRUE,
       nsim=1000)
-    phylosig(tree=primates.tree, x=primates.body, method="lambda",
+    plot(phylosig(tree=shorebird.tree, x=shorebird.mmass, method="K",
+      test=TRUE, nsim=1000))
+    phylosig(tree=shorebird.tree, x=shorebird.mmass, method="lambda",
       test=TRUE)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Alternative testing for phylogenetic signal with GLM}
 	\begin{itemize}
-		\item It is possible to use intercept-only (\texttt{model/formula} will be something like \texttt{variable $\sim$ 1}, not \texttt{variable1 $\sim$ variable2}) GLM to quantify phylogenetic signal in trait
+		\item It is possible to use intercept-only (\texttt{model/formula} will be something like \texttt{variable $\sim$ 1} instead of \texttt{variable1 $\sim$ variable2}) GLM to quantify phylogenetic signal in trait
 		\item It is tricky to select the best correlation structure --- AIC can help with selections (\texttt{AIC(pgls(\ldots))})
 	\end{itemize}
 	\begin{spluscode}
     # Examples of usage of GLS for testing of phylogenetic signal
-    summary(gls(model=primates.longevity ~ 1, data=as.data.frame
-      (primates.longevity), correlation=corBrownian(value=1,
-      phy=primates.tree)))
-    summary(pgls(formula=shorebird.data[["M.Mass"]] ~ 1,
-      data=comparative.data(phy=shorebird.tree, data=as.data.frame
-      (cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])),
-      names.col=V2, vcv=TRUE)))
+    summary(gls(model=shorebird.mmass ~ 1,
+      correlation=corBrownian(value=1, phy=shorebird.tree)))
+    summary(pgls(formula=shorebird.mmass ~ 1,
+      data=comparative.data(phy=shorebird.tree,
+      data=as.data.frame(cbind(shorebird.data[["M.Mass"]],
+      shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 	\end{spluscode}
 \end{frame}
 
@@ -5775,26 +5763,25 @@
     # Library needed to create phylo4d object required by ppca
     library(adephylo)
     # Calculate pPCA
-    primates.ppca <- ppca(x=phylo4d(x=primates.tree, cbind(primates.body,
-      primates.longevity)), method="patristic", center=TRUE, scale=TRUE,
-      scannf=TRUE, nfposi=1, nfnega=0)
-    # Print results
-    print(primates.ppca)
-    # See summary information
-    summary(primates.ppca)
+    shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]),
+      method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1,
+      nfnega=0)
+    print(shorebird.ppca) # Print results # See summary information
+    summary(shorebird.ppca)
     # See PCA scores for variables on phylogenetic tree
-    scatter(primates.ppca)
+    scatter(shorebird.ppca)
     # See decomposition of pPCA eigenvalues
-    screeplot(primates.ppca)
+    screeplot(shorebird.ppca)
     # Plot pPCA results - global vs. local structure, decomposition of pPCA
-    # eigenvalues, PCA plot of variables and PCA scores for variables on tree
-    plot(primates.ppca)
+    # eigenvalues, PCA plot of variables and PCA scores for variables on
+    # phylogenetic tree
+    plot(shorebird.ppca)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree}
 	\begin{center}
-		\includegraphics[width=\textwidth-5cm]{ppca.png}
+		\includegraphics[width=\textwidth-4.5cm]{ppca.png}
 	\end{center}
 \end{frame}
 
@@ -5807,7 +5794,7 @@
 	\end{itemize}
 	\begin{spluscode}
     library(ape)
-    # See ?ace for possible settings and estimations
+    ?ace # See for possible settings and estimations
     primates.body.ace <- ace(x=primates.body, phy=primates.tree,
       type="continuous", method="REML", corStruct=corBrownian(value=1,
       phy=primates.tree)) # See result - reconstructions are in $ace slot
