@@ -1803,7 +1803,16 @@ nodelabels(text=c("6.4 Ma", "5.4 Ma"), frame="circle", bg="yellow")
 add.scale.bar()
 # Note vectors for tip/node labels
 
-## PIC
+## PIC # FIXME Replace data by adephylo::maples
+
+data(maples, package="adephylo")
+?adephylo::maples
+maples.tree <- read.tree(text=maples[["tre"]])
+maples.tree
+plot.phylo(maples.tree)
+is.binary.phylo(maples.tree)
+is.rooted.phylo(maples.tree)
+is.ultrametric.phylo(maples.tree)
 
 # Load library
 library(ape)
