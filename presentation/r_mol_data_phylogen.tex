@@ -948,7 +948,7 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/} % FIXME Link doesn't exist
+		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
 		\begin{itemize}
 			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows; macOS and Linux have more options for parallelisation)
 			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
@@ -1064,8 +1064,7 @@
 			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
 			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
 			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
-			\item Phylogeny of selected species of Apiaceae reconstructed from several concatenated plastid genes downloaded from \href{https://www.ncbi.nlm.nih.gov/}{GenBank} and simulated trait
-			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird})
+			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{adephylo} (morphological traits and phylogeny of 17 \textit{Maples} species, \texttt{?adephylo::maples}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}), \textbf{datasets} (measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird})
 		\end{itemize}
 		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
 		\begin{itemize}
@@ -5106,7 +5105,7 @@
 	\end{multicols}
 \end{frame}
 
-% \begin{frame}[fragile]{Species trees from phybase} % TODO phybase
+% \begin{frame}[fragile]{Species trees from phybase} % TODO phybase, STAR, STEAC
 % 	\begin{itemize}
 % 		\item Package \href{https://github.com/lliu1871/phybase}{phybase} (\href{https://academic.oup.com/bioinformatics/article/26/7/962/212978}{citation}) implements several methods of building of species tree ouf of list of gene trees (and some functions to manipulate trees, data, etc.) --- we try \href{http://online.liebertpub.com/doi/abs/10.1089/cmb.2012.0101}{STAR} and \href{https://academic.oup.com/sysbio/article/58/5/468/1635625}{STEAC}
 % 	\end{itemize}
@@ -5309,7 +5308,7 @@
 	\end{exampleblock}
 \end{frame}
 
-\section{Evolution} % FIXME Replace data by adephylo::maples https://www.journals.uchicago.edu/doi/abs/10.1086/286208
+\section{Evolution}
 
 \begin{frame}{Reconstruction of evolution of traits}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
@@ -5343,7 +5342,6 @@
 		\item If we assume that a~continuous trait evolves randomly in any direction (i.e. the \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion} model), then the \enquote{\href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}} between two species is expected to have a~normal distribution with mean zero, and variance proportional to the time since divergence
 	\end{itemize}
 	\begin{spluscode}
-    library(ape) # Load library
     data(shorebird, package="caper") # Load training data
     ?caper::shorebird # See it
     head(shorebird.data) # See the data part
@@ -5662,7 +5660,7 @@
 	\end{spluscode}
 \end{frame}
 
-% \subsection{Partitioning} % TODO Partitioning
+% \subsection{Partitioning} % TODO Variance Partitioning
 %
 % \begin{frame}[fragile]{Variance partitioning}
 % 	\begin{spluscode}
@@ -5787,6 +5785,50 @@
 
 \subsection{Ancestral state}
 
+\begin{frame}[fragile]{Training data I}
+	\begin{spluscode}
+    # Load library
+    library(ape)
+    # Loading data
+    # Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
+    data(maples, package="adephylo")
+    ?adephylo::maples
+    # Process the phylogenetic tree
+    # maples data provide tree as plain text in NEWICK, must be imported
+    # into the phylo object
+    maples.tree <- read.tree(text=maples[["tre"]])
+    maples.tree
+    plot.phylo(maples.tree)
+    # For plenty of analysis it must be fully resolved (bifurcating),
+    # rooting and ultrametricity often helps
+    is.binary.phylo(maples.tree)
+    is.rooted.phylo(maples.tree)
+    is.ultrametric.phylo(maples.tree)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Training data II}
+	\begin{spluscode}
+    # See the character matrix
+    head(maples[["tab"]])
+    maples.data <- maples[["tab"]][,1:30]
+    head(maples.data)
+    summary(maples.data)
+    # Maples mature height (m)
+    maples.height <- maples[["tab"]][["MatHt"]]
+    names(maples.height) <- rownames(maples[["tab"]])
+    maples.height
+    # Maples seed size (mg)
+    maples.sdsz  <- maples[["tab"]][["SdSz"]]
+    names(maples.sdsz) <- rownames(maples[["tab"]])
+    maples.sdsz
+    # Maples leaf + petiole length (mm)
+    maples.lfpt <- maples[["tab"]][["LfPt"]]
+    names(maples.lfpt) <- rownames(maples[["tab"]])
+    maples.lfpt
+	\end{spluscode}
+\end{frame}
+
 \begin{frame}[fragile]{Ancestral state reconstruction}
 	\begin{itemize}
 		\item By default \texttt{ape::ace()} performs estimation for continuous characters assuming a~Brownian motion model fit by maximum likelihood
@@ -5794,139 +5836,163 @@
 	\end{itemize}
 	\begin{spluscode}
     library(ape)
-    ?ace # See for possible settings and estimations
-    primates.body.ace <- ace(x=primates.body, phy=primates.tree,
+    ?ace # See for possible settings
+    maples.height.ace <- ace(x=maples.height, phy=maples.tree,
       type="continuous", method="REML", corStruct=corBrownian(value=1,
-      phy=primates.tree)) # See result - reconstructions are in $ace slot
-    # To be plotted on nodes - 1st column are node numbers
-    primates.body.ace
+      phy=maples.tree))
+    # See result - reconstructions are in ace slot - to be plotted on
+    # nodes - 1st column are node numbers
+    maples.height.ace
     # Plot it
-    plot.phylo(x=primates.tree, edge.width=2, cex=2)
-    tiplabels(round(primates.body, digits=3), adj=c(0, -1), frame="none",
-      col="blue", cex=2)
-    nodelabels(round(primates.body.ace$ace, digits=3), frame="circle",
-      bg="red", cex=1.5)
+    plot.phylo(x=maples.tree, lwd=2, cex=0.75)
+    tiplabels(maples.height, adj=c(1, 0), frame="none", col="blue", cex=0.75)
+    nodelabels(round(maples.height.ace[["ace"]], digits=1), frame="none",
+      col="red", cex=0.75)
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{Ancestral state reconstructions of primates body weights}
-	\begin{itemize}
-		\item ACE returns long numbers --- truncate them by e.g. \texttt{round(x=\ldots, digits=3)} (\texttt{x} is vector with ACE values)
-	\end{itemize}
-	\begin{center}
-		\includegraphics[height=5cm]{ace.png}
-	\end{center}
+\begin{frame}[fragile]{Ancestral state reconstructions of primates body weights}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item ACE returns long numbers --- truncate them by e.g. \texttt{round(x=\ldots, digits=3)} (\texttt{x} is vector with ACE values)
+		\end{itemize}
+		\begin{center}
+			\includegraphics[height=5cm]{ace.png}
+		\end{center}
+		\begin{spluscode}
+    # Other implementations are
+    # available in packages geiger,
+    # phangorn, ape, phytools, ...
+    # Parsimony based method
+    ?ape::MPR
+    # For continuous characters using
+    # Maximum Likelihood
+    ?geiger::fitContinuous
+    # For continuous characters using
+    # Markov Chain Monte Carlo
+    ?geiger::fitContinuousMCMC
+    # For discrete characters, various
+    # models available
+    ?geiger::fitDiscrete
+    # Marginal reconstruction of the
+    # ancestral character states
+    ?phangorn::ancestral.pml
+		\end{spluscode}
+	\end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{Another possibilities (package phytools)}
+\begin{frame}[fragile]{Implementation in phytools}
 	\begin{multicols}{2}
-		\begin{spluscode}
-    library(phytools)
-    # More possibilities
-    plot.phylo(x=primates.tree,
-      edge.width=2, cex=2)
-    # ML estimation of a continuous trait,
-    # can compute confidence interval
-    nodelabels(fastAnc(tree=
-      primates.tree, x=primates.body))
-    # ACE for Brownian evolution with
-    # directional trend
-    plot.phylo(x=primates.tree,
-      edge.width=2, cex=2)
-    nodelabels(anc.trend(tree=
-      primates.tree, x=primates.body,
-      maxit=100000)$ace)
-    # ACE for Brownian evolution using
-    # likelihood
-		\end{spluscode}
-		\columnbreak
-		\begin{spluscode}
-    plot.phylo(x=primates.tree,
-      edge.width=2, cex=2)
-    nodelabels(round(anc.ML(tree=
-      primates.tree, x=primates.body,
-      maxit=100000, model="BM")$ace,
-      digits=2), cex=1.5)
-		\end{spluscode}
+		\vfill
 		\begin{center}
 			\includegraphics[height=2cm]{ancml.png}
 		\end{center}
+		\begin{spluscode}
+    # ML estimation of continuous trait
+    ?fastAnc
+    maples.height.fa <- fastAnc(tree=
+      maples.tree, x=maples.height,
+      vars=FALSE, CI=TRUE)
+    maples.height.fa
+    plot.phylo(x=maples.tree,
+      edge.width=2, cex=0.75)
+    tiplabels(maples.height,
+      adj=c(1, 0), frame="none",
+      col="blue", cex=0.75)
+		\end{spluscode}
 		\vfill
+		\columnbreak
+		\begin{spluscode}
+    nodelabels(round(
+      maples.height.fa[["ace"]],
+      digits=2), frame="none",
+      col="red", cex=0.75)
+    # ACE for Brownian evolution
+    # with directional trend
+    ?anc.trend
+    maples.height.ac <- anc.trend(
+      tree=maples.tree,
+      x=maples.height, maxit=1000000)
+    maples.height.ac
+    # ACE for Brownian evolution
+    # using likelihood
+    ?anc.ML
+    maples.height.ml <- anc.ML(tree=
+      maples.tree, x=maples.height,
+      maxit=1000000, model="BM")
+		\end{spluscode}
 	\end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Bayesian ancestral character estimation I}
 	\begin{spluscode}
-    primates.body.ace.bayes <- anc.Bayes(tree=primates.tree, x=primates.body,
-      ngen=100000) # Use more MCMC generations
-    primates.body.ace.bayes
-    # Get end of ancestral states from Bayesian posterior distribution (it
-    # should converge to certain values)
-    tail(primates.body.ace.bayes[["mcmc"]])
-    primates.body.ace.bayes[["mcmc"]][1001,3:6]
+    ?anc.Bayes
+    maples.height.bayes <- anc.Bayes(tree=maples.tree, x=maples.height,
+      ngen=1000000) # Use more MCMC generations
+    maples.height.bayes
+    # Get end of ancestral states from Bayesian posterior distribution
+    # (it should converge to certain values)
+    tail(maples.height.bayes[["mcmc"]])
+    maples.height.bayes[["mcmc"]][10001,3:18]
     # Get means of ancestral states from Bayesian posterior distribution
-    colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow
-      (primates.body.ace.bayes[["mcmc"]]),as.character(1:primates.tree
-      $Nnode+length(primates.tree$tip.label))])
-    # Plot the likelihood from posterior distribution (it should converge)
-    plot(primates.body.ace.bayes)
-    plot.phylo(x=primates.tree, edge.width=2, cex=2) # Plot the tree and states
-    nodelabels(round(x=primates.body.ace.bayes[["mcmc"]][1001,3:6], digits=3),
-      cex=1.5)
-    ?phangorn::ancestral.pml # Another possibility
+    colMeans(maples.height.bayes[["mcmc"]][2001:nrow(
+      maples.height.bayes[["mcmc"]]),as.character(1:
+      maples.tree$Nnode+length(maples.tree$tip.label))])
+    # Plot the ancestral states from posterior distribution
+    # (it should converge to certain values)
+    plot(maples.height.bayes)
+    # Plot the tree and reconstructed ancestral states
+    plot.phylo(x=maples.tree, edge.width=2, cex=2)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Bayesian ancestral character estimation II}
 	\begin{spluscode}
-    primates.body.ace.bayes # See the values
-           6        7        8        9
-    2.418557 2.569484 2.844268 3.584153
-    tail(primates.body.ace.bayes[["mcmc"]]) # See end of the table
-            gen     sig2        6        7        8        9     logLik
-     ...    ...      ...      ...      ...      ...      ...        ...
-     999  99800 1.960194 4.129754 3.196746 3.310278 3.425686  -9.780220
-    1000  99900 1.636984 3.556224 2.701105 2.720756 2.965226  -9.770242
-    1001 100000 1.588710'2.641937 3.279439 3.093420 3.670807' -7.538937
-    primates.body.ace.bayes[["mcmc"]][1001,3:6] # See end of the table
-                6        7       8        9
-    1001 2.641937 3.279439 3.09342 3.670807
-    colMeans(primates.body.ace.bayes[["mcmc"]][201:nrow(primates.body.ace.
-      bayes[["mcmc"]]),as.character(1:primates.tree$Nnode+length
-      (primates.tree$tip.label))]) # Get means of ancestral states
-           6        7        8        9
-    2.418557 2.569484 2.844268 3.584153
+    maples.height.bayes # Mean ancestral states from posterior distribution
+          18       19       20       21       22       23       24       25...
+    2.659527 2.662223 2.932293 2.482104 2.456929 2.510414 2.692636 2.919908...
+    tail(maples.height.bayes[["mcmc"]]) # See end of the table
+              gen      sig2       18       19       20 ...       33    logLik
+			...     ...       ...      ...      ...      ... ...      ...       ...
+    10000  999900 0.1860167 2.284352 2.680593 2.962142 ... 2.494260 -19.00596
+    10001 1000000 0.1834573 2.315086 2.048144 2.755104 ... 2.485949 -20.80713
+    maples.height.bayes[["mcmc"]][10001,3:18] # See end of the table - values
+                18       19       20       21       22       23       24 ...
+    10001 2.315086 2.048144 2.755104 1.680306 2.019788 2.660322 2.456076 ...
+    # Get means of ancestral states from Bayesian posterior distribution
+    colMeans(maples.height.bayes[["mcmc"]][2001:nrow(
+      maples.height.bayes[["mcmc"]]),as.character(1:
+      maples.tree$Nnode+length(maples.tree$tip.label))])
+          18       19       20       21       22       23       24       25 ...
+    2.659527 2.662223 2.932293 2.482104 2.456929 2.510414 2.692636 2.919908 ...
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Bayesian ancestral character estimation III}{Likelihood of Bayesian posterior probability and the tree with reconstructions}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{ancbayes.png}
+		\includegraphics[width=\textwidth]{ancbayes.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Continuous map}
 	\begin{multicols}{2}
-		\vfill
 		\begin{center}
-			\includegraphics[height=6cm]{contmap.png}
+			\includegraphics[height=7cm]{contmap.png}
 		\end{center}
-		\vfill
 		\begin{spluscode}
-    library(phytools)
-    contMap(tree=primates.tree,
-      x=primates.body)
+    ?contMap
+    contMap(tree=maples.tree,
+      x=maples.height)
     # Change colors with setMap()
-    primates.contmap <- setMap(x=
-      contMap(primates.tree,
-      primates.body),
+    maples.contmap <- setMap(
+      x=contMap(tree=maples.tree,
+      x=maples.height),
       colors=c("white", "black"))
-    plot(primates.contmap)
+    plot(maples.contmap)
     # See ?par for more settings
 		\end{spluscode}
-		\vfill
 		\begin{center}
-			\includegraphics[height=1.5cm]{contmapbw.png}
+			\includegraphics[height=2.5cm]{contmapbw.png}
 		\end{center}
 		\vfill
 	\end{multicols}
@@ -5937,26 +6003,25 @@
 \begin{frame}[fragile]{Display more characters on a~tree in a~table}
 	\begin{spluscode}
     library(adephylo)
-    table.phylo4d(x=phylo4d(x=primates.tree, tip.data=as.data.frame
-      (cbind(primates.body, primates.longevity))), treetype="cladogram",
-      symbol="circles", scale=FALSE, ratio.tree=0.5)
-    table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data),
+    table.phylo4d(x=phylo4d(x=maples.tree, tip.data=maples.data),
+      treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+    table.phylo4d(x=phylo4d(x=maples.tree, tip.data=maples.data),
       treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=3cm]{phylotable.png}
+		\includegraphics[height=4cm]{phylotable.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}[fragile]{Phenogram}{Vertical axis shows character values}
 	\begin{spluscode}
-    phenogram(tree=primates.tree, x=primates.longevity, fsize=1.2,
-      ftype="i", colors="red", main="Longevity")
-    fancyTree(tree=primates.tree, type="phenogram95", x=primates.longevity,
-      fsize=1.2, ftype="i", main="95-percentile of longevity")
+    phenogram(tree=maples.tree, x=maples.height, ftype="i", colors="red",
+      main="Maples adult heights")
+    fancyTree(tree=maples.tree, type="phenogram95", x=maples.height,
+      ftype="i", main="95-percentile of Maples adult heights")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=3cm]{phenogram.png}
+		\includegraphics[height=4cm]{phenogram.png}
 	\end{center}
 \end{frame}
 
@@ -5964,24 +6029,19 @@
 	\begin{multicols}{2}
 		\begin{spluscode}
     # 2 characters on 2 axis
-    phylomorphospace(tree=
-      primates.tree, X=cbind
-      (primates.body,
-      primates.longevity),
-      label="horizontal",
-      lwd=2, fsize=1.5)
-    # 3D (3rd character is fake here)
-    # 3 characters it a rotating cube
-    phylomorphospace3d(tree=
-      primates.tree, X=cbind
-      (primates.body,
-      primates.longevity,
-      abs(primates.body-
-      primates.longevity)),
+    phylomorphospace(
+      tree=shorebird.tree,
+      X=shorebird.data[,2:3],
+      label="horizontal", lwd=2)
+    # 3D - 3 characters it a
+    # rotating cube
+    phylomorphospace3d(
+      tree=shorebird.tree,
+      X=shorebird.data[,2:4],
       label=TRUE)
 		\end{spluscode}
 		\begin{center}
-			\includegraphics[height=5.5cm]{phylomorphospace.png}
+			\includegraphics[height=6.5cm]{phylomorphospace.png}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -5989,11 +6049,12 @@
 \begin{frame}[fragile]{Combine phenograms and ancestral state reconstructions}
 	\begin{multicols}{2}
 		\begin{spluscode}
-    # 2 characters on 2 axis
-    fancyTree(tree=primates.tree,
+    # 3 characters on 2 axis and
+    # ancestral state reconstruction
+    # for all of them
+    fancyTree(tree=shorebird.tree,
       type="scattergram",
-      X=cbind(primates.body,
-      primates.longevity),
+      X=shorebird.data[,2:4],
       res=500, ftype="i")
     # See manuals for more settings
     ?fancyTree
@@ -6003,42 +6064,36 @@
     ?contMap
     ?setMap
     ?par
+    ?plot
 		\end{spluscode}
 		\begin{center}
-			\includegraphics[height=5.5cm]{phenogram-ace.png}
+			\includegraphics[height=7cm]{phenogram-ace.png}
 		\end{center}
 	\end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{Plotting traits on trees --- code}
 	\begin{spluscode}
-    # Load training data to display
-    data(shorebird, package="caper")
-    ?caper::shorebird # See information about the data
-    library(phytools) # Load library
-    # Prepare named vector of values to plot
-    shorebird.toplot <- shorebird.data[["Egg.Mass"]]
-    names(shorebird.toplot) <- rownames(shorebird.data)
-    shorebird.toplot # See it
     # See options for plotting functions
-    ?plotTree.wBars
+    ?plotTree.wBars # There are more variants available
     ?dotTree
     ?plotSimmap
     # Plot the trees
-    plotTree.wBars(tree=shorebird.tree, x=shorebird.toplot,
-      tip.labels=TRUE)
-    dotTree(tree=shorebird.tree, x=shorebird.toplot, tip.labels=TRUE,
+    # Tip labels with bars with length proportional to character values
+    plotTree.wBars(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE)
+    # Tip labels with dots with size proportional to character values
+    dotTree(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE,
       type="cladogram")
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Plotting traits on trees --- plots}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{treeval.png}
+		\includegraphics[width=\textwidth-3cm]{treeval.png}
 	\end{center}
 \end{frame}
 
-% \subsection{Disparity} % TODO Disparity
+% \subsection{Disparity} % TODO Disparity through time
 %
 % \begin{frame}[fragile]{Disparity through time}
 % 	\begin{spluscode}
@@ -6052,7 +6107,7 @@
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Browse \url{http://blog.phytools.org/} and see if you find some interesting method to display your data. If so, try it with any suitable data.
-			\item See relevant training datasets \texttt{data(package=c("adephylo", "caper", "geiger","phytools"))} and select some training data set (or use your own data) to try at least 1--2 of the above methods.
+			\item See relevant training datasets \texttt{data(package=c("adephylo", "caper", "geiger","phytools"))} and select some training data set (or use your some own data) to try at least 1--2 of the above methods.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
@@ -6689,12 +6744,8 @@
 
 % TODO Missing topics
 %
-% Vypsat balíčky před každou kapitolu
-% Přeskládat alignmenty tak, aby kontroly a úpravy byly jen jednou
-% Setřídit kapitolu o stromech v prezentaci i ve skriptech
 % Filtrování VCF
 % Filtrování genlight na chybějící data
-%
 % More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
 % external tree builders
@@ -6724,15 +6775,10 @@
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
 % https://github.com/emmanuelparadis/psmcr
 % - Nahradit SPCA jinou verzí (z adephylo?).
-% - Možná přeskládat nějaké věci ohledně manipulace se stromy (věci s `multiPhylo` až po práci s jednotlivými stromy, zkontrolovat na co už není potřeba `lapply`, pořádek v `interactive` variantách, apod.).
-% - Víc příkladů na indexování.
 % - Obecně o `lapply` a spol.
 % - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy
 % - Přidat načítání a export nexu
-% - Přidat/zmínit práci s proteiny (AA třídy)
 % - Profiltrovat VCF alespoň na chybějící data, zkontrolovat konverzi do DNAbin
-% - Obecně povyházet varianty řešení různých úloh jen do poznámek a ostatní nechat v jedné nejvýhodnější variantě
 % - přidat typické workflow (data, typické objevy a cesty)
-% - Ukládání tabulkových výstupů, více o načítání tabulek
-% - Možná zredukovat počet příkladů a méně je kombinovat
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
+

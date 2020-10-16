@@ -1803,19 +1803,46 @@ nodelabels(text=c("6.4 Ma", "5.4 Ma"), frame="circle", bg="yellow")
 add.scale.bar()
 # Note vectors for tip/node labels
 
-## PIC # FIXME Replace data by adephylo::maples
+## PIC
 
+# Load library
+library(ape)
+
+# Loading data
+# Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
 data(maples, package="adephylo")
 ?adephylo::maples
+
+# Process the phylogenetic tree
+# maples data provide tree as plain text in NEWICK, must be imported into the phylo object
 maples.tree <- read.tree(text=maples[["tre"]])
 maples.tree
 plot.phylo(maples.tree)
+# For plenty of analysis it must be fully resolved (bifurcating), rooting and ultrametricity often helps
 is.binary.phylo(maples.tree)
 is.rooted.phylo(maples.tree)
 is.ultrametric.phylo(maples.tree)
 
-# Load library
-library(ape)
+# See the character matrix
+head(maples[["tab"]])
+maples.data <- maples[["tab"]][,1:30]
+head(maples.data)
+summary(maples.data)
+
+# Maples mature height (m)
+maples.height <- maples[["tab"]][["MatHt"]]
+names(maples.height) <- rownames(maples[["tab"]])
+maples.height
+
+# Maples seed size (mg)
+maples.sdsz  <- maples[["tab"]][["SdSz"]]
+names(maples.sdsz) <- rownames(maples[["tab"]])
+maples.sdsz
+
+# Maples leaf + petiole length (mm)
+maples.lfpt <- maples[["tab"]][["LfPt"]]
+names(maples.lfpt) <- rownames(maples[["tab"]])
+maples.lfpt
 
 # Load training data
 data(shorebird, package="caper")
@@ -2020,86 +2047,84 @@ plot(shorebird.ppca)
 
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
 library(ape)
-?ace # See for possible settings # FIXME ape::ace
-shorebird.mmass.ace <- ace(x=shorebird.mmass, phy=shorebird.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=shorebird.tree))
-# See result - reconstructions are in $ace - to be plotted on nodes - 1st column are node numbers
-shorebird.mmass.ace
+?ace # See for possible settings
+maples.height.ace <- ace(x=maples.height, phy=maples.tree, type="continuous", method="REML", corStruct=corBrownian(value=1, phy=maples.tree))
+# See result - reconstructions are in $ace slot - to be plotted on nodes - 1st column are node numbers
+maples.height.ace
 # Plot it
-plot.phylo(x=shorebird.tree, lwd=2, cex=0.75)
-tiplabels(shorebird.mmass, adj=c(1, 0), frame="none", col="blue", cex=0.75)
-nodelabels(round(shorebird.mmass.ace[["ace"]], digits=1), frame="none", col="red", cex=0.75)
+plot.phylo(x=maples.tree, lwd=2, cex=0.75)
+tiplabels(maples.height, adj=c(1, 0), frame="none", col="blue", cex=0.75)
+nodelabels(round(maples.height.ace[["ace"]], digits=2), frame="none", col="red", cex=0.75)
 # ACE returns long numbers - truncate them by e.g. 
 round(x=..., digits=3) # "x" is vector with ACE values
-# Other implementations are available in packages geiger, phangorn, ape, ...
-?MPR
-library(geiger)
-?fitContinuous # FIXME geiger::fitContinuous
-shorebird.mmass.fc <- fitContinuous(phy=shorebird.tree, dat=shorebird.mmass, model="BM")
-shorebird.mmass.fc
-?fitContinuousMCMC # Data are saved to the disk to files named according to 'outputName' # FIXME geiger::fitContinuousMCMC
-fitContinuousMCMC(phy=shorebird.tree, d=shorebird.mmass, model="BM", Ngens=10000000, sampleFreq=1000, printFreq=1000, outputName="shorebird.mmass.fcm")
-?fitDiscrete # FIXME geiger::fitDiscrete
-shorebird.mmass.fd <- fitDiscrete(phy=shorebird.tree, dat=shorebird.data["Mat.syst"], model="ER", transform="none")
-shorebird.mmass.fd
+
+# Other implementations are available in packages geiger, phangorn, ape, phytools, ...
+# Parsimony based method
+?ape::MPR
+# For continuous characters using Maximum Likelihood
+?geiger::fitContinuous
+# For continuous characters using Markov Chain Monte Carlo
+?geiger::fitContinuousMCMC
+# For discrete characters, various models available
+?geiger::fitDiscrete
+# Marginal reconstruction of the ancestral character states
+?phangorn::ancestral.pml
 
 library(phytools)
 
-# ML estimation of a continuous trait, can compute confidence interval (used by some functions, see further)
+# ML estimation of a continuous trait
 ?fastAnc
-shorebird.mmass.fa <- fastAnc(tree=shorebird.tree, x=shorebird.mmass, vars=FALSE, CI=TRUE)
-shorebird.mmass.fa
-plot.phylo(x=shorebird.tree, edge.width=2, cex=0.75)
-tiplabels(shorebird.mmass, adj=c(1, 0), frame="none", col="blue", cex=0.75)
-nodelabels(round(shorebird.mmass.fa[["ace"]], digits=1), frame="none", col="red", cex=0.75)
+maples.height.fa <- fastAnc(tree=maples.tree, x=maples.height, vars=FALSE, CI=TRUE)
+maples.height.fa
+plot.phylo(x=maples.tree, edge.width=2, cex=0.75)
+tiplabels(maples.height, adj=c(1, 0), frame="none", col="blue", cex=0.75)
+nodelabels(round(maples.height.fa[["ace"]], digits=2), frame="none", col="red", cex=0.75)
 
 # ACE for Brownian evolution with directional trend
-?anc.trend # FIXME phytools::anc.trend
-shorebird.mmass.ac <- anc.trend(tree=shorebird.tree, x=shorebird.mmass, maxit=1000000)
-shorebird.mmass.ac
+?anc.trend
+maples.height.ac <- anc.trend(tree=maples.tree, x=maples.height, maxit=1000000)
+maples.height.ac
 
 # ACE for Brownian evolution using likelihood
-?anc.ML # FIXME phytools::anc.ML
-shorebird.mmass.ml <- anc.ML(tree=shorebird.tree, x=shorebird.mmass, maxit=1000000, model="BM")
-shorebird.mmass.ml
+?anc.ML
+maples.height.ml <- anc.ML(tree=maples.tree, x=maples.height, maxit=1000000, model="BM")
+maples.height.ml
 
 # Bayesian ancestral character estimation
-?anc.Bayes # FIXME phytools::anc.Bayes
-shorebird.mmass.bayes <- anc.Bayes(tree=shorebird.tree, x=shorebird.mmass, ngen=1000000) # Use more MCMC generations
-shorebird.mmass.bayes
+?anc.Bayes
+maples.height.bayes <- anc.Bayes(tree=maples.tree, x=maples.height, ngen=1000000) # Use more MCMC generations
+maples.height.bayes
 # Get end of ancestral states from Bayesian posterior distribution (it should converge to certain values)
-tail(shorebird.mmass.bayes[["mcmc"]])
-shorebird.mmass.bayes[["mcmc"]][1001,3:6]
+tail(maples.height.bayes[["mcmc"]])
+maples.height.bayes[["mcmc"]][10001,3:18]
 # Get means of ancestral states from Bayesian posterior distribution
-colMeans(shorebird.mmass.bayes[["mcmc"]][201:nrow(shorebird.mmass.bayes[["mcmc"]]),as.character(1:shorebird.tree$Nnode+length(shorebird.tree$tip.label))])
+colMeans(maples.height.bayes[["mcmc"]][2001:nrow(maples.height.bayes[["mcmc"]]),as.character(1:maples.tree$Nnode+length(maples.tree$tip.label))])
 # Plot the ancestral states from posterior distribution (it should converge to certain values)
-plot(shorebird.mmass.bayes)
+plot(maples.height.bayes)
 # Plot the tree and reconstructed ancestral states
-plot.phylo(x=shorebird.tree, edge.width=2, cex=2)
-nodelabels(round(x=shorebird.mmass.bayes[["mcmc"]][1001,3:6], digits=3), cex=1.5)
-# Another possibility for ancestral character reconstruction
-?phangorn::ancestral.pml
+plot.phylo(x=maples.tree, edge.width=2, cex=2)
+nodelabels(round(x=maples.height.bayes[["mcmc"]][10001,3:18], digits=2), cex=1.5)
 
 # Continuous map
 ?contMap
-contMap(tree=shorebird.tree, x=shorebird.mmass)
+contMap(tree=maples.tree, x=maples.height)
 # Change colors with setMap()
-shorebird.contmap <- setMap(x=contMap(tree=shorebird.tree, x=shorebird.mmass), colors=c("white", "black"))
-plot(shorebird.contmap)
+maples.contmap <- setMap(x=contMap(tree=maples.tree, x=maples.height), colors=c("white", "black"))
+plot(maples.contmap)
 # See ?par for more settings
 
 ## Phenogram
 
 library(adephylo)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data[,2:5]), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=shorebird.data[,2:5]), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
-phenogram(tree=shorebird.tree, x=shorebird.mmass, ftype="i", colors="red", main="Male mass")
-fancyTree(tree=shorebird.tree, type="phenogram95", x=shorebird.mmass, ftype="i", main="95-percentile of male mass")
+table.phylo4d(x=phylo4d(x=maples.tree, tip.data=maples.data), treetype="cladogram", symbol="circles", scale=FALSE, ratio.tree=0.5)
+table.phylo4d(x=phylo4d(x=maples.tree, tip.data=maples.data), treetype="cladogram", symbol="circles", scale=TRUE, ratio.tree=0.5)
+phenogram(tree=maples.tree, x=maples.height, ftype="i", colors="red", main="Maples adult heights")
+fancyTree(tree=maples.tree, type="phenogram95", x=maples.height, ftype="i", main="95-percentile of Maples adult heights")
 # 2 characters on 2 axis
 phylomorphospace(tree=shorebird.tree, X=shorebird.data[,2:3], label="horizontal", lwd=2)
-# 3D (3rd character is fake here)
-# 3 characters it a rotating cube
+# 3D - 3 characters it a rotating cube
 phylomorphospace3d(tree=shorebird.tree, X=shorebird.data[,2:4], label=TRUE)
-# 2 characters on 2 axis
+# 3 characters on 2 axis and ancestral state reconstruction for all of them
 fancyTree(tree=shorebird.tree, type="scattergram", X=shorebird.data[,2:4], res=500, ftype="i")
 # See manuals for more settings
 ?fancyTree
@@ -2109,15 +2134,18 @@ fancyTree(tree=shorebird.tree, type="scattergram", X=shorebird.data[,2:4], res=5
 ?contMap
 ?setMap
 ?par
+?plot
 
-# Ploting traits on trees
+# Plotting traits on trees
 
 # See options for plotting functions
-?plotTree.wBars
+?plotTree.wBars # There are more variants available
 ?dotTree
 ?plotSimmap
 # Plot the trees
+# Tip labels with bars with length proportional to character values
 plotTree.wBars(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE)
+# Tip labels with dots with size proportional to character values
 dotTree(tree=shorebird.tree, x=shorebird.mmass, tip.labels=TRUE, type="cladogram")
 
 # ## TODO Disparity-through-time
@@ -2263,45 +2291,3 @@ plot(pca2[,1], pca2[,2], col=rep(c("red", "green", "blue"), each=100), + main = 
 polysattest2 <- deleteSamples(polysattest, c("B59", "C30"))
 polysattest2 <- deleteLoci(polysattest2, "loc2")
 
-## ML
-# Konverze dat do formátu pro phangorn
-gunnera.dna2 <- as.phyDat(gunnera.dna)
-class(gunnera.dna2)
-gunnera.dna2
-gunnera.tre.ini <- nj(dist.dna(gunnera.dna,model="TN93"))
-gunnera.tre.ini
-pml(gunnera.tre.ini, gunnera.dna2, k=4)
-# Inicializace optimalizační procedury
-?pml
-table(as.character(gunnera.dna2))
-# Nalezení chybějících dat
-gunnera.na.posi <- which(apply(as.character(gunnera.dna),2, function(e) any(!e %in% c("a","t","g","c"))))
-# Graf chybějících dat
-gunnera.na.density <- apply(as.character(gunnera.dna),2, function(e) sum(!e %in% c("a","t","g","c")))
-plot(gunnera.na.density, type="l", col="blue", xlab="Position in HA segment", ylab="Number of NAs")
-# Odstranění chybějících dat
-gunnera.dna3 <- gunnera.dna[,-na.posi]
-# Alignment dat bez chybějících hodnot
-gunnera.dna3
-table(as.character(gunnera.dna3))
-# Konverze alignmentu do formátu pro výpočet ML
-# Znovu spočítat likelihood
-gunnera.dna4 <- as.phyDat(gunnera.dna3)
-gunnera.tre.ini <- nj(dist.dna(gunnera.dna3,model="TN93"))
-gunnera.fit.ini <- pml(gunnera.tre.ini, gunnera.dna4, k=4)
-gunnera.fit.ini
-gunnera.fit <- optim.pml(gunnera.fit.ini, optNni=TRUE, optBf=TRUE, optQ=TRUE, optGamma=TRUE)
-gunnera.fit
-class(gunnera.fit)
-names(gunnera.fit)
-gunnera.fit$tree
-# Porovnání starého a nového fitu
-anova(gunnera.fit.ini, gunnera.fit)
-# AIC - nižší = lepší
-AIC(gunnera.fit.ini)
-AIC(gunnera.fit)
-# Extrakce a nakreslení stromu
-gunnera.tre4 <- root.phylo(gunnera.fit$tree,1)
-plot(gunnera.tre4, show.tip=FALSE, edge.width=2)
-title("Maximum-likelihood tree")
-axisPhylo()
