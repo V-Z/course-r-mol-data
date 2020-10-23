@@ -1826,8 +1826,8 @@
     # Export of DNA sequences into FASTA format
     write.dna(x=usflu.dna, file="usflu.fasta", format="fasta",
       append=FALSE, nbcol=6)
-    seqinr::write.fasta(sequences=gunnera.dna, names=names(gunnera.dna),
-      file.out="gunnera.fasta", open="w")
+    seqinr::write.fasta(sequences=as.character.DNAbin(gunnera.dna),
+      names=names(gunnera.dna), file.out="gunnera.fasta", open="w")
     # Export DNA sequences as NEXUS
     write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
     write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz") # Export VCF
@@ -2057,6 +2057,7 @@
 			\item Download (import from on-line database or your file from disk) sequences of ITS (or other variable gene if you prefer) of your favourite organism.
 			\item Check the imported data.
 			\item Align sequences with your preferred aligner.
+			\item Check the resulting alignment.
 			\item Trim the alignment --- delete columns/rows with too much missing data. Think about various thresholds and their implications.
 			\item Compare outputs of several aligners and/or different parameters (gap penalty etc.)
 		\end{enumerate}
@@ -2495,7 +2496,7 @@
 	\end{multicols}
 \end{frame}
 
-\subsection{AMOVA}
+\subsection{AMOVA} % FIXME Pegas AMOVA requires distance
 
 \begin{frame}{AMOVA I}
 	\begin{itemize}
@@ -2512,7 +2513,7 @@
 	\begin{spluscode}
     hauss.pop <- pop(hauss.genind)
     hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
-      nperm=1000, is.squared=TRUE)
+      nperm=1000, is.squared=FALSE)
     # See results
     hauss.amova
     ...
@@ -2941,7 +2942,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Bootstrap}
+\begin{frame}[fragile]{Bootstrap} % FIXME Does bootstrap use correct distance?
 	\begin{spluscode}
     # boot.phylo() re-samples all columns - remove population column first
     hauss.loci.nopop <- hauss.loci
@@ -3989,7 +3990,7 @@
 		\item Requires every point to have unique coordinates --- in case of population data it is better to work with populations, not individuals (but it is not ideal)
 		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation} --- it is used by a lot of spatial analysis, especially by tools relying on Bayesian statistics
 	\end{itemize}
-	\begin{spluscode}
+	\begin{spluscode} % FIXME Check distance matrix and another parameters
     # Calculates Monmonier's function (for threshold use 'd')
     hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=
       dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy,
@@ -4942,7 +4943,7 @@
 
 \begin{frame}[fragile]{Topographical distances among trees IV}{Calculate Robinsons-Foulds distance matrix among trees and plot it}
 	\begin{itemize}
-		\item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects and directly create matrices (no need to create loops)
+		\item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects
 	\end{itemize}
 	\begin{spluscode}
     # Robinsons-Foulds distance

@@ -435,7 +435,7 @@ hauss.df <- genind2df(x=hauss.genind, pop=NULL, sep="/", usepop=TRUE, oneColPerA
 write.table(x=hauss.df, file="haussdata.txt", quote=FALSE, sep="\t", na="NA", dec=".", row.names=TRUE, col.names=TRUE)
 # Export of DNA sequences into FASTA format
 write.dna(x=usflu.dna, file="usflu.fasta", format="fasta", append=FALSE, nbcol=6)
-seqinr::write.fasta(sequences=gunnera.dna, names=names(gunnera.dna), file.out="gunnera.fasta", open="w")
+seqinr::write.fasta(sequences=as.character.DNAbin(gunnera.dna), names=names(gunnera.dna), file.out="gunnera.fasta", open="w")
 # Export DNA sequnces as NEXUS
 write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
 # Export VCF
@@ -647,7 +647,7 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle"
 ## AMOVA
 # From package pegas (doesn't directly show percentage of variance)
 hauss.pop <- pop(hauss.genind)
-hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
+hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=FALSE)
 # See results
 hauss.amova
 # For more complicated hierarchy
@@ -854,6 +854,7 @@ plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2, edge.lty=3
 # Bootstrap
 
 # boot.phylo() resamples all columns - remove population column first
+# FIXME Does bootstrap use correct distance?
 hauss.loci.nopop <- hauss.loci
 hauss.loci.nopop[["population"]] <- NULL
 hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
@@ -1245,7 +1246,7 @@ names(hauss.spca.loadings) <- rownames(hauss.spca$c1)
 loadingplot(x=hauss.spca.loadings, xlab="Alleles", ylab="Weight of the alleles", main="Contribution of alleles to the first sPCA axis")
 boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="gray")
 
-## Monmonier - genetic boundaries
+## Monmonier - genetic boundaries # FIXME Check distance matrix and another parameters
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
 # Calculates Monmonier's function (for threshold use 'd')
 hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop$tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
@@ -1808,42 +1809,6 @@ add.scale.bar()
 # Load library
 library(ape)
 
-# Loading data
-# Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
-data(maples, package="adephylo")
-?adephylo::maples
-
-# Process the phylogenetic tree
-# maples data provide tree as plain text in NEWICK, must be imported into the phylo object
-maples.tree <- read.tree(text=maples[["tre"]])
-maples.tree
-plot.phylo(maples.tree)
-# For plenty of analysis it must be fully resolved (bifurcating), rooting and ultrametricity often helps
-is.binary.phylo(maples.tree)
-is.rooted.phylo(maples.tree)
-is.ultrametric.phylo(maples.tree)
-
-# See the character matrix
-head(maples[["tab"]])
-maples.data <- maples[["tab"]][,1:30]
-head(maples.data)
-summary(maples.data)
-
-# Maples mature height (m)
-maples.height <- maples[["tab"]][["MatHt"]]
-names(maples.height) <- rownames(maples[["tab"]])
-maples.height
-
-# Maples seed size (mg)
-maples.sdsz  <- maples[["tab"]][["SdSz"]]
-names(maples.sdsz) <- rownames(maples[["tab"]])
-maples.sdsz
-
-# Maples leaf + petiole length (mm)
-maples.lfpt <- maples[["tab"]][["LfPt"]]
-names(maples.lfpt) <- rownames(maples[["tab"]])
-maples.lfpt
-
 # Load training data
 data(shorebird, package="caper")
 # See it
@@ -2044,6 +2009,42 @@ screeplot(shorebird.ppca)
 plot(shorebird.ppca)
 
 ## Ancestral state reconstruction
+
+# Loading data
+# Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
+data(maples, package="adephylo")
+?adephylo::maples
+
+# Process the phylogenetic tree
+# maples data provide tree as plain text in NEWICK, must be imported into the phylo object
+maples.tree <- read.tree(text=maples[["tre"]])
+maples.tree
+plot.phylo(maples.tree)
+# For plenty of analysis it must be fully resolved (bifurcating), rooting and ultrametricity often helps
+is.binary.phylo(maples.tree)
+is.rooted.phylo(maples.tree)
+is.ultrametric.phylo(maples.tree)
+
+# See the character matrix
+head(maples[["tab"]])
+maples.data <- maples[["tab"]][,1:30]
+head(maples.data)
+summary(maples.data)
+
+# Maples mature height (m)
+maples.height <- maples[["tab"]][["MatHt"]]
+names(maples.height) <- rownames(maples[["tab"]])
+maples.height
+
+# Maples seed size (mg)
+maples.sdsz  <- maples[["tab"]][["SdSz"]]
+names(maples.sdsz) <- rownames(maples[["tab"]])
+maples.sdsz
+
+# Maples leaf + petiole length (mm)
+maples.lfpt <- maples[["tab"]][["LfPt"]]
+names(maples.lfpt) <- rownames(maples[["tab"]])
+maples.lfpt
 
 # By default performs estimation for continuous characters assuming a Brownian motion model fit by maximum likelihood
 library(ape)
