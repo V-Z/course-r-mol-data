@@ -6782,4 +6782,8 @@
 % - Profiltrovat VCF alespoň na chybějící data, zkontrolovat konverzi do DNAbin
 % - přidat typické workflow (data, typické objevy a cesty)
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
+% tmp <- matrix(rep(1:3, times=3), ncol=3)
+% tmp
+% apply(tmp, MARGIN=1, sum)
+% apply(tmp, MARGIN=2, sum)
 
