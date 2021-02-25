@@ -255,6 +255,7 @@
 		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
 		\item Java GUI for R \url{https://rforge.net/JGR/} --- Java (multi-platform, but with all Java issues like memory consumption)
 		\item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{http://nbcgib.uesc.br/lec/software/editores/tinn-r/en}
+		\item \href{https://ess.r-project.org/}{Emacs speaks statistics}, \href{https://docs.microsoft.com/visualstudio/rtvs}{R Tools for MS Visual Studio}, \href{https://rattle.togaware.com/}{Rattle}, \href{https://radiant-rstats.github.io/docs/}{Radiant},~\ldots
 		\item And more\ldots
 		\item Pick one you like (from above list or any else) and install it\ldots
 	\end{itemize}
@@ -710,6 +711,29 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}[fragile]{Analysis of Variance (ANOVA)}
+	\begin{itemize}
+		\item \href{https://en.wikipedia.org/wiki/Analysis_of_variance}{ANOVA} tells us if there is significant difference among means of samples
+	\end{itemize}
+	\begin{spluscode}
+    aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]) # Output:
+    Call:
+       aov(formula = iris[["Sepal.Length"]] ~ iris[["Species"]])
+    Terms:
+                    iris[["Species"]] Residuals
+    Sum of Squares           63.21213  38.95620
+    Deg. of Freedom                 2       147
+    Residual standard error: 0.5147894
+    Estimated effects may be unbalanced
+    summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]])) # Output:
+                       Df Sum Sq Mean Sq F value Pr(>F)    
+    iris[["Species"]]   2  63.21  31.606   119.3 <2e-16 ***
+    Residuals         147  38.96   0.265                   
+    ---
+    Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+	\end{spluscode}
+\end{frame}
+
 \subsection{Tasks}
 
 \begin{frame}{Practice basic operations I}
@@ -821,8 +845,8 @@
       "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
       "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools",
       "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase",
-      "phytools", "picante", "plotrix", "poppr", "raster", "rgdal",
-      "RgoogleMaps", "Rmpi", "rworldmap",  "rworldxtra", "seqinr",
+      "rentrez", "phytools", "picante", "plotrix", "poppr", "raster",
+      "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr",
       "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP",
       "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
@@ -1058,13 +1082,43 @@
 		\item We will use\ldots
 		\begin{itemize}
 			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
+			\begin{itemize}
+				\item Population genetics --- genetic structure, characteristics and comparisons of sampled populations
+				\item Spatial genetics --- genetic relationships in spatial context --- relationships among populations regarding their spatial position
+			\end{itemize}
 			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
+			\begin{itemize}
+				\item Population genetics
+				\item Species delimitation (genotyping, identification and assignment of species)
+			\end{itemize}
 			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
+			\begin{itemize}
+				\item Population genetics
+			\end{itemize}
 			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
+			\begin{itemize}
+				\item Population genomics
+				\item Associations of various traits (physiological,~\ldots) with particular genetic loci/alleles
+			\end{itemize}
 			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
+			\begin{itemize}
+				\item Phylogenomics, target enrichment (HybSeq) sequencing of multiple genes --- construction of individual gene trees, their evaluation (identification of trees with significantly different topology --- genes with different evolutionary pathway) and construction of species trees and networks
+			\end{itemize}
 			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
-			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors)
-			\item Training data from packages \textbf{Adegenet} (sequence of influenza from USA sampled in several years; SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov}; and \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica}), \textbf{adephylo} (morphological traits and phylogeny of 17 \textit{Maples} species, \texttt{?adephylo::maples}), \textbf{ape} (morphological traits of Carnivora, \texttt{?ape::carnivora}), \textbf{datasets} (measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris}) and \textbf{caper} (phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird})
+			\begin{itemize}
+				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
+			\end{itemize}
+			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors; mainly from phylogenetic studies)
+			\item Training data from packages
+			\begin{itemize}
+				\item Sequence of influenza from USA sampled in several years (package adegenet, part of its vignette)
+				\item SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov} --- population genetics (genetic structure)
+				\item \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica} --- spatial genetics (spatial distribution of genotypes and their relationships)
+				\item Morphological traits and phylogeny of 17 \textit{Maples} species, \texttt{?adephylo::maples} --- phylogeny and correlated evolution of characters
+				\item Morphological traits of Carnivora, \texttt{?ape::carnivora} --- life history patterns: allometric, phylogenetic and ecological associations
+				\item Measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris} --- measurements of morphological characters, their correlations and differences among species
+				\item Phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird} --- comparative evolution of characters
+			\end{itemize}
 		\end{itemize}
 		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
 		\begin{itemize}
@@ -1266,20 +1320,24 @@
 			\item Most of methods are available for polyploids (although not all)
 			\item Some methods are unavailable for dominant (presence/absence) data
 			\item Mixing of ploidy levels is tricky (but possible) --- it doesn't matter when data are encoded as PA, otherwise it is mathematically problematic
+			\item Import, basic checking, manipulation, conversion, and export of basic common data types
+			\item Analyses are in further chapters\ldots
 		\end{itemize}
 		\begin{spluscode}
+    # Load needed libraries
     library(ape)
     library(ade4)
     library(adegenet)
     library(pegas)
     library(poppr)
+    # Now let's start to work...
 		\end{spluscode}
 	\end{multicols}
 \end{frame}
 
 \subsection{Microsatellites}
 
-\begin{frame}[fragile]{Load data}
+\begin{frame}[fragile]{Load microsatellite data}
 	\begin{spluscode}
     # Source data
         pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
@@ -1296,7 +1354,7 @@
 	\end{spluscode}
 	\vfill
 	\begin{footnotesize}
-		First line starts with empty cell (if \texttt{header} is presented), there can be any extra column, take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) \alert{according to data formatting}.
+		First line starts with empty cell (if \texttt{header} is presented), there can be any extra column, take care about \texttt{col.loci}. \texttt{row.names} are individual names (first column). Take care about \texttt{loci.sep} (here TAB \texttt{\textbackslash t}) and \texttt{allele.sep} (here \texttt{/}) --- \alert{according to data formatting}.
 	\end{footnotesize}
 	\vfill
 \end{frame}
@@ -1358,7 +1416,7 @@
 	\end{spluscode}
 	\begin{alertblock}{One function rules them all\ldots}
 		\begin{footnotesize}
-			All those functions (including \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{Check data after import!}
+			All these functions (including e.g. \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{\textbf{Always check data after import!}}
 		\end{footnotesize}
 	\end{alertblock}
 \end{frame}
@@ -1390,7 +1448,7 @@
 \begin{frame}[fragile]{How to import polyploid microsatellites}
 	\begin{spluscode}
     # Import of table is as usual. Last column contains populations
-    tarax3n.table <- read.table("http://soubory.trapa.cz/rcourse/
+    tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/
       tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
     # Check the data
     tarax3n.table
@@ -1446,7 +1504,7 @@
 		\item Use any names, just keep one word (no spaces) and don't use special characters
 		\item Keep names of loci as simple as possible, there are some issues when they contain dots
 		\item As soon as one line of data = one individual, ploidies and their mixing doesn't matter
-		\item Not all methods are available/meaningful for PA
+		\item Not all methods introduced later are available/meaningful for PA
 	\end{itemize}
 	\end{multicols}
 \end{frame}
@@ -1542,7 +1600,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item RNA or protein sequences can be handed in same way --- see \texttt{?read.dna} and \texttt{?read.FASTA}
-		\item For sequences there is R class \texttt{DNAbin}, for protein \texttt{AAbin} --- they are handled in same way
+		\item For nucleic acid sequences there is R class \texttt{DNAbin}, for protein sequences \texttt{AAbin} --- they are handled in same way
 		\item Do not confuse \texttt{read.nexus.data} (reads sequences) and \texttt{read.nexus} (reads trees)
 	\end{itemize}
 \end{frame}
@@ -1563,7 +1621,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item To be converted into \texttt{genind} (useful for many population genetic analysis), sequences in \texttt{DNAbin} must be aligned (from slide~\ref{alignment})
-		\item To query on-line database as through web we use \href{https://CRAN.R-project.org/package=seqinr}{seqinr} (next slide) or \href{https://CRAN.R-project.org/package=rentrez}{rentrez}
+		\item To query on-line database as through web we use \href{https://CRAN.R-project.org/package=seqinr}{seqinr} (next slide) or \href{https://CRAN.R-project.org/package=rentrez}{rentrez} (slide after)
 	\end{itemize}
 \end{frame}
 
@@ -1586,6 +1644,28 @@
     # Convert sequences from a list to DNAbin (functions as.DNAbin*)
     nothofagus.dna <- as.DNAbin.list(nothofagus.sequences)
     nothofagus.dna # See it
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Query NCBI databases}
+	\begin{spluscode}
+    library(rentrez)
+    entrez_dbs() # Genetic banks available for rentrez
+    entrez_db_summary("nucleotide") # Brief description of what the database is
+    # Set of search terms that can used with this database
+    entrez_db_searchable("nucleotide")
+    # Search the database and get IDs of matched records
+    nothofagus.search <- entrez_search(db="nucleotide",
+      term="Nothofagus[ORGN] AND rbcL[GENE]")
+    nothofagus.search
+    # Fetch desired records according to their IDs
+    nothofagus.fasta <- entrez_fetch(db="nucleotide",
+      id=nothofagus.search[["ids"]], rettype="fasta")
+    nothofagus.fasta
+    # Conversion into DNAbin requires saving to disk as FASTA and then loading
+    write(x=nothofagus.fasta, file="nothofagus.fasta")
+    nothofagus.dna <- read.dna(file="nothofagus.fasta", format="fasta")
+    nothofagus.dna
 	\end{spluscode}
 \end{frame}
 
@@ -1679,9 +1759,9 @@
 
 \begin{frame}[fragile]{Reading VCF}
 	\begin{itemize}
-		\item Download input file from \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz}
+		\item Download into working directory input file \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz} and reference sequence \url{https://soubory.trapa.cz/rcourse/alygenomes.fasta}
 		\item Non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} from central and northern Europe
-		\item Package vcfR has functions to manipulate and explore VCF
+		\item Package vcfR has functions to manipulate and explore VCF; other option is usage of \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}
 	\end{itemize}
 	\begin{spluscode}
     library(vcfR) # Required library
@@ -1691,94 +1771,192 @@
     # Or directly load remote file
     arabidopsis.vcf <- read.vcfR
       (file="https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
-    # It returns object of class vcfR-class
-    ?read.vcfR # See more import options
-    ?pegas::read.vcf # This one returns list of objects loci and data.frame
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Checking VCF I}
+\begin{frame}[fragile]{Checking VCF}
 	\begin{spluscode}
+    # It returns object of class vcfR-class
+    ?read.vcfR # See more import options
+    ?pegas::read.vcf # This one returns list of objects loci and data.frame
     arabidopsis.vcf
     head(arabidopsis.vcf)
     arabidopsis.vcf@fix[1:10,1:5]
-    # Get information about depth of coverage (DP)
-    # Se description of DP slot
+    strwrap(arabidopsis.vcf@meta[1:21])
+    queryMETA(x=arabidopsis.vcf)
+    queryMETA(x=arabidopsis.vcf, element="DP")
+    queryMETA(x=arabidopsis.vcf, element="FORMAT.+DP")
+    queryMETA(x=arabidopsis.vcf, element="FORMAT=<ID=DP")
+    head(x=getFIX(x=arabidopsis.vcf))
+    head(x=is.polymorphic(x=arabidopsis.vcf, na.omit=TRUE))
+    head(x=is.biallelic(x=arabidopsis.vcf))
+    arabidopsis.vcf@gt[1:10, 1:4]
+    # See description of depth of coverage (DP) slot
     strwrap(x=grep(pattern="ID=DP,", x=arabidopsis.vcf@meta, value=TRUE))
-    # Extract the DP
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Checking depth of coverage (DP)}
+	\begin{spluscode}
     arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP",
-      as.numeric=TRUE)
-    # See it
-    dim(arabidopsis.vcf.dp)
+      as.numeric=TRUE) # GT:GQ:DP:HQ
+    dim(arabidopsis.vcf.dp) # See it
     head(arabidopsis.vcf.dp)
-    # Boxplot of DP (next slide)
+    # Boxplot of DP
     boxplot(x=arabidopsis.vcf.dp, col="#808080", ylab="Depth of coverage",
       las=3)
     title("DP per specimen")
     abline(h=seq(from=0, to=90, by=10), col="#b3b3b3")
+    # Bar plot of mean DP
+    barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+    title("Mean DP per specimen")
+    abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
+    # Heatmap of DP (subset)
+    heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100,
+      start=0.1)) # Subset - only first 100 loci and individuals
+    title("DP per specimens and loci")
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{DP per specimen}
 	\begin{center}
-		\includegraphics[width=\textwidth-2.5cm]{vcf_dp.png}
+		\includegraphics[height=6.5cm]{vcf_dp.png}
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Checking VCF II}{Bar plot of mean DP}
+\begin{frame}{Bar plot of mean DP}
+	\begin{center}
+		\includegraphics[height=6.5cm]{vcf_dp_mean.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Heat map of DP}
+	\begin{center}
+		\includegraphics[height=6.5cm]{vcf_dp_heatmap.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Extract the genotype quality (GQ)}
 	\begin{spluscode}
-    barplot(apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
-    title("Mean DP per specimen")
-    abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
+    # Extract the GQ
+    arabidopsis.vcf.gq <- extract.gt(x=arabidopsis.vcf, element="GQ",
+      as.numeric=TRUE)
+    dim(arabidopsis.vcf.gq)
+    arabidopsis.vcf.gq[1:10,1:10]
+    # Heatmap of GQ (subset)
+    heatmap.bp(x=arabidopsis.vcf.gq[1:100,1:100])
+    # Bar plot of mean GQ
+    barplot(apply(X=arabidopsis.vcf.gq, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+    abline(h=seq(from=0, to=90, by=5), col="grey")
+    # Boxplot of GQ
+    boxplot(arabidopsis.vcf.gq, las=2, main="Genotype Quality (GQ)")
+    abline(h=seq(from=0, to=100, by=5), col="grey")
+    # Basically same as work with DP...
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Missing data}
+	\begin{spluscode}
+    # Extract information about missing data
+    arabidopsis.vcf.miss <- apply(X=arabidopsis.vcf.dp, MARGIN=2,
+      FUN=function(x){sum(is.na(x))})
+    arabidopsis.vcf.miss <- arabidopsis.vcf.miss/nrow(arabidopsis.vcf)
+    # Bar plot of missing data
+    barplot(height=arabidopsis.vcf.miss, ylab="Percentage of missing data",
+      las=2)
+    abline(h=seq(from=0, to=1, by=0.05), col="grey")
+    # Histogram of frequencies of missing data
+    arabidopsis.vcf.missg <- apply(X=arabidopsis.vcf.dp, MARGIN=1,
+      FUN=function(x){sum(is.na(x))})
+    arabidopsis.vcf.missg <-
+      arabidopsis.vcf.miss/ncol(arabidopsis.vcf@gt[,-1])
+    hist(x=arabidopsis.vcf.missg, xlab="Missingness (%)")
+    abline(h=seq(from=0, to=350, by=25), col="grey")
+    # Set abline parameters according to your data
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Remove non-biallelic loci and indels}
+	\begin{itemize}
+		\item This is commonly done with SNPs as many downstream analysis are well defined only for biallelic loci (and do not work well with other loci)
+		\item Other than biallelic loci are often suspicious of being laboratory/computational artefact
+	\end{itemize}
+	\begin{spluscode}
+    # Remove indels
+    arabidopsis.vcf <- extract.indels(x=arabidopsis.vcf)
+    # Remove non-biallelic loci
+    arabidopsis.vcf <- arabidopsis.vcf[is.biallelic(x=arabidopsis.vcf),]
+    # See result
+    arabidopsis.vcf
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{ChromR - filtration of VCF I}
+	\begin{spluscode}
+    # Loading reference sequence - download
+    # https://soubory.trapa.cz/rcourse/alygenomes.fasta into working directory
+    arabidopsis.dna <- read.dna(file="alygenomes.fasta", format="fasta")
+    arabidopsis.dna
+    # Conversion into chromosome object (ChromR)
+    arabidopsis.chrom <- create.chromR(vcf=arabidopsis.vcf,
+      name="Arabidopsis arenosa", seq=arabidopsis.dna)
+    arabidopsis.chrom
+    plot(arabidopsis.chrom)
+    # Masking sites with too low/high DP and/or MQ
+    arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1, min_DP=8,
+      max_DP=5000, min_MQ=40, max_MQ=200)
+    arabidopsis.chrom.mask
+    plot(arabidopsis.chrom.mask)
+    variant.table(arabidopsis.chrom.mask)
+    # Saving mask into new object
+    arabidopsis.chrom.fin <- proc.chromR(x=arabidopsis.chrom.mask)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{ChromR - filtration of VCF II}
+	\begin{spluscode}
+    # See results from the previous slide
+    arabidopsis.chrom.fin
+    chromoqc(chrom=arabidopsis.chrom.fin)
+    # The plot is bit empty as we have only single gene
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-6.5cm]{vcf_dp_mean.png}
+		\includegraphics[height=4.5cm]{chrom.png}
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Checking VCF III}{Heat map of DP}
+\begin{frame}[fragile]{Convert VCF into various objects for later processing}
 	\begin{spluscode}
-    heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100,
-      start=0.1)) # Subset - only first 100 loci and individuals
-    title("DP per specimens and loci")
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[width=\textwidth-6cm]{vcf_dp_heatmap.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Convert VCF into genind, genlight and loci}
-	\begin{spluscode}
-    # Genind
-    arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
+    # Genind - convert chromR or vcfR objects
+    arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf)
     arabidopsis.genind # Check it
     nInd(arabidopsis.genind)
     indNames(arabidopsis.genind)
     nLoc(arabidopsis.genind)
     locNames(arabidopsis.genind)
     # Genlight (suitable for huge data, not required now)
-    # On Linux/macOS and with large data use higher n.cores
-    arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1)
+    arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf,
+      n.cores=1) # On Linux/macOS and with large data use higher n.cores
     arabidopsis.genlight # Check it
     # Loci
-    arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
+    arabidopsis.loci <- vcfR2loci(x=arabidopsis.chrom.fin)
     arabidopsis.loci # Check it
     print(x=arabidopsis.loci, details=TRUE)
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Convert VCF into DNAbin}
+\begin{frame}[fragile]{Convert vcfR into DNAbin}
 	\begin{multicols}{2}
 	\begin{spluscode}
     # There are various options how
     # to process variants in VCF
     ?vcfR2DNAbin
     arabidopsis.dnabin <- vcfR2DNAbin
-      (x=arabidopsis.vcf, consensus=
-      FALSE, extract.haps=TRUE,
-      unphased_as_NA=FALSE)
-    # Check it
-    arabidopsis.dnabin
+      (x=arabidopsis.chrom.fin,
+      consensus=FALSE, extract.haps=
+      TRUE, unphased_as_NA=FALSE,
+      asterisk_as_del=FALSE)
+    arabidopsis.dnabin # Check it
     dim(arabidopsis.dnabin)
     as.character.DNAbin
       (arabidopsis.dnabin[1:15,1:12])
@@ -1789,28 +1967,9 @@
       (arabidopsis.dnabin)
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=7cm]{vcf_dna.png}
+		\includegraphics[height=6.5cm]{vcf_dna.png}
 	\end{center}
 	\end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]{Remove non-biallelic loci}
-	\begin{itemize}
-		\item This is commonly done with SNPs as many downstream analysis are well defined only for biallelic loci
-	\end{itemize}
-	\begin{spluscode}
-    # Create vector of loci to keep
-    arabidopsis.genind.keep <- nAll(arabidopsis.genind) < 3
-    # See the vector of loci
-    arabidopsis.genind.keep
-    # Keep only passing loci
-    arabidopsis.genind.bial <-
-      arabidopsis.genind[loc=arabidopsis.genind.keep]
-    # See result
-    arabidopsis.genind.bial
-    # Filtration of missing data
-    ?poppr::missingno # Various options...
-	\end{spluscode}
 \end{frame}
 
 \subsection{Export}
@@ -1831,7 +1990,7 @@
     # Export DNA sequences as NEXUS
     write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
     write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz") # Export VCF
-    # Export tree(s) (objects of class phylo)
+    # Export tree(s) (objects of class phylo) - will be introduced later
     write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # In NEWICK
     write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # In NEXUS
 	\end{spluscode}
@@ -1862,6 +2021,13 @@
 
 \begin{frame}[fragile]{Multiple sequence alignment}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\begin{alertblock}{Importance of alignment}
+		\begin{itemize}
+			\item \textbf{All sequences must be aligned prior to any analysis!}
+			\item Be sure to either import already aligned sequences of same length --- or align them
+			\item Aligned sequences commonly require post-processing --- trimming,~\ldots{ }as especially e.g. distance-based analysis are sensitive to missing data
+		\end{itemize}
+	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Multiple sequence alignment}
@@ -1873,6 +2039,7 @@
 		\item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
 		\begin{itemize}
 			\item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python --- only matters what user likes, knows and wish to do with the results\ldots
+			\item See e.g. \url{https://github.com/V-Z/hybseq-scripts/blob/master/bin/hybseq_4_alignment_3_run.r} from \href{https://github.com/V-Z/hybseq-scripts}{HybSeq scripts}
 		\end{itemize}
 		\item R packages use common alignment software: \href{https://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{https://www.drive5.com/muscle/}{MUSCLE}, \href{http://clustal.org/}{Clustal},~\ldots
 		\begin{itemize}
@@ -1885,7 +2052,7 @@
 
 \begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
 	\begin{itemize}
-		\item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} --- first one reads \enquote{\texttt{*StringSet}} class R objects and writes \enquote{\texttt{*MultipleAlignment}} R objects; the latter reads and writes object of class \enquote{\texttt{DNAbin}}
+		\item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} --- first one reads \enquote{\texttt{*StringSet}} classes R objects and writes \enquote{\texttt{*MultipleAlignment}} R classes objects; the latter reads and writes object of class \enquote{\texttt{DNAbin}}
 		\item \texttt{ape} also contains functions to use Clustal and T-Coffee --- both read and write \texttt{DNAbin}
 		\item MAFFT is available from (same author) in packages \href{https://CRAN.R-project.org/package=ips}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} --- both read and write \texttt{DNAbin}
 	\end{itemize}
@@ -1909,8 +2076,8 @@
     image.DNAbin(gunnera.mafft)
     # read ?clustal and documentation of Clustal, Muscle and T-Coffee
     # when using them to set correct parameters
-    gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=0.1,
-      gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
+    gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=
+      0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to clustal!
     gunnera.clustal
     class(gunnera.clustal)
@@ -1928,7 +2095,7 @@
 
 \begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
 	\begin{center}
-		\includegraphics[width=\textwidth-5cm]{muscle.png}
+		\includegraphics[height=5cm]{muscle.png}
 	\end{center}
 	\vfil
 	\begin{spluscode}
@@ -2059,7 +2226,7 @@
 			\item Align sequences with your preferred aligner.
 			\item Check the resulting alignment.
 			\item Trim the alignment --- delete columns/rows with too much missing data. Think about various thresholds and their implications.
-			\item Compare outputs of several aligners and/or different parameters (gap penalty etc.)
+			\item Compare outputs of several aligners and/or different parameters (gap penalty etc.).
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
@@ -2072,10 +2239,11 @@
 
 \begin{frame}[allowframebreaks]{Introductory overview of statistics and methods}
 	\begin{itemize}
-		\item \alert{Selected method depends on data type, question to answer,~\ldots}
+		\item \alert{Selected method depends on data type, question to answer,~\ldots}{ }--- see further slides and chapters
 		\begin{itemize}
 			\item Check assumptions and requirements of the methods before usage
 			\item Think if the method answers your question
+			\item Always be opened for new possibilities coming with new methods and packages developed\ldots
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Population_genetics}{Population-genetic} indices} --- from slide~\ref{popgenindx}
 		\begin{itemize}
@@ -2159,6 +2327,26 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Questions and data}
+	\begin{itemize}
+		\item Methods in this section answer questions about genetic characteristics of individuals/populations
+		\begin{itemize}
+			\item Overall genetic similarity of individuals/populations (without spatial or another context) --- various population-genetic indices, PCoA,~\ldots
+			\item Distribution of genotypes within/among populations
+			\item Description of genetic characteristics of populations --- heterozygosity, Hardy-Weinberg equilibrium, F-statistics,~\ldots
+			\item Hierarchical relationships among individuals/populations (UPGMA, NJ,~\ldots)
+		\end{itemize}
+		\item Any data can be used
+		\begin{itemize}
+			\item Population genetic studies use to use as variable genetic markers as possible (depending on scale, e.g. SSRs, AFLP, RAD-Seq, highly variable introns like ITS,~\ldots)
+		\end{itemize}
+		\item Nearly all data types are processed in similar/same way
+		\begin{itemize}
+			\item It's important to select correct genetic index, distance method, etc. for particular data types and/or question
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
 \subsection{First look at the data}
 
 \begin{frame}[fragile]{Load needed libraries}
@@ -2177,6 +2365,10 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item Of course, there are plenty of another options\ldots
+		\begin{itemize}
+			\item See e.g. \href{https://cran.r-project.org/web/views/}{CRAN Views} for \href{https://cran.r-project.org/web/views/Genetics.html}{genetics} or \href{https://cran.r-project.org/web/views/Multivariate.html}{multivariate statistics}
+			\item Representative, but not exhaustive examples are shown
+		\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -2254,37 +2446,6 @@
 
 \subsection{Statistics}
 
-\begin{frame}[fragile]{Population statistics by poppr()}
-	\vfill
-	\begin{itemize}
-		\item \texttt{poppr()} is central function of \texttt{poppr} package calculating plenty of population genetic indices
-	\end{itemize}
-	\vfill
-	\begin{spluscode}
-    ?poppr # See details
-    poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4,
-      missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE,
-      plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
-    # Output table with indices:
-      Pop  N MLG eMLG       SE     H     G lambda   E.5  Hexp   Ia # More...
-       He 13  11 1.97 1.58e-01 2.352  9.94  0.899 0.941 0.503 1.42 ...
-       Ne  6   5 1.93 2.49e-01 1.561  4.50  0.778 0.930 0.604 3.44 ...
-      ...... ...  ...      ...   ...   ...    ...   ...   ...  ... ...
-    Total 47  43 2.00 6.07e-02 3.732 40.16  0.975 0.961 0.742 1.88 ...
-	\end{spluscode}
-	\vfill
-	\begin{itemize}
-		\item If \texttt{plot=TRUE}, histogram of simulations (\texttt{sample} must be > 1) is plotted for each population for \texttt{rbarD} or \texttt{Ia} (according to selected \texttt{index} --- see following slides for details)
-	\end{itemize}
-	\vfill
-\end{frame}
-
-\begin{frame}{Histograms of simulations of rbarD for each population}{The populations are significantly far from being clonal}
-	\begin{center}
-		\includegraphics[width=\textwidth-2.5cm]{poppr.png}
-	\end{center}
-\end{frame}
-
 \begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
 	\begin{block}{Too much to choose from?}
 		Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages --- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
@@ -2320,6 +2481,37 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Population statistics by poppr()}
+	\vfill
+	\begin{itemize}
+		\item \texttt{poppr()} is central function of \texttt{poppr} package calculating plenty of population genetic indices
+	\end{itemize}
+	\vfill
+	\begin{spluscode}
+    ?poppr # See details
+    poppr(dat=hauss.genind, total=TRUE, sample=1000, method=4,
+      missing="geno", cutoff=0.15, quiet=FALSE, clonecorrect=FALSE,
+      plot=TRUE, index="rbarD", minsamp=1, legend=TRUE)
+    # Output table with indices:
+      Pop  N MLG eMLG       SE     H     G lambda   E.5  Hexp   Ia # More...
+       He 13  11 1.97 1.58e-01 2.352  9.94  0.899 0.941 0.503 1.42 ...
+       Ne  6   5 1.93 2.49e-01 1.561  4.50  0.778 0.930 0.604 3.44 ...
+      ...... ...  ...      ...   ...   ...    ...   ...   ...  ... ...
+    Total 47  43 2.00 6.07e-02 3.732 40.16  0.975 0.961 0.742 1.88 ...
+	\end{spluscode}
+	\vfill
+	\begin{itemize}
+		\item If \texttt{plot=TRUE}, histogram of simulations (\texttt{sample} must be > 1) is plotted for each population for \texttt{rbarD} or \texttt{Ia} (according to selected \texttt{index} --- see following slides for details)
+	\end{itemize}
+	\vfill
+\end{frame}
+
+\begin{frame}{Histograms of simulations of rbarD for each population}{The populations are significantly far from being clonal}
+	\begin{center}
+		\includegraphics[width=\textwidth-2.5cm]{poppr.png}
+	\end{center}
+\end{frame}
+
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle}{In theory}, in large panmictic population without evolutionary influence everyone can mate with everyone (it is in equilibrium) and allele frequencies remain stable --- in reality, environment, behavior, mutations, genetic drift, etc. are structuring the population
@@ -2342,22 +2534,20 @@
 \end{frame}
 
 \begin{frame}[fragile]{Departure from HWE --- results per locus}
-	\vfill
-	\texttt{hauss.hwe.test}
-	\begin{tabular}{lllll}
-		& chi\textasciicircum2 & df & Pr(chi\textasciicircum2 >) & Pr.exact\\
-		msta93 & 383.5519728 & 190 & 3.552714e-15 & 0.000\\
-		msta101 & 0.6927242 & 1 & 4.052393e-01 & 0.657\\
-		msta102 & 83.0741964 & 10 & 1.250111e-13 & 0.000\\
-		msta103 & 77.1819098 & 45 & 1.998865e-03 & 0.000\\
-		... & ... & ... & ... & ...
-	\end{tabular}
-	\vfill
+	\begin{spluscode}
+    hauss.hwe.test # See results per locus
+                   chi^2   df   Pr(chi^2 >)  Pr.exact
+     msta93  383.5519728  190  3.552714e-15     0.000
+    msta101    0.6927242    1  4.052393e-01     0.657
+    msta102   83.0741964   10  1.250111e-13     0.000
+    msta103   77.1819098   45  1.998865e-03     0.000
+        ...          ...  ...           ...       ... # Another loci...
+	\end{spluscode}
 	\begin{itemize}
 		\item Pr.exact shows significance of the departure (i.e. non-equilibrium distribution of alleles within population --- calculated per loci)
 		\item $\chi^2$ \href{https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test}{test} (without or with the permutations) test the departure --- if it is significant or not --- not how much it is departing
+		\item If there is significant departure from HWE, think about biological process (with respect to life traits of species studied) which could cause such structuring
 	\end{itemize}
-	\vfill
 \end{frame}
 
 \begin{frame}[fragile]{F-statistics I}
@@ -2440,6 +2630,14 @@
 	\end{spluscode}
 \end{frame}
 
+\begin{frame}{Multi locus genotypes and inbreeding coefficient}
+	\begin{itemize}
+		\item Especially when working with clonal species or species with low genetic structure it is beneficial to know how many unique genotypes there are and how they are distributed across populations
+		\item Inbreeding coefficient estimates level of mating among individuals with (nearly) identical genotypes --- important e.g. for conservation studies or work with agricultural species
+		\item Such studies require sufficiently variable marker (e.g. SSRs) so that results show real genetic structuring and not \enquote{just} low variability of selected marker
+	\end{itemize}
+\end{frame}
+
 % TODO population theta
 %     # Estimates of population theta according to Kimmel et al. 1998
 %     theta.msat(hauss.loci)
@@ -2496,64 +2694,48 @@
 	\end{multicols}
 \end{frame}
 
-\subsection{AMOVA} % FIXME Pegas AMOVA requires distance
-
-\begin{frame}{AMOVA I}
-	\begin{itemize}
-		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
-		\item Some implementations can partition variance into various levels
-		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
-		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
-		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
-		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{AMOVA II}
-	\begin{spluscode}
-    hauss.pop <- pop(hauss.genind)
-    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
-      nperm=1000, is.squared=FALSE)
-    # See results
-    hauss.amova
-    ...
-                    SSD      MSD df
-    hauss.pop  30.71923 7.679809  4
-    Error     119.58100 2.847167 42
-    Total     150.30023 3.267396 46
-    ...
-    Variance components:
-               sigma2 P.value
-    hauss.pop 0.55738       0 # From here we can calculate the percentage
-    Error     2.84717
-    ...
-	\end{spluscode}
-\end{frame}
-
 \subsection{MSN}
 
-\begin{frame}[fragile]{Minimum Spanning Network}{Package poppr, based on Bruvo's distance (for SSRs)}
+\begin{frame}{Minimum Spanning Network (MSN)}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Package poppr, for SSRs based on Bruvo's distance, can handle any data type (requires \texttt{genind} objects)
+			\item Shows relationships among haplotypes (unique genotypes), can be labeled by population, haplotype,~\ldots
+			\begin{itemize}
+				\item Size of pie is proportional to number of individuals assigned
+				\item Lines connect haplotypes according to their similarity
+			\end{itemize}
+			\item Suitable for less variable datasets, e.g. some mitochondrial or plastide genes (or SSRs for less variable species) --- otherwise the figure is messy
+		\end{itemize}
+		\begin{center}
+			\includegraphics[height=6.5cm]{msn-bruvo_no_labels.png}
+		\end{center}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Minimum Spanning Network}
 	\label{MSN}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=5.5cm]{msn.png}
+			\includegraphics[height=6.5cm]{msn.png}
 		\end{center}
 		\begin{spluscode}
-    ?bruvo.msn # See details...
-		\end{spluscode}
-		\columnbreak
-		\begin{spluscode}
+    # See details and options...
+    ?bruvo.msn
+    # Get the MSN
+    # Note SSRs repeats 'rep(2, 12)' -
+    # change according to your data
     bruvo.msn(gid=hauss.genind,
       replen=rep(2, 12), loss=TRUE,
       palette=rainbow, vertex.label
       ="inds", gscale=TRUE,
       wscale=TRUE, showplot=TRUE)
-    ?msn.poppr # For another data types
-    ?imsn # Interactive creation of MSN
+    # For another data types
+    ?msn.poppr
+    # Interactive creation of MSN
+    # Opens browser window
+    ?imsn
 		\end{spluscode}
-		\begin{center}
-			\includegraphics[width=3cm]{msn-bruvo_no_labels.png}
-		\end{center}
 	\end{multicols}
 \end{frame}
 
@@ -2691,7 +2873,7 @@
 
 \begin{frame}{Neighbor-Joining of same dataset under different matrices}{The results are very different\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{distances.png}
+		\includegraphics[height=6cm]{distances.png}
 	\end{center}
 \end{frame}
 
@@ -2824,9 +3006,43 @@
 		\end{itemize}
 		\columnbreak
 		\begin{center}
-			\includegraphics[height=7cm]{dna-dists.png}
+			\includegraphics[height=6.5cm]{dna-dists.png}
 		\end{center}
 	\end{multicols}
+\end{frame}
+
+\subsection{AMOVA} % FIXME Get percentage
+
+\begin{frame}{AMOVA I}
+	\begin{itemize}
+		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+		\item Some implementations can partition variance into various levels
+		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
+		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
+		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
+		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{AMOVA II}
+	\begin{spluscode}
+    hauss.pop <- pop(hauss.genind)
+    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
+      nperm=1000, is.squared=FALSE)
+    # See results
+    hauss.amova
+    ...
+                    SSD      MSD df
+    hauss.pop  30.71923 7.679809  4
+    Error     119.58100 2.847167 42
+    Total     150.30023 3.267396 46
+    ...
+    Variance components:
+               sigma2 P.value
+    hauss.pop 0.55738       0 # From here we can calculate the percentage
+    Error     2.84717
+    ...
+	\end{spluscode}
 \end{frame}
 
 \subsection{Hierarchical clustering}
@@ -2834,7 +3050,7 @@
 \begin{frame}[fragile]{Heat maps}
 	\label{hierclust}
 	\begin{multicols}{2}
-		\includegraphics[height=7cm]{heatmap.png}
+		\includegraphics[height=6.5cm]{heatmap.png}
 		\columnbreak
 		\begin{spluscode}
     # Based on various distances
@@ -2851,10 +3067,10 @@
       bruvo), symm=TRUE)
     heatmap(as.matrix(hauss.dist.
       diss), symm=TRUE)
+    # See settings like colors,
+    # dendrogram, etc.
+    ?heatmap
 		\end{spluscode}
-		\begin{footnotesize}
-			There are various settings --- colors, dendrogram,~\ldots See~\texttt{?heatmap}.
-		\end{footnotesize}
 	\end{multicols}
 \end{frame}
 
@@ -2907,7 +3123,7 @@
 	All points in the right graph should be clustered along the red line\ldots
 	\vfil
 	\begin{center}
-		\includegraphics[width=\textwidth-3.5cm]{upgma.png}
+		\includegraphics[height=6cm]{upgma.png}
 	\end{center}
 \end{frame}
 
@@ -2938,18 +3154,18 @@
 
 \begin{frame}{Choose your tree\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth-5.5cm]{nj1.png}
+		\includegraphics[height=6.5cm]{nj1.png}
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Bootstrap} % FIXME Does bootstrap use correct distance?
+\begin{frame}[fragile]{Bootstrap}
 	\begin{spluscode}
     # boot.phylo() re-samples all columns - remove population column first
     hauss.loci.nopop <- hauss.loci
     hauss.loci.nopop[["population"]] <- NULL
     # Calculate the bootstrap
-    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop,
-      FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+    hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function
+      (XXX) nj(dist.gene(loci2genind(XXX)@tab, method="pairwise")), B=1000)
     # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
     # Plot the tree
     plot.phylo(x=hauss.nj, type="unrooted", main="Neighbor-Joining tree")
@@ -3006,7 +3222,7 @@
 
 \begin{frame}{Choose your tree\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{nj2.png}
+		\includegraphics[height=6.5cm]{nj2.png}
 	\end{center}
 \end{frame}
 
@@ -3033,7 +3249,7 @@
 
 \begin{frame}{Choose your tree\ldots}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{nj-upgma-bruvo.png}
+		\includegraphics[height=6.5cm]{nj-upgma-bruvo.png}
 	\end{center}
 \end{frame}
 
@@ -3140,7 +3356,7 @@
 
 \begin{frame}{The trees}
 	\begin{center}
-		\includegraphics[width=\textwidth-7cm]{nj_dna.png}
+		\includegraphics[height=6.5cm]{nj_dna.png}
 	\end{center}
 	\end{frame}
 
@@ -3184,7 +3400,7 @@
 \begin{frame}[fragile]{PCoA II}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=7cm]{pcoa.png}
+			\includegraphics[height=6.5cm]{pcoa.png}
 		\end{center}
 		\columnbreak
 		\begin{spluscode}
@@ -3211,7 +3427,7 @@
 
 \begin{frame}{PCoA --- Bruvo and colorplot}
 	\begin{center}
-		\includegraphics[width=\textwidth-2.5cm]{pcoa-dalsi.png}
+		\includegraphics[height=6.5cm]{pcoa-dalsi.png}
 	\end{center}
 \end{frame}
 
@@ -3237,6 +3453,10 @@
 
 \begin{frame}{Single Nucleotide Polymorphism}{Special methods for large next-generation sequencing data}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\begin{itemize}
+		\item Large whole-genome sequencing data (usually from Illumina sequencing) use to be imported as VCF (and converted to \texttt{genlight}) or read from FASTA directly into \texttt{genlight} --- it's designed to efficiently store and process large datasets
+		\item Several special functions are available to directly work with \texttt{genlight}, taking advantage of its design, and using multiple CPU cores (on Linux and macOS)
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Special functions to work with huge SNP data sets}
@@ -3332,10 +3552,11 @@
 	\begin{itemize}
 		\item Discriminant Analysis of Principal components (\href{https://bmcgenet.biomedcentral.com/articles/10.1186/1471-2156-11-94}{Jombart et al. 2010})
 		\item Runs K-means Bayesian clustering on data transformed with PCA (reduces number of variables, speeds up process)
+		\item User selects best \textbf{K} --- number of clusters; according to scores shown
 		\item Finally it runs discriminant analysis (DA) to maximize differences among groups
 		\item Various modes of displaying of results --- \enquote{Structure-like}, \enquote{PCA-like} and more
 		\item More information at \url{https://adegenet.r-forge.r-project.org/}
-		\item If following commands would seem too complicated to you, try web interface
+		\item If following commands would seem too complicated, try web interface
 	\end{itemize}
 	\begin{spluscode}
     library(adegenet)
@@ -3381,7 +3602,9 @@
 			\item BIC helps to select the best K
 			\item Original and inferred groups
 		\end{itemize}
-		\includegraphics[height=5cm]{kmeans.png}
+		\begin{center}
+			\includegraphics[height=4.5cm]{kmeans.png}
+		\end{center}
 		\begin{spluscode}
     # See results as text
     table(pop(hauss.genind),
@@ -3430,7 +3653,7 @@
 
 \begin{frame}{DAPC for K=2}
 	\begin{center}
-		\includegraphics[width=\textwidth-5.5cm]{dapc2.png}
+		\includegraphics[height=6.5cm]{dapc2.png}
 	\end{center}
 \end{frame}
 
@@ -3459,7 +3682,7 @@
 
 \begin{frame}{DAPC for K=3}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{dapc3.png}
+		\includegraphics[height=6.5cm]{dapc3.png}
 	\end{center}
 \end{frame}
 
@@ -3487,13 +3710,13 @@
 
 \begin{frame}{DAPC for K=3, extra information}
 	\begin{center}
-		\includegraphics[width=\textwidth-5.5cm]{dapc3-extra.png}
+		\includegraphics[height=6.5cm]{dapc3-extra.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}{Another DAPC example}
 	\begin{center}
-		\includegraphics[width=\textwidth-6cm]{dapc.png}
+		\includegraphics[height=6.5cm]{dapc.png}
 	\end{center}
 \end{frame}
 
@@ -3538,7 +3761,7 @@
 		\item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
 		\item Relatively complicated tool requiring plenty of work\ldots
 		\item Here is shown processing option using \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure}, another option is package \href{https://CRAN.R-project.org/package=strataG}{strataG} (see \texttt{?strataG::structure})
-		\item \alert{Does not work (at all) on Windows} (although see further).
+		\item \alert{Does not work (at all) on Windows} (although see further)
 	\end{itemize}
 \end{frame}
 
@@ -3553,7 +3776,7 @@
 		\begin{itemize}
 			\item Plain command line Structure does not help with this
 			\item There is need for external application reading Structure output, summing them and helping decide which K~is the best
-			\item \href{http://taylor0.biology.ucla.edu/structureHarvester/}{Structure Harvester} or Structure-sum R script (see later) can do this
+			\item E.g. \href{http://taylor0.biology.ucla.edu/structureHarvester/}{Structure Harvester} or Structure-sum R script (see later) can do this
 		\end{itemize}
 		\item Post process Structure outputs to prepare them for plotting
 		\begin{itemize}
@@ -3665,8 +3888,7 @@
 	\begin{spluscode}
     # Install Rmpi library required by ParallelStructure for
     # parallelisation on Windows (installation can be very problematic)
-    install.packages("Rmpi")
-    library(Rmpi)
+    require(Rmpi)
     # Instead of parallel_structure() use MPI_structure()
     # with same arguments
     MPI_structure(...) # Same arguments as on previous slide
@@ -3695,7 +3917,7 @@
 		\item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
 		\item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
 	\end{itemize}
-	\vfil
+	\vfill
 	\begin{tabular}{ll}
 		2 & results\_job\_S010\_f\\
 		3 & results\_job\_S011\_f\\
@@ -3771,8 +3993,9 @@
 	\begin{multicols}{2}
 		\begin{itemize}
 			\item \enquote{Only} autocorrelation index --- no genetic/evolutionary model involved --- sometimes criticized as biologically irrelevant mechanism
+			\item Used in many variants for plenty of applications
 			\item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology)
-			\item Calculations are done according to connectivity network connecting individuals/populations (created by \texttt{chooseCN}) --- carefully check its options and try several parameters
+			\item Calculations are done according to matrix of geographic distances, or connectivity network connecting individuals/populations (created by \texttt{chooseCN}) --- carefully check its options and try several parameters
 			\item Pay attention which hypothesis is tested (i.e. if lower, greater or two-sided) --- similar to T-test
 		\end{itemize}
 		\begin{center}
@@ -3976,7 +4199,7 @@
 	\end{spluscode}
 	\vfill
 	\begin{center}
-		\includegraphics[width=\textwidth-5cm]{spca-loading.png}
+		\includegraphics[height=3.5cm]{spca-loading.png}
 	\end{center}
 \end{frame}
 
@@ -3990,18 +4213,20 @@
 		\item Requires every point to have unique coordinates --- in case of population data it is better to work with populations, not individuals (but it is not ideal)
 		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation} --- it is used by a lot of spatial analysis, especially by tools relying on Bayesian statistics
 	\end{itemize}
-	\begin{spluscode} % FIXME Check distance matrix and another parameters
+	\begin{spluscode}
     # Calculates Monmonier's function (for threshold use 'd')
-    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=
-      dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy,
-      ask=FALSE, type=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(
+      hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE,
+      type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
     coords.monmonier(hauss.monmonier) # See result as text
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}{Voronoi tessellation}
 	\begin{multicols}{2}
-		\includegraphics[height=5.5cm]{voronoi_diagram.png}
+		\begin{center}
+			\includegraphics[height=6.5cm]{voronoi_diagram.png}
+		\end{center}
 		\begin{itemize}
 			\item In simplest case, all points have certain area and all points within this area are closer to the respective \enquote{main} point than to any other \enquote{neighbor} point
 			\item Extreme differences among size of areas make computational problems and results are unstable --- this typically occurs when calculations are done on individual level an there are large distances among populations
@@ -4012,7 +4237,9 @@
 
 \begin{frame}[fragile]{Plot genetic boundaries}
 	\begin{multicols}{2}
-		\includegraphics[height=5.5cm]{monmonier.png}
+		\begin{center}
+			\includegraphics[height=6.5cm]{monmonier.png}
+		\end{center}
 		\begin{spluscode}
     plot.monmonier(hauss.monmonier,
       add.arrows=FALSE, bwd=10,
@@ -4090,8 +4317,10 @@
 
 \begin{frame}[fragile]{Mantel test outputs --- strongly significant}
 	\begin{multicols}{2}
-		\includegraphics[height=7cm]{mantel.png}
-		\vfill
+		\begin{center}
+			\includegraphics[height=6.5cm]{mantel.png}
+		\end{center}
+		\columnbreak
 		\begin{spluscode}
     hauss.mantel # See output
     Monte-Carlo test
@@ -4115,9 +4344,8 @@
 \end{frame}
 
 \begin{frame}{Plot of Mantel Correlogram Analysis}
-	\vfil
 	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{mantel-cor.png}
+		\includegraphics[height=4.5cm]{mantel-cor.png}
 	\end{center}
 	\vfil
 	Correlation (genetic similarity) in several distance classes (positive \textbf{[up]} in short distance \textbf{[left]}, negative \textbf{[down]} in long \textbf{[right]}; \textbf{[full]} --- significant, \textbf{[empty]} --- not significant) --- see \texttt{?mantel.correlog} for details
@@ -4212,11 +4440,11 @@
 		\end{itemize}
 		\vfill
 		Directory structure for Geneland:
-		\vfil
-		\begin{center}
-			\includegraphics[width=3cm]{genelad_dirs.png}
-		\end{center}
 		\vfill
+		\begin{center}
+			\includegraphics[width=3.5cm]{genelad_dirs.png}
+		\end{center}
+		\vfil
 	\end{multicols}
 \end{frame}
 
@@ -4368,13 +4596,13 @@
 
 \begin{frame}{MCMC chain, number of clusters and their map}{MCMC did not converge yet --- too few generations, the most likely solution is K=4 followed by K=5. Final product is map of distribution of genetic clusters.}
 	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{geneland1.png}
+		\includegraphics[height=5.5cm]{geneland1.png}
 	\end{center}
 \end{frame}
 
 \begin{frame}{Map of posterior probability of belonging into cluster 1}
 	\begin{center}
-		\includegraphics[width=\textwidth-6cm]{geneland2.png}
+		\includegraphics[height=6.5cm]{geneland2.png}
 	\end{center}
 \end{frame}
 
@@ -4515,7 +4743,7 @@
 			\item As usually, play with colours and display options\ldots
 		\end{itemize}
 		\begin{center}
-			\includegraphics[height=6cm]{map_pie.png}
+			\includegraphics[height=6.25cm]{map_pie.png}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -4637,7 +4865,7 @@
 
 \begin{frame}{Plotting on SHP files IV and maps from mapproj}
 	\begin{center}
-		\includegraphics[width=\textwidth-3.5cm]{mapy.png}
+		\includegraphics[height=6.5cm]{mapy.png}
 	\end{center}
 \end{frame}
 
@@ -4665,7 +4893,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{Working with phylogenetic trees in R}
+\begin{frame}[allowframebreaks]{Working with phylogenetic trees in R}
 	\begin{itemize}
 		\item To import one or more tree(s) in \href{https://en.wikipedia.org/wiki/Newick_format}{NEWICK} (\texttt{*.tre}, \texttt{*.nwk},~\ldots) use \texttt{read.tree()}, for trees in \href{https://en.wikipedia.org/wiki/Nexus_file}{NEXUS} (\texttt{*.nex}, \texttt{*.nexus},~\ldots) use \texttt{read.nexus()}
 		\item To export tree in NEWICK use \texttt{write.tree()}, in NEXUS use \texttt{write.nexus()}
@@ -4673,6 +4901,18 @@
 		\item Some functions manipulating trees can work only in single tree (class \texttt{phylo}), some can work with multiple trees (class \texttt{multiPhylo})
 		\item \href{https://CRAN.R-project.org/package=ape}{ape} has plenty of \texttt{*.multiPhylo} functions to handle tree sets (e.g. \texttt{root.phylo} vs. \texttt{root.multiPhylo})
 		\item If the function needed does not work with multiple trees, use \texttt{lapply()} (see further examples)
+		\item Typical operations with trees in R
+		\begin{itemize}
+			\item Calculation of individual phylogenetic trees --- NJ, MP, ML,~\ldots
+			\item Plotting, including various highlights and information on tips, nodes, labels,~\ldots
+			\item Plotting two or more trees together to compare topologies (trees from various methods/genes, tree of plants vs. polynators,~\ldots)
+			\item Preparing trees for subsequent analysis (e.g. character evolution) --- removal of outgroup(s), binding of trees (e.g. crown group from one gene and and stem lineages from another), removal of certain taxa,~\ldots
+			\item Comparison and evaluation of multiple gene trees, identification of trees with outlying topology
+			\item Construction of species tree or network from set of multiple gene trees
+			\item And more\ldots
+		\end{itemize}
+		\item Plenty of packages available\ldots
+		\item Users of \href{https://ggplot2.tidyverse.org/}{ggplot2} can e.g. use \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree}
 	\end{itemize}
 \end{frame}
 
@@ -4860,7 +5100,9 @@
 
 \begin{frame}[fragile]{Maximum parsimony --- code and result}
 	\begin{multicols}{2}
-		\includegraphics[height=6.75cm]{parsimony.png}
+		\begin{center}
+			\includegraphics[height=6.75cm]{parsimony.png}
+		\end{center}
 		\begin{spluscode}
     library(phangorn)
     # Conversion to phyDat for phangorn
@@ -4988,7 +5230,7 @@
 
 \begin{frame}{PCoA from distance matrices of topographical differences among trees --- the plot}
 	\begin{center}
-		\includegraphics[width=\textwidth-3.5cm]{pcoa-trees.png}
+		\includegraphics[height=6cm]{pcoa-trees.png}
 	\end{center}
 \end{frame}
 
@@ -5033,7 +5275,7 @@
 \begin{frame}[fragile]{Consensus tree}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=7cm]{oxalis-cons.png}
+			\includegraphics[height=6.5cm]{oxalis-cons.png}
 		\end{center}
 		\begin{itemize}
 		 \item Very basic method simply collapsing all nodes with lower than required (typically 50--75\%) identity
@@ -5383,7 +5625,7 @@
       alternative="greater", method="pearson")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{pic.png}
+		\includegraphics[height=5cm]{pic.png}
 	\end{center}
 \end{frame}
 
@@ -5496,7 +5738,7 @@
       x=shorebird.tree, result="orthobasis")), treetype="cladogram")
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[width=\textwidth-3.5cm]{shorebird_tree_decomp.png}
+		\includegraphics[height=5.5cm]{shorebird_tree_decomp.png}
 	\end{center}
 \end{frame}
 
@@ -5557,7 +5799,7 @@
 
 \begin{frame}{Orthogram}
 	\begin{center}
-		\includegraphics[width=\textwidth-4cm]{orthogram.png}
+		\includegraphics[height=6cm]{orthogram.png}
 	\end{center}
 	\begin{itemize}
 		\item Observed value is out of permutations --- significant \href{https://en.wikipedia.org/wiki/Phylogenetic_inertia}{inertia of the trait to phylogeny}
@@ -5609,7 +5851,9 @@
 
 \begin{frame}{Results of PGLS}
 	\begin{multicols}{2}
-		\includegraphics[height=5.5cm]{shorebirds.png}
+		\begin{center}
+			\includegraphics[height=6.5cm]{shorebirds.png}
+		\end{center}
 		\begin{itemize}
 			\item \texttt{pgls()} uses maximum likelihood to test for phylogenetic signal
 			\item The signal is clearly presented
@@ -5780,7 +6024,7 @@
 
 \begin{frame}{Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree}
 	\begin{center}
-		\includegraphics[width=\textwidth-4.5cm]{ppca.png}
+		\includegraphics[height=5.25cm]{ppca.png}
 	\end{center}
 \end{frame}
 
@@ -5858,7 +6102,7 @@
 			\item ACE returns long numbers --- truncate them by e.g. \texttt{round(x=\ldots, digits=3)} (\texttt{x} is vector with ACE values)
 		\end{itemize}
 		\begin{center}
-			\includegraphics[height=5cm]{ace.png}
+			\includegraphics[height=4.5cm]{ace.png}
 		\end{center}
 		\begin{spluscode}
     # Other implementations are
@@ -5978,7 +6222,7 @@
 \begin{frame}[fragile]{Continuous map}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=7cm]{contmap.png}
+			\includegraphics[height=6.5cm]{contmap.png}
 		\end{center}
 		\begin{spluscode}
     ?contMap
@@ -6034,7 +6278,7 @@
       tree=shorebird.tree,
       X=shorebird.data[,2:3],
       label="horizontal", lwd=2)
-    # 3D - 3 characters it a
+    # 3D - 3 characters in a
     # rotating cube
     phylomorphospace3d(
       tree=shorebird.tree,
@@ -6068,7 +6312,7 @@
     ?plot
 		\end{spluscode}
 		\begin{center}
-			\includegraphics[height=7cm]{phenogram-ace.png}
+			\includegraphics[height=6.5cm]{phenogram-ace.png}
 		\end{center}
 	\end{multicols}
 \end{frame}
@@ -6090,7 +6334,7 @@
 
 \begin{frame}{Plotting traits on trees --- plots}
 	\begin{center}
-		\includegraphics[width=\textwidth-3cm]{treeval.png}
+		\includegraphics[height=6.5cm]{treeval.png}
 	\end{center}
 \end{frame}
 
@@ -6108,7 +6352,7 @@
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
 			\item Browse \url{http://blog.phytools.org/} and see if you find some interesting method to display your data. If so, try it with any suitable data.
-			\item See relevant training datasets \texttt{data(package=c("adephylo", "caper", "geiger","phytools"))} and select some training data set (or use your some own data) to try at least 1--2 of the above methods.
+			\item See relevant training datasets \texttt{data(package=c("adephylo", "caper", "geiger","phytools"))} and select some training data set (or use your own data) to try at least 1--2 of the above methods.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
@@ -6188,8 +6432,7 @@
 	\end{itemize}
 	\begin{spluscode}
     # Needed library
-    install.packages("devtools")
-    library(devtools)
+    require(devtools)
     dev_mode(on=TRUE)
     # Install selected package from GitHub (user/project)
     install_github("thibautjombart/adegenet")
@@ -6437,6 +6680,7 @@
 	\begin{itemize}
 		\item To correctly cite R launch \texttt{citation()} and see information there --- it is slightly different for every version of R
 		\item Cite used packages --- launch \texttt{citation("PackageName")} --- if this information is missing, go to its manual page and/or homepage and find the information there
+		\item Most of packages implementing methods are created by scientists --- they like to be cited :-)
 		\item Packages/functions commonly provide various methods to calculate desired task --- check function's help page (\texttt{\textbf{?}FunctionName}) and find references there and cite them accordingly
 		\item Check original papers to fully understand respective method
 	\end{itemize}
@@ -6557,6 +6801,7 @@
 		\item \href{https://CRAN.R-project.org/package=plotrix}{plotrix}: various labeling, axis and color scaling functions
 		\item \href{https://CRAN.R-project.org/package=poppr}{poppr}: genetic analysis of populations with mixed reproduction
 		\item \href{https://CRAN.R-project.org/package=raster}{raster}: reading, writing, manipulating, analyzing and modeling of gridded spatial data
+		\item \href{https://CRAN.R-project.org/package=rentrez}{rentrez}: interface to the NCBI, allowing to search databases like GenBank
 		\item \href{https://CRAN.R-project.org/package=rgdal}{rgdal}: bindings to the Geospatial Data Abstraction Library and access to projection/transformation operations library
 		\item \href{https://CRAN.R-project.org/package=RgoogleMaps}{RgoogleMaps}: interface to query the Google server for static maps and uses the map as a~background image to overlay plots
 		\item \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi}: interface (wrapper) to MPI (used for parallel processing)
@@ -6671,6 +6916,7 @@
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/seqLogo.html}{seqLogo}: sequence logos for DNA sequence alignments
 		\item \href{https://CRAN.R-project.org/package=SigTree}{SigTree}: identify and visualize significantly responsive branches in a~phylogenetic tree
 		\item \href{https://CRAN.R-project.org/package=SimRAD}{SimRAD}: simulate restriction enzyme digestion, library construction and fragments size selection to predict the number of loci expected from most of the RAD and GPS approaches
+		\item \href{https://CRAN.R-project.org/package=SNPassoc}{SNPassoc}: SNPs-based whole genome association studies
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html}{SNPRelate}: parallel computing toolset for relatedness and principal component analysis of SNP data
 		\item \href{https://bioconductor.org/packages/release/bioc/html/snpStats.html}{snpStats}: classes and statistical methods for large SNP association studies
 		\item \href{https://CRAN.R-project.org/package=spatstat}{spatstat}: spatial point pattern analysis
@@ -6745,9 +6991,7 @@
 
 % TODO Missing topics
 %
-% Filtrování VCF
 % Filtrování genlight na chybějící data
-% More theory for methods - before each method some theoretical slide(s)
 % Tree graphics
 % external tree builders
 % ML
@@ -6776,14 +7020,89 @@
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
 % https://github.com/emmanuelparadis/psmcr
 % - Nahradit SPCA jinou verzí (z adephylo?).
-% - Obecně o `lapply` a spol.
 % - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy
-% - Přidat načítání a export nexu
-% - Profiltrovat VCF alespoň na chybějící data, zkontrolovat konverzi do DNAbin
-% - přidat typické workflow (data, typické objevy a cesty)
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
+% Obecně o `lapply` a spol.:
 % tmp <- matrix(rep(1:3, times=3), ncol=3)
 % tmp
 % apply(tmp, MARGIN=1, sum)
 % apply(tmp, MARGIN=2, sum)
+% 
+% Poznámky 2021:
+% - Zkontrolovat instalaci - R tools pro macOS a Windows, zdroje pro Linux
+% - Ověřit upgrade R
+% - Zkontrolovat úlohu 5 na slidu II úloh po základních operacích
+% - Vyhodit phyloch
+% - Zdůraznit důležitost str() apod. věcí na zjištění obsahu a struktury objektu
+% - Přidat ke stažení balíček s daty na hraní.
+% - Poznámky k alignerům pro macOS (Homebrew?) a Windows
+% - Instalaci Structure a ParallelStructure jen v kapitole o Structure
+% - Přeheld typů dat proložit obrázky
+% - K datům dát obrázky a pár informací navíc
+% - Formáty dat proložit ukázkami a obrázky
+% - Zkontrolovat práci se jmény a populacemi při načítání AFLP
+% - Úloha - naimportovat z GenBank jezevce
+% - Z nothofagus.annot vytahat jména a použít je na jména sekvencí
+% - seqinr a rentrez by měly produkovat jinak pojmenované výstupy
+% - Z alygenomes.fasta vyhodit ostatní scaffoldy, nechat jen obsahující ASY3, zkonvertovat do nexu
+% - Utřídit a okomentovat kontrolu VCF
+% - Filtrování genlight na missing data (v rámci VCF kapitoly)
+% - U VCF zabalit print loci do head
+% - Revize konverze VCF do DNAbin
+% - Poznámky pro Windows (a macOS?) o exec při práci s alignery
+% - Načíst skupinu genů z disku a udělat hromadný alignment s postprocessingem
+% - Zkontrolovat výstup shapirova testu a testů Ho/He
+% - Do corrplotu ze StAMPPu přidat trojúhelník s odpovídajícími podporami
+% - Inbreeding generuje (opět) trochu jiný graf
+% - Aktualizovat obrázek pro MSN
+% - Úvod k distancím
+% - Jak vybrat vhodný model pro DNA distance?
+% - Předělat distance genlightu
+% - Profiltrování genlightu na chybějící data
+% - AMOVA až za shlukováním
+% - Procento variability v AMOVě
+% - Přidat vylepšení z https://cs.wikipedia.org/wiki/Teplotn%C3%AD_mapa_v_R
+% - Trochu přeskládat stromy, hlavně chřipku
+% - Zobrazení jen hodnot bootstrapu nad určitou úrověň
+% - Ověřit scaleGen - zdali je to nutné a tak.
+% - V colorplotu PCoA mít něco smysluplného
+% - SNP rozpustit v záklandích analýzách
+% - NJ z genlight?
+% - V DAPC dát loadingplot a optim.a.scores hned za analýzu
+% - Vše ohledně STRUCTURE jen v kapitole o STRUCTURE
+% - Hraní s s konektivitou v datasetu rupica na začátek prostorových analýz
+% - Utřídit, kterou síť kde používat --- jiná je na začátku u Morana, sPCA --- zkonvertovat výstupy
+% - Lepší distanci do Monmoniera, zkusit větší nrun
+% - V Genelandu přidat proměnnou pro nit
+% - Využít nějak admixture model Genelandu
+% - Možná dát do Genelandu výstupy dlouhého pořádného běhu
+% - POznámky o tom, jak číst mapy z Genelandu
+% - Zkusit rozchodit mapu na OSM nebo další on-line mapy
+% - nancycats má v nancycats@other$xy údaje jen pro populace
+% - Příklad s keep.tip
+% - Bootstrap MP
+% - Vylepšit zobrazení corrplotu
+% - Pro consenus, species a super tree, síť a density trees použít oxalis.trees.good
+% - Nějaký ČB density strom se všemi šťavely
+% - Vylepšit zobrazení cophyloplotu
+% - Příklad s cophyloplotem, kde budou různé druhy
+% - Odkazy na další funkce/balíčky zlepšující zobrazení stromů
+% - U metod evoluce zdůraznit, aby si dali pozor zdali metoda bere hodnoty znaků podle jmen, anebo pořadí
+% - U PIC a PGLS dát jako korelační linii lm
+% - U PGLS a GEE vytáhnout i míru korelace
+% - Uvést, co znamenají jaké hodnoty lambda
+% - pPCA možná mezi autokorelaci a dekompozici
+% - Přidat k pPCA loadingplot (jde-li to)
+% - U pPCA a dalších možná přidat okomentované textové výstupy, zkontrolovat obalování metod do anova, summary, apod.
+% - U ace() možná dát na strom i hodnoty intervalu spolehlivosti
+% - U anc.Bayes nepoužívat hodnoty z posledního řádku, ale jen průměry sloupců (jak automaticky vybrat poslední řádek?)
+% - Zpřehlednit slide Bayesian ancestral character estimation II
+% - Ke contmap přidat na uzly i hodnoty z fastAnc
+% - Lepší příklad na fenogramy?
+% - Víc příkladů na kreslení něčeho na stromě
+% - Přidat pár příkladů na instalaci z GitHubu, víc příkladů z devtools
+% - Informace o načítání balíčků z určité knihovny ve skriptech
+% - Slide o spouštění R na MetaCentru - balíčky, skripty, OnDemand
+% - Do funkce přidat výchozí hodnoty a použití return()
+% - Víc příkladů se smyčkami a větvením
 

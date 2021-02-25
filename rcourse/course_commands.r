@@ -83,6 +83,11 @@ abline(reg=lm(formula=setosa$Sepal.Width~setosa$Sepal.Length), col='brown', lwd=
 abline(h=mean(setosa$Sepal.Width), col="green", lwd=2, lty=2)
 abline(h=mean(setosa$Sepal.Width) + sd(setosa$Sepal.Width), col="green", lwd=2, lty=3)
 abline(h=mean(setosa$Sepal.Width) - sd(setosa$Sepal.Width), col="green", lwd=2, lty=3)
+# ANOVA
+# Basic analysis of variance
+aov(formula=iris[["Sepal.Length"]]~iris[["Species"]])
+# Wrapping aov() by summary() gives output which is easier to read (this is common practice for plenty of outputs)
+summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]))
 
 ## Packages and repositories
 
@@ -94,7 +99,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(repos=getOption("repos"), ask=FALSE)
@@ -311,6 +316,22 @@ closebank()
 nothofagus.dna <- as.DNAbin.list(nothofagus.sequences)
 nothofagus.dna # See it
 
+# Query NCBI databases
+library(rentrez)
+entrez_dbs() # Genetic banks available for rentrez
+entrez_db_summary("nucleotide") # Brief description of what the database is
+entrez_db_searchable("nucleotide") # Set of search terms that can used with this database
+# Search the database and get IDs of matched records
+nothofagus.search <- entrez_search(db="nucleotide", term="Nothofagus[ORGN] AND rbcL[GENE]")
+nothofagus.search
+# Fetch desired records according to their IDs
+nothofagus.fasta <- entrez_fetch(db="nucleotide", id=nothofagus.search[["ids"]], rettype="fasta")
+nothofagus.fasta
+# Conversion into DNAbin requires saving to disk as FASTA and then loading it
+write(x=nothofagus.fasta, file="nothofagus.fasta")
+nothofagus.dna <- read.dna(file="nothofagus.fasta", format="fasta")
+nothofagus.dna
+
 # Importing SNP
 ?read.PLINK # See it for available options
 # Extract SNP from FASTA alignment
@@ -350,28 +371,24 @@ image.DNAbin(x=usflu.dna)
 # Sequences must be of same length - as.matrix.DNAbin() can help
 image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
 
-# VCF
-# Required library
-library(vcfR)
-# Read input file
-# Download input file from https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz
-arabidopsis.vcf <- read.vcfR(file=file.choose()) # Pick up downloaded file 'arabidopsis.vcf.gz' from the disc
-# Or directly load remote file
-arabidopsis.vcf <- read.vcfR(file="https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz")
-# It returns object of class vcfR-class
-?read.vcfR # See more import options
-# Another option from package pegas returns list of objects loci and data.frame
-?pegas::read.vcf
-
 # Explore VCF
 arabidopsis.vcf
 head(arabidopsis.vcf)
 arabidopsis.vcf@fix[1:10,1:5]
-# Get information about depth of coverage (DP)
-# Se description of DP slot
+strwrap(arabidopsis.vcf@meta[1:21])
+queryMETA(x=arabidopsis.vcf)
+queryMETA(x=arabidopsis.vcf, element="DP")
+queryMETA(x=arabidopsis.vcf, element="FORMAT.+DP")
+queryMETA(x=arabidopsis.vcf, element="FORMAT=<ID=DP")
+head(x=getFIX(x=arabidopsis.vcf))
+head(x=is.polymorphic(x=arabidopsis.vcf, na.omit=TRUE))
+head(x=is.biallelic(x=arabidopsis.vcf))
+arabidopsis.vcf@gt[1:10, 1:4]
+# See description of depth of coverage (DP) slot
 strwrap(x=grep(pattern="ID=DP,", x=arabidopsis.vcf@meta, value=TRUE))
-# Extract the DP
-arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP", as.numeric=TRUE)
+
+# Extract the depth of coverage (DP)
+arabidopsis.vcf.dp <- extract.gt(x=arabidopsis.vcf, element="DP", as.numeric=TRUE) # GT:GQ:DP:HQ
 # See it
 dim(arabidopsis.vcf.dp)
 head(arabidopsis.vcf.dp)
@@ -387,9 +404,61 @@ abline(h=seq(from=0, to=60, by=10), col="#b3b3b3")
 heatmap.bp(x=arabidopsis.vcf.dp[1:100,1:100], col.ramp=rainbow(n=100, start=0.1)) # Subset - only first 100 loci and individuals
 title("DP per specimens and loci")
 
+# Extract the genotype quality (GQ)
+arabidopsis.vcf.gq <- extract.gt(x=arabidopsis.vcf, element="GQ", as.numeric=TRUE)
+dim(arabidopsis.vcf.gq)
+arabidopsis.vcf.gq[1:10,1:10]
+# Heatmap of GQ (subset)
+heatmap.bp(x=arabidopsis.vcf.gq[1:100,1:100])
+# Bar plot of mean GQ
+barplot(apply(X=arabidopsis.vcf.gq, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+abline(h=seq(from=0, to=90, by=5), col="grey")
+# Boxplot of GQ
+boxplot(arabidopsis.vcf.gq, las=2, main="Genotype Quality (GQ)")
+abline(h=seq(from=0, to=100, by=5), col="grey")
+
+# Missing data
+# Extract information about missing data
+arabidopsis.vcf.miss <- apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=function(x){sum(is.na(x))})
+arabidopsis.vcf.miss <- arabidopsis.vcf.miss/nrow(arabidopsis.vcf)
+# Bar plot of missing data
+barplot(height=arabidopsis.vcf.miss, ylab="Percentage of missing data", las=2)
+abline(h=seq(from=0, to=1, by=0.05), col="grey")
+# Histogram of frequencies of missing data
+arabidopsis.vcf.missg <- apply(X=arabidopsis.vcf.dp, MARGIN=1, FUN=function(x){sum(is.na(x))})
+arabidopsis.vcf.missg <- arabidopsis.vcf.miss/ncol(arabidopsis.vcf@gt[,-1])
+hist(x=arabidopsis.vcf.missg, xlab="Missingness (%)")
+abline(h=seq(from=0, to=350, by=25), col="grey")
+
+# Remove indels
+arabidopsis.vcf <- extract.indels(x=arabidopsis.vcf)
+# Remove non-biallelic loci
+arabidopsis.vcf <- arabidopsis.vcf[is.biallelic(x=arabidopsis.vcf),]
+# See result
+arabidopsis.vcf
+
+# ChromR - filtration of VCF
+# Loading reference sequence
+# Download https://soubory.trapa.cz/rcourse/alygenomes.fasta into working directory
+arabidopsis.dna <- read.dna(file="alygenomes.fasta", format="fasta")
+arabidopsis.dna
+# Conversion into chromosome object (ChromR)
+arabidopsis.chrom <- create.chromR(vcf=arabidopsis.vcf, name="Arabidopsis arenosa", seq=arabidopsis.dna)
+arabidopsis.chrom
+plot(arabidopsis.chrom)
+# Masking sites with too low/high DP and/or MQ
+arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1, min_DP=8, max_DP=5000, min_MQ=40, max_MQ=200)
+arabidopsis.chrom.mask
+plot(arabidopsis.chrom.mask)
+variant.table(arabidopsis.chrom.mask)
+# Saving mask into new object
+arabidopsis.chrom.fin <- proc.chromR(x=arabidopsis.chrom.mask)
+arabidopsis.chrom.fin
+chromoqc(chrom=arabidopsis.chrom.fin) # The plot is bit empty as we have only single gene
+
 # Convert VCF into various objects for later processing
 # Genind
-arabidopsis.genind <- vcfR2genind(x=arabidopsis.vcf)
+arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf)
 # Check it
 arabidopsis.genind
 nInd(arabidopsis.genind)
@@ -397,17 +466,17 @@ indNames(arabidopsis.genind)
 nLoc(arabidopsis.genind)
 locNames(arabidopsis.genind)
 # Genlight (suitable for huge data, not required now)
-arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
+arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
 # Check it
 arabidopsis.genlight
 # Loci
-arabidopsis.loci <- vcfR2loci(x=arabidopsis.vcf)
+arabidopsis.loci <- vcfR2loci(x=arabidopsis.chrom.fin)
 # Check it
 arabidopsis.loci
 print(x=arabidopsis.loci, details=TRUE)
 # DNAbin
 ?vcfR2DNAbin # There are various options how to process variants in VCF
-arabidopsis.dnabin <- vcfR2DNAbin(x=arabidopsis.vcf, consensus=FALSE, extract.haps=TRUE, unphased_as_NA=FALSE)
+arabidopsis.dnabin <- vcfR2DNAbin(x=arabidopsis.chrom.fin, consensus=FALSE, extract.haps=TRUE, unphased_as_NA=FALSE, asterisk_as_del=FALSE)
 # Check it
 arabidopsis.dnabin
 dim(arabidopsis.dnabin)
@@ -415,18 +484,6 @@ as.character.DNAbin(arabidopsis.dnabin[1:15,1:12])
 image.DNAbin(arabidopsis.dnabin)
 snpposi.plot.DNAbin(arabidopsis.dnabin)
 snpposi.test.DNAbin(arabidopsis.dnabin)
-
-# Remove non-biallelic loci
-# Create vector of loci to keep
-arabidopsis.genind.keep <- nAll(arabidopsis.genind) < 3
-# See the vector of loci
-arabidopsis.genind.keep
-# Keep only passing loci
-arabidopsis.genind.bial <- arabidopsis.genind[loc=arabidopsis.genind.keep]
-# See result
-arabidopsis.genind.bial
-# Filtration of missing data
-?poppr::missingno # Various options...
 
 ## Exporting data
 # Convert genind into DF using genind2df()
@@ -641,23 +698,16 @@ microbov.bar <- sapply(X=microbov.inbr, FUN=mean)
 # Plot it
 hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle")
 
-## AMOVA
-# From package pegas (doesn't directly show percentage of variance)
-hauss.pop <- pop(hauss.genind)
-hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
-# See results
-hauss.amova
-# For more complicated hierarchy
-?poppr::poppr.amova
-# For mixed-ploidy dat sets
-?StAMPP::stamppAmova
-
 ## MSN based on Bruvo's distance
-bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
-?bruvo.msn # See details...
-?msn.poppr # For another data types
-?imsn # Interactive creation of MSN
-imsn() # Try it
+# See details and options...
+?bruvo.msn
+# Get the MSN
+# Note SSRs repeats 'rep(2, 12)' - change according to your data
+bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label ="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
+# For another data types
+?msn.poppr
+# Interactive creation of MSN. Opens browser window
+?imsn
 
 ## Genetic distances
 
@@ -814,6 +864,17 @@ heatmap(as.matrix(hauss.dist.bruvo), symm=TRUE)
 heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
 ?heatmap # Other options
 
+## AMOVA
+# From package pegas (doesn't directly show percentage of variance)
+hauss.pop <- pop(hauss.genind)
+hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=TRUE)
+# See results
+hauss.amova
+# For more complicated hierarchy
+?poppr::poppr.amova
+# For mixed-ploidy dat sets
+?StAMPP::stamppAmova
+
 ## Hierarchical clustering
 # According to distance used
 ?hclust # How to use hierarchical clustering
@@ -853,7 +914,7 @@ plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2, edge.lty=3
 # boot.phylo() resamples all columns - remove population column first
 hauss.loci.nopop <- hauss.loci
 hauss.loci.nopop[["population"]] <- NULL
-hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist(loci2genind(XXX))), B=1000)
+hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist.gene(loci2genind(XXX)@tab, method="pairwise")), B=1000)
 # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
 # Plot the tree
 plot.phylo(x=hauss.nj, type="unrooted", main="Neighbour-Joining tree")
@@ -1130,8 +1191,7 @@ library(ParallelStructure)
 parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path="~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47, numloci=12, plot_output=1, label=1, popdata=1, popflag=1, phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0, extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1, printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0, linkage=0, locprior=0, inferalpha=1)
 
 # When running on Windows, parallel support may be missing - install Rmpi library required by ParallelStructure for parallelisation on Windows
-install.packages("Rmpi")
-library(Rmpi)
+require(Rmpi)
 # Instead of parallel_structure() use MPI_structure() with same arguments
 MPI_structure(...) # Same arguments as on previous slide
 # If this fails, look for some UNIX machine...
@@ -1245,7 +1305,7 @@ boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribut
 ## Monmonier - genetic boundaries
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
 # Calculates Monmonier's function (for threshold use 'd')
-hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop$tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
 coords.monmonier(hauss.monmonier) # See result as text
 # Plot genetic boundaries
 plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
@@ -2137,8 +2197,7 @@ dev.off() # Closes graphical device - needed after use of plotting functions png
 
 ## Install packages from GitHub
 # Needed library
-install.packages("devtools")
-library(devtools)
+require(devtools)
 dev_mode(on=TRUE)
 # Install selected package from GitHub (user/project)
 install_github("thibautjombart/adegenet")
