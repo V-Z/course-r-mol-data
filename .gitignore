@@ -39,11 +39,6 @@ presentation/*.nlo
 *.backup
 examples/geneland/*
 examples/.rkward_autosave
-examples/structure/results/*
-examples/structure/structure_sum/*
-examples/structure/extraparams
-examples/structure/results_summary.csv
-examples/structure/seed.txt
 examples/*.RData.rkworkplace
 examples/*.fasta
 examples/*.nexus
@@ -56,4 +51,3 @@ examples/*.vcf*
 examples/macedonia_*
 examples/test.RData
 rcourse/macedonia.zip
-rcourse/structure-sum*

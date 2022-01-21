@@ -927,7 +927,7 @@
     # Standard installation
     install.packages(c("adegenet", "poppr", "phytools"))
     update.packages() # Update packages
-    # Installation from custom repository (example for our course)
+    # Installation from custom repository (not used in our course)
     install.packages(pkgs="ParallelStructure",
       repos="https://r-forge.r-project.org/")
     ?install.packages # See help for details
@@ -989,11 +989,6 @@
 		\item Rtools \url{https://cran.r-project.org/bin/windows/Rtools/}
 		\begin{itemize}
 			\item \alert{On Windows only} --- to be able to compile source packages on Windows
-		\end{itemize}
-		\item Structure \url{https://web.stanford.edu/group/pritchardlab/structure.html} (optionally also \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP} and \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct} --- not part of the course)
-		\begin{itemize}
-			\item De facto standard for analysis of population genetic structure (from slide~\ref{structure})
-			\item Its outputs are usually post-processed in other software (not part of the course, see \href{https://trapa.cz/en/structure-r-linux}{web})
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -3736,233 +3731,6 @@
 			\item Which data can you cluster using K-means clustering?
 		\end{enumerate}
 	\end{exampleblock}
-\end{frame}
-
-\section{Structure}
-
-\begin{frame}{Bayesian clustering with Structure}
-	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Structure}
-	\label{structure}
-	\begin{itemize}
-		\item Population genetic software for Bayesian clustering, \url{https://web.stanford.edu/group/pritchardlab/structure.html}
-		\item De facto standard for population genetics, one of the most used software tools
-		\item Uses Bayesian algorithm to find optimal distribution of individuals into the most natural number of groups (K)
-		\item One Structure run tests one selected K
-		\begin{itemize}
-			\item User must run it repeatedly for several Ks to find the best division, e.g. from K=1 to K=10 (grouping into 1, 2, 3, \ldots, 10 clusters)
-			\item User must run it repeatedly for each K~to see if the result is stable (because of stochasticity of the computational algorithm), e.g. 10 times each
-			\item Finally there use to be hundreds of runs\ldots{ } (e.g. 100 like in this example)
-			\item The best grouping into K~groups is selected according to posterior probability of each run (different groupings have different probability of being correct, we need to select the best one) and stability of runs (independent runs for a~given same K~return same results)
-			\item Structure has Java GUI to set up repeated runs --- another possibility is to use R (or possibly any other scripting language like BASH, Perl or Python, depending on user's preference and knowledge)
-		\end{itemize}
-		\item Full procedure (parallel running of Structure using R and post-processing results with R and BASH) for Linux/UNIX computers is described at \url{https://trapa.cz/en/structure-r-linux}
-		\item Relatively complicated tool requiring plenty of work\ldots
-		\item Here is shown processing option using \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure}, another option is package \href{https://CRAN.R-project.org/package=strataG}{strataG} (see \texttt{?strataG::structure})
-		\item \alert{Does not work (at all) on Windows} (although see further)
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Structure work flow}
-	\begin{enumerate}
-		\item Run multiple runs of Structure
-		\begin{itemize}
-			\item User must test several numbers of genetic clusters (K) and test each several times
-			\item ParallelStructure (see later) can do this
-		\end{itemize}
-		\item Decide which K~is the best --- explore outputs
-		\begin{itemize}
-			\item Plain command line Structure does not help with this
-			\item There is need for external application reading Structure output, summing them and helping decide which K~is the best
-			\item E.g. \href{http://taylor0.biology.ucla.edu/structureHarvester/}{Structure Harvester} or Structure-sum R script (see later) can do this
-		\end{itemize}
-		\item Post process Structure outputs to prepare them for plotting
-		\begin{itemize}
-			\item Sort and align Structure outputs
-			\item Probably most commonly done in \href{https://web.stanford.edu/group/rosenberglab/clumpp.html}{CLUMPP}
-		\end{itemize}
-		\item Plot the final graphs
-		\begin{itemize}
-			\item Can be done in nearly any enough advanced graphical tool (including some R functions), probably the most commonly used is \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct}
-		\end{itemize}
-	\end{enumerate}
-\end{frame}
-
-\subsection{Running Structure from R}
-
-\begin{frame}[fragile]{Running Structure in parallel with R}
-	\begin{itemize}
-		\item Let's use modern multi-core CPUs and plenty of RAM in current computers --- parallelisation saves time
-		\item \href{https://r-forge.r-project.org/R/?group_id=1636}{ParallelStructure} R library can optimally distribute computations of independent Structure runs among CPU cores
-		\item When using it, cite \href{https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0070651}{Besnier \& Glover 2013}
-		\item I~show slightly modified way from \href{https://www.molecularecologist.com/2013/09/using-r-to-run-parallel-analyses-of-population-genetic-data-in-structure-parallelstructure/}{The Molecular Ecologist}
-		\item Authors recommend to run it without GUI and not on Windows\ldots
-		\item For this chapter start new R project in new working directory
-	\end{itemize}
-	\begin{spluscode}
-    # Prepare special new empty directory and set working directory
-    setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/")
-    install.packages("ParallelStructure",
-      repos="https://r-forge.r-project.org") # Install the package
-    library(ParallelStructure) # Load the library
-    # It takes more or less same parameter as normal Structure
-    ?parallel_structure # See Structure manual and function's documentation
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}{Preparing for ParallelStructure}
-	Within working \enquote{structure} directory you need
-	\begin{itemize}
-		\item Subdirectory for results
-		\item Text file describing jobs (\enquote{joblist})
-			\begin{itemize}
-				\item One row for one Structure run
-				\item Every line contains name of run, list of populations separated by comas (e.g. 1,2,3,4,5) --- you don't have to use all populations in all runs
-				\item K~for actual run
-				\item Length of burnin chain
-				\item Number of steps (in practice use much higher number than for the example --- also for length of burnin chain)
-				\item Columns are separated by spaces (or TABs)
-			\end{itemize}
-		\item Data input file (see Structure manual)
-			\begin{itemize}
-				\item Make it as simple as possible --- remove all unneeded columns
-				\item For population names use subsequent numbers from 1~to number of populations
-				\item For individual names use only alphanumerical characters
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Input files}
-	\vfil
-	\textbf{Joblist file:}
-	\vfil
-	\begin{tabular}{lllll}
-		S02 & 1,2,3,4,5 & 1 & 500 & 10000\\
-		S06 & 1,2,3,4,5 & 2 & 500 & 10000\\
-		S08 & 1,2,3,4,5 & 2 & 500 & 10000\\
-		\ldots & \ldots & \ldots & \ldots & \ldots
-	\end{tabular}
-	\vfill
-	\textbf{Input file:}
-	\vfil
-	\begin{tabular}{lllllllllll}
-		& & & msta93 & msta101 & msta102 & msta103 & \ldots\\
-		H01 & 1 & 0 & 269 & 198 & 221 & 419 & \ldots\\
-		H01 & 1 & 0 & 269 & 198 & 223 & 419 & \ldots\\
-		H02 & 1 & 0 & 275 & 198 & 221 & 419 & \ldots\\
-		H02 & 1 & 0 & 283 & 198 & 223 & 419 & \ldots\\
-		\ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots & \ldots
-	\end{tabular}
-	\vfil
-\end{frame}
-
-\begin{frame}[fragile]{Running ParallelStructure}
-	\begin{spluscode}
-    parallel_structure(joblist="joblist.txt", n_cpu=3, structure_path=
-      "~/bin/", infile="hauss_stru.in", outpath="results/", numinds=47,
-      numloci=12, plot_output=1, label=1, popdata=1, popflag=1,
-      phenotypes=0, markernames=1, mapdist=0, onerowperind=0, phaseinfo=0,
-      extracol=0, missing=-9, ploidy=2, usepopinfo=0, revert_convert=1,
-      printqhat=1, locdata=0, recessivealleles=0, phased=0, noadmix=0,
-      linkage=0, locprior=0, inferalpha=1)
-	\end{spluscode}
-	\begin{itemize}
-		\item Choose \texttt{n\_cpu} according to your computer
-		\item \texttt{structure\_path} points to \alert{directory} containing Structure binary
-		\item \texttt{outpath} should aim to \alert{empty} directory
-		\item \texttt{plot\_output=1} will produce plots for all runs
-		\item Check all other settings according to Structure manual and your needs
-		\item Get toy input file \url{https://soubory.trapa.cz/rcourse/hauss_stru.in} and joblist \url{https://soubory.trapa.cz/rcourse/joblist.txt}
-	\end{itemize}
-\end{frame}
-
-\subsection{ParallelStructure on Windows}
-
-\begin{frame}[fragile]{ParallelStructure and Windows}
-	\begin{itemize}
-		\item Authors do not recommend to run ParallelStructure on Windows\ldots
-		\item \texttt{parallel\_structure()} uses for parallelisation library which is not available on Windows, instead try
-	\end{itemize}
-	\begin{spluscode}
-    # Install Rmpi library required by ParallelStructure for
-    # parallelisation on Windows (installation can be very problematic)
-    require(Rmpi)
-    # Instead of parallel_structure() use MPI_structure()
-    # with same arguments
-    MPI_structure(...) # Same arguments as on previous slide
-	\end{spluscode}
-	\begin{itemize}
-		\item It may help to set \texttt{n\_cpu=1}, but it is only for testing then, not for real work...
-		\item If this fails, look for some UNIX machine (Linux, macOS, BSD,~\ldots)\ldots
-	\end{itemize}
-\end{frame}
-
-\subsection{Post processing}
-
-\begin{frame}[fragile]{Post process Structure results --- select the best K}
-	\begin{itemize}
-		\item Using Structure-sum-2011 R script by \href{https://en.uit.no/ansatte/person?p_document_id=41186}{Dorothee Ehrich}
-	\end{itemize}
-	\begin{spluscode}
-    # Load the script
-    source("https://soubory.trapa.cz/rcourse/structure-sum-2011.r")
-    # Create new directory with result files results_job_*_f and set
-    # working directory accordingly
-    setwd("~/dokumenty/vyuka/r_mol_data/examples/structure/structure_sum/")
-	\end{spluscode}
-	\begin{itemize}
-		\item When using it, cite \href{https://onlinelibrary.wiley.com/doi/full/10.1111/j.1471-8286.2006.01380.x}{Ehrich 2006}. If you don't have the script, ask (it is not my so I~don't want to post it on the net), see \href{https://soubory.trapa.cz/rcourse/structure-sum-2011.pdf}{manual}
-		\item Prepare \textbf{list\_k.txt} containing on each line K~and name of output file
-		\item Get list K~(example of the joblist below) from \url{https://soubory.trapa.cz/rcourse/list_k.txt}
-	\end{itemize}
-	\vfill
-	\begin{tabular}{ll}
-		2 & results\_job\_S010\_f\\
-		3 & results\_job\_S011\_f\\
-		\ldots & \ldots
-	\end{tabular}
-\end{frame}
-
-\begin{frame}[fragile]{Run Structure-sum}
-	\begin{spluscode}
-    # See documentation for details. Functions take as an argument
-    # list_k file and number of populations
-    Structure.table("list_k.txt", 5)
-    Structure.simil("list_k.txt", 5)
-    Structure.deltaK("list_k.txt", 5)
-    graphics.off() # Close graphics
-    Structure.cluster("list_k.txt", 5)
-    # Reordering ("alignment") of runs to get same clusters in same columns
-    # (prepare respective list_k files - one for each K)
-    # Preparing data for CLUMPP
-    Structure.order("list_k_02.txt", 5)
-    Structure.order("list_k_03.txt", 5)
-    Structure.order("list_k_04.txt", 5)
-    Structure.order("list_k_05.txt", 5)
-    Structure.order("list_k_06.txt", 5)
-    Structure.order("list_k_07.txt", 5) # Continue with CLUMPP and distruct...
-	\end{spluscode}
-	\begin{itemize}
-		\item Details: \url{https://trapa.cz/en/structure-r-linux}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Outputs of Structure-sum --- the best K~is 2, may be 3~--- stability of runs, good posterior probability}{Results from different data set, not from our toy}
-	\begin{center}
-		\includegraphics[width=\textwidth-1.5cm]{structure.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Example of final Structure plot}{Drawn by distruct after alignment of Structure outputs by CLUMPP}
-	\begin{itemize}
-		\item Each bar is one individual
-		\item Each color is one genetic cluster (here is shown clustering for K=12)
-		\item Individuals with columns composing of more colors are genetically mixture of more clusters
-		\item Details: \url{https://trapa.cz/en/structure-r-linux}
-	\end{itemize}
-	\includegraphics[width=\textwidth]{structure-fin.png}
 \end{frame}
 
 \section{Spatial analysis}
@@ -6789,7 +6557,6 @@
 		\item \href{https://CRAN.R-project.org/package=maptools}{maptools}: manipulating and reading geographic data
 		\item \href{https://bioconductor.org/packages/release/bioc/html/muscle.html}{muscle}: multiple sequence alignment with MUSCLE
 		\item \href{https://CRAN.R-project.org/package=nlme}{nlme}: fits and compares Gaussian linear and nonlinear mixed-effects models
-		\item \href{https://r-forge.r-project.org/projects/parallstructure/}{ParallelStructure}: running analysis in the population genetics software STRUCTURE
 		\item \href{https://CRAN.R-project.org/package=PBSmapping}{PBSmapping}: spatial analysis tools
 		\item \href{https://CRAN.R-project.org/package=pegas}{pegas}: population and evolutionary genetics analysis
 		\item \href{https://CRAN.R-project.org/package=phangorn}{phangorn}: phylogenetic analysis
@@ -6884,6 +6651,7 @@
 		\item \href{https://r-forge.r-project.org/projects/paleophylo/}{paleoPhylo}: assess how speciation, extinction and character change contribute to biodiversity
 		\item \href{https://CRAN.R-project.org/package=paleotree}{paleotree}: paleontological and phylogenetic analysis of evolution
 		\item \href{https://CRAN.R-project.org/package=paleoTS}{paleoTS}: analyze paleontological time-series
+		\item \href{https://r-forge.r-project.org/projects/parallstructure/}{ParallelStructure}: running analysis in the population genetics software STRUCTURE
 		\item \href{https://CRAN.R-project.org/package=pastis}{pastis}: phylogenetic assembly with soft taxonomic inferences
 		\item \href{https://CRAN.R-project.org/package=PBD}{PBD}: protracted birth-death model of diversification
 		\item \href{https://CRAN.R-project.org/package=pcadapt}{pcadapt}: PCA and search for loci responsible for the grouping (no support for mixing ploidy levels), uses VCF
@@ -7040,8 +6808,7 @@
 % - Zdůraznit důležitost str() apod. věcí na zjištění obsahu a struktury objektu
 % - Přidat ke stažení balíček s daty na hraní.
 % - Poznámky k alignerům pro macOS (Homebrew?) a Windows
-% - Instalaci Structure a ParallelStructure jen v kapitole o Structure
-% - Přeheld typů dat proložit obrázky
+% - Přehled typů dat proložit obrázky
 % - K datům dát obrázky a pár informací navíc
 % - Formáty dat proložit ukázkami a obrázky
 % - Zkontrolovat práci se jmény a populacemi při načítání AFLP
@@ -7073,14 +6840,13 @@
 % - SNP rozpustit v záklandích analýzách
 % - NJ z genlight?
 % - V DAPC dát loadingplot a optim.a.scores hned za analýzu
-% - Vše ohledně STRUCTURE jen v kapitole o STRUCTURE
 % - Hraní s s konektivitou v datasetu rupica na začátek prostorových analýz
 % - Utřídit, kterou síť kde používat --- jiná je na začátku u Morana, sPCA --- zkonvertovat výstupy
 % - Lepší distanci do Monmoniera, zkusit větší nrun
 % - V Genelandu přidat proměnnou pro nit
 % - Využít nějak admixture model Genelandu
 % - Možná dát do Genelandu výstupy dlouhého pořádného běhu
-% - POznámky o tom, jak číst mapy z Genelandu
+% - Poznámky o tom, jak číst mapy z Genelandu
 % - Zkusit rozchodit mapu na OSM nebo další on-line mapy
 % - nancycats má v nancycats@other$xy údaje jen pro populace
 % - Příklad s keep.tip
