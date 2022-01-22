@@ -1458,7 +1458,7 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
 # Google map is produced into a file
-# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/intro
+# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/overview
 ?GetMap # See all options
 ?PlotOnStaticMap # See all options
 # Download map
@@ -1512,7 +1512,7 @@ points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=1
 library(maptools)
 library(rgdal)
 # Load SHP file
-# Data from http://download.geofabrik.de/europe/macedonia.html
+# Data from https://download.geofabrik.de/europe/macedonia.html
 # R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
 dir() # Verify required files are unpacked in the working directory
 # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
@@ -2325,7 +2325,7 @@ axisGeo() # package phyloch - adds scale in geological time, has many options
 ## Polysat - microsattelites and mixed ploidies
 library(combinat)
 library(polysat)
-polysattest <- read.GeneMapper("http://soubory.trapa.cz/rcourse/GeneMapperExample.txt")
+polysattest <- read.GeneMapper("https://soubory.trapa.cz/rcourse/GeneMapperExample.txt")
 # Basic information
 summary(polysattest)
 Loci(polysattest) # Information about loci
