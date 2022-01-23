@@ -837,21 +837,19 @@
 
 \begin{frame}[fragile]{Install packages needed for the course}
 	\begin{spluscode}
-    # Install packages
-    # Installation of multiple packages may sometimes fail - install then
-    # packages in smaller groups or one by one
+    # Install packages. Installation of multiple packages may sometimes fail -
+    #  install then packages in smaller groups or one by one
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
       "akima", "ape", "BiocManager", "caper", "corrplot", "devtools",
-      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
-      "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools",
-      "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase",
-      "rentrez", "phytools", "picante", "plotrix", "poppr", "raster",
-      "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr",
-      "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP",
-      "TeachingDemos", "tripack", "vcfR", "vegan"),
+      "adespatial", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips",
+      "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps",
+      "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy",
+      "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
+      "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
+      "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs",
+      "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
-    # Regularly update installed packages
-    update.packages(ask=FALSE)
+    update.packages(ask=FALSE) # Regularly update installed packages
     # Upgrade all packages e.g. from R 3.6 to 4.0
     install.packages(pkgs=installed.packages())
 	\end{spluscode}
@@ -1923,7 +1921,7 @@
 \begin{frame}[fragile]{Convert VCF into various objects for later processing}
 	\begin{spluscode}
     # Genind - convert chromR or vcfR objects
-    arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf)
+    arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf, ploidy=4)
     arabidopsis.genind # Check it
     nInd(arabidopsis.genind)
     indNames(arabidopsis.genind)
@@ -1932,9 +1930,9 @@
     # Genlight (suitable for huge data, not required now)
     arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf,
       n.cores=1) # On Linux/macOS and with large data use higher n.cores
+    warnings() # See errors - due to missing data when handling 4N vs. 2N
     arabidopsis.genlight # Check it
-    # Loci
-    arabidopsis.loci <- vcfR2loci(x=arabidopsis.chrom.fin)
+    arabidopsis.loci <- vcfR2loci(x=arabidopsis.chrom.fin) # Loci
     arabidopsis.loci # Check it
     print(x=arabidopsis.loci, details=TRUE)
 	\end{spluscode}
@@ -3208,7 +3206,7 @@
     ?plot.phylo
     ?nodelabels
     ?legend
-    ?axis.phylo
+    ?axisPhylo
 	\end{spluscode}
 	\begin{itemize}
 		\item Functions in \href{https://CRAN.R-project.org/package=ape}{ape} (\texttt{plot.phylo} and others), \href{https://CRAN.R-project.org/package=adegenet}{adegenet} and another packages provide plenty of options to manipulate and display trees, for users of \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2}, \href{https://bioconductor.org/packages/release/bioc/html/ggtree.html}{ggtree} is an interesting alternative
@@ -3863,8 +3861,8 @@
 		\item When using \texttt{chooseCN()}, look at the documentation and try various methods with changing settings to see differences
 	\end{itemize}
 	\begin{spluscode}
-    data(rupica) # Loads adegenet's training dataset
-                 # Rupicapra rupicapra from French Prealps
+    data(rupica) # adegenet's toy dataset, Rupicapra rupicapra from French Alps
+    library("adespatial") # Part of sPCA calculations are in adespatial
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
     ?chooseCN # See for more details - select the best "type" for your data
@@ -6532,6 +6530,7 @@
 		\item \href{https://CRAN.R-project.org/package=ade4}{ade4}: multivariate data analysis and graphical display (enhancements: \href{https://CRAN.R-project.org/package=ade4TkGUI}{ade4TkGUI} --- GUI, \href{https://CRAN.R-project.org/package=adegraphics}{adegraphics} --- extra graphical functions, commonly used internally)
 		\item \href{https://CRAN.R-project.org/package=adegenet}{adegenet}: exploration of genetic and genomic data
 		\item \href{https://CRAN.R-project.org/package=adephylo}{adephylo}: multivariate tools to analyze comparative data
+		\item \href{https://CRAN.R-project.org/package=adespatial}{adespatial}: multiscale spatial analysis of multivariate data
 		\item \href{https://CRAN.R-project.org/package=akima}{akima}: cubic spline interpolation methods for irregular and regular grids data
 		\item \href{https://CRAN.R-project.org/package=ape}{ape}: analysis of phylogenetics and evolution
 		\item \href{https://CRAN.R-project.org/package=BiocManager}{BiocManager}: access the Bioconductor project package repository
@@ -6586,7 +6585,6 @@
 
 \begin{frame}[allowframebreaks]{Another interesting packages (we did not use)\ldots}{For your own explorations\ldots}
 	\begin{itemize}
-		\item \href{https://CRAN.R-project.org/package=adespatial}{adespatial}: multiscale spatial analysis of multivariate data
 		\item \href{https://CRAN.R-project.org/package=adhoc}{adhoc}: ad hoc distance thresholds for DNA barcoding identification
 		\item \href{https://github.com/eliotmiller/addTaxa}{addTaxa}: adding missing taxa to phylogenies
 		\item \href{https://CRAN.R-project.org/package=admixr}{admixr}: interface for running \href{https://academic.oup.com/genetics/article/192/3/1065/5935193}{ADMIXTOOLS}
@@ -6866,4 +6864,8 @@
 % - Slide o spouštění R na MetaCentru - balíčky, skripty, OnDemand
 % - Do funkce přidat výchozí hodnoty a použití return()
 % - Víc příkladů se smyčkami a větvením
+% Poznámky 2022
+% - Funguje vůbec seqinr? Nevyhodit?
+% - Chybějící data v genlight po konverzi z vcfR, filtrace chybějících dat v genind po konverzi z vcfR.
+% - ape::muscle funguje jen s verzí 3.8, ne 5.1
 

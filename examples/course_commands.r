@@ -99,7 +99,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(repos=getOption("repos"), ask=FALSE)
@@ -430,48 +430,6 @@ abline(h=seq(from=0, to=90, by=5), col="grey")
 boxplot(arabidopsis.vcf.gq, las=2, main="Genotype Quality (GQ)")
 abline(h=seq(from=0, to=100, by=5), col="grey")
 
-# Violin plots of DP
-# require("reshape2")
-# require("ggplot2")
-# require("cowplot")
-# dpf <- melt(arabidopsis.vcf.dp, varnames=c("Index", "Sample"), value.name="Depth", na.rm=TRUE)
-# dpf <- dpf[dpf$Depth > 0,]
-# 
-# p <- ggplot(dpf, aes(x=Sample, y=Depth)) + geom_violin(fill="#C0C0C0", adjust=1.0, scale="count", trim=TRUE)
-# p <- p + theme_bw()
-# p <- p + theme(axis.title.x=element_blank(), axis.text.x=element_text(angle=60, hjust=1, size=12))
-# p <- p + scale_y_continuous(trans=scales::log2_trans(), breaks=c(1, 10, 100, 800), minor_breaks=c(1:10, 2:10*10, 2:8*100))
-# p <- p + theme(axis.title.y=element_text(size=12))
-# p <- p + theme(panel.grid.major.y=element_line(color="#A9A9A9", size=0.6))
-# p <- p + theme(panel.grid.minor.y=element_line(color="#C0C0C0", size=0.2))
-# p <- p + stat_summary(fun.y=median, geom="point", shape=23, size=2)
-# p
-# 
-# samps_per_row <- 16
-# myRows <- ceiling(length(levels(dpf$Sample))/samps_per_row)
-# myList <- vector(mode="list", length=myRows)
-# for(i in 1:myRows){
-# 	myIndex <- c(i*samps_per_row - samps_per_row + 1):c(i*samps_per_row)
-# 	myIndex <- myIndex[myIndex <= length(levels(dpf$Sample))]
-# 	myLevels <- levels(dpf$Sample)[myIndex]
-# 	myRegex <- paste(myLevels, collapse="$|^")
-# 	myRegex <- paste("^", myRegex, "$", sep="")
-# 	myList[[i]] <- dpf[grep(myRegex, dpf$Sample),]
-# 	myList[[i]]$Sample <- factor(myList[[i]]$Sample)
-# 	}
-# # Create the plot
-# myPlots <- vector(mode="list", length=myRows)
-# for(i in 1:myRows){
-# 	myPlots[[i]] <- ggplot(myList[[i]], aes(x=Sample, y=Depth)) + geom_violin(fill="#8dd3c7", adjust=1.0, scale="count", trim=TRUE)
-# 	myPlots[[i]] <- myPlots[[i]] + theme_bw()
-# 	myPlots[[i]] <- myPlots[[i]] + theme(axis.title.x=element_blank(), axis.text.x=element_text(angle=60, hjust=1))
-# 	myPlots[[i]] <- myPlots[[i]] + scale_y_continuous(trans=scales::log2_trans(), breaks=c(1, 10, 100, 800), minor_breaks=c(1:10, 2:10*10, 2:8*100))
-# 	myPlots[[i]] <- myPlots[[i]] + theme(panel.grid.major.y=element_line(color="#A9A9A9", size=0.6))
-# 	myPlots[[i]] <- myPlots[[i]] + theme(panel.grid.minor.y=element_line(color="#C0C0C0", size=0.2))
-# 	}
-# # Plot the plot
-# plot_grid(plotlist=myPlots, nrow=myRows)
-
 # Missing data
 # Extract information about missing data
 arabidopsis.vcf.miss <- apply(X=arabidopsis.vcf.dp, MARGIN=2, FUN=function(x){sum(is.na(x))})
@@ -513,7 +471,7 @@ chromoqc(chrom=arabidopsis.chrom.fin) # The plot is bit empty as we have only si
 
 # Convert VCF into various objects for later processing
 # Genind
-arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf)
+arabidopsis.genind <- vcfR2genind(x=arabidopsis.chrom.fin@vcf, ploidy=4)
 # Check it
 arabidopsis.genind
 nInd(arabidopsis.genind)
@@ -523,6 +481,7 @@ locNames(arabidopsis.genind)
 # Genlight (suitable for huge data, not required now)
 arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
 # Check it
+warnings() # See errors - due to missing data when handling tetraploids together with diploids
 arabidopsis.genlight
 # Loci
 arabidopsis.loci <- vcfR2loci(x=arabidopsis.chrom.fin)
@@ -1008,7 +967,7 @@ legend(x="topleft", legend=c("He", "Oh", "Pr", "Ne", "Sk"), border="black", pch=
 ?plot.phylo
 ?nodelabels
 ?legend
-?axis.phylo
+?axisPhylo
 
 # Bruvo's distance - NJ
 hauss.nj.bruvo <- bruvo.boot(pop=hauss.genind, replen=rep(2, 12), sample=1000, tree="nj", showtree=TRUE, cutoff=1, quiet=FALSE)
@@ -1258,6 +1217,8 @@ moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 
 # Explore various networks
 data(rupica)
+# Part of sPCA calculations are in adespatial package, load it
+library("adespatial")
 # Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
 ?chooseCN # See for more details - select the best "type" for your data
 chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
@@ -1271,7 +1232,7 @@ abline(h=0, col="grey") # Add line showing zero
 # Information about sPCA
 print.spca(hauss.spca)
 # Summary of sPCA results
-summary.spca(hauss.spca) # TODO replace by adespatial::multispati
+summary.spca(hauss.spca)
 # Shows connectivity network, 3 different scores, barplot of eigenvalues and eigenvalues decomposition
 plot.spca(hauss.spca)
 # Display of scores in color canals (two analogous variants)
