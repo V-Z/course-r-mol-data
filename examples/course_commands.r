@@ -102,7 +102,7 @@ options() # Generic function to modify various settings
 install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
-update.packages(repos=getOption("repos"), ask=FALSE)
+update.packages(ask=FALSE)
 # Upgrade all packages e.g. from R 3.5 to 3.6
 install.packages(pkgs=installed.packages()) # Packages installed manually from different resources must be reinstalled manually
 
@@ -121,11 +121,9 @@ devtools::install_github("gilles-guillot/Geneland")
 
 # Install package phyloch not available in any repository
 # If not done already, install required packages first
-install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
+install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies="Imports")
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
-# If above command fails on Windows, try
-install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip", repos=NULL)
 
 # We will load packages by library(package) one by one when needed...
 
@@ -146,7 +144,7 @@ BiocManager::available() # List everything
 install.packages(c("adegenet", "poppr", "phytools"))
 update.packages() # Update packages
 
-# Installation from custom repository (not used in our course)
+# Installation from custom repository (ParallelStructure is not used in our course)
 install.packages("ParallelStructure", repos="https://r-forge.r-project.org/")
 ?install.packages # See help for details
 
@@ -297,7 +295,7 @@ class(gunnera.dna)
 # Query on-line sequence databases
 library(seqinr)
 choosebank() # Genetic banks available for seqinr
-choosebank("embl") # Choose some bank
+choosebank("embl", timeout=20) # Choose some bank
 # Query selected database - there are much possibilities
 ?query # See how to construct the query
 nothofagus <- query(listname="nothofagus", query="SP=Nothofagus AND K=rbcL", verbose=TRUE)
@@ -366,7 +364,7 @@ ape::GC.content(x=usflu.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
 seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]), wordsize=3)
 # View sequences - all must be of the same length
-# Function "image.DNAbin" requires as input matrix, so that sequences must be of same length
+# Function "image.DNAbin" requires as input matrix, so that sequences must be of same length (aligned)
 image.DNAbin(x=usflu.dna)
 # Sequences must be of same length - as.matrix.DNAbin() can help
 image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
@@ -479,6 +477,7 @@ indNames(arabidopsis.genind)
 nLoc(arabidopsis.genind)
 locNames(arabidopsis.genind)
 # Genlight (suitable for huge data, not required now)
+# Note that it introduces a lot of missing data due to variable ploidies
 arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf, n.cores=1) # On Linux/macOS and with large data use higher n.cores
 # Check it
 warnings() # See errors - due to missing data when handling tetraploids together with diploids
@@ -523,8 +522,8 @@ library(ips)
 
 # Requires path to MAFFT binary - set it according to your installation
 # Read ?mafft and mafft's documentation
-gunnera.mafft <- ips::mafft(x=gunnera.dna, method="localpair", maxiterate=100, options="--adjustdirection", exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
-gunnera.mafft # See results
+gunnera.mafft <- ips::mafft(x=gunnera.dna, method="localpair", maxiterate=100, options="--adjustdirection", exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft (on Windows point to mafft.bat)!
+gunnera.mafft # See results, compare with 'gunnera'
 class(gunnera.mafft)
 image.DNAbin(gunnera.mafft) # Plot the alignment
 
@@ -538,7 +537,7 @@ gunnera.muscle <- ape::muscle(x=gunnera.dna, exec="muscle", quiet=FALSE, origina
 gunnera.muscle # See results
 class(gunnera.muscle)
 image.DNAbin(gunnera.muscle) # Plot the alignment
-# See option in muscle package
+# See options in muscle package
 ?muscle::muscle
 
 # Remove gaps from alignment - destroy it
@@ -553,7 +552,7 @@ multialign
 class(multialign)
 lapply(X=multialign, FUN=class)
 # Do the alignment
-multialign.aln <- lapply(X=multialign, FUN=ips::mafft, method="localpair", maxiterate=100, exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft!
+multialign.aln <- lapply(X=multialign, FUN=ips::mafft, method="localpair", maxiterate=100, exec="/usr/bin/mafft") # Change "exec" to fit your path to mafft (on Windows point to mafft.bat)!
 # See result
 multialign.aln
 multialign.aln[[1]]

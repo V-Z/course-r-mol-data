@@ -117,7 +117,7 @@
 	\begin{enumerate}
 		\item Be present whole course.
 		\item Be active --- ask and answer questions.
-		\item Process some data. This will be very variable and individual. Everyone should be able take some data (according to her/his interest) and do several simple analysis (according to her/his interest). Students can of course use manual, internet, discuss with anyone. The aim is to repeat part the most interesting/important for the student and edit introduced commands to fit her/his needs. Students can thus bring their data (if they are not too large), download any data from the internet or I~can give them some toy data.
+		\item Process some data. This will be very variable and individual. Everyone should be able to take some data (according to her/his interest) and do several simple analysis (according to her/his interest). Students can of course use manual, internet, discuss with anyone. The aim is to repeat part the most interesting/important for the student and edit introduced commands to fit her/his needs. Students can thus bring their data (if they are not too large), download any data from the internet or I~can give them some toy data.
 		\item Write at least one page (can be split into multiple articles) on Wikipedia about any method or related topic discussed during the course. Again, this is very open, students can write about any topic they like. I~prefer native language of the student (typically to make larger non-English Wikipedia).
 	\end{enumerate}
 \end{frame}
@@ -129,7 +129,7 @@
 		\begin{itemize}
 			\item \alert{Note:} Open the R script in some \alert{good} \href{https://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor}{text editor} (next slide) --- showing syntax highlight, line numbers, etc. (\alert{NO} Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
 			\item The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (slide~\ref{gui}) and directly work with it
-			\item \alert{Downloaded file must have suffix \texttt{*.r}, not \texttt{*.txt}}
+			\item \alert{Downloaded file must have extension \texttt{*.r}, not \texttt{*.txt}}
 			\item \alert{Never ever} open R script in software like MS~Word --- it destroys quotation marks and other things making script unusable
 		\end{itemize}
 	\end{itemize}
@@ -198,13 +198,13 @@
 		\textbf{We will go through\ldots}
 		\begin{itemize}
 			\item Basic introduction into R
-			\item Analyzing phylogeny and evolution and basic theory
+			\item Analyzing phylogeny and evolution, population genetics and basic theory
 			\begin{itemize}
 				\item DNA sequences, SNP, SSRs, AFLP, VCF,~\ldots
 				\item Alignments
 				\item NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony,~\ldots
 				\item Character evolution, ancestral state reconstructions,~\ldots
-				\item Manipulations with trees
+				\item Manipulations and analysis with trees
 			\end{itemize}
 			\item Plotting
 		\columnbreak
@@ -235,7 +235,7 @@
 		\item Development is organized by non-governmental non-profit organization from Vienna
 		\item Thousands of packages extending its functionality are available --- all fields of computations in any scientific discipline
 		\item Provides only command line interface --- full control over the analysis, easy to rerun and/or modify analysis in the future, easy creation of scripts for batch analysis etc.
-		\item Several projects provide convenient graphical user interfaces (GUI)
+		\item Several projects provide convenient graphical user interfaces (GUI, slide~\ref{gui})
 		\item More details: \url{https://www.r-project.org/}
 	\end{itemize}
 \end{frame}
@@ -248,7 +248,7 @@
 		\item RStudio \url{https://rstudio.com/products/rstudio/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\begin{itemize}
-			\item RKWard must be compiled for the same version as you use
+			\item RKWard must be compiled for the same version of R as you use
 			\item If downloading for Windows or macOS, check your version of R and download respective version of RKWard
 			\item On Linux, do not mix package repositories, ensure RKWard is compiled for your R version (typically install both from same resource)
 		\end{itemize}
@@ -315,7 +315,6 @@
 		\item Install package \texttt{build-essential} (general tools to compile software, including R packages)
 		\item Debian (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/debian/}
 		\item Ubuntu (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/ubuntu/}
-		\item As \texttt{<my.favorite.cran.mirror>} select \alert{\texttt{https://mirrors.nic.cz/R/}}, see \alert{CRAN Mirrors} at \url{https://CRAN.R-project.org/mirrors.html}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
 		\item RStudio is also available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
 	\end{itemize}
@@ -357,8 +356,8 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 16,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 1,900 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 18,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,000 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
@@ -466,6 +465,7 @@
 		\end{itemize}
 		\item RStudio and RKWard also save session information (list of opened files,~\ldots) --- very convenient
 		\item Regularly save your work to prevent looses in case of crash or any other accident
+		\item \alert{There \textbf{must not} be any space or accented characters in the path/directory name!}
 	\end{itemize}
 \end{frame}
 
@@ -784,7 +784,7 @@
 
 \begin{frame}{Repositories}
 	\begin{itemize}
-		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c())} or as \texttt{repos} parameter for each \texttt{install.packages()} command (slide~\ref{repos} and onward)
+		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c(\ldots))} or as \texttt{repos} parameter for each \texttt{install.packages(\ldots)} command (slide~\ref{repos} and onward)
 		\item Repositories don't have to be set as global options, e.g. Bioconductor (slide~\ref{bioc}) has its own way to manage packages
 		\item Similar concepts as app stores of Android, iOS, etc.
 	\end{itemize}
@@ -827,11 +827,11 @@
     install.packages("PackageName") # Case sensitive!
     ?install.packages # See for more options
     install.packages(pkgs=c("pkg1", "pkg2", "pkg3", ...),
-      repos=getOption("repos"), dependencies=TRUE)
+      dependencies="Imports")
     # Installed packages are "inactive" - the must by loaded to use them:
     library(PackageName) # Loads installed package (we will do it on the fly)
     # Updates installed packages (by default from CRAN)
-    update.packages(repos=getOption("repos"), ask=FALSE)
+    update.packages(ask=FALSE)
 	\end{spluscode}
 \end{frame}
 
@@ -886,14 +886,12 @@
 	\end{itemize}
 	\begin{spluscode}
     # If not done already, install required packages first
-    install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies=TRUE)
+    install.packages(pkgs=c("ape", "colorspace", "XML"),
+      dependencies="Imports")
     # It is possible to specify direct path
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz",
       repos=NULL, type="source")
-    # If above command fails on Windows, try
-    install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.zip",
-      repos=NULL)
 	\end{spluscode}
 \end{frame}
 
@@ -901,7 +899,7 @@
 	\label{bioc}
 	\begin{itemize}
 		\item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
-		\item To install it, add appropriate repositories (repository has its own version number not strictly following R, see \href{https://bioconductor.org/install}{web}) and \textbf{use Bioconductor's special helper package}
+		\item To install it \textbf{use Bioconductor's special helper package}
 		\item Explore available packages: \href{https://bioconductor.org/packages/}{https://bioconductor.org/packages/release/BiocViews.html}
 	\end{itemize}
 	\begin{spluscode}
@@ -919,13 +917,13 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Bioconductor and others --- differences from another repositories}{Bioconductor has its own installation method}
+\begin{frame}[fragile]{Bioconductor and others --- differences from another repositories}{Bioconductor has its own installation method, little comparison}
 	\label{sources-diff}
 	\begin{spluscode}
     # Standard installation
     install.packages(c("adegenet", "poppr", "phytools"))
     update.packages() # Update packages
-    # Installation from custom repository (not used in our course)
+    # Installation from custom repository (ParallelStructure is not used here)
     install.packages(pkgs="ParallelStructure",
       repos="https://r-forge.r-project.org/")
     ?install.packages # See help for details
@@ -978,6 +976,7 @@
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
+			\item Use version 3.8 from \url{https://drive5.com/muscle/downloads_v3.htm}, not 5.X
 		\end{itemize}
 		\item proj \url{https://proj.org/download.html}
 		\begin{itemize}
@@ -1070,9 +1069,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Our data\ldots}
-	\begin{itemize}
-		\item We will use\ldots
+\begin{frame}[allowframebreaks]{Our data\ldots}{We will use\ldots}
 		\begin{itemize}
 			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
 			\begin{itemize}
@@ -1101,18 +1098,17 @@
 			\begin{itemize}
 				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
 			\end{itemize}
-			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} (various authors; mainly from phylogenetic studies)
+			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} and/or \href{https://www.ncbi.nlm.nih.gov/}{NCBI} (various authors; mainly from phylogenetic studies)
 			\item Training data from packages
 			\begin{itemize}
 				\item Sequence of influenza from USA sampled in several years (package adegenet, part of its vignette)
 				\item SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov} --- population genetics (genetic structure)
 				\item \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica} --- spatial genetics (spatial distribution of genotypes and their relationships)
-				\item Morphological traits and phylogeny of 17 \textit{Maples} species, \texttt{?adephylo::maples} --- phylogeny and correlated evolution of characters
+				\item Morphological traits and phylogeny of 17 \textit{Acer} species, \texttt{?adephylo::maples} --- phylogeny and correlated evolution of characters
 				\item Morphological traits of Carnivora, \texttt{?ape::carnivora} --- life history patterns: allometric, phylogenetic and ecological associations
 				\item Measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris} --- measurements of morphological characters, their correlations and differences among species
 				\item Phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird} --- comparative evolution of characters
 			\end{itemize}
-		\end{itemize}
 		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
 		\begin{itemize}
 			\item Examples are shown mainly with microsatellites, but another (sequencing, presence/absence,~\ldots) data are used in same way --- try it
@@ -1135,14 +1131,14 @@
 			\item Contains also information about mapping quality etc., complex structure
 			\item Compressed version of SAM (see below)
 			\item Special applications are needed to work with BAM files
-			\item Suffix \texttt{*.bam}
+			\item Extension \texttt{*.bam}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}} (Comma Separated Values)
 		\begin{itemize}
 			\item \enquote{One sheet of Excel}
 			\item Common format to store data (traits, coordinates,~\ldots), similar to TSV (see below)
-			\item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks --- it is important to check structure before import into R (and very it after import)
-			\item Suffix usually \texttt{*.csv}
+			\item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks --- it is important to check structure before import into R (and verify it after import)
+			\item Extension usually \texttt{*.csv}
 			\item Can have many formatting forms --- carefully set parameter of import function
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTA_format}{\textbf{FASTA}}
@@ -1150,10 +1146,10 @@
 			\item Simple and popular text format to store genetic sequences (DNA, RNA, proteins)
 			\item Each file contains one or more sequences
 			\item \textbf{Line 1} of every records starts with \texttt{>} and contain name/description of the sequence (e.g. \texttt{> Seq 1}), \textbf{line 2+} contain(s) the sequence (\texttt{ATCG...}) --- until end of file or next line starting with \texttt{>}
-			\item Each sequence can be on single line, on multiple lines
+			\item Each sequence can be on single line, or on multiple lines
 			\item Can store also alignments (practically sequences of same length, with marked gaps and missing data)
-			\item Larger sequences are sometimes compressed
-			\item Suffix usually \texttt{*.fasta} (generic, also \texttt{*.fas}, \texttt{*.fa}, \texttt{*.seq}, \texttt{*.fsa}), \texttt{*.fna} (nucleic acid), \texttt{*.ffn} (nucleotides, coding regions), \texttt{*.faa} (amino acids), \texttt{*.frn} (non-coding RNA),~\ldots
+			\item Larger sequences are sometimes compressed (mostly by gzip --- \texttt{*.gz})
+			\item Extension usually \texttt{*.fasta} (generic, also \texttt{*.fas}, \texttt{*.fa}, \texttt{*.seq}, \texttt{*.fsa}), \texttt{*.fna} (nucleic acid), \texttt{*.ffn} (nucleotides, coding regions), \texttt{*.faa} (amino acids), \texttt{*.frn} (non-coding RNA),~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTQ_format}{\textbf{FASTQ}}
 		\begin{itemize}
@@ -1161,7 +1157,7 @@
 			\item Every record consists of \textbf{4~lines}: (\textbf{1}) sequence ID (with possible description) starting with \texttt{@}, (\textbf{2}) the sequence (\texttt{ATCG...}), (\textbf{3}) \texttt{+} optionally followed by the same ID as line 1, and (\textbf{4}) quality values for nucleotides from line 2
 			\item Probably the most common format for output of modern high throughput sequencing machines (e.g. Illumina), each file contains huge number of sequences
 			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression methods
-			\item Suffix usually \texttt{*.fastq}, \texttt{*.fq}, \texttt{*.fastq.gz}, \texttt{*.fq.gz},~\ldots
+			\item Extension usually \texttt{*.fastq}, \texttt{*.fq}, \texttt{*.fastq.gz}, \texttt{*.fq.gz},~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Newick_format}{\textbf{NEWICK}}
 		\begin{itemize}
@@ -1169,14 +1165,14 @@
 			\item File can contain one or more trees
 			\item E.g. \texttt{(A,B,(C,D)E)F;} or \texttt{(A:0.1,B:0.2,(C:0.3,D:0.4):0.5);}
 			\item Simple logic, but very hard to read by human
-			\item Suffix usually \texttt{*.newick}, \texttt{*.nwk}, \texttt{*.tre},~\ldots
+			\item Extension usually \texttt{*.newick}, \texttt{*.nwk}, \texttt{*.tre},~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
 		\begin{itemize}
 			\item Popular plain text format used by software like \href{https://mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{http://www.splitstree.org/}{SplitsTree},~\ldots
 			\item Structure can be complex, is divided into blocks containing e.g. sequences, trees (in NEWICK format), distance matrix, fragmentation data, networks (e.g. for SplitsTree), MrBayes commands, traits,~\ldots
 			\item Several variants, sometimes problems with interoperability
-			\item Suffix usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
+			\item Extension usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/SAM_(file_format)}{\textbf{SAM}} (Sequence Alignment Map)
 		\begin{itemize}
@@ -1184,18 +1180,18 @@
 			\item Each file contains data for one sample
 			\item Structure is relatively complex
 			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{https://www.htslib.org/}{SAMtools}
-			\item Suffix usually \texttt{*.sam}
+			\item Extension usually \texttt{*.sam}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Tab-separated_values}{\textbf{TSV}} (TAB separated values)
 		\begin{itemize}
 			\item \enquote{One sheet of Excel}
-			\item Common format to store data (traits, coordinates,~\ldots), similar to CSV
+			\item Common format to store data (traits, coordinates,~\ldots), plain text, similar to CSV
 			\item Columns (cells) are separated by tabs (\texttt{\textbackslash t}) --- it is important to check structure before import into R (and verify it after import)
-			\item Suffix usually \texttt{*.tsv}, \texttt{*.tab}
+			\item Extension usually \texttt{*.tsv}, \texttt{*.tab}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Text_file}{\textbf{TXT}}
 		\begin{itemize}
-			\item Plain text file can contain content of all listed file formats (except binary BAM) --- suffix (\texttt{*.txt}) is not really reliable\ldots
+			\item Plain text file can contain content of all listed file formats (except binary BAM) --- extension (\texttt{*.txt}) is not really reliable\ldots
 			\item Technically, all listed plain text formats belong also to this category
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Variant_Call_Format}{\textbf{VCF}} (Variant Call Format)
@@ -1206,7 +1202,7 @@
 			\item Complex structure, sequences are not stored as in FASTA, but as SNP variants on respective positions --- useful to store processed NGS/HTS data (e.g. from Illumina machines)
 			\item Commonly compressed by \texttt{gzip} (\texttt{*.gz}), sometimes by other compression methods
 			\item Several versions and variants (including binary BCF, \texttt{*.bcf}), sometimes there are problems with interoperability
-			\item Suffix usually \texttt{*.vcf} or \texttt{*.vcf.gz}
+			\item Extension usually \texttt{*.vcf} or \texttt{*.vcf.gz}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -1286,7 +1282,7 @@
 		\item Web locations start with \texttt{https://}, \texttt{http://} or \texttt{ftp://}, e.g. \texttt{FileParameter="https://server.cz/directory/file.txt"}
 		\item Local paths (within one computer) can be absolute or relative
 		\begin{itemize}
-			\item Absolute paths start from the top of files hierarchy: on UNIX (Linux, macOS,~\ldots) it use to look like \texttt{/home/USER/}, on Windows like \texttt{C:/} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
+			\item Absolute paths start from the top of files hierarchy: on UNIX (Linux, macOS,~\ldots) it use to look like \texttt{/home/USER/\ldots}, on Windows like \texttt{C:/\ldots} (e.g. \texttt{FileParameter="/path/to/some/file.txt"})
 			\item Relative paths start in current directory (so \textbf{no} with \texttt{/} or \texttt{C:})
 			\begin{itemize}
 	\item In the easiest case the input file is in same directory as is R's working directory --- verify by \texttt{getwd()} and \texttt{dir()} --- you then need to specify only the filename (e.g. \texttt{FileParameter="SomeFile.txt"})
@@ -1329,6 +1325,18 @@
 \end{frame}
 
 \subsection{Microsatellites}
+
+\begin{frame}{Microsatellites}
+	\begin{itemize}
+		\item Microsatellites are short (1--3~bp) tandem repeats (in plants typically AT) very commonly occurring in Eucaryotic genomes
+		\item Defined by number of repeats (usually ca. 25--250$\times$), usually recorded as length of whole region
+		\item On the beginning and end of microsatellite region there is unique primer sequence (ca. 20~bp) --- unique primers must be designed for each species
+		\item Generally considered as evolutionary neutral, but sometimes associated with gene expression regulations or diseases
+		\item Commonly used in population genetics due to their very high mutation rate (high diversity) and possibility to distinguish heterozygots from dominant homozygots
+		\item Suitable for fine-scale population genetics, relationships among closely related species, not for phylogeny
+		\item Cheap, easy to sequence
+	\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{Load microsatellite data}
 	\begin{spluscode}
@@ -1462,6 +1470,21 @@
 
 \subsection{AFLP}
 
+\begin{frame}{Amplified Fragment Length Polymorphism}
+	\begin{enumerate}
+		\item Whole genomic DNA is split by few restriction enzymes into huge number of fragments of various length
+		\item Adaptors are ligated to each fragment
+		\item Pre-amplification --- only fragments with \enquote{selection} nucleotide, 1/16 of all fragments are amplified
+		\item Selective amplification --- like previous step, 2 more \enquote{selection} nucleotides, 1/256 of all fragments are amplified
+	\end{enumerate}
+	\begin{itemize}
+		\item Resulting fragments are visualized and recorded as presence/absence (1/0) matrix of fragment of particular length
+		\item Highly variable, suitable for fine-scale population genetics, relationships among closely related species, not for phylogeny
+		\item Technically relatively demanding, nowadays people use to prefer RAD-Seq or similar
+		\item Same methods are used also for another presence/absence data
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Import of presence/absence (e.g. AFLP) data --- background}
 	Two files --- AFLP data with individual names, and populations
 	\vfill
@@ -1560,6 +1583,18 @@
 
 \subsection{DNA sequences, SNP}
 
+\begin{frame}{Nucleotide sequences}
+	\begin{itemize}
+		\item DNA/RNA sequences from \enquote{traditional} Sanger sequencing
+		\item Probably most common genetic data
+		\item Genes of various lengths and mutation rate --- from variable introns suitable for population genetics to conservative genes suitable for phylogenies
+		\item Examples are shown for DNA, but same apply for RNA and mostly also for protein sequences (use class \texttt{AAbin} instead of \texttt{DNAbin})
+		\item Same methods are used for single nucleotide polymorphism extracted from larger-scale sequencing, including from modern sequencing methods
+		\item Data use to be stored in FASTA  or NEXUS format
+		\item Outputs of modern high-throughput sequencing use to be stored in FASTQ and later BAM and VCF (see further)
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Import of DNA sequence data I}
 	\begin{spluscode}
     # Reading FASTA (read.dna() reads also another formats, see ?read.dna)
@@ -1622,11 +1657,11 @@
 	\begin{spluscode}
     library(seqinr)
     choosebank() # List genetic banks available for seqinr
-    choosebank("embl") # Choose some bank
+    choosebank("embl", timeout=20) # Choose some bank
     ?query # See how to construct the query
     # Query selected database - there are a lot of possibilities
-    nothofagus <- query(listname="nothofagus",query="SP=Nothofagus AND K=rbcl",
-      verbose=TRUE)
+    nothofagus <- query(listname="nothofagus",
+      query="SP=Nothofagus AND K=rbcl", verbose=TRUE)
     nothofagus$req # See the sequences information
     # Get the sequences as a list
     nothofagus.sequences <- getSequence(nothofagus$req)
@@ -1723,8 +1758,8 @@
     seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]),
       wordsize=3)
     # View sequences - all must be of the same length
-    # Function "imag.DNAbine" requires as input matrix
-    # So that sequences must be of same length
+    # Function "image.DNAbine" requires as input matrix
+    # So that sequences must be of same length (aligned)
     image.DNAbin(x=usflu.dna)
     # Sequences must be of same length - as.matrix.DNAbin() can help
     image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
@@ -1733,7 +1768,7 @@
 
 \begin{frame}{U.S. flu sequences}
 	\begin{center}
-		\includegraphics[width=\textwidth-2.5cm]{sequences_usflu.png}
+		\includegraphics[height=6.5cm]{sequences_usflu.png}
 	\end{center}
 \end{frame}
 
@@ -1749,6 +1784,17 @@
 \end{frame}
 
 \subsection{VCF}
+
+\begin{frame}{Variant Call Format}
+	\begin{itemize}
+		\item Raw sequencing data from modern HTS (Illumina, Pacific Biosciences,~\ldots) are stored in FASTQ format and pre-processed via BAM into VCF
+		\item VCF is most common format for storing pre-processed data for various downstream analysis from HTS
+		\item Can effectively store large WGS data
+		\item Keeps only SNPs --- differences of particular sample to reference
+		\item Contains plenty of \enquote{meta information} --- depth of coverage (ow many times was each site sequenced), mapping quality,~\ldots{ }used for quality filtering of SNPs
+		\item Can handle any ploidy level, including mixing of ploidy levels, but not every application can work with that
+	\end{itemize}
+\end{frame}
 
 \begin{frame}[fragile]{Reading VCF}
 	\begin{itemize}
@@ -1839,7 +1885,8 @@
     # Heatmap of GQ (subset)
     heatmap.bp(x=arabidopsis.vcf.gq[1:100,1:100])
     # Bar plot of mean GQ
-    barplot(apply(X=arabidopsis.vcf.gq, MARGIN=2, FUN=mean, na.rm=TRUE), las=3)
+    barplot(apply(X=arabidopsis.vcf.gq, MARGIN=2, FUN=mean, na.rm=TRUE),
+      las=3)
     abline(h=seq(from=0, to=90, by=5), col="grey")
     # Boxplot of GQ
     boxplot(arabidopsis.vcf.gq, las=2, main="Genotype Quality (GQ)")
@@ -1882,9 +1929,13 @@
     # See result
     arabidopsis.vcf
 	\end{spluscode}
+	\begin{itemize}
+		\item vcfR has relatively limited possibilities to filter VCF when comparing to specialized software like \href{https://gatk.broadinstitute.org/}{GATK}
+		\item More options are in \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}, but it uses different R class, so it's not handy for future work in this workflow
+	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{ChromR - filtration of VCF I}
+\begin{frame}[fragile]{ChromR --- filtration of VCF I}
 	\begin{spluscode}
     # Loading reference sequence - download
     # https://soubory.trapa.cz/rcourse/alygenomes.fasta into working directory
@@ -1896,8 +1947,8 @@
     arabidopsis.chrom
     plot(arabidopsis.chrom)
     # Masking sites with too low/high DP and/or MQ
-    arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1, min_DP=8,
-      max_DP=5000, min_MQ=40, max_MQ=200)
+    arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1,
+      min_DP=8, max_DP=5000, min_MQ=40, max_MQ=200)
     arabidopsis.chrom.mask
     plot(arabidopsis.chrom.mask)
     variant.table(arabidopsis.chrom.mask)
@@ -1906,7 +1957,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{ChromR - filtration of VCF II}
+\begin{frame}[fragile]{ChromR --- filtration of VCF II}
 	\begin{spluscode}
     # See results from the previous slide
     arabidopsis.chrom.fin
@@ -1914,7 +1965,7 @@
     # The plot is bit empty as we have only single gene
 	\end{spluscode}
 	\begin{center}
-		\includegraphics[height=4.5cm]{chrom.png}
+		\includegraphics[height=4.75cm]{chrom.png}
 	\end{center}
 \end{frame}
 
@@ -1928,6 +1979,7 @@
     nLoc(arabidopsis.genind)
     locNames(arabidopsis.genind)
     # Genlight (suitable for huge data, not required now)
+    # Note that it introduces a lot of missing data due to variable ploidies
     arabidopsis.genlight <- vcfR2genlight(x=arabidopsis.chrom.fin@vcf,
       n.cores=1) # On Linux/macOS and with large data use higher n.cores
     warnings() # See errors - due to missing data when handling 4N vs. 2N
@@ -1994,7 +2046,7 @@
 \begin{frame}{Import your own data}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Prior to import into R, \alert{ensure your data are correct} --- same decimal separator everywhere, consistent structure of CSV/TSV, no syntactic problems in FASTA/NEXUS/NEWICK,~\ldots
+			\item Prior to import into R, \alert{ensure your data are correct} --- same decimal separator everywhere, consistent structure of CSV/TSV, no syntactic problems in FASTA/NEXUS/NEWICK/\ldots
 			\item Import some of your data into R
 			\begin{itemize}
 				\item Be inspired by previous slides --- edit commands to fit your needs and process your data
@@ -2054,10 +2106,10 @@
     library(ips)
     # Requires path to MAFFT binary - set it according to your installation
     # read ?mafft and mafft's documentation
-    # Change "exec" to fit your path to mafft!
+    # Change "exec" to fit your path to mafft (on Windows point to mafft.bat)!
     gunnera.mafft <- mafft(x=gunnera.dna, method="localpair", maxiterate=100,
       options="--adjustdirection", exec="/usr/bin/mafft")
-    gunnera.mafft
+    gunnera.mafft # See results, compare with 'gunnera'
 	\end{spluscode}
 \end{frame}
 
@@ -2080,7 +2132,7 @@
     gunnera.muscle
     class(gunnera.muscle)
     image.DNAbin(gunnera.muscle)
-    ?muscle::muscle # See option in muscle package
+    ?muscle::muscle # See options in muscle package
 	\end{spluscode}
 \end{frame}
 
@@ -2111,9 +2163,9 @@
     class(multialign)
     lapply(X=multialign, FUN=class)
     # Do the alignment
+    # Change "exec" to fit your path to mafft (on Windows point to mafft.bat)!
     multialign.aln <- lapply(X=multialign, FUN=ips::mafft, method="localpair",
-    maxiterate=100, exec="/usr/bin/mafft")
-      # Change "exec" to fit your path to mafft!
+      maxiterate=100, exec="/usr/bin/mafft")
     # See result
     multialign.aln
     multialign.aln[[1]]
@@ -2176,7 +2228,7 @@
     ?ips::deleteEmptyCells # See help page for details
     ?phyloch::delete.empty.cells # See help page for details
     # Delete all columns containing at least 25% of gaps
-    gunnera.mafft.ng <- deleteGaps(x=gunnera.mafft, gap.max=nrow(gunnera.mafft)/4)
+    gunnera.mafft.ng<-deleteGaps(x=gunnera.mafft,gap.max=nrow(gunnera.mafft)/4)
     gunnera.mafft.ng
     # Do not confuse with function delete.gaps() from phyloch package
     # See of settings of "nmax" value - threshold for gap deletion
@@ -4572,7 +4624,7 @@
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
 		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (from \url{https://download.geofabrik.de/europe/macedonia.html}) and unpack them into R working directory
-		\item R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
+		\item R working directory has to contain also respective DBF and SHX files (same name, only different extension)
 	\end{itemize}
 	\begin{spluscode}
     library(maptools)
@@ -6780,7 +6832,6 @@
 % https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492 - https://datadryad.org/stash/dataset/doi:10.5061/dryad.2s8d0f9
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
 % https://github.com/emmanuelparadis/psmcr
-% - Nahradit SPCA jinou verzí (z adephylo?).
 % - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
 % Obecně o `lapply` a spol.:
@@ -6790,7 +6841,6 @@
 % apply(tmp, MARGIN=2, sum)
 % 
 % Poznámky 2021:
-% - Zkontrolovat instalaci - R tools pro macOS a Windows, zdroje pro Linux
 % - Ověřit upgrade R
 % - Zkontrolovat úlohu 5 na slidu II úloh po základních operacích
 % - Vyhodit phyloch
@@ -6803,7 +6853,6 @@
 % - Zkontrolovat práci se jmény a populacemi při načítání AFLP
 % - Úloha - naimportovat z GenBank jezevce
 % - Z nothofagus.annot vytahat jména a použít je na jména sekvencí
-% - seqinr a rentrez by měly produkovat jinak pojmenované výstupy
 % - Z alygenomes.fasta vyhodit ostatní scaffoldy, nechat jen obsahující ASY3, zkonvertovat do nexu
 % - Utřídit a okomentovat kontrolu VCF
 % - Filtrování genlight na missing data (v rámci VCF kapitoly)
@@ -6813,7 +6862,6 @@
 % - Načíst skupinu genů z disku a udělat hromadný alignment s postprocessingem
 % - Zkontrolovat výstup shapirova testu a testů Ho/He
 % - Do corrplotu ze StAMPPu přidat trojúhelník s odpovídajícími podporami
-% - Inbreeding generuje (opět) trochu jiný graf
 % - Aktualizovat obrázek pro MSN
 % - Úvod k distancím
 % - Jak vybrat vhodný model pro DNA distance?
@@ -6829,7 +6877,7 @@
 % - SNP rozpustit v záklandích analýzách
 % - NJ z genlight?
 % - V DAPC dát loadingplot a optim.a.scores hned za analýzu
-% - Hraní s s konektivitou v datasetu rupica na začátek prostorových analýz
+% - Hraní si s konektivitou v datasetu rupica na začátek prostorových analýz
 % - Utřídit, kterou síť kde používat --- jiná je na začátku u Morana, sPCA --- zkonvertovat výstupy
 % - Lepší distanci do Monmoniera, zkusit větší nrun
 % - V Genelandu přidat proměnnou pro nit
@@ -6865,7 +6913,5 @@
 % - Do funkce přidat výchozí hodnoty a použití return()
 % - Víc příkladů se smyčkami a větvením
 % Poznámky 2022
-% - Funguje vůbec seqinr? Nevyhodit?
 % - Chybějící data v genlight po konverzi z vcfR, filtrace chybějících dat v genind po konverzi z vcfR.
-% - ape::muscle funguje jen s verzí 3.8, ne 5.1
 
