@@ -2357,11 +2357,11 @@
 			\item Algorithm exploring possible models, scoring them and approaching the best runs in steps (iterative generations)
 			\begin{itemize}
 				\item After some time it converges to find optimal solution (usually described by logarithms of likelihood of given model)
-				\item Usually, $\sim$millions (or even more) of generations are required
+				\item Usually, $\sim$millions (or even more) of generations (iterative steps) are required
 				\item Beginning use to be very unstable --- it is discarded as burn-in (\enquote{heating} of \href{https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo}{Markov Chain Monte Carlo (MCMC)} doing the exploration and optimization of models), usually $\sim$10--25\%~of steps
 			\end{itemize}
 		\end{itemize}
-		\item MP, ML and Bayesian statistics contain (evolutionary) \textbf{models} --- they are not based on similarity (as matrix-based methods), so that they are supposed to reveal real structure in the data
+		\item MP, ML and Bayesian statistics contain (evolutionary) \textbf{models} --- they are not based on similarity (as matrix-based methods), so that they are supposed to reveal real structure in the data, on the other hand they are computationally demanding
 		\item \textbf{Permutations}, \textbf{bootstraps} and another \href{https://en.wikipedia.org/wiki/Resampling_(statistics)}{tests}
 		\begin{itemize}
 			\item It is necessary to test statistical significance of the obtained results
@@ -2485,46 +2485,11 @@
 
 \begin{frame}{Graphs from previous slides}
 	\begin{center}
-		\includegraphics[width=\textwidth-2cm]{heterozygosity.png}
+		\includegraphics[height=6.5cm]{heterozygosity.png}
 	\end{center}
 \end{frame}
 
 \subsection{Statistics}
-
-\begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
-	\begin{block}{Too much to choose from?}
-		Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages --- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
-	\end{block}
-	\begin{itemize}
-		\item \texttt{Pop} --- Population analyzed
-		\begin{itemize}
-			\item If \texttt{total=TRUE}, there are also statistics for whole dataset
-		\end{itemize}
-		\item \texttt{N} --- Number of individuals/isolates in the specified population
-		\item \texttt{MLG} --- Number of multilocus genotypes found in the specified population (see \texttt{?mlg})
-		\item \texttt{eMLG} --- The expected number of MLG at the lowest common sample size (set by \texttt{minsamp})
-		\item \texttt{SE} --- The standard error for the rarefaction analysis (assets species richness --- how it grows with growing sample size)
-		\begin{itemize}
-			\item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
-		\end{itemize}
-		\item \texttt{H} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} --- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size
-		\item \texttt{G} --- \href{https://academic.oup.com/genetics/article/118/4/705/5997522}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
-		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
-		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
-		\item \texttt{Hexp} --- \href{https://academic.oup.com/genetics/article/89/3/583/5992737}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
-		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
-		\begin{itemize}
-			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
-			\item Populations whose members are undergoing clonal reproduction generally do so via mitosis --- most likely mechanism for a~change in genotype is via mutation --- the rate of mutation varies from species to species, but it is rarely sufficiently high to approximate a~random shuffling of alleles
-			\item The index of association is a~calculation based on the ratio of the variance of the raw number of differences between individuals and the sum of those variances over each locus
-			\item It as the observed variance over the expected variance --- if they are the same, then the index is zero (=prevailing clonal reproduction) after subtracting one --- it rises with with increasing differences
-		\end{itemize}
-		\item \texttt{p.Ia} --- P-value for \texttt{Ia} from the number of reshuffling indicated in \texttt{sample}
-		\item \texttt{rbarD} --- Standardized Index of Association for each population (see \texttt{?ia}) --- corrected for higher number of loci not to rise so steeply
-		\item \texttt{p.rD} --- P-value for \texttt{rbarD} from the number of reshuffles indicated in \texttt{sample}
-		\item See \href{https://grunwaldlab.github.io/Population_Genetics_in_R/}{poppr's manual} and \texttt{vignette("algo", package="poppr")} for details
-	\end{itemize}
-\end{frame}
 
 \begin{frame}[fragile]{Population statistics by poppr()}
 	\vfill
@@ -2557,6 +2522,41 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
+	\begin{block}{Too much to choose from?}
+		Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages --- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
+	\end{block}
+	\begin{itemize}
+		\item \texttt{Pop} --- Population analyzed
+		\begin{itemize}
+			\item If \texttt{total=TRUE}, there are also statistics for whole dataset
+		\end{itemize}
+		\item \texttt{N} --- Number of individuals/isolates in the specified population
+		\item \texttt{MLG} --- Number of multilocus genotypes found in the specified population (see \texttt{?mlg})
+		\item \texttt{eMLG} --- The expected number of MLG at the lowest common sample size (set by \texttt{minsamp})
+		\item \texttt{SE} --- The standard error for the rarefaction analysis (assets species richness --- how it grows with growing sample size)
+		\begin{itemize}
+			\item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
+		\end{itemize}
+		\item \texttt{H} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} --- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size (is population sizes are very different, indices are not comparable)
+		\item \texttt{G} --- \href{https://academic.oup.com/genetics/article/118/4/705/5997522}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
+		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
+		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
+		\item \texttt{Hexp} --- \href{https://academic.oup.com/genetics/article/89/3/583/5992737}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
+		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
+		\begin{itemize}
+			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
+			\item Populations whose members are undergoing clonal reproduction generally do so via mitosis --- most likely mechanism for a~change in genotype is via mutation --- the rate of mutation varies from species to species, but it is rarely sufficiently high to approximate a~random shuffling of alleles
+			\item The index of association is a~calculation based on the ratio of the variance of the raw number of differences between individuals and the sum of those variances over each locus
+			\item It as the observed variance over the expected variance --- if they are the same, then the index is zero (=prevailing clonal reproduction) after subtracting one --- it rises with with increasing differences
+		\end{itemize}
+		\item \texttt{p.Ia} --- P-value for \texttt{Ia} from the number of reshuffling indicated in \texttt{sample}
+		\item \texttt{rbarD} --- Standardized Index of Association for each population (see \texttt{?ia}) --- corrected for higher number of loci not to rise so steeply
+		\item \texttt{p.rD} --- P-value for \texttt{rbarD} from the number of reshuffles indicated in \texttt{sample}
+		\item See \href{https://grunwaldlab.github.io/Population_Genetics_in_R/}{poppr's manual} and \texttt{vignette("algo", package="poppr")} for details
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Hardy%E2%80%93Weinberg_principle}{In theory}, in large panmictic population without evolutionary influence everyone can mate with everyone (it is in equilibrium) and allele frequencies remain stable --- in reality, environment, behavior, mutations, genetic drift, etc. are structuring the population
@@ -2564,22 +2564,6 @@
 	\begin{spluscode}
     # According to loci
     hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
-    hauss.hwe.test
-    # According to populations
-    # Separate genind object into list of genind objects for individual
-    # populations
-    hauss.pops <- seppop(hauss.genind)
-    hauss.pops
-    # Convert genind back to loci (list of loci objects according to
-    # populations)
-    hauss.pops.loci <- lapply(X=hauss.pops, FUN=genind2loci)
-    # Calculate the results per populations
-    lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Departure from HWE --- results per locus}
-	\begin{spluscode}
     hauss.hwe.test # See results per locus
                    chi^2   df   Pr(chi^2 >)  Pr.exact
      msta93  383.5519728  190  3.552714e-15     0.000
@@ -2591,6 +2575,26 @@
 	\begin{itemize}
 		\item Pr.exact shows significance of the departure (i.e. non-equilibrium distribution of alleles within population --- calculated per loci)
 		\item $\chi^2$ \href{https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test}{test} (without or with the permutations) test the departure --- if it is significant or not --- not how much it is departing
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Departure from HWE}
+	\begin{itemize}
+		\item Calculation is always done per-locus --- see differences, possibly do statistics like \texttt{summary(hauss.hwe.test)} or so
+	\end{itemize}
+	\begin{spluscode}
+    # According to populations
+    # Separate genind object into list of genind objects for individual
+    # populations
+    hauss.pops <- seppop(hauss.genind)
+    hauss.pops
+    # Convert genind back to loci (list of loci objects according to
+    # populations)
+    hauss.pops.loci <- lapply(X=hauss.pops, FUN=genind2loci)
+    # Calculate the results per populations
+    lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
+	\end{spluscode}
+	\begin{itemize}
 		\item If there is significant departure from HWE, think about biological process (with respect to life traits of species studied) which could cause such structuring
 	\end{itemize}
 \end{frame}
@@ -2598,7 +2602,12 @@
 \begin{frame}[fragile]{F-statistics I}
 	\begin{itemize}
 		\item Functions return tables of F-statistics values for populations/loci (roughly 0~--- no structure, 1~--- fully structured)
-		\item The different \href{https://en.wikipedia.org/wiki/F-statistics}{F-statistics} look at different levels of population structure. F$_{IT}$ is the inbreeding coefficient of an individual relative to the total population; F$_{IS}$ is the inbreeding coefficient of an individual relative to the subpopulation and averaging them; and F$_{ST}$ is the effect of subpopulations compared to the total population
+		\item The different \href{https://en.wikipedia.org/wiki/F-statistics}{F-statistics} look at different levels of population structure:
+		\begin{itemize}
+			\item F$_{IT}$ is the inbreeding coefficient of an individual relative to the total population (all samples)
+			\item F$_{IS}$ is the inbreeding coefficient of an individual relative to the subpopulation (\enquote{population} in common terminology) and averaging them
+			\item F$_{ST}$ is the effect of subpopulations (\enquote{population}) compared to the total population (all samples)
+		\end{itemize}
 		\item For \texttt{Fst}, \texttt{theta.msat} and another similar functions the data object \textbf{must} contain population column (see manual of respective function)
 	\end{itemize}
 	\begin{spluscode}
@@ -2613,6 +2622,7 @@
 
 \begin{frame}[fragile]{F-statistics II}
 	\begin{spluscode}
+    # Pairwise Fst comparing populations
     # Convert Adegent's genind to format of hierfstat package
     ?genind2hierfstat
     # Nei's pairwise Fst between all pairs of populations.
@@ -2680,16 +2690,12 @@
 		\item Especially when working with clonal species or species with low genetic structure it is beneficial to know how many unique genotypes there are and how they are distributed across populations
 		\item Inbreeding coefficient estimates level of mating among individuals with (nearly) identical genotypes --- important e.g. for conservation studies or work with agricultural species
 		\item Such studies require sufficiently variable marker (e.g. SSRs) so that results show real genetic structuring and not \enquote{just} low variability of selected marker
+		\item Reliable estimation of such parameters also require high number of individuals from each population
+		\begin{itemize}
+			\item 10 is usually considered as minimum, but more is recommended
+		\end{itemize}
 	\end{itemize}
 \end{frame}
-
-% TODO population theta
-%     # Estimates of population theta according to Kimmel et al. 1998
-%     theta.msat(hauss.loci)
-%                theta.v    theta.h theta.x
-%     msta93  1287.09037 42.7450000  49.500
-%     msta101  105.62800  0.6006928   0.000
-%         ...        ...        ...     ...
 
 \begin{frame}[fragile]{Multi locus genotypes}
 	\begin{multicols}{2}
@@ -2716,7 +2722,7 @@
 
 \begin{frame}[fragile]{Inbreeding}
 	\begin{multicols}{2}
-		\includegraphics[height=7cm]{inbreeding.png}
+		\includegraphics[height=6.5cm]{inbreeding.png}
 		\begin{spluscode}
     # Load training data (cattle)
     data(microbov)
@@ -2738,6 +2744,14 @@
 		\end{spluscode}
 	\end{multicols}
 \end{frame}
+
+% TODO population theta
+%     # Estimates of population theta according to Kimmel et al. 1998
+%     theta.msat(hauss.loci)
+%                theta.v    theta.h theta.x
+%     msta93  1287.09037 42.7450000  49.500
+%     msta101  105.62800  0.6006928   0.000
+%         ...        ...        ...     ...
 
 \subsection{MSN}
 
@@ -2762,7 +2776,7 @@
 	\label{MSN}
 	\begin{multicols}{2}
 		\begin{center}
-			\includegraphics[height=6.5cm]{msn.png}
+			\includegraphics[height=5.75cm]{msn.png}
 		\end{center}
 		\begin{spluscode}
     # See details and options...
@@ -2776,6 +2790,7 @@
       ="inds", gscale=TRUE,
       wscale=TRUE, showplot=TRUE)
     # For another data types
+    # (not only microsatellites)
     ?msn.poppr
     # Interactive creation of MSN
     # Opens browser window
@@ -2786,8 +2801,26 @@
 
 \subsection{Genetic distances}
 
-\begin{frame}[fragile]{Basic distances}
+\begin{frame}[fragile]{Distances}
 	\label{distances}
+	\begin{itemize}
+		\item Distance-based methods are among the most popular in biology
+		\item Huge number of applications
+		\item A lot of different distances --- it is crucial to select correct distance matrix for particular task
+		\begin{itemize}
+			\item Which input data?
+			\item Which purpose?
+			\item Selecting wrong distance method can lead in misleading results in PCoA, NJ,~\ldots
+		\end{itemize}
+		\item All method have lots of assumptions and limits --- check them prior usage
+		\begin{itemize}
+			\item Genetic drift, infinite alleles,~\ldots
+		\end{itemize}
+		\item If resulting distance matrix is not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} (see also further), following analysis can be misleading
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Basic distances}
 	\begin{spluscode}
     # Simple dissimilarity distance matrix
     ?dist.gene # Details about methods of this distance constructions
@@ -2811,14 +2844,14 @@
 	\begin{spluscode}
     # Bruvo's distances weighting SSRs repeats - take care about replen
     # parameter - requires repetition length for every SSRs locus
+    # E.g. if having 5 SSRs with repeat lengths 2, 2, 3, 3 and 2 bp use:
+    # bruvo.dist(pop=... replen=c(2, 2, 3, 3, 2)...)
     hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(2, 12),
       loss=TRUE)
     # Test if it is Euclidean
     is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
-    # Turn to be Euclidean
     hauss.dist.bruvo <- cailliez(distmat=hauss.dist.bruvo, print=FALSE,
-      tol=1e-07, cor.zero=TRUE)
-    # Test if it is Euclidean
+      tol=1e-07, cor.zero=TRUE) # Turn to be Euclidean and verify below
     is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
     hauss.dist.bruvo  # Show it
 	\end{spluscode}
@@ -2864,7 +2897,7 @@
 		\begin{spluscode}
     MyDistance <- read.csv("distances.
       txt", header=TRUE, sep="\t",
-      dec=".", row.names=1)
+      dec=".", row.names=1) # Or so...
     MyDistance <- as.dist(MyDistance)
     class(MyDistance)
     dim(MyDistance)
@@ -2969,7 +3002,7 @@
 	\vfill
 \end{frame}
 
-\begin{frame}[fragile]{Distances in mixed-ploidy data sets I}
+\begin{frame}[fragile]{Distances in mixed-ploidy data sets I}{Nei's distance}
 	\begin{spluscode}
     # stamppNeisD requires population factor in genlight Nei's 1972 distance
     # between individuals (use pop=TRUE to calculate among populations)
@@ -2989,8 +3022,8 @@
 
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets II}
 	\begin{spluscode}
-    # Export the distance matrix as Phylip format for usage in
-    # external software (e.g. SplitsTree)
+    # Export the distance matrix as Phylip format for usage in external
+    # software (e.g. SplitsTree)
     stamppPhylip(distance.mat=arabidopsis.dist, file="arabidopsis_dist.txt")
     # Genomic relationship matrix
     ?stamppGmatrix # Method details
@@ -3174,8 +3207,20 @@
 
 \subsection{NJ (and UPGMA) tree}
 
-\begin{frame}[fragile]{Calculate and test NJ tree}
+\begin{frame}{Neighbor-Joining tree}
 	\label{NJ}
+	\begin{itemize}
+		\item One of the oldest methods to reconstruct tree-like relationships among samples/populations, still commonly used
+		\item Quality relies on good distance matrix (must be Euclidean etc.) --- choose it well according to your data
+		\item Relatively sensitive to amount of missing data --- keep under ca. 10--15\% of missing data in input data
+		\item Usually much better than hierarchical clustering (UPGMA and similar), can be constructed from any data
+		\item Super fast to compute, easy to do bootstrap test
+		\item Suffers of some issues like chaining of individuals in case of low signal in data
+		\item Several method try to reimplement and improve (see slide~\ref{NJ-replacement})
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Calculate and test NJ tree}
 	\begin{spluscode}
     hauss.nj <- nj(hauss.dist) # Calculates the tree (try various distances)
     # Test tree quality - plot original vs. reconstructed distance
@@ -3419,8 +3464,22 @@
 
 \subsection{PCoA}
 
-\begin{frame}[fragile]{PCoA I}
+\begin{frame}{Principal Coordinate Analysis (PCoA), Principal Component Analysis (PCA) and relatives}
 	\label{pcoa}
+	\begin{itemize}
+		\item PCoA is variant of PCA using distance matrix as input
+		\begin{itemize}
+			\item It's crucial to select correct Euclidean distance matrix
+		\end{itemize}
+		\item PCA is using as input data frame with any data type, but results are unstable for large number of variables
+		\begin{itemize}
+			\item In genetic data, each locus (position in alignment, SSRs locus,~\ldots) is separate variable from technical point of view
+			\item PCA is unstable if there are more variables than samples
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{PCoA I}
 	\begin{spluscode}
     hauss.pcoa <- dudi.pco(d=dist.gene(x=scaleGen(x=hauss.genind, center=TRUE,
       scale=FALSE, truenames=TRUE), method="pairwise"), scannf=FALSE, nf=3)
@@ -6862,7 +6921,6 @@
 % - Načíst skupinu genů z disku a udělat hromadný alignment s postprocessingem
 % - Zkontrolovat výstup shapirova testu a testů Ho/He
 % - Do corrplotu ze StAMPPu přidat trojúhelník s odpovídajícími podporami
-% - Aktualizovat obrázek pro MSN
 % - Úvod k distancím
 % - Jak vybrat vhodný model pro DNA distance?
 % - Předělat distance genlightu

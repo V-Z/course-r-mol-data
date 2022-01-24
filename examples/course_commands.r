@@ -648,7 +648,10 @@ vignette("algo", package="poppr")
 # Departure from HWE
 # According to loci
 hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
+# Results per-locus
 hauss.hwe.test
+# Summary across all loci
+summary(hauss.hwe.test)
 # According to populations
 # Separate genind object into list of genind objects for individual populations
 hauss.pops <- seppop(hauss.genind)
@@ -745,6 +748,7 @@ is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10)
 hauss.dist.pop
 
 # Bruvo's distances weighting SSRs repeats - take care about replen parameter - requires repetition length for every SSRs locus
+# E.g. if having 5 SSRs with repeat lengths 2, 2, 3, 3 and 2 bp use: bruvo.dist(pop=... replen=c(2, 2, 3, 3, 2)...)
 hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(2, 12), loss=TRUE)
 # Test if it is Euclidean
 is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
@@ -770,7 +774,7 @@ is.euclid(distmat=as.dist(m=hauss.dist.diss), plot=TRUE, print=TRUE, tol=1e-10)
 hauss.dist.diss
 
 # Import custom distance matrix - distances.txt must exist of the disk
-MyDistance <- read.csv("distances.txt", header=TRUE, sep="\t", dec=".", row.names=1)
+MyDistance <- read.csv("distances.txt", header=TRUE, sep="\t", dec=".", row.names=1) # Or so...
 MyDistance <- as.dist(MyDistance)
 class(MyDistance)
 is.euclid(MyDistance, plot=TRUE, print=TRUE, tol = 1e-10)
