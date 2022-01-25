@@ -3212,11 +3212,11 @@
 	\begin{itemize}
 		\item One of the oldest methods to reconstruct tree-like relationships among samples/populations, still commonly used
 		\item Quality relies on good distance matrix (must be Euclidean etc.) --- choose it well according to your data
-		\item Relatively sensitive to amount of missing data --- keep under ca. 10--15\% of missing data in input data
+		\item Relatively sensitive to amount of missing data --- keep under ca. 10--15\% missingness in input data
 		\item Usually much better than hierarchical clustering (UPGMA and similar), can be constructed from any data
-		\item Super fast to compute, easy to do bootstrap test
+		\item Super fast to compute, easy to do bootstrap test, but usually not so accurate as MP, ML or Bayesian methods
 		\item Suffers of some issues like chaining of individuals in case of low signal in data
-		\item Several method try to reimplement and improve (see slide~\ref{NJ-replacement})
+		\item Several method try to reimplement and improve it (see slide~\ref{NJ-replacement})
 	\end{itemize}
 \end{frame}
 
@@ -3279,7 +3279,7 @@
     # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
     nodelabels(text=round(hauss.boot/10))
     # Colored labels - creates vector of colors according to populations
-    nj.rainbow<-colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
+    nj.rainbow <- colorRampPalette(rainbow(length(popNames(hauss.genind))))
     tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind),
       col.pal=nj.rainbow)) # Colored tips
     ## Plot BW tree with tip symbols and legend
@@ -3467,6 +3467,7 @@
 \begin{frame}{Principal Coordinate Analysis (PCoA), Principal Component Analysis (PCA) and relatives}
 	\label{pcoa}
 	\begin{itemize}
+		\item Create 2-D scatter plot showing relationships among samples and their grouping
 		\item PCoA is variant of PCA using distance matrix as input
 		\begin{itemize}
 			\item It's crucial to select correct Euclidean distance matrix
@@ -3476,6 +3477,13 @@
 			\item In genetic data, each locus (position in alignment, SSRs locus,~\ldots) is separate variable from technical point of view
 			\item PCA is unstable if there are more variables than samples
 		\end{itemize}
+		\item These methods are exploratory
+		\begin{itemize}
+		 \item For creating hypothesis, not testing them
+		 \item There are no tests involved, no bootstraps, nothing like that
+		\end{itemize}
+		\item There are variants of PCA for spatial data, for analysis of traits, etc.
+		\item More such multivariate methods are used in another fields, like NMDS in ecology,~\ldots
 	\end{itemize}
 \end{frame}
 
@@ -3493,7 +3501,7 @@
     100*hauss.pcoa$eig/sum(hauss.pcoa$eig)
     # Colored display according to populations
     # Creates vector of colors according to populations
-    hauss.pcoa.col <- rainbow(length(levels(pop(hauss.genind))))
+    hauss.pcoa.col <- rainbow(length(popNames(hauss.genind)))
     s.class(dfxy=hauss.pcoa$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
     add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft",
       sub="Eigenvalues")
@@ -3545,12 +3553,14 @@
 			\item Try at least 2--3 analysis according to your interests
 		\end{enumerate}
 	\end{exampleblock}
-	\begin{itemize}
-		\item Of course, following chapters will show more possible analysis\ldots
-		\item Previous examples are not covering all possibilities\ldots
-		\item It is crucial to be able to edit the introduced commands to be able to handle your data
-		\item Check help pages of the functions for more options what to do with your data
-	\end{itemize}
+	\begin{block}{Note\ldots}
+		\begin{itemize}
+			\item Of course, following chapters will show more possible analysis\ldots
+			\item Previous examples are not covering all possibilities\ldots
+			\item It is crucial to be able to edit the introduced commands to be able to handle your data
+			\item Check help pages of the functions for more options what to do with your data
+		\end{itemize}
+	\end{block}
 \end{frame}
 
 \section{SNP}
@@ -3601,7 +3611,7 @@
 	\begin{itemize}
 		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
 		\item Lets keep hoping in fast development of computers\ldots
-		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library unavailable on Windows --- add parameter \texttt{parallel=FALSE} to be able to use them
+		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library \textbf{unavailable on Windows} --- add parameter \texttt{parallel=FALSE} to be able to use them
 	\end{itemize}
 \end{frame}
 
@@ -3649,6 +3659,10 @@
 
 \begin{frame}{Discriminant Analysis of Principal components}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
+	\begin{enumerate}
+	 \item Bayesian clustering on data pre-processed by PCA
+	 \item Discriminant analysis using this above clustering and original data
+	\end{enumerate}
 \end{frame}
 
 \begin{frame}[fragile]{DAPC}
@@ -3718,10 +3732,9 @@
     # and inferred populations and
     # assignment of individuals
     table.value(
-      df=table(pop(hauss.
-      genind), hauss.kfind3$grp),
-      col.lab=paste("Inferred\n
-      cluster",
+      df=table(pop(hauss.genind),
+      hauss.kfind3$grp), col.lab=
+      paste("Inferred\ncluster",
       1:length(hauss.kfind3$size)),
       grid=TRUE)
     # If needed, use custom text for
@@ -3845,22 +3858,20 @@
 \section{Spatial analysis}
 
 \begin{frame}[fragile]{Spatial analysis and genetic data}{Correlation of genes and space, spatial structure of genotypes}
-	\begin{spluscode}
-    # After working on STRUCTURE go back to the original working directory
-    # Go to YOUR OWN directory, same as on beginning
-    setwd("~/dokumenty/vyuka/r_mol_data/examples/")
-	\end{spluscode}
-	\vfill
+	Genes in spatial context\ldots
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 \end{frame}
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations (here as basic autocorrelation index, in sPCA and in Monmonier's algorithm), generally it is autocorrelation coefficient with broader use
+		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations, generally it is autocorrelation coefficient with broader use
+		\begin{itemize}
+		 \item As \enquote{classical} correlation index, spatial PCA, Monmonier's algorithm searching for genetic boundaries,~\ldots
+		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Mantel_test}{Mantel test} --- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
 		\item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
 		\item Plenty of options with plotting maps, including interactive maps (e.g. with \href{https://rstudio.github.io/leaflet/}{R Leaflet})
-		\item There are unlimited possibilities with connections with GIS software --- check specialized courses and literature
+		\item There are unlimited possibilities with connections with GIS software --- check specialized courses and literature\ldots
 	\end{itemize}
 \end{frame}
 
@@ -3871,7 +3882,7 @@
 		\begin{itemize}
 			\item \enquote{Only} autocorrelation index --- no genetic/evolutionary model involved --- sometimes criticized as biologically irrelevant mechanism
 			\item Used in many variants for plenty of applications
-			\item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology)
+			\item This (or similar) approach can be used to test correlation between another characteristics (typically used in ecology or evolutionary studies)
 			\item Calculations are done according to matrix of geographic distances, or connectivity network connecting individuals/populations (created by \texttt{chooseCN}) --- carefully check its options and try several parameters
 			\item Pay attention which hypothesis is tested (i.e. if lower, greater or two-sided) --- similar to T-test
 		\end{itemize}

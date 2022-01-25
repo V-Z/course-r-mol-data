@@ -953,7 +953,7 @@ plot.phylo(x=hauss.nj, type="unrooted", show.tip=FALSE, edge.width=3, main="Neig
 # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
 nodelabels(text=round(hauss.boot/10))
 # Coloured labels - creates vector of colors according to population information in genind object
-nj.rainbow <- colorRampPalette(rainbow(length(levels(pop(hauss.genind)))))
+nj.rainbow <- colorRampPalette(rainbow(length(popNames(hauss.genind))))
 # Colored tips
 tiplabels(text=indNames(hauss.genind), bg=fac2col(x=pop(hauss.genind), col.pal=nj.rainbow))
 
@@ -1072,7 +1072,7 @@ add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="topleft", sub="Eigen
 100*hauss.pcoa$eig/sum(hauss.pcoa$eig)
 
 # Colored display according to populations
-hauss.pcoa.col <- rainbow(length(levels(pop(hauss.genind)))) # Creates vector of colors according to populations
+hauss.pcoa.col <- rainbow(length(popNames(hauss.genind))) # Creates vector of colors according to populations
 s.class(dfxy=hauss.pcoa$li, fac=pop(hauss.genind), col=hauss.pcoa.col)
 add.scatter.eig(w=hauss.pcoa$eig, nf=3, xax=1, yax=2, posi="bottomleft", sub="Eigenvalues")
 title("Principal Coordinates Analysis") # Adds title to the graph
