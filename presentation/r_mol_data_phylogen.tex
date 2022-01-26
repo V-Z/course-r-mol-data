@@ -843,11 +843,11 @@
       "akima", "ape", "BiocManager", "caper", "corrplot", "devtools",
       "adespatial", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips",
       "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps",
-      "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy",
-      "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
-      "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
-      "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs",
-      "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
+      "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn",
+      "philentropy", "phylobase", "rentrez", "phytools", "picante", "plotrix",
+      "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap",
+      "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep",
+      "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
     # Upgrade all packages e.g. from R 3.6 to 4.0
@@ -3973,6 +3973,15 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Reading and limits on Moran's~\textit{I}}
+	\begin{itemize}
+		\item 1$^{st}$ and 2$^{nd}$ PC axes are orthogonal to each other, so they show different patterns
+		\item Moran's~\textit{I} show single index over all data (whole space), but different processes might be going on on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are singificantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
+		\item Single number isn't always the best description of complex biological situation\ldots
+		\item Calculations using \texttt{moran.test} are done in connectivity network created by \texttt{chooseCN} --- it's crucial to select connectivity network reflecting biological features of studied species and its geographic situation
+	\end{itemize}
+\end{frame}
+
 \subsection{sPCA}
 
 \begin{frame}[fragile]{Spatial Analysis of Principal Components (sPCA)}
@@ -3984,7 +3993,7 @@
 	\end{itemize}
 	\begin{spluscode}
     data(rupica) # adegenet's toy dataset, Rupicapra rupicapra from French Alps
-    library("adespatial") # Part of sPCA calculations are in adespatial
+    library(adespatial) # Part of sPCA calculations are in adespatial
     # Try various settings for chooseCN (type=X) - type 1-4 as there
     # are identical coordinates (multiple sampling from same locality)
     ?chooseCN # See for more details - select the best "type" for your data
@@ -4091,80 +4100,6 @@
 	\end{center}
 \end{frame}
 
-\subsection{Monmonier}
-
-\begin{frame}[fragile]{Monmonier's algorithm --- genetic boundaries}
-	\begin{itemize}
-		\item Finds boundaries of maximum differences between contiguous polygons of a~tessellation
-		\item Detects genetic boundaries among georeferenced genotypes (or populations)
-		\item For more information see \texttt{adegenetTutorial("basics")}
-		\item Requires every point to have unique coordinates --- in case of population data it is better to work with populations, not individuals (but it is not ideal)
-		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation} --- it is used by a lot of spatial analysis, especially by tools relying on Bayesian statistics
-	\end{itemize}
-	\begin{spluscode}
-    # Calculates Monmonier's function (for threshold use 'd')
-    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(
-      hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE,
-      type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
-    coords.monmonier(hauss.monmonier) # See result as text
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}{Voronoi tessellation}
-	\begin{multicols}{2}
-		\begin{center}
-			\includegraphics[height=6.5cm]{voronoi_diagram.png}
-		\end{center}
-		\begin{itemize}
-			\item In simplest case, all points have certain area and all points within this area are closer to the respective \enquote{main} point than to any other \enquote{neighbor} point
-			\item Extreme differences among size of areas make computational problems and results are unstable --- this typically occurs when calculations are done on individual level an there are large distances among populations
-			\item The more similar sizes of polygons and the more even distribution of samples, the more stable and reliable results we get
-		\end{itemize}
-	\end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]{Plot genetic boundaries}
-	\begin{multicols}{2}
-		\begin{center}
-			\includegraphics[height=6.5cm]{monmonier.png}
-		\end{center}
-		\begin{spluscode}
-    plot.monmonier(hauss.monmonier,
-      add.arrows=FALSE, bwd=10,
-      sub="Monmonier plot", csub=2)
-    points(hauss.genpop$other$xy,
-      cex=2.5, pch=20, col="red")
-    text(x=hauss.genpop$other$xy$lon,
-      y=hauss.genpop$other$xy$lat,
-      labels=popNames(hauss.genpop),
-      cex=3)
-    legend("bottomright",
-      leg="Genetic boundaries\n
-      among populations")
-    # For plotting see
-    ?points
-    ?text
-    ?legend
-		\end{spluscode}
-	\end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]{Monmonier notes}
-	\begin{itemize}
-		\item Sometimes it is needed to get rid of (random) noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}) by something like:
-	\end{itemize}
-	\begin{spluscode}
-    monmonier(..., dist=dudi.pco(d=dist.gene(x=GenindObject$tab),
-      scannf=FALSE, nf=1)$li, ...)
-	\end{spluscode}
-	\begin{itemize}
-		\item Generally (when dataset is bigger and more diverse) it is recommended to run it several times (parameter \texttt{nrun}) --- there will be several iterations
-		\item When running \texttt{monmonier(\ldots)} when it asks for threshold of sorted local distances, try several values and see differences in output
-		\item See \texttt{?plot.monmonier} for various graphical parameters to customize the plot
-		\item Use \texttt{points()} to add for example colored symbols of samples and/or \texttt{text()} to add text labels
-	\end{itemize}
-\end{frame}
-
 \subsection{Mantel test}
 
 \begin{frame}[fragile]{Mantel test}
@@ -4195,7 +4130,7 @@
     library(lattice)
     library(vegan)
     # Different implementation of Mantel test testing distance classes
-    hauss.mantel.cor <- mantel.correlog(D.eco=hauss.dist,D.geo=hauss.gdist,
+    hauss.mantel.cor <- mantel.correlog(D.eco=hauss.dist, D.geo=hauss.gdist,
       XY=NULL, n.class=0, break.pts=NULL, cutoff=FALSE, r.type="pearson",
       nperm=1000, mult="holm", progressive=TRUE)
     hauss.mantel.cor # See results for respective classes
@@ -4262,6 +4197,80 @@
 	\end{spluscode}
 \end{frame}
 
+\subsection{Monmonier}
+
+\begin{frame}[fragile]{Monmonier's algorithm --- genetic boundaries}
+	\begin{itemize}
+		\item Finds boundaries of maximum differences between contiguous polygons of a~tessellation
+		\item Detects genetic boundaries among georeferenced genotypes (or populations)
+		\item For more information see \texttt{adegenetTutorial("basics")}
+		\item Requires every point to have unique coordinates --- in case of population data it is better to work with populations, not individuals (but it is not ideal)
+		\item It uses \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi tessellation} --- it is used by a lot of spatial analysis, especially by tools relying on Bayesian statistics (like Geneland, slide~\ref{Geneland})
+	\end{itemize}
+	\begin{spluscode}
+    # Calculates Monmonier's function (for threshold use 'd')
+    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(
+      hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE,
+      type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+    coords.monmonier(hauss.monmonier) # See result as text
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}{Voronoi tessellation}
+	\begin{multicols}{2}
+		\begin{center}
+			\includegraphics[height=6.5cm]{voronoi_diagram.png}
+		\end{center}
+		\begin{itemize}
+			\item In simplest case, all points have certain area and all points within this area are closer to the respective \enquote{main} point than to any other \enquote{neighbor} point
+			\item Extreme differences among size of areas make computational problems and results are unstable --- this typically occurs when calculations are done on individual level and there are large distances among populations
+			\item The more similar sizes of polygons and the more even distribution of samples, the more stable and reliable results we get
+		\end{itemize}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Plot genetic boundaries}
+	\begin{multicols}{2}
+		\begin{center}
+			\includegraphics[height=6.5cm]{monmonier.png}
+		\end{center}
+		\begin{spluscode}
+    plot.monmonier(hauss.monmonier,
+      add.arrows=FALSE, bwd=10,
+      sub="Monmonier plot", csub=2)
+    points(hauss.genpop$other$xy,
+      cex=2.5, pch=20, col="red")
+    text(x=hauss.genpop$other$xy$lon,
+      y=hauss.genpop$other$xy$lat,
+      labels=popNames(hauss.genpop),
+      cex=3)
+    legend("bottomright",
+      leg="Genetic boundaries\n
+      among populations")
+    # For plotting see
+    ?points
+    ?text
+    ?legend
+		\end{spluscode}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Monmonier notes}
+	\begin{itemize}
+		\item Sometimes it is needed to get rid of (random) noise in data. To do so use as parameter \texttt{dist} of \texttt{monmonier()} table from PCA (\texttt{pcaObject\$li}) by something like:
+	\end{itemize}
+	\begin{spluscode}
+    monmonier(..., dist=dudi.pco(d=dist.gene(x=GenindObject$tab),
+      scannf=FALSE, nf=1)$li, ...)
+	\end{spluscode}
+	\begin{itemize}
+		\item Generally (when dataset is bigger and more diverse) it is recommended to run it several times (parameter \texttt{nrun}) --- there will be several iterations
+		\item When running \texttt{monmonier(\ldots)} when it asks for threshold of sorted local distances, try several values and see differences in output
+		\item See \texttt{?plot.monmonier} for various graphical parameters to customize the plot
+		\item Use \texttt{points()} to add for example colored symbols of samples and/or \texttt{text()} to add text labels
+	\end{itemize}
+\end{frame}
+
 \subsection{Geneland}
 
 \begin{frame}[fragile]{About Geneland}
@@ -4322,7 +4331,7 @@
 		\begin{itemize}
 			\item Monte Carlo Markov Chains (MCMC) require usually millions of generations (iterations, \texttt{nit)} to find optimal solution
 			\item Beginning ($\sim$10--20\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analysis and it is discarded
-			\item Geneland allows to set density of sampling among generations (\texttt{thinning}) --- it is not necessary to sample every generation
+			\item Geneland allows to set density of sampling among generations (\texttt{thinning}) --- it is not necessary to sample (save) every generation
 			\item Within millions of generations we can sample every 1000--10000$^{th}$ generation
 			\item Denser sampling produces smoother data, but can consume too much disk space\ldots
 		\end{itemize}
@@ -4395,9 +4404,11 @@
         burnin=hauss.geneland.burnin, ploidy=2,
         path.mcmc=hauss.geneland.path.mcmc)
       }
-      # Print Fst output
-      hauss.geneland.fstat
+    hauss.geneland.fstat # Print Fst output
 	\end{spluscode}
+	\begin{itemize}
+	\item Probably one of few implementations of F$_{ST}$ using Bayesian statistics (and geographically explicit model)
+	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{MCMC inference under the admixture model}
@@ -4457,6 +4468,7 @@
 	\end{spluscode}
 	\begin{itemize}
 		\item Each item of the \texttt{list} object \texttt{hauss.geneland.fna} (from 1~to number of runs) contains vector of estimated frequencies of null alleles for every locus
+		\item Estimation on null alleles (one from two alleles is missing, behaving like homozygote --- \texttt{A-} instead of \texttt{AA}) is generally difficult, so this is nice and unique feature
 	\end{itemize}
 \end{frame}
 
@@ -4762,7 +4774,7 @@
 \begin{frame}{Practicing work with spatial data}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Try some with the spatial analysis with adegenet's alpine \textit{Rupicapra} dataset (see \texttt{?adegenet::rupica}), or cats from Nancy (see \texttt{?adegenet::nancycats}), or with any other (your) data.
+			\item Try some spatial analysis with adegenet's alpine \textit{Rupicapra} dataset (see \texttt{?adegenet::rupica}), or cats from Nancy (see \texttt{?adegenet::nancycats}\footnote{Note it has coordinates only for populations, not for individuals.}), or with any other (your) data.
 			\item Plot some of the above dataset, or some your data to map. Try several mapping options.
 			\item Which problems can you encounter when doing spatial analysis or plotting maps over large spatial scale (level of continents and above), close to equator or in polar regions?
 			\item What are possible problems when computing distances among sampling sites?
@@ -6954,7 +6966,6 @@
 % - Možná dát do Genelandu výstupy dlouhého pořádného běhu
 % - Poznámky o tom, jak číst mapy z Genelandu
 % - Zkusit rozchodit mapu na OSM nebo další on-line mapy
-% - nancycats má v nancycats@other$xy údaje jen pro populace
 % - Příklad s keep.tip
 % - Bootstrap MP
 % - Vylepšit zobrazení corrplotu

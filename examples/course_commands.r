@@ -90,7 +90,6 @@ aov(formula=iris[["Sepal.Length"]]~iris[["Species"]])
 summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]))
 
 ## Packages and repositories
-
 # Set repositories
 # We will need extra repositories
 getOption("repos") # Shows actual repositories
@@ -99,7 +98,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
@@ -1221,7 +1220,7 @@ moran.plot(x=hauss.pcoa[["li"]][,2], listw=hauss.connectivity) # PC plot
 # Explore various networks
 data(rupica)
 # Part of sPCA calculations are in adespatial package, load it
-library("adespatial")
+library(adespatial)
 # Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
 ?chooseCN # See for more details - select the best "type" for your data
 chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
@@ -1276,21 +1275,6 @@ names(hauss.spca.loadings) <- rownames(hauss.spca$c1)
 loadingplot(x=hauss.spca.loadings, xlab="Alleles", ylab="Weight of the alleles", main="Contribution of alleles to the first sPCA axis")
 boxplot(formula=hauss.spca.loadings~hauss.genind$loc.fac, las=3, ylab="Contribution", xlab="Marker", main="Contribution by markers into the first global score", col="gray")
 
-## Monmonier - genetic boundaries
-# It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
-# Calculates Monmonier's function (for threshold use 'd')
-hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
-coords.monmonier(hauss.monmonier) # See result as text
-# Plot genetic boundaries
-plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
-points(hauss.genpop$other$xy, cex=2.5, pch=20, col="red")
-text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=popNames(hauss.genpop), cex=3)
-legend("bottomright", leg="Genetic boundaries\namong populations")
-# For plotting see
-?points
-?text
-?legend
-
 ## Mantel test - isolation by distance
 # Geodesic distance
 library(pegas)
@@ -1311,6 +1295,21 @@ hauss.mantel.cor
 summary(hauss.mantel.cor)
 # Plot it
 plot(hauss.mantel.cor)
+
+## Monmonier - genetic boundaries
+# It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
+# Calculates Monmonier's function (for threshold use 'd')
+hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+coords.monmonier(hauss.monmonier) # See result as text
+# Plot genetic boundaries
+plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
+points(hauss.genpop$other$xy, cex=2.5, pch=20, col="red")
+text(x=hauss.genpop$other$xy$lon, y=hauss.genpop$other$xy$lat, labels=popNames(hauss.genpop), cex=3)
+legend("bottomright", leg="Genetic boundaries\namong populations")
+# For plotting see
+?points
+?text
+?legend
 
 ## Geneland
 # Haploid and diploid codominant markers (microsattelites or SNPs)
