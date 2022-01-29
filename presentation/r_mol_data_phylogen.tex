@@ -4796,9 +4796,9 @@
 \begin{frame}[allowframebreaks]{Working with phylogenetic trees in R}
 	\begin{itemize}
 		\item To import one or more tree(s) in \href{https://en.wikipedia.org/wiki/Newick_format}{NEWICK} (\texttt{*.tre}, \texttt{*.nwk},~\ldots) use \texttt{read.tree()}, for trees in \href{https://en.wikipedia.org/wiki/Nexus_file}{NEXUS} (\texttt{*.nex}, \texttt{*.nexus},~\ldots) use \texttt{read.nexus()}
-		\item To export tree in NEWICK use \texttt{write.tree()}, in NEXUS use \texttt{write.nexus()}
+		\item To export tree(s) in NEWICK use \texttt{write.tree()}, in NEXUS use \texttt{write.nexus()}
 		\item Another tree (ape's class \texttt{phylo}) formats can be imported/exported/manipulated with e.g. functions from \href{https://bioconductor.org/packages/release/bioc/html/treeio.html}{treeio} package
-		\item Some functions manipulating trees can work only in single tree (class \texttt{phylo}), some can work with multiple trees (class \texttt{multiPhylo})
+		\item Some functions manipulating trees can work only with single tree (class \texttt{phylo}), some can work with multiple trees (class \texttt{multiPhylo})
 		\item \href{https://CRAN.R-project.org/package=ape}{ape} has plenty of \texttt{*.multiPhylo} functions to handle tree sets (e.g. \texttt{root.phylo} vs. \texttt{root.multiPhylo})
 		\item If the function needed does not work with multiple trees, use \texttt{lapply()} (see further examples)
 		\item Typical operations with trees in R
@@ -4991,7 +4991,7 @@
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
 		\item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
-		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more heuristic search is needed --- it doesn't always guarantee to find the most probable tree
+		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more taxa heuristic search is needed --- it doesn't always guarantee to find the most probable (parsimonious) tree
 		\item To speed up calculations, initial tree (usually NJ --- slide~\ref{NJ}) is used to start the search
 		\item With rising performance of computers, it uses to be replaced maximum likelihood or Bayesian methods
 		\item Still underlying plenty of analysis, not only reconstruction of phylogeny
@@ -5029,6 +5029,7 @@
 
 \begin{frame}[allowframebreaks]{Topographical distances among trees I --- implementations}
 	\begin{itemize}
+		\item Comparing plenty of individual gene trees, finding different topologies, construction of consensual species tree topology
 		\item Robinsons-Foulds distance in \texttt{phytools::multiRF}
 		\begin{itemize}
 			\item The index adds 1~for each difference between pair of trees
@@ -5043,6 +5044,7 @@
 			\item We get matrix of pairwise differences among trees (from multiple genes), we need display and analyze it
 		\end{itemize}
 		\item Set of tools for identifying discordant phylogenetic trees are e.g. in package \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}
+		\item Filtered trees (with removed outlying topologies) are input for further species tree reconstruction method
 		\item Other approach are phylogenetic networks searching consensus among phylogenetic trees
 		\item In any case, there are plenty of options how to display the differences among the trees
 	\end{itemize}
@@ -5069,7 +5071,7 @@
 \begin{frame}[fragile]{Topographical distances among trees III}{Post process the matrix and plot it}
 	\begin{itemize}
 		\item There are several methods for calculating distance matrices among the trees --- some take branch lengths into account, some only topology
-		\item There are plenty of heatmap functions, like \texttt{heatmap}, \texttt{heatmap.plus::heatmap.plus}, and more\ldots
+		\item There are plenty of heatmap functions, like \texttt{heatmap}, \texttt{heatmap2.} (from \href{https://cran.r-project.org/package=gplots}{gplots}), \texttt{heatmap.plus} (\href{https://cran.r-project.org/package=heatmap.plus}{archived}), and more\ldots
 	\end{itemize}
 	\begin{spluscode}
     # Create heat maps using heatmap.2 function from gplots package
@@ -5128,10 +5130,29 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{PCoA from distance matrices of topographical differences among trees --- the plot}
-	\begin{center}
-		\includegraphics[height=5.75cm]{pcoa-trees.png}
-	\end{center}
+\begin{frame}[fragile]{PCoA from distance matrices of topographical differences among trees --- the plot}
+	\begin{multicols}{2}
+		\begin{center}
+			\includegraphics[height=6.25cm]{pcoa-trees.png}
+		\end{center}
+		\begin{spluscode}
+    # See current state
+    oxalis.trees
+    # Remove outlying trees
+    oxalis.trees[c("T471", "T639",
+      "T654")] <- NULL
+    # See after removal
+    oxalis.trees
+		\end{spluscode}
+		\begin{itemize}
+			\item Of course, think what could cause observed difference\ldots
+			\begin{itemize}
+				\item Problem in lab?
+				\item Paralog? ILS? HGT? \ldots ?
+				\item Try to BLAST the gene
+			\end{itemize}
+		\end{itemize}
+	\end{multicols}
 \end{frame}
 
 \begin{frame}[fragile]{kdetrees --- identification of outlying trees I}
@@ -5154,7 +5175,13 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{kdetrees --- identification of outlying trees II}
+\begin{frame}{kdetrees --- identification of outlying trees II}
+	\begin{center}
+		\includegraphics[width=\textwidth-1cm]{kdetrees.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{kdetrees --- identification of outlying trees III}
 	\begin{spluscode}
     # See removed trees
     plot.multiPhylo(oxalis.kde[["outliers"]])
@@ -5446,7 +5473,8 @@
 		\begin{enumerate}
 			\item Import/export some tree(s), preferably your data you are working with. Try various plotting options.
 			\item Try various displays of some tree(s) from phytools dataset (see \texttt{data(package="phytools")}).
-			\item Use some method to analyze Apicomplexa trees (see \texttt{?kdetrees::apicomplexa}). Find discordant trees and try to construct species tree from the set of gene trees.
+			\item Use some method to analyze Apicomplexa trees (see \texttt{?kdetrees::apicomplexa}) or some your data. Find discordant trees and try to construct species tree from the set of gene trees.
+			\item Browse \url{http://blog.phytools.org/} for a while. Do you find there some interesting/useful display? Try something with your or test data.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}

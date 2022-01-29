@@ -1703,6 +1703,12 @@ add.scatter.eig(oxalis.trees.pcoa[["eig"]], 3,1,2, posi="topleft")
 title("PCoA of matrix of pairwise trees distances")
 # Alternative function to plot PCA plot
 scatter(x=oxalis.trees.pcoa, posieig="topleft")
+# See current state
+oxalis.trees
+# Remove outlying trees
+oxalis.trees[c("T471", "T639", "T654")] <- NULL
+# See after removal
+oxalis.trees
 
 ## kdetrees
 # Load library
