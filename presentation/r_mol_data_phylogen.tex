@@ -6293,7 +6293,6 @@
 		\begin{enumerate}
 			\item Try to do some analysis with another introduced toy data
 			\item Try some of the introduced analysis with your own custom imported data
-			\item Try at least 2--3 analysis preferably with your own data according to your interest
 		\end{enumerate}
 	\end{exampleblock}
 	\begin{alertblock}{Remember\ldots}
@@ -6391,6 +6390,67 @@
 			\item Linux and macOS use to use UTF-8, Windows use regional encoding, e.g. Czech CP-1250 --- use advanced text editor (slide~\ref{editors}) to convert the encoding, or use some command line tool, like \texttt{iconv}
 		\end{itemize}
 	\end{itemize}
+\end{frame}
+
+\subsection{MetaCentrum}
+
+\begin{frame}{CESNET and MetaCentrum}
+	\begin{itemize}
+		\item \href{https://www.cesnet.cz/?lang=en}{CESNET} (\href{https://www.cesnet.cz/}{česky}) is organization of Czech universities, Academy of Science and other organizations taking care about Czech backbone Internet, one of world leading institutions of this type
+		\item CESNET provides various \href{https://www.cesnet.cz/services/?lang=en}{services} (\href{https://www.cesnet.cz/sluzby/}{česky})
+		\begin{itemize}
+			\item Massive computations --- \href{https://www.cesnet.cz/services/massive-computations-metacentrum/?lang=en}{MetaCentrum} (\href{https://www.cesnet.cz/sluzby/metacentrum/}{česky})
+			\item Large \href{https://www.cesnet.cz/services/data-storage/?lang=en}{data storage} (\href{https://www.cesnet.cz/sluzby/datova-uloziste/}{česky})
+			\item \href{https://www.cesnet.cz/services/filesender/?lang=en}{FileSender} (\href{https://www.cesnet.cz/sluzby/filesender/}{česky}) to be able to send up to 1.9~TB file
+			\item \href{https://www.metacentrum.cz/en/Sluzby/Cloud/}{Cloud} (\href{https://www.metacentrum.cz/cs/Sluzby/Cloud/}{česky}) --- computing (HPC) cloud similar to e.g. Amazon Elastic Compute Cloud (EC2), Google Compute Engine or Microsoft Azure
+			\item \href{https://www.cesnet.cz/services/owncloud/?lang=en}{ownCloud} (\href{https://www.cesnet.cz/sluzby/owncloud/}{česky}) to backup and/or sync data across devices (default capacity is 100~GB, user may ask for more) --- similar to e.g. Dropbox, Google Drive or Microsoft OneDrive
+		\end{itemize}
+		\item Information about MetaCentrum \url{https://www.metacentrum.cz/en/} (\href{https://www.metacentrum.cz/cs/}{česky}) and wiki \url{https://wiki.metacentrum.cz/wiki/Main_Page} (\href{https://wiki.metacentrum.cz/wiki/Hlavn\%C3\%AD_strana}{česky}) (main information for users containing all needed documentation)
+		\item Check my special course \url{https://soubory.trapa.cz/linuxcourse/}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Running R tasks on MetaCentrum}
+	\begin{itemize}
+		\item There are only some R packages, to get more create own package library and use it in scripts (see e.g. \texttt{/software/R/4.0.0/gcc/lib/R/library/})
+		\item \alert{Be careful about paths!}
+		\item In the \texttt{metacentrum.sh} script load R \texttt{module add R-4.0.0-gcc} and start there R script as usually \texttt{R CMD BATCH script.r}
+	\end{itemize}
+	\begin{enumerate}
+		\item Login to selected front node via SSH
+		\item Create somewhere new directory for R packages \texttt{mkdir rpkgs} (or use default \texttt{$\sim$/R/})
+		\item Start R \texttt{R} and install \textbf{all} R packages needed for the task --- install them into the \texttt{rpkgs} directory \texttt{install.packages(pkgs=\ldots, lib="rpkgs")}
+		\item In the R script \texttt{*.r} load the packages from the \texttt{rpkgs} directory \texttt{library(package=\ldots, lib.loc="/storage/\ldots/rpkgs")}
+		\item Ensure all needed outputs are saved from the R script
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{OnDemand}{Applications in web browser}
+	\begin{itemize}
+		\item It allows to run selected interactive application (e.g. RStudio) in web browser
+		\item See \url{https://wiki.metacentrum.cz/wiki/OnDemand} and \url{https://ondemand.cerit-sc.cz/}
+		\item Applications start in \texttt{/storage/brno3-cerit/home/\$USER/} --- ensure to have everything needed there
+	\end{itemize}
+	\begin{center}
+		\includegraphics[height=3.5cm]{rstudio_ondemand.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Jupyter Notebook}
+	\begin{multicols}{2}
+		\begin{itemize}
+			\item Web service allowing to record code as well as its output for languages like BASH, \href{https://wiki.metacentrum.cz/wiki/Jupyter_for_MetaCentrum_users\#Adding_R_kernel}{R}, Python,~\ldots
+			\item Convenient for recording and sharing code, interactive work,~\ldots
+			\item Use \href{https://wiki.metacentrum.cz/wiki/Jupyter_for_MetaCentrum_users}{Jupyter Hub} for MetaCentrum users
+			\begin{itemize}
+				\item Data are in \texttt{/storage/brno2/home/USER/}
+			\end{itemize}
+			\item \href{https://wiki.metacentrum.cz/wiki/Jupyter_notebook}{Available} also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cerit-sc.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
+		\end{itemize}
+		\begin{center}
+			\includegraphics[height=6.5cm]{jupyter.png}
+		\end{center}
+	\end{multicols}
 \end{frame}
 
 \subsection{Functions}
@@ -6512,7 +6572,7 @@
 \begin{frame}[allowframebreaks]{Most common problems and their solutions}
 	\label{problems}
 	\begin{itemize}
-		\item Something was not found (object, function file,~\ldots)
+		\item Something was not found (object, function, file,~\ldots)
 		\begin{itemize}
 			\item Check spelling of all methods, parameters, etc.
 			\item Check all paths (slide~\ref{path})
@@ -6544,6 +6604,7 @@
 			\item Old methods can became outdated and not working anymore
 			\item Check release notes and change logs for new versions, manual pages and on-line forums (slide~\ref{help} and onward)
 			\item Generally, follow news for your topic (appropriate mailing list,~\ldots)
+			\item Unmaintained packages are archived, new created\ldots
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -6560,6 +6621,7 @@
 			\item Try to search web for the error messages (or their parts)
 			\item Try to provide minimal working example --- add at least part of your data (if applicable) so that the problem is reproducible
 			\item Specify version(s) of R/packages, operating system and/or another important details --- authors will commonly insist on newest versions: add outputs of \texttt{sessionInfo()} and \texttt{packageVersion("PackageName")}
+			\item Try to find forum most appropriate for your question (does package have dedicate forum?)
 		\end{itemize}
 		\item \textbf{R is free as freedom of speech --- not as free beer!}
 		\begin{itemize}
@@ -6600,6 +6662,7 @@
 		\item R at CrossValidated StackExchange (for stasticians, mathematicians, etc.) \url{https://stats.stackexchange.com/questions/tagged/r}
 		\item Biostars --- general bioinformatics forum \url{https://www.biostars.org/}
 		\item Biology --- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
+		\item Bioinformatics at StackExchange \url{https://bioinformatics.stackexchange.com/}
 		\item Do not hesitate to ask on the forum or contact author of package with which you have problem, preferably through some public forum or mailing list, they usually respond quickly and helpfully\ldots{ }--- they wish their packages to be working and useful
 		\item \href{https://rseek.org/}{Uncle Google} is your friend here (\textit{\enquote{how to XXX in R}})\ldots
 	\end{itemize}
