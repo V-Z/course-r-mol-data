@@ -5485,13 +5485,13 @@
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Overview of methods of reconstruction of evolution of traits}
+\begin{frame}[allowframebreaks]{Overview of methods and questions of reconstruction of evolution of traits}
 	\begin{itemize}
 		\item Testing if there is correlation between evolution of two or more characters (if they evolve together)
 		\item Testing if there is correlation between one character and phylogenetic history (if trait changes follow evolution)
 		\item Reconstruction of ancestral states of character
 		\item For some methods, taxonomic level can be taken into account (if there is significant evolutionary signal on the trait evolution on e.g. level of genus or family)
-		\item Generally available for continuous as well as discrete characters (not in all methods)
+		\item Generally available for continuous as well as discrete characters (not all methods)
 		\item Some methods can handle more observations per accession
 		\item There are various methods how to display everything
 		\item Methods and models are highly debated in the literature
@@ -5510,7 +5510,7 @@
 \begin{frame}[fragile]{Phylogenetic independent contrast}
 	\begin{itemize}
 		\item When analyzing comparative data takes phylogeny into account
-		\item If we assume that a~continuous trait evolves randomly in any direction (i.e. the \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion} model), then the \enquote{\href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}} between two species is expected to have a~normal distribution with mean zero, and variance proportional to the time since divergence
+		\item If we assume that a~continuous trait evolves randomly in any direction (i.e. following \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion} model), then the \enquote{\href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}} between two species is expected to have a~normal distribution with mean zero, and variance proportional to the time since divergence
 	\end{itemize}
 	\begin{spluscode}
     data(shorebird, package="caper") # Load training data
@@ -5596,7 +5596,7 @@
 \begin{frame}[fragile]{Phylogenetic autocorrelation}
 	\begin{itemize}
 		\item Autocorrelation coefficient to quantify whether the distribution of a~trait among a~set of species is affected or not by their phylogenetic relationships
-		\item In the absence of phylogenetic autocorrelation, the mean expected value of I~and its variance are known - it is thus possible to test the null hypothesis of the absence of dependence among observations
+		\item In the absence of phylogenetic autocorrelation, the mean expected value of \textit{I}~and its variance are known --- it is thus possible to test the null hypothesis of the absence of dependence among observations
 	\end{itemize}
 	\begin{spluscode}
     # Let's choose weights as wij = 1/dij, where the d’s is the distances
@@ -5656,6 +5656,47 @@
 
 \begin{frame}{Correlograms of SW and SW+FW (in one or two graphs) depending on taxonomic level with marked significance}
 	\includegraphics[width=\textwidth]{correlog.png}
+\end{frame}
+
+\subsection{pPCA}
+
+\begin{frame}{Phylogenetic principal component analysis}{PCA corrected for phylogeny}
+	\begin{itemize}
+		\item It requires as input phylogenetic tree and respective comparative data
+		\item Phylogenetic component is removed from the data, then classical PCA is calculated
+		\item Very useful for comparison of plenty of characters
+		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the taxa --- it shows trends of character evolution on the tree, not positions of taxa in PC space
+		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
+		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
+		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Phylogenetic principal component analysis --- the code}
+	\begin{spluscode}
+    # Library needed to create phylo4d object required by ppca
+    library(adephylo)
+    # Calculate pPCA
+    shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]),
+      method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1,
+      nfnega=0)
+    print(shorebird.ppca) # Print results # See summary information
+    summary(shorebird.ppca)
+    # See PCA scores for variables on phylogenetic tree
+    scatter(shorebird.ppca)
+    # See decomposition of pPCA eigenvalues
+    screeplot(shorebird.ppca)
+    # Plot pPCA results - global vs. local structure, decomposition of pPCA
+    # eigenvalues, PCA plot of variables and PCA scores for variables on
+    # phylogenetic tree
+    plot(shorebird.ppca)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}{Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree}
+	\begin{center}
+		\includegraphics[height=5.25cm]{ppca.png}
+	\end{center}
 \end{frame}
 
 \subsection{Decomposition}
@@ -5785,7 +5826,7 @@
 		\begin{itemize}
 			\item \texttt{pgls()} uses maximum likelihood to test for phylogenetic signal
 			\item The signal is clearly presented
-			\item Usually, tuning the model (possible data transformations and/or changing model parameters) is necessary to find the best model --- AIC helps
+			\item Usually, tuning the model (possible data transformations and/or changing model parameters) is necessary to find the best model --- AIC helps (lower is better)
 			\item See \href{https://CRAN.R-project.org/package=caper}{caper manual} for details
 		\end{itemize}
 	\end{multicols}
@@ -5846,6 +5887,7 @@
 \begin{frame}[fragile]{Phylogenetic signal}
 	\begin{itemize}
 		\item Direct consequence of the evolution of trait depends on evolution --- if trait variation is driven by environment, phylogenetic signal is~0
+		\item Blomberg's K~statistic of phylogenetic signal
 	\end{itemize}
 	\begin{spluscode}
     library(picante)
@@ -5860,7 +5902,6 @@
 	\begin{itemize}
 		\item Blomberg's values of 1~correspond to a~Brownian motion process, which implies some degree of phylogenetic signal or conservatism
 		\item K~values closer to zero correspond to a~random or convergent pattern of evolution, while K~values greater than 1~indicate strong phylogenetic signal and conservatism of traits
-		\item Blomberg's K~statistic of phylogenetic signal
 	\end{itemize}
 \end{frame}
 
@@ -5914,46 +5955,6 @@
       data=as.data.frame(cbind(shorebird.data[["M.Mass"]],
       shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
 	\end{spluscode}
-\end{frame}
-
-\subsection{pPCA}
-
-\begin{frame}{Phylogenetic principal component analysis}{PCA corrected for phylogeny}
-	\begin{itemize}
-		\item It requires as input phylogenetic tree and respective comparative data
-		\item Phylogenetic component is removed from the data, then classical PCA is calculated
-		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the taxa --- it shows trends of character evolution on the tree, not positions of taxa in PC space
-		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
-		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
-		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Phylogenetic principal component analysis --- the code}
-	\begin{spluscode}
-    # Library needed to create phylo4d object required by ppca
-    library(adephylo)
-    # Calculate pPCA
-    shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]),
-      method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1,
-      nfnega=0)
-    print(shorebird.ppca) # Print results # See summary information
-    summary(shorebird.ppca)
-    # See PCA scores for variables on phylogenetic tree
-    scatter(shorebird.ppca)
-    # See decomposition of pPCA eigenvalues
-    screeplot(shorebird.ppca)
-    # Plot pPCA results - global vs. local structure, decomposition of pPCA
-    # eigenvalues, PCA plot of variables and PCA scores for variables on
-    # phylogenetic tree
-    plot(shorebird.ppca)
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}{Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree}
-	\begin{center}
-		\includegraphics[height=5.25cm]{ppca.png}
-	\end{center}
 \end{frame}
 
 \subsection{Ancestral state}
@@ -6126,7 +6127,7 @@
     2.659527 2.662223 2.932293 2.482104 2.456929 2.510414 2.692636 2.919908...
     tail(maples.height.bayes[["mcmc"]]) # See end of the table
               gen      sig2       18       19       20 ...       33    logLik
-			...     ...       ...      ...      ...      ... ...      ...       ...
+       ...     ...       ...      ...      ...      ... ...      ...       ...
     10000  999900 0.1860167 2.284352 2.680593 2.962142 ... 2.494260 -19.00596
     10001 1000000 0.1834573 2.315086 2.048144 2.755104 ... 2.485949 -20.80713
     maples.height.bayes[["mcmc"]][10001,3:18] # See end of the table - values
@@ -6295,13 +6296,15 @@
 			\item Try at least 2--3 analysis preferably with your own data according to your interest
 		\end{enumerate}
 	\end{exampleblock}
-	\begin{itemize}
-		\item Working code can be easily recycled to process another data in similar way
-		\item R is always moving forward --- new and new options are arising --- be opened for news and search them on the Internet
-		\item Previous examples are not covering all possibilities\ldots
-		\item It is crucial to be able to edit the introduced commands to be able to handle your data
-		\item Check help pages of the functions for more options what to do with your data
-	\end{itemize}
+	\begin{alertblock}{Remember\ldots}
+		\begin{itemize}
+			\item Working code can be easily recycled to process another data in similar way
+			\item R is always moving forward --- new and new options are arising --- be opened for news and search them on the Internet
+			\item Previous examples are not covering all possibilities\ldots
+			\item It is crucial to be able to edit the introduced commands to be able to handle your data
+			\item Check help pages of the functions for more options what to do with your data
+		\end{itemize}
+	\end{alertblock}
 \end{frame}
 
 \section{The end}
@@ -7006,7 +7009,6 @@
 % - U PIC a PGLS dát jako korelační linii lm
 % - U PGLS a GEE vytáhnout i míru korelace
 % - Uvést, co znamenají jaké hodnoty lambda
-% - pPCA možná mezi autokorelaci a dekompozici
 % - Přidat k pPCA loadingplot (jde-li to)
 % - U pPCA a dalších možná přidat okomentované textové výstupy, zkontrolovat obalování metod do anova, summary, apod.
 % - U ace() možná dát na strom i hodnoty intervalu spolehlivosti

@@ -1935,6 +1935,21 @@ plot(x=carnivora.correlogram2, lattice=TRUE, legend=TRUE, test.level=0.05)
 # Only one graph
 plot(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
 
+## Phylogenetic PCA
+library(adephylo) # Library needed to create phylo4d object required by ppca
+# Calculate pPCA
+shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
+# Print results
+print(shorebird.ppca)
+# See summary information
+summary(shorebird.ppca)
+# See PCA scores for variables on phylogenetic tree
+scatter(shorebird.ppca)
+# See decomposition of pPCA eigenvalues
+screeplot(shorebird.ppca)
+# Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree
+plot(shorebird.ppca)
+
 ## Orthonormal Decomposition - phylogenetic eigenvector regression
 
 # Decomposition of topographical distances (right plot)
@@ -2027,21 +2042,6 @@ phylosig(tree=shorebird.tree, x=shorebird.mmass, method="lambda", test=TRUE)
 # Examples of usage of GLS for testing of phylogenetic signal
 summary(gls(model=shorebird.mmass ~ 1, correlation=corBrownian(value=1, phy=shorebird.tree)))
 summary(pgls(formula=shorebird.mmass ~ 1, data=comparative.data(phy=shorebird.tree, data=as.data.frame(cbind(shorebird.data[["M.Mass"]], shorebird.data[["Species"]])), names.col=V2, vcv=TRUE)))
-
-## Phylogenetic PCA
-library(adephylo) # Library needed to create phylo4d object required by ppca
-# Calculate pPCA
-shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
-# Print results
-print(shorebird.ppca)
-# See summary information
-summary(shorebird.ppca)
-# See PCA scores for variables on phylogenetic tree
-scatter(shorebird.ppca)
-# See decomposition of pPCA eigenvalues
-screeplot(shorebird.ppca)
-# Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree
-plot(shorebird.ppca)
 
 ## Ancestral state reconstruction
 
