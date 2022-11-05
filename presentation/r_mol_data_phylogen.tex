@@ -7010,6 +7010,7 @@
 % https://onlinelibrary.wiley.com/doi/abs/10.1111/evo.13492 - https://datadryad.org/stash/dataset/doi:10.5061/dryad.2s8d0f9
 % https://www.r-bloggers.com/phylotar-retrieve-orthologous-sequences-from-genbank/
 % https://github.com/emmanuelparadis/psmcr
+% https://www.r-bloggers.com/2022/11/r-ggmap-how-to-visualize-spatial-data-in-r/
 % - Kompletní sada příkladů na více genů - od načtení FASTA přes alignment po třeba stromy
 % The minimum spanning network is constructed from the distance matrix between all individuals using Prim's algorithm, so what you get is a representation of minimum set of edges needed to connect all the nodes in your network. My guess (and only a guess) is that while you have apparent population structure, there is still a lot of variation within groups that's strong enough to overpower the MSN. One thing you could try if you haven't already is to add the parameter include.ties = TRUE to see if you have equivalent paths. You might also consider using a Euclidean distance (use the option euclidean = TRUE and scale_missing = TRUE in bitwise.dist), which will differentiate between homozygous and heterozygous sites. You might also consider taking a look at what the tree from bitwise.dist looks like. I would suspect it has a lot of long terminal branches without strong boostrap support.
 % Obecně o `lapply` a spol.:
