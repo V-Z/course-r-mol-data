@@ -108,7 +108,7 @@ install.packages(pkgs=installed.packages()) # Packages installed manually from d
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
-# GUI uses for parallelisation snow and Rmpi
+# GUI uses for parallelization snow and Rmpi
 # RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools, shapefiles (requires foreign) and tripack on GIS layer
 install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 # On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/

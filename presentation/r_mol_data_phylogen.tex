@@ -970,8 +970,8 @@
 		\end{itemize}
 		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
 		\begin{itemize}
-			\item Library for parallelisation used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows; macOS and Linux have more options for parallelisation)
-			\item If it is not available, respective function can sometimes use different parallelisation backend or user can turn off parallelisation for respective function
+			\item Library for parallelization used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows; macOS and Linux have more options for parallelization)
+			\item If it is not available, respective function can sometimes use different parallelization backend or user can turn off parallelization for respective function
 		\end{itemize}
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
 		\begin{itemize}
@@ -1779,7 +1779,7 @@
 		\item Use is basically same as when working with genind --- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
 		\item SNPbin is version of genind/genlight to store one large genome --- serves basically as storage, no need to deal with it
 		\item Genlight as well as genind allow varying ploidy level
-		\item Functions working with genlight use to use parallelisation to speed up operations --- this commonly doesn't work properly on MS~Windows
+		\item Functions working with genlight use to use parallelization to speed up operations --- this commonly doesn't work properly on MS~Windows
 	\end{itemize}
 \end{frame}
 
@@ -1919,7 +1919,7 @@
 \begin{frame}[fragile]{Remove non-biallelic loci and indels}
 	\begin{itemize}
 		\item This is commonly done with SNPs as many downstream analysis are well defined only for biallelic loci (and do not work well with other loci)
-		\item Other than biallelic loci are often suspicious of being laboratory/computational artefact
+		\item Other than biallelic loci are often suspicious of being laboratory/computational artifact
 	\end{itemize}
 	\begin{spluscode}
     # Remove indels
@@ -2175,7 +2175,7 @@
 
 \begin{frame}[fragile]{Align multiple genes in parallel}
 	\begin{itemize}
-		\item There are plenty of implementations of parallelisation and using of computer clusters, see \url{https://CRAN.R-project.org/web/views/HighPerformanceComputing.html}
+		\item There are plenty of implementations of parallelization and using of computer clusters, see \url{https://CRAN.R-project.org/web/views/HighPerformanceComputing.html}
 	\end{itemize}
 	\begin{spluscode}
     library(parallel)
@@ -3611,7 +3611,7 @@
 	\begin{itemize}
 		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
 		\item Lets keep hoping in fast development of computers\ldots
-		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelisation library \textbf{unavailable on Windows} --- add parameter \texttt{parallel=FALSE} to be able to use them
+		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelization library \textbf{unavailable on Windows} --- add parameter \texttt{parallel=FALSE} to be able to use them
 	\end{itemize}
 \end{frame}
 
@@ -3976,7 +3976,7 @@
 \begin{frame}{Reading and limits on Moran's~\textit{I}}
 	\begin{itemize}
 		\item 1$^{st}$ and 2$^{nd}$ PC axes are orthogonal to each other, so they show different patterns
-		\item Moran's~\textit{I} show single index over all data (whole space), but different processes might be going on on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are singificantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
+		\item Moran's~\textit{I} show single index over all data (whole space), but different processes might be going on on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are significantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
 		\item Single number isn't always the best description of complex biological situation\ldots
 		\item Calculations using \texttt{moran.test} are done in connectivity network created by \texttt{chooseCN} --- it's crucial to select connectivity network reflecting biological features of studied species and its geographic situation
 	\end{itemize}
@@ -4640,7 +4640,7 @@
       col="red", cex=2)
 		\end{spluscode}
 		\begin{itemize}
-			\item As usually, play with colours and display options\ldots
+			\item As usually, play with colors and display options\ldots
 		\end{itemize}
 		\begin{center}
 			\includegraphics[height=6.25cm]{map_pie.png}
@@ -4805,7 +4805,7 @@
 		\begin{itemize}
 			\item Calculation of individual phylogenetic trees --- NJ, MP, ML,~\ldots
 			\item Plotting, including various highlights and information on tips, nodes, labels,~\ldots
-			\item Plotting two or more trees together to compare topologies (trees from various methods/genes, tree of plants vs. polynators,~\ldots)
+			\item Plotting two or more trees together to compare topologies (trees from various methods/genes, tree of plants vs. pollinators,~\ldots)
 			\item Preparing trees for subsequent analysis (e.g. character evolution) --- removal of outgroup(s), binding of trees (e.g. crown group from one gene and and stem lineages from another), removal of certain taxa,~\ldots
 			\item Comparison and evaluation of multiple gene trees, identification of trees with outlying topology
 			\item Construction of species tree or network from set of multiple gene trees
@@ -5732,7 +5732,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Orthonormal decomposition - phylogenetic eigenvector regression}
+\begin{frame}[fragile]{Orthonormal decomposition --- phylogenetic eigenvector regression}
 	\begin{spluscode}
     anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree,
       method="patristic")[,1:2])))
@@ -6613,7 +6613,7 @@
 	\label{howtoask}
 	\begin{itemize}
 		\item \alert{Never ever} ask simple silly lazy questions you can quickly find in manual or web
-		\item People on mailing lists and forums respond volunteerly in their spare free time --- do not waste it --- be polite, brief and informative
+		\item People on mailing lists and forums respond voluntarily in their spare free time --- do not waste it --- be polite, brief and informative
 		\item Be as specific and exact as possible
 		\begin{itemize}
 			\item Write \alert{exactly} what you did (\enquote{It doesn't work!} is useless\ldots)
@@ -6659,7 +6659,7 @@
 		\item R announce mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-announce}
 		\item R ecology mailing list \url{https://stat.ethz.ch/mailman/listinfo/r-sig-ecology}
 		\item R at StackOverflow StackExchange (for programmers) \url{https://stackoverflow.com/questions/tagged/r}
-		\item R at CrossValidated StackExchange (for stasticians, mathematicians, etc.) \url{https://stats.stackexchange.com/questions/tagged/r}
+		\item R at CrossValidated StackExchange (for statisticians, mathematicians, etc.) \url{https://stats.stackexchange.com/questions/tagged/r}
 		\item Biostars --- general bioinformatics forum \url{https://www.biostars.org/}
 		\item Biology --- general forum about biology at StackExchange \url{https://biology.stackexchange.com/}
 		\item Bioinformatics at StackExchange \url{https://bioinformatics.stackexchange.com/}
@@ -6854,8 +6854,8 @@
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/LEA.html}{LEA}: landscape and ecological association studies
 		\item \href{https://CRAN.R-project.org/package=leaflet}{leaflet}: interactive web maps with the JavaScript Leaflet library
 		\item \href{https://github.com/giby/Linarius}{Linarius}: dominant marker analysis with mixed ploidy levels
-		\item \href{https://CRAN.R-project.org/package=markophylo}{markophylo}: markov chain models for phylogenetic trees
-		\item \href{https://CRAN.R-project.org/package=MASS}{MASS}: functions and data sets for venables and ripley's MASS
+		\item \href{https://CRAN.R-project.org/package=markophylo}{markophylo}: Markov chain models for phylogenetic trees
+		\item \href{https://CRAN.R-project.org/package=MASS}{MASS}: functions and data sets for Venables and Ripley's MASS
 		\item \href{https://CRAN.R-project.org/package=MCMCglmm}{MCMCglmm}: MCMC generalized linear mixed models
 		\item \href{https://CRAN.R-project.org/package=microseq}{microseq}: microbial sequence data analysis (using \href{https://CRAN.R-project.org/package=tibble}{tibble})
 		\item \href{https://github.com/NESCent/MINOTAUR}{MINOTAUR}: multivariate visualization and outlier analysis
