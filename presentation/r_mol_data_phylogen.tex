@@ -168,7 +168,7 @@
 			\item \href{https://wiki.gnome.org/Apps/Gedit}{Gedit}
 			\item \href{https://notepad-plus-plus.org/}{Notepad++}
 			\item \href{https://www.sublimetext.com/}{Sublime}
-			\item \href{https://atom.io/}{Atom}
+			\item \href{https://code.visualstudio.com/}{VS Code}
 			\item \href{https://www.nano-editor.org/}{Nano}
 			\item And \href{https://en.wikipedia.org/wiki/List_of_text_editors}{more}\ldots
 		\end{itemize}
@@ -188,6 +188,9 @@
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
 			\item Ensure you understand \textbf{syntax} of the command (its grammatical structure and what and how it technically does)
 		\end{enumerate}
+		\begin{itemize}
+			\item \ldots and then you \alert{learn} \textbf{R}\ldots
+		\end{itemize}
 		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command --- \textbf{read also comments} around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
 	\end{itemize}
@@ -212,7 +215,7 @@
 			\item Basic creation of scripts
 			\item And more\ldots
 		\end{itemize}
-		\textbf{We will not dig deep into\ldots}
+		\textbf{We will not go deep into\ldots}
 		\begin{itemize}
 			\item Detailed theory behind used methods
 			\item Programming in~R
@@ -289,7 +292,7 @@
 
 \begin{frame}{MS Windows \& Apple macOS}
 	\begin{itemize}
-		\item Got to \url{https://CRAN.R-project.org/}
+		\item Go to \url{https://CRAN.R-project.org/}
 		\item Download appropriate version and install as usual
 		\item Download and install selected GUI (not required, but highly recommended)
 		\item Most of packages are available as pre-compiled and can be immediately installed from R --- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
@@ -356,7 +359,7 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 18,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 19,000 packages + many orphaned and archived --- abandoned by developers, might be working)
 		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,000 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
@@ -452,7 +455,7 @@
 
 \begin{frame}{Importance of working directory}
 	\begin{itemize}
-	 \item Very important point to get familiar with in R
+	 \item Very important point to get familiar with paths in R
 		\item Default place to load/save, import/export data/results
 		\begin{itemize}
 			\item It changes paths --- one of the most common mistakes --- something (input file,~\ldots) is not found because of wrong path
@@ -461,7 +464,7 @@
 		\item Without saving and loading the R data next time, it is not possible to do any longer work or to check the work in the future
 		\item \alert{Get used that R \textbf{always} work in some directory and by default saves/loads files there}
 		\begin{itemize}
-		 \item When starting RStudio/RKWard, R usually starts in user's home directory or so
+		 \item When starting RStudio/RKWard, R usually starts in user's home directory
 		\end{itemize}
 		\item RStudio and RKWard also save session information (list of opened files,~\ldots) --- very convenient
 		\item Regularly save your work to prevent looses in case of crash or any other accident
