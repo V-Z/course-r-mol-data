@@ -1054,7 +1054,7 @@
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
 		\begin{itemize}
-			\item Sequences (usually short from Illumina) mapped to reference
+			\item Sequences (usually short reads from Illumina) mapped to reference
 			\item Each file contains data for single sample
 			\item Contains also information about mapping quality etc., complex structure
 			\item Compressed version of SAM (see below)
@@ -1147,7 +1147,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences in text view}
+\begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences, text view}
 	\begin{spluscode}
     > CY013200
     atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttcccctagtgaaaaca
@@ -1165,6 +1165,7 @@
     @7001425F:141:CAV4JANXX:3:1104:1250:1987 1:N:0:GTGTCC
     TCGATTCACTGAACTGAATGTCCGACAAACTTTAGTTTGTCGTTTCTACCTCACCAAAGTTCGGAGCTTCGA
     +
+    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     ... # FASTQ continues...
 	\end{spluscode}
 \end{frame}
@@ -1175,9 +1176,9 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Examples of data and formats V --- VCF with multiple samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
+\begin{frame}{Examples of data and formats V --- VCF with 5 samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
 	\begin{center}
-		\includegraphics[height=5.5cm]{vcf_igv.png}
+		\includegraphics[height=6cm]{vcf_igv.png}
 	\end{center}
 \end{frame}
 
