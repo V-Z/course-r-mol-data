@@ -436,7 +436,7 @@
 	\vfill
 	\alert{\texttt{?}} shows help for questioned function (in console type \texttt{q} to close it):
 	\vfill
-	\begin{multicols}{2}
+	\begin{multicols}{3}
 		\begin{itemize}
 			\item Name of the package (top left)
 			\item Function name (headline)
@@ -446,7 +446,8 @@
 			\item Details
 			\item Output value(s)
 			\item About author(s)
-			\item References to cite
+			\item Reference(s) to cite
+			\item Related functions
 			\item Example code
 		\end{itemize}
 	\end{multicols}
@@ -497,10 +498,10 @@
 	\begin{itemize}
 		\item As any programming language, R has plenty of types of objects (variables) with different features, usage and aims
 		\item \textbf{Vectors} --- numbers, characters, boolean
-		\item \textbf{Matrices} --- columns are of same type (numeric, character, etc.) and the same length
+		\item \textbf{Matrices} --- columns are of same type (numeric, character, etc.) and same length
 		\item \textbf{Arrays} --- like matrices, but with possibly more dimensions
 		\item \textbf{Data frames} --- more general --- columns can be of different type (\enquote{sheet of Excel})
-		\item \textbf{Lists} --- ordered collections of objects (vectors, matrices,~\ldots) --- not necessarily of the same type
+		\item \textbf{Lists} --- ordered collections of objects (vectors, matrices,~\ldots) --- not necessarily of same type
 		\item \textbf{Factors} --- a~vector of levels, e.g. populations, colors, etc.
 		\item More \enquote{advanced} objects to store plots, genetic data,~\ldots
 		\begin{itemize}
@@ -815,7 +816,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 3.6 to 4.0), user \textbf{must} reinstall all packages
+		\item After upgrade of R (e.g. from 4.1 to 4.2), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -823,7 +824,7 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
-		\item After upgrade of R (e.g. from 3.6 to 4.0), all packages must be reinstalled
+		\item After upgrade of R (e.g. from 4.1 to 4.2), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
@@ -840,8 +841,8 @@
 
 \begin{frame}[fragile]{Install packages needed for the course}
 	\begin{spluscode}
-    # Install packages. Installation of multiple packages may sometimes fail -
-    #  install then packages in smaller groups or one by one
+    # Install packages. Installation of multiple packages may sometimes
+    # fail - install then packages in smaller groups or one by one
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
       "akima", "ape", "BiocManager", "caper", "corrplot", "devtools",
       "adespatial", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips",
@@ -853,7 +854,7 @@
       "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
-    # Upgrade all packages e.g. from R 3.6 to 4.0
+    # Upgrade all packages e.g. from R 4.1 to 4.2
     install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
