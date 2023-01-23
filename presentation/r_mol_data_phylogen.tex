@@ -1050,82 +1050,6 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{R training data}
-	\begin{itemize}
-		\item R packages commonly contain training data to illustrate its abilities
-		\item We will use some of them during the course (we already used \texttt{iris})
-		\item We will also use data provided by the teacher and/or his colleagues
-	\end{itemize}
-	\begin{spluscode}
-    data() # List data available in currently loaded packages
-    # List data available in all installed packages (can be very long)
-    data(package=rownames(installed.packages()))
-    # Load selected data set; for example phylogeny and species traits
-    # of shorebirds from package caper (we will use it much later)
-    data(shorebird, package="caper")
-    # Optional method (load respective library and then data)
-    library(caper) # Library containing (among others) desired data
-    data(shorebird) # Loading the data
-    ?shorebird # See content of the dataset # or ?caper::shorebird
-    ?adegenet::microbov
-    ?adegenet::rupica
-    ?ape::carnivora
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Our data\ldots}{We will use\ldots}
-		\begin{itemize}
-			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
-			\begin{itemize}
-				\item Population genetics --- genetic structure, characteristics and comparisons of sampled populations
-				\item Spatial genetics --- genetic relationships in spatial context --- relationships among populations regarding their spatial position
-			\end{itemize}
-			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
-			\begin{itemize}
-				\item Population genetics
-				\item Species delimitation (genotyping, identification and assignment of species)
-			\end{itemize}
-			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
-			\begin{itemize}
-				\item Population genetics
-			\end{itemize}
-			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
-			\begin{itemize}
-				\item Population genomics
-				\item Associations of various traits (physiological,~\ldots) with particular genetic loci/alleles
-			\end{itemize}
-			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
-			\begin{itemize}
-				\item Phylogenomics, target enrichment (HybSeq) sequencing of multiple genes --- construction of individual gene trees, their evaluation (identification of trees with significantly different topology --- genes with different evolutionary pathway) and construction of species trees and networks
-			\end{itemize}
-			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
-			\begin{itemize}
-				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
-			\end{itemize}
-			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} and/or \href{https://www.ncbi.nlm.nih.gov/}{NCBI} (various authors; mainly from phylogenetic studies)
-			\item Training data from packages
-			\begin{itemize}
-				\item Sequence of influenza from USA sampled in several years (package adegenet, part of its vignette)
-				\item SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov} --- population genetics (genetic structure)
-				\item \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica} --- spatial genetics (spatial distribution of genotypes and their relationships)
-				\item Morphological traits and phylogeny of 17 \textit{Acer} species, \texttt{?adephylo::maples} --- phylogeny and correlated evolution of characters
-				\item Morphological traits of Carnivora, \texttt{?ape::carnivora} --- life history patterns: allometric, phylogenetic and ecological associations
-				\item Measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris} --- measurements of morphological characters, their correlations and differences among species
-				\item Phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird} --- comparative evolution of characters
-			\end{itemize}
-		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
-		\begin{itemize}
-			\item Examples are shown mainly with microsatellites, but another (sequencing, presence/absence,~\ldots) data are used in same way --- try it
-		\end{itemize}
-		\item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
-		\item Extraction of SNP from DNA is useful in case of huge data sets --- for smaller data sets it is not necessary
-		\item Many methods can process (nearly) any input data type
-	\end{itemize}
-	\begin{alertblock}{Always save your work!}
-		\alert{We will use data objects during whole course --- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
-	\end{alertblock}
-\end{frame}
-
 \begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
@@ -1276,6 +1200,82 @@
     ...DP=4046;ExcessHet=3.0302;FS=0.000;InbreedingCoeff=-0.0096;MQ=79.24...
     ... # More data...
 	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{R training data}
+	\begin{itemize}
+		\item R packages commonly contain training data to illustrate its abilities
+		\item We will use some of them during the course (we already used \texttt{iris})
+		\item We will also use data provided by the teacher and/or his colleagues
+	\end{itemize}
+	\begin{spluscode}
+    data() # List data available in currently loaded packages
+    # List data available in all installed packages (can be very long)
+    data(package=rownames(installed.packages()))
+    # Load selected data set; for example phylogeny and species traits
+    # of shorebirds from package caper (we will use it much later)
+    data(shorebird, package="caper")
+    # Optional method (load respective library and then data)
+    library(caper) # Library containing (among others) desired data
+    data(shorebird) # Loading the data
+    ?shorebird # See content of the dataset # or ?caper::shorebird
+    ?adegenet::microbov
+    ?adegenet::rupica
+    ?ape::carnivora
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Our data\ldots}{We will use\ldots}
+		\begin{itemize}
+			\item Modified subset of diploid microsatellite data of \textit{Taraxacum haussknechtii} (Asteraceae) from Macedonia by \href{https://trapa.cz/en/taraxacum-section-dioszegia}{Zeisek et al 2015}
+			\begin{itemize}
+				\item Population genetics --- genetic structure, characteristics and comparisons of sampled populations
+				\item Spatial genetics --- genetic relationships in spatial context --- relationships among populations regarding their spatial position
+			\end{itemize}
+			\item Modified subset of triploid microsatellite data of several species of \textit{Taraxacum} sect. \textit{Taraxacum} (Asteraceae) --- \textit{T.~alatum}, \textit{T.~ekmanii}, \textit{T.~hemicyclum} and \textit{T.~hepaticum} from central and northern Europe by \href{https://trapa.cz/en/identif-oligoclonal-agamospermous-microsp}{Kirschner et al 2016}
+			\begin{itemize}
+				\item Population genetics
+				\item Species delimitation (genotyping, identification and assignment of species)
+			\end{itemize}
+			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
+			\begin{itemize}
+				\item Population genetics
+			\end{itemize}
+			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
+			\begin{itemize}
+				\item Population genomics
+				\item Associations of various traits (physiological,~\ldots) with particular genetic loci/alleles
+			\end{itemize}
+			\item Small subset of trees and taxa from phylogeny of \textit{Oxalis} spp. (Oxalidaceae) from South Africa (the Cape region) by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12487}{Schmickl et al. 2016}
+			\begin{itemize}
+				\item Phylogenomics, target enrichment (HybSeq) sequencing of multiple genes --- construction of individual gene trees, their evaluation (identification of trees with significantly different topology --- genes with different evolutionary pathway) and construction of species trees and networks
+			\end{itemize}
+			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
+			\begin{itemize}
+				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
+			\end{itemize}
+			\item Maturase K~(matK) plastid sequences of \textit{Nothofagus} (Nothofagaceae) downloaded from \href{https://www.ebi.ac.uk/}{EMBL-EBI} and/or \href{https://www.ncbi.nlm.nih.gov/}{NCBI} (various authors; mainly from phylogenetic studies)
+			\item Training data from packages
+			\begin{itemize}
+				\item Sequence of influenza from USA sampled in several years (package adegenet, part of its vignette)
+				\item SSRs genotypes of cattle breeds, \texttt{?adegenet::microbov} --- population genetics (genetic structure)
+				\item \textit{Rupicapra rupicapra} (Bovidae) SSRs genotypes from French Bauges mountains, \texttt{?adegenet::rupica} --- spatial genetics (spatial distribution of genotypes and their relationships)
+				\item Morphological traits and phylogeny of 17 \textit{Acer} species, \texttt{?adephylo::maples} --- phylogeny and correlated evolution of characters
+				\item Morphological traits of Carnivora, \texttt{?ape::carnivora} --- life history patterns: allometric, phylogenetic and ecological associations
+				\item Measurements of \textit{Iris setosa}, \textit{I. versicolor} and \textit{I. virginica}, \texttt{?iris} --- measurements of morphological characters, their correlations and differences among species
+				\item Phylogeny and morphological traits of shorebirds, \texttt{?caper::shorebird} --- comparative evolution of characters
+			\end{itemize}
+		\item Work with microsatellites is in most cases (except some methods taking advance from microsatellite mutational nature) same as with presence-absence data and methods can handle both data types in nearly same fashion
+		\begin{itemize}
+			\item Examples are shown mainly with microsatellites, but another (sequencing, presence/absence,~\ldots) data are used in same way --- try it
+		\end{itemize}
+		\item Distance-based methods are same regardless input data on the beginning (microsatellites, AFLP, DNA sequences,~\ldots)
+		\item Extraction of SNP from DNA is useful in case of huge data sets --- for smaller data sets it is not necessary
+		\item Many methods can process (nearly) any input data type
+	\end{itemize}
+	\begin{alertblock}{Always save your work!}
+		\alert{We will use data objects during whole course --- all the time save your workspace!} Use possibilities of your GUI or \texttt{save}/\texttt{load} functions.
+	\end{alertblock}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Notes about paths to import the data}
