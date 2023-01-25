@@ -2270,7 +2270,7 @@
 	\end{spluscode}
 	\vfil
 	\begin{itemize}
-		\item \enquote{Strictness} of alignment cleaning depends on following steps --- NJ (and another distance-based methods) doesn't like more than $\sim$10--15\% of missing data, but some tree builders are able to work with gaps --- check their documentation\ldots
+		\item \enquote{Strictness} of alignment cleaning depends on following steps --- NJ (and another distance-based methods) doesn't like more than $\sim$10--15\% of missing data, but some tree builders (MrBayes, IQ-TREE,~\ldots) are able to work with gaps --- check their documentation\ldots
 		\item Automated cleanup is useful especially if batch processing plenty of genes
 	\end{itemize}
 \end{frame}
@@ -2286,6 +2286,7 @@
 			\item Check the resulting alignment.
 			\item Trim the alignment --- delete columns/rows with too much missing data. Think about various thresholds and their implications.
 			\item Compare outputs of several aligners and/or different parameters (gap penalty etc.).
+			\item Obtain nice alignment suitable for any subsequent analysis.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
