@@ -316,7 +316,7 @@ nothofagus.dna # See it
 # Query NCBI databases
 library(rentrez)
 entrez_dbs() # Genetic banks available for rentrez
-entrez_db_summary("nucleotide") # Brief description of what the database is
+entrez_db_summary("nucleotide") # Brief description of the selected database
 entrez_db_searchable("nucleotide") # Set of search terms that can used with this database
 # Search the database and get IDs of matched records
 nothofagus.search <- entrez_search(db="nucleotide", term="Nothofagus[ORGN] AND rbcL[GENE]")

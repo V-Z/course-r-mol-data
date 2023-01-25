@@ -1334,16 +1334,17 @@
 \begin{frame}{Microsatellites}
 	\begin{itemize}
 		\item Microsatellites are short (1--3~bp) tandem repeats (in plants typically AT) very commonly occurring in Eucaryotic genomes
-		\item Defined by number of repeats (usually ca. 25--250$\times$), usually recorded as length of whole region
+		\item Defined by number of repeats (ca. 25--250$\times$), usually recorded as length of whole region
 		\item On the beginning and end of microsatellite region there is unique primer sequence (ca. 20~bp) --- unique primers must be designed for each species
 		\item Generally considered as evolutionary neutral, but sometimes associated with gene expression regulations or diseases
 		\item Commonly used in population genetics due to their very high mutation rate (high diversity) and possibility to distinguish heterozygots from dominant homozygots
 		\item Suitable for fine-scale population genetics, relationships among closely related species, not for phylogeny
-		\item Cheap, easy to sequence
+		\item Cheap, easy to sequence, but species-specific primers are required
+		\item Stored mostly as \texttt{loci} (package pegas) or \texttt{genind} (package adegenet) objects
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Load microsatellite data}
+\begin{frame}[fragile]{Load microsatellite data into loci object}
 	\begin{spluscode}
     # Source data
         pop  msta93 msta101 msta102 msta103 msta105 msta131 ...
@@ -1411,22 +1412,6 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Import existing data set from popular software}
-	\begin{spluscode}
-    ?read.genalex # poppr - reads *.csv file
-    ?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
-    ?read.genetix # adegenet - reads *.gtx files, only ha/diploid data
-    ?read.genepop # adegenet - reads *.gen files, only ha/diploid data
-    ?read.structure # adegenet - reads *.str files, only ha/diploids
-    ?import2genind # adegenet - more automated version of above functions
-	\end{spluscode}
-	\begin{alertblock}{One function rules them all\ldots}
-		\begin{footnotesize}
-			All these functions (including e.g. \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{\textbf{Always check data after import!}}
-		\end{footnotesize}
-	\end{alertblock}
-\end{frame}
-
 \begin{frame}[fragile]{Import of polyploid microsatellites}
 	\vfill
 	\begin{itemize}
@@ -1484,7 +1469,7 @@
 	\end{enumerate}
 	\begin{itemize}
 		\item Resulting fragments are visualized and recorded as presence/absence (1/0) matrix of fragment of particular length
-		\item Highly variable, suitable for fine-scale population genetics, relationships among closely related species, not for phylogeny
+		\item Highly variable, no prior knowledge of target genome required, suitable for fine-scale population genetics, relationships among closely related species (not for phylogeny)
 		\item Technically relatively demanding, nowadays people use to prefer RAD-Seq or similar
 		\item Same methods are used also for another presence/absence data
 	\end{itemize}
@@ -1526,6 +1511,7 @@
 		\item Keep names of loci as simple as possible, there are some issues when they contain dots
 		\item As soon as one line of data = one individual, ploidies and their mixing doesn't matter
 		\item Not all methods introduced later are available/meaningful for PA
+		\item Basically \texttt{matrix}/\texttt{DF} is imported, usually converted into \texttt{genind}
 	\end{itemize}
 	\end{multicols}
 \end{frame}
@@ -1553,6 +1539,22 @@
 \end{frame}
 
 \subsection{Notes about data}
+
+\begin{frame}[fragile]{Import existing data set from popular software}
+	\begin{spluscode}
+    ?read.genalex # poppr - reads *.csv file
+    ?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
+    ?read.genetix # adegenet - reads *.gtx files, only ha/diploid data
+    ?read.genepop # adegenet - reads *.gen files, only ha/diploid data
+    ?read.structure # adegenet - reads *.str files, only ha/diploids
+    ?import2genind # adegenet - more automated version of above functions
+	\end{spluscode}
+	\begin{alertblock}{One function rules them all\ldots}
+		\begin{footnotesize}
+			All these functions (including e.g. \texttt{read.loci()} and \texttt{read.csv()}) are only modifications of \textbf{\texttt{read.table()}}. You can use it directly to import any data. Look at \texttt{?read.table} and play with it. Take care about parameters. Does the table use quotes to mark cell (e.g. \texttt{quote="\textbackslash ""})? How are columns separated (e.g. \texttt{sep="\textbackslash t"})? Is there a~header with names of populations/loci/whatever (\texttt{header=T/F})? What is decimal separator (e.g. \texttt{dec="."})? Are there row names (used typically as names of individuals; e.g. \texttt{row.names=1})? \alert{\textbf{Always check data after import!}}
+		\end{footnotesize}
+	\end{alertblock}
+\end{frame}
 
 \begin{frame}[fragile]{Another data manipulation}
 	\begin{spluscode}
@@ -1595,7 +1597,7 @@
 		\item Genes of various lengths and mutation rate --- from variable introns suitable for population genetics to conservative genes suitable for phylogenies
 		\item Examples are shown for DNA, but same apply for RNA and mostly also for protein sequences (use class \texttt{AAbin} instead of \texttt{DNAbin})
 		\item Same methods are used for single nucleotide polymorphism extracted from larger-scale sequencing, including from modern sequencing methods
-		\item Data use to be stored in FASTA  or NEXUS format
+		\item Data use to be stored in FASTA  or NEXUS format --- can contain any sequences of any origin
 		\item Outputs of modern high-throughput sequencing use to be stored in FASTQ and later BAM and VCF (see further)
 	\end{itemize}
 \end{frame}
@@ -1684,7 +1686,7 @@
 	\begin{spluscode}
     library(rentrez)
     entrez_dbs() # Genetic banks available for rentrez
-    entrez_db_summary("nucleotide") # Brief description of what the database is
+    entrez_db_summary("nucleotide") # Brief description of the selected database
     # Set of search terms that can used with this database
     entrez_db_searchable("nucleotide")
     # Search the database and get IDs of matched records
@@ -1781,6 +1783,9 @@
 	\begin{itemize}
 		\item Genlight is \enquote{just} version of more common genind object to store large data sets with (nearly) complete multiple genomes
 		\item \enquote{Large} is tricky --- there is no easy criterion (roughly, genind is inefficient since dozens or hundreds thousands of SNPs) --- try genind and when work fails because of not enough computer resources, go on with genlight
+		\begin{itemize}
+			\item Genlight is much more memory efficient, large genind can consume a lot of resources
+		\end{itemize}
 		\item Use is basically same as when working with genind --- but not all functions are able to deal with it (on the other hand, others are optimized to work well on large data sets)
 		\item SNPbin is version of genind/genlight to store one large genome --- serves basically as storage, no need to deal with it
 		\item Genlight as well as genind allow varying ploidy level
@@ -1792,20 +1797,24 @@
 
 \begin{frame}{Variant Call Format}
 	\begin{itemize}
-		\item Raw sequencing data from modern HTS (Illumina, Pacific Biosciences,~\ldots) are stored in FASTQ format and pre-processed via BAM into VCF
+		\item Raw sequencing data from modern HTS (Illumina, Pacific Biosciences,~\ldots) are stored in FASTQ format and pre-processed via BAM (FASTQ reads aligned to reference sequence) into VCF
+		\begin{itemize}
+			\item This is usually done with special SW and/or pipelines
+			\item Raw VCF can be large, requires quality filtering etc.
+		\end{itemize}
 		\item VCF is most common format for storing pre-processed data for various downstream analysis from HTS
 		\item Can effectively store large WGS data
 		\item Keeps only SNPs --- differences of particular sample to reference
 		\item Contains plenty of \enquote{meta information} --- depth of coverage (ow many times was each site sequenced), mapping quality,~\ldots{ }used for quality filtering of SNPs
-		\item Can handle any ploidy level, including mixing of ploidy levels, but not every application can work with that
+		\item Can handle any ploidy level, including mixing of ploidy levels, but not every application can work with that --- this can easily lead into issues
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Reading VCF}
+\begin{frame}[fragile]{Reading VCF using vcfR}
 	\begin{itemize}
 		\item Download into working directory input file \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz} and reference sequence \url{https://soubory.trapa.cz/rcourse/alygenomes.fasta}
 		\item Non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} from central and northern Europe
-		\item Package vcfR has functions to manipulate and explore VCF; other option is usage of \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation}
+		\item Package \textbf{vcfR} has functions (class \texttt{vcfR}) to manipulate and explore VCF; other option is usage of \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} (uses different classes)
 	\end{itemize}
 	\begin{spluscode}
     library(vcfR) # Required library
