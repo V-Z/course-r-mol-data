@@ -663,9 +663,11 @@ lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 # FST
 # Fit, Fst and Fis for each locus
 # For Fst, fstat and theta.msat the loci object must contain population column
-Fst(x=hauss.loci, pop=1)
+Fst(x=hauss.loci, pop=1) # Calculation per locus
+summary(Fst(x=hauss.loci, pop=1)) # Summary across loci
 # Nei's pairwise Fst between all pairs of populations.
 pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
+heatmap(x=pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind)), Rowv=NA, Colv=NA) # Simple visualization
 # For mixed ploidy data sets
 # stamppFst requires population factor in genlight (here, population code consists of first three letters of individual's name)
 indNames(arabidopsis.genlight)
@@ -721,10 +723,11 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle"
 ?bruvo.msn
 # Get the MSN
 # Note SSRs repeats 'rep(2, 12)' - change according to your data
-bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label ="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
+# Here 12 SSRS loci of length 2 bp
+bruvo.msn(gid=hauss.genind, replen=rep(x=2, times=12), loss=TRUE, palette=rainbow, vertex.label ="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
 # For another data types
 ?msn.poppr
-# Interactive creation of MSN. Opens browser window
+# Interactive creation of MSN
 ?imsn
 
 ## Genetic distances
@@ -748,7 +751,7 @@ hauss.dist.pop
 
 # Bruvo's distances weighting SSRs repeats - take care about replen parameter - requires repetition length for every SSRs locus
 # E.g. if having 5 SSRs with repeat lengths 2, 2, 3, 3 and 2 bp use: bruvo.dist(pop=... replen=c(2, 2, 3, 3, 2)...)
-hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(2, 12), loss=TRUE)
+hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(x=2, times=12), loss=TRUE)
 # Test if it is Euclidean
 is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
 # Turn to be Euclidean
@@ -807,13 +810,23 @@ dev.off() # Close graphical device to reset settings
 # See details of distance methods in package poppr
 vignette("algo", package="poppr")
 
+# Selecting model for calculating distances among DNA sequences
+library(phangorn) # Load needed library
+?modelTest # Plenty of options, including possible parallelization
+usflu.models <- modelTest(object=as.phyDat(usflu.dna)) # Test models
+# Sort results according to AIC or BIC - the lower the better fit
+head(usflu.models[order(usflu.models[["AIC"]]),], n=15L)
+# Same for Gunnera dataset
+gunnera.models <- modelTest(object=as.phyDat(gunnera.mafft.ng))
+head(gunnera.models[order(gunnera.models[["AIC"]]),], n=15L)
+
 # DNA distances - there are various models available
 ?dist.dna
-usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
+usflu.dist <- dist.dna(x=usflu.dna, model="F84")
 usflu.dist
 class(usflu.dist)
 dim(as.matrix(usflu.dist))
-gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="F81")
+gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="TN93")
 gunnera.dist
 class(gunnera.dist)
 dim(as.matrix(gunnera.dist))
@@ -883,7 +896,7 @@ heatmap(as.matrix(hauss.dist.bruvo), symm=TRUE)
 heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
 ?heatmap # Other options
 
-## AMOVA % FIXME Get percentage
+## AMOVA
 # From package pegas (doesn't directly show percentage of variance)
 hauss.pop <- pop(hauss.genind)
 hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=FALSE)

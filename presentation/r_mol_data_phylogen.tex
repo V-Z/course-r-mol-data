@@ -868,7 +868,7 @@
 	\begin{spluscode}
     # Other packages used when using Geneland
     # Needed is PBSmapping or mapproj for conversion of coordinates
-    # GUI uses for parallelisation snow and Rmpi
+    # GUI uses for parallelization snow and Rmpi
     # RgoogleMaps (requires rgdal) can be used to plot output on top of Google
     # map, maptools, shapefiles (requires foreign) and tripack on GIS layer
     install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps",
@@ -2280,7 +2280,7 @@
 \begin{frame}[fragile]{Practice alignment}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Download (import from on-line database or your file from disk) sequences of ITS (or other variable gene if you prefer) of your favourite organism.
+			\item Download (import from on-line database or your file from disk) sequences of ITS (or other variable gene if you prefer) of your favorite organism.
 			\item Check the imported data.
 			\item Align sequences with your preferred aligner.
 			\item Check the resulting alignment.
@@ -2331,7 +2331,7 @@
 			\end{itemize}
 			\item \textbf{\href{https://en.wikipedia.org/wiki/Neighbor_joining}{Neighbor-Joining (NJ)}} --- from slide~\ref{NJ}
 			\begin{itemize}
-				\item A~tree starting from the two most similar individuals and connecting in the next steps next and next the most similar individual
+				\item A~tree starting from the two most similar individuals and connecting in the next steps next and next the most similar individuals
 				\item In some cases artificially chains individuals
 				\item Several methods try to improve it --- slide~\ref{NJ-replacement}
 			\end{itemize}
@@ -2351,6 +2351,9 @@
 			\item Two variables are easily displayable in 2D xy-scatter plot (we can calculate correlation, whatever)
 			\item In molecular data, each locus is more or less independent variable --- 1000~bp alignment has 1000 variables: How to display plot with 1000 axes to be able to really see something?
 			\item Methods like Principal Component Analysis (\textbf{PCA}), Non-Metric Multidimensional Scaling (\textbf{NMDS}) or \textbf{PCoA} look for correlations between pairs of variables to reduce them into new variables --- after many steps new uncorrelated variables retaining maximum of original variability are constructed
+			\begin{itemize}
+				\item PCoA requires as input distance matrix; PCA, NMDS and others source data matrix
+			\end{itemize}
 			\item New variables are sorted according amount of variability they show (the decrease is very steep --- first 1--4~axes are usually enough) --- it is possible to display xy-scatter plot showing most of variability of the data
 			\item Good for data display and creation of hypotheses --- not to verify them (there is no statistical test)
 			\item Data are commonly scaled --- all variables are in same scale
@@ -2362,7 +2365,7 @@
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_likelihood_estimation}{Maximum Likelihood (ML)}}
 		\begin{itemize}
-			\item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely tree under given mutational model
+			\item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely phylogenetic tree under given mutational model
 			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Bayesian_statistics}{Bayesian statistics}}
@@ -2403,6 +2406,7 @@
 		\item Nearly all data types are processed in similar/same way
 		\begin{itemize}
 			\item It's important to select correct genetic index, distance method, etc. for particular data types and/or question
+			\item Only some examples are shown, try more yourselves
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -2427,7 +2431,7 @@
 		\item Of course, there are plenty of another options\ldots
 		\begin{itemize}
 			\item See e.g. \href{https://cran.r-project.org/web/views/}{CRAN Views} for \href{https://cran.r-project.org/web/views/Genetics.html}{genetics} or \href{https://cran.r-project.org/web/views/Multivariate.html}{multivariate statistics}
-			\item Representative, but not exhaustive examples are shown
+			\item Representative, but not exhaustive examples are shown --- \alert{try more yourselves, adjust shown methods for your data}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -2438,16 +2442,16 @@
 		\item We will now work mainly with diploid SSRs of \textit{Taraxacum haussknechtii}, you can \textbf{try with other data} examples by \textbf{yourselves}
 	\end{itemize}
 	\begin{spluscode}
-    # Get summary - names and sizes of populations,
-    # heterozygosity, some info about loci
+    # Get summary - names and sizes of populations, heterozygosity, some info
+    # about loci
     hauss.summ <- summary(hauss.genind)
     # Plot expected vs. observed heterozygosity it looks like big difference
     plot(x=hauss.summ$Hexp, y=hauss.summ$Hobs,
       main="Observed vs expected heterozygosity",
       xlab="Expected heterozygosity", ylab="Observed heterozygosity")
     abline(0, 1, col="red")
-    # Bartlett's K-squared test of difference
-    # between observed and expected heterozygosity - not significant
+    # Bartlett's K-squared test of difference between observed and expected
+    # heterozygosity - not significant
     bartlett.test(list(hauss.summ$Hexp, hauss.summ$Hobs))
                   Bartlett test of homogeneity of variances
     data:  list(hauss.summ$Hexp, hauss.summ$Hobs)
@@ -2627,11 +2631,11 @@
 	\end{itemize}
 	\begin{spluscode}
     # Fit, Fst and Fis for each locus
-    Fst(x=hauss.loci, pop=1)
+    Fst(x=hauss.loci, pop=1) # Calculation per locus
                     Fit        Fst         Fis
     msta93   0.31835291 0.17867087  0.17006829
-    msta101 -0.09968472 0.04064928 -0.14628018
         ...         ...        ...         ...
+    summary(Fst(x=hauss.loci, pop=1)) # Summary across loci
 	\end{spluscode}
 \end{frame}
 
@@ -2640,15 +2644,16 @@
     # Pairwise Fst comparing populations
     # Convert Adegent's genind to format of hierfstat package
     ?genind2hierfstat
-    # Nei's pairwise Fst between all pairs of populations.
-    # 0 = no structure; 1 = maximal difference
+    # Nei's pairwise Fst between all pairs of populations
     pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
            He     Ne     Oh     Pr     Sk
-    He     NA 0.3204 0.1824 0.1942 0.1599
-    Ne 0.3204     NA 0.1210 0.2548 0.1229
+    He     NA 0.3204 0.1824 0.1942 0.1599 # 0 = no structure
+    Ne 0.3204     NA 0.1210 0.2548 0.1229 # 1 = maximal difference
     Oh 0.1824 0.1210     NA 0.1038 0.0833
     Pr 0.1942 0.2548 0.1038     NA 0.1407
     Sk 0.1599 0.1229 0.0833 0.1407     NA
+    heatmap(x=pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind)),
+      Rowv=NA, Colv=NA) # Simple visualization
 	\end{spluscode}
 	\begin{itemize}
 		\item Check also another functions of \href{https://CRAN.R-project.org/package=hierfstat}{hierfstat} package, there are more options
@@ -2799,16 +2804,16 @@
     # Get the MSN
     # Note SSRs repeats 'rep(2, 12)' -
     # change according to your data
+    # Here 12 SSRS loci of length 2 bp
     bruvo.msn(gid=hauss.genind,
-      replen=rep(2, 12), loss=TRUE,
-      palette=rainbow, vertex.label
-      ="inds", gscale=TRUE,
+      replen=rep(x=2, times=12),
+      loss=TRUE, palette=rainbow,
+      vertex.label="inds", gscale=TRUE,
       wscale=TRUE, showplot=TRUE)
     # For another data types
     # (not only microsatellites)
     ?msn.poppr
     # Interactive creation of MSN
-    # Opens browser window
     ?imsn
 		\end{spluscode}
 	\end{multicols}
@@ -2832,6 +2837,7 @@
 			\item Genetic drift, infinite alleles,~\ldots
 		\end{itemize}
 		\item If resulting distance matrix is not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} (see also further), following analysis can be misleading
+		\item For DNA sequences use \texttt{phangorn::modelTest} to select appropriate mutational model for particular sequence
 	\end{itemize}
 \end{frame}
 
@@ -2861,7 +2867,7 @@
     # parameter - requires repetition length for every SSRs locus
     # E.g. if having 5 SSRs with repeat lengths 2, 2, 3, 3 and 2 bp use:
     # bruvo.dist(pop=... replen=c(2, 2, 3, 3, 2)...)
-    hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(2, 12),
+    hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(x=2, times=12),
       loss=TRUE)
     # Test if it is Euclidean
     is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
@@ -2876,12 +2882,12 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Turning distance matrix into Euclidean is controversial\ldots}
-	\begin{footnotesize}
-		How to deal with zero distances in original matrix? There is no really good solution\ldots\\ Histograms of Bruvo distance before and after transformation:
-	\end{footnotesize}
+\begin{frame}{Turning distance matrix into Euclidean is controversial\ldots}{Histograms of Bruvo distance before and after transformation}
+	\begin{itemize}
+		\item How to deal with zero distances in original matrix? There is no really good solution\ldots
+	\end{itemize}
 	\begin{center}
-		\includegraphics[width=\textwidth-4.5cm]{bruvodist.png}
+		\includegraphics[width=\textwidth-4cm]{bruvodist.png}
 	\end{center}
 \end{frame}
 
@@ -2970,6 +2976,30 @@
 	\end{center}
 \end{frame}
 
+\begin{frame}[fragile]{Selecting model for calculating distances among DNA sequences}
+	\begin{itemize}
+		\item \texttt{phangorn::modelTest} has plenty of options
+		\begin{itemize}
+			\item Only selected models can be tested
+			\item On Linux and macOS it's possible to speed up calculations with parallelization
+		\end{itemize}
+		\item Names of models are not exactly same as names of models in \texttt{ape::dist.dna}\ldots
+	\end{itemize}
+	\begin{spluscode}
+    library(phangorn) # Load needed library
+    ?modelTest # Plenty of options, including possible parallelization
+    usflu.models <- modelTest(object=as.phyDat(usflu.dna)) # Test models
+    # Sort results according to AIC or BIC - the lower the better fit
+    head(usflu.models[order(usflu.models[["AIC"]]),], n=15L)
+          Model  df    logLik      AIC       AICw     AICc      AICcw      BIC
+    91 GTR+G(4) 166 -5338.506'11009.01'0.24200823 11045.16 0.22990390 11911.88
+    83 TVM+G(4) 165 -5339.523 11009.05 0.23798173 11044.73 0.28399121 11906.48
+    ...
+    gunnera.models <- modelTest(object=as.phyDat(gunnera.mafft.ng)) # Same for
+    head(gunnera.models[order(gunnera.models[["AIC"]]),], n=15L)    # Gunnera
+	\end{spluscode}
+\end{frame}
+
 \begin{frame}[fragile]{Distances among DNA sequences}
 	\begin{itemize}
 		\item \alert{The sequences must be aligned before calculating distances among them!}
@@ -2980,13 +3010,13 @@
     # There are various models available
     ?dist.dna
     # Create the distance matrix
-    usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
+    usflu.dist <- dist.dna(x=usflu.dna, model="F84")
     # Check the resulting distance matrix
     usflu.dist
     class(usflu.dist)
     dim(as.matrix(usflu.dist))
     # Create another distance matrix
-    gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="F81")
+    gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="TN93")
     # Check it
     gunnera.dist
     class(gunnera.dist)
@@ -3104,7 +3134,7 @@
 	\end{multicols}
 \end{frame}
 
-\subsection{AMOVA} % FIXME Get percentage
+\subsection{AMOVA}
 
 \begin{frame}{AMOVA I}
 	\begin{itemize}
@@ -3125,15 +3155,15 @@
     # See results
     hauss.amova
     ...
-                    SSD      MSD df
-    hauss.pop  30.71923 7.679809  4
-    Error     119.58100 2.847167 42
-    Total     150.30023 3.267396 46
+                    SSD       MSD df
+    hauss.pop  5770.446 1442.6116  4
+    Error     12022.022  286.2386 42
+    Total     17792.468  386.7928 46
     ...
     Variance components:
-               sigma2 P.value
-    hauss.pop 0.55738       0 # From here we can calculate the percentage
-    Error     2.84717
+              sigma2 P.value
+    hauss.pop 133.37       0 # From here we can calculate the percentage
+    Error     286.24         # 100 * 133.37 / (133.37 + 286.24) = 31.78 %
     ...
 	\end{spluscode}
 \end{frame}
@@ -3194,13 +3224,13 @@
 \begin{frame}[fragile]{UPGMA and its test}
 	\begin{spluscode}
     # Calculate it
-    # Saving as phylo object (and not hclust) gives more
-    # possibilities for further plotting and manipulations
+    # Saving as phylo object (and not hclust) gives more possibilities for
+    # further plotting and manipulations
     usflu.upgma <- as.phylo(hclust(d=usflu.dist, method="average"))
     plot.phylo(x=usflu.upgma, cex=0.75)
     title("UPGMA tree")
-    # Test quality - tests correlation of original distance in the matrix
-    # and reconstructed distance from hclust object
+    # Test quality - tests correlation of original distance in the matrix and
+    # reconstructed distance from hclust object
     plot(x=as.vector(usflu.dist), y=as.vector(as.dist(
       cophenetic(usflu.upgma))), xlab="Original pairwise distances",
       ylab="Pairwise distances on the tree", main="Is UPGMA
@@ -3212,9 +3242,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{UPGMA is not the best choice here\ldots}
-	All points in the right graph should be clustered along the red line\ldots
-	\vfil
+\begin{frame}{UPGMA is not the best choice here\ldots}{All points in the right graph should be clustered along the red line\ldots}
 	\begin{center}
 		\includegraphics[height=6cm]{upgma.png}
 	\end{center}
@@ -3397,8 +3425,8 @@
 
 \begin{frame}[fragile]{Root the tree}
 	\begin{spluscode}
-    # Root the tree - "outgroup" is name of accession (in quotation
-    # marks) or number (position within phy object)
+    # Root the tree - "outgroup" is name of accession (in quotation marks)
+    # or number (position within phy object)
     usflu.tree.rooted <- root.phylo(phy=usflu.tree, outgroup=1)
     # Plot it
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
@@ -3408,8 +3436,8 @@
       col.pal=usflu.pal), alpha=0.7), cex=0.75, fg="transparent")
     # Add axis with phylogenetic distance
     axisPhylo()
-    # Legend - describing years - pretty() automatically shows best
-    # values from given range, num2col() selects colors from color scale
+    # Legend - describing years - pretty() automatically shows best values
+    # from given range, num2col() selects colors from color scale
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 	\end{spluscode}
@@ -3427,12 +3455,12 @@
     tiplabels(frame="none", pch=20, col=transp(num2col(x=usflu.annot[["year"]],
       col.pal=usflu.pal), alpha=0.7), cex=3.5, fg="transparent")
     axisPhylo()
-    # Legend - describing years - pretty() automatically shows best
-    # values from given range, num2col() selects colors from color scale
+    # Legend - describing years - pretty() automatically shows best values
+    # from given range, num2col() selects colors from color scale
     legend(x="topright", fill=num2col(x=pretty(x=1993:2008, n=8),
       col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
-    # Plots bootstrap support - note usflu.boot contains raw numbers
-    # transform it into percent
+    # Plots bootstrap support - note usflu.boot contains raw numbers transform
+    # it into percent
     nodelabels(text=round(usflu.boot/10), cex=0.75)
 	\end{spluscode}
 \end{frame}
@@ -3482,7 +3510,7 @@
 \begin{frame}{Principal Coordinate Analysis (PCoA), Principal Component Analysis (PCA) and relatives}
 	\label{pcoa}
 	\begin{itemize}
-		\item Create 2-D scatter plot showing relationships among samples and their grouping
+		\item Create 2-D scatter plot (mostly) showing relationships among samples and their grouping
 		\item PCoA is variant of PCA using distance matrix as input
 		\begin{itemize}
 			\item It's crucial to select correct Euclidean distance matrix
@@ -3589,6 +3617,11 @@
 \end{frame}
 
 \begin{frame}[fragile]{Special functions to work with huge SNP data sets}
+	\begin{itemize}
+		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
+		\item Lets keep hoping in fast development of computers\ldots
+		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelization library \textbf{unavailable on Windows} --- add parameter \texttt{parallel=FALSE} to be able to use them
+	\end{itemize}
 	\begin{spluscode}
     # Plot of missing data (white) and number of 2nd alleles
     glPlot(x=usflu.genlight, legend=TRUE, posi="topleft")
@@ -3599,19 +3632,18 @@
       main="Distribution of (second) allele frequencies")
     lines(x=density(usflu.freq)$x, y=density(usflu.freq)$y*1.5, col="red",
       lwd=3 )
-    # Mean number of second allele in each SNP
-    usflu.mean <- glMean(usflu.genlight)
-    usflu.mean <- c(usflu.mean, 1-usflu.mean)
-    # Plot distribution of allele frequencies
-    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele
-      frequencies", main="Distribution of allele frequencies", nclass=20)
-    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2,
-      lwd=3)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Number of missing values in each locus}
 	\begin{spluscode}
+    usflu.mean <- glMean(usflu.genlight)      # Mean number of second
+    usflu.mean <- c(usflu.mean, 1-usflu.mean) # allele in each SNP
+    # Plot distribution of allele frequencies
+    hist(x=usflu.mean, proba=TRUE, col="darkseagreen3", xlab="Allele
+      frequencies", main="Distribution of allele frequencies", nclass=20)
+    lines(x=density(usflu.mean, bw=0.05)$x, y=density(usflu.mean, bw=0.05)$y*2,
+      lwd=3)
     # Play with bw parameter to get optimal image
     usflu.na.density <- density(glNA(usflu.genlight), bw=10)
     # Set range of xlim parameter from 0 to the length of original alignment
@@ -3623,11 +3655,6 @@
     points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2,
       col="blue")
 	\end{spluscode}
-	\begin{itemize}
-		\item Those tools are designed mainly for situation when having multiple (nearly) complete genomes --- not needed for smaller data sets
-		\item Lets keep hoping in fast development of computers\ldots
-		\item \alert{Windows users:} To speed up the processing, \texttt{gl*} functions use parallelization library \textbf{unavailable on Windows} --- add parameter \texttt{parallel=FALSE} to be able to use them
-	\end{itemize}
 \end{frame}
 
 \begin{frame}{Basic information about SNP: distribution of 2$^{nd}$ allele frequencies, missing data and number of 2$^{nd}$ allele, distribution of allele frequencies, and number of missing values in each locus}
