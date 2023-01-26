@@ -4251,9 +4251,9 @@
 	\end{itemize}
 	\begin{spluscode}
     # Calculates Monmonier's function (for threshold use 'd')
-    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(
-      hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE,
-      type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+    hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=rogers.dist
+      (x=hauss.genpop), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6,
+      k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
     coords.monmonier(hauss.monmonier) # See result as text
 	\end{spluscode}
 \end{frame}

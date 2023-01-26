@@ -1312,7 +1312,7 @@ plot(hauss.mantel.cor)
 ## Monmonier - genetic boundaries
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
 # Calculates Monmonier's function (for threshold use 'd')
-hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=rogers.dist(x=hauss.genpop), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
 coords.monmonier(hauss.monmonier) # See result as text
 # Plot genetic boundaries
 plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
