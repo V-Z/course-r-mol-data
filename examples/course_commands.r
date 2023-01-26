@@ -1351,14 +1351,18 @@ hauss.geneland.nrun <- 5
 hauss.geneland.burnin <- 100
 # Set maximal K (number of populations)
 hauss.geneland.maxpop <- 10
+# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
+# Number of iterations (MCMC steps)
+hauss.geneland.nit <- 10000
+# Sampling (thinning)
+hauss.geneland.thinning <- 10
 # FOR loop will run several independent runs and produce output maps of genetic clusters - outputs are written into subdirectory within geneland directory
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
 	# On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows in R is complicated)
 	system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
 	# Inferrence - MCMC chain - see ?MCMC for details
-	# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
-	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
+	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, freq.model="Uncorrelated", spatial=TRUE)
 	# Post-process chains
 	PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
 	# Output
@@ -1385,7 +1389,7 @@ for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
 	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
 	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
 	}
 # Produce maps of respective inferred clusters
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {

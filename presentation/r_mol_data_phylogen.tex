@@ -4387,11 +4387,25 @@
 	\end{multicols}
 \end{frame}
 
-\begin{frame}[fragile]{Settings and running MCMC}
+\begin{frame}[fragile]{Settings MCMC}
+	\begin{itemize}
+		\item For real analysis, Baysian tools require millions of MCMC steps (generations, iterations) --- Here we use only 10000 to speed up processing
+		\item Not every generation (step) is sampled, in case of millions of iterations, sampling (thinning) can be $\sim$thousands
+		\item Whole MCMC step is repeated several (usually $\sim$10) times using \texttt{for} loop (following 2~slides) to select the best run and compare them (MCMC process is by it's nature random)
+	\end{itemize}
 	\begin{spluscode}
     hauss.geneland.nrun <- 5 # Set number of independent runs
     hauss.geneland.burnin <- 100 # Set length of burnin chain
     hauss.geneland.maxpop <- 10 # Set maximal K (number of populations)
+    # In practice set much higher number of iterations (nit, millions),
+    # appropriate sampling (thinning, thousands) and longer burnin
+    hauss.geneland.nit <- 10000 # Number of iterations (MCMC steps)
+    hauss.geneland.thinning <- 10 # Sampling (thinning)
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Running MCMC I}
+	\begin{spluscode}
     # FOR loop will run several independent runs and produce output maps
     # of genetic clusters - outputs are written into subdirectory within
     # geneland directory (this has to exist prior launching analysis)
@@ -4402,18 +4416,18 @@
       # 1 to max K manually (creating subdirs in Windows in R is complicated)
       system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirs
       # Inference - MCMC chain - see ?MCMC for details
-      MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland
-        .data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=
-        TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10,
-        freq.model="Uncorrelated", spatial=TRUE) # Loop continues on next slide
+      MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
+        hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc,
+        delta.coord=0.001, varnpop=TRUE, npopmin=1,
+        npopmax=hauss.geneland.maxpop, nit=hauss.geneland.nit,
+        thinning=hauss.geneland.thinning, freq.model="Uncorrelated",
+        spatial=TRUE) # Loop continues on next slide...
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Running MCMC}
+\begin{frame}[fragile]{Running MCMC II}
 	\begin{spluscode}
-      # Start of FOR loop is on previous page. In practice set much higher
-      # number of iterations (nit, millions), appropriate sampling (thinning,
-      # thousands) and longer burnin. Post-process chains
+      # ...Start of FOR loop is on previous slide
       PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.
         geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
       # Output
@@ -4466,7 +4480,7 @@
       system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
       HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
         hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc,
-        nit=10000, thinning=10,
+        nit=hauss.geneland.nit, thinning=hauss.geneland.thinning,
         path.mcmc.adm=hauss.geneland.path.mcmc.adm)
       }
 	\end{spluscode}
@@ -7084,11 +7098,8 @@
 % - Zkontrolovat výstup shapirova testu a testů Ho/He
 % - Do corrplotu ze StAMPPu přidat trojúhelník s odpovídajícími podporami
 % - Úvod k distancím
-% - Jak vybrat vhodný model pro DNA distance?
 % - Předělat distance genlightu
 % - Profiltrování genlightu na chybějící data
-% - AMOVA až za shlukováním
-% - Procento variability v AMOVě
 % - Přidat vylepšení z https://cs.wikipedia.org/wiki/Teplotn%C3%AD_mapa_v_R
 % - Trochu přeskládat stromy, hlavně chřipku
 % - Zobrazení jen hodnot bootstrapu nad určitou úrověň
@@ -7099,8 +7110,6 @@
 % - V DAPC dát loadingplot a optim.a.scores hned za analýzu
 % - Hraní si s konektivitou v datasetu rupica na začátek prostorových analýz
 % - Utřídit, kterou síť kde používat --- jiná je na začátku u Morana, sPCA --- zkonvertovat výstupy
-% - Lepší distanci do Monmoniera, zkusit větší nrun
-% - V Genelandu přidat proměnnou pro nit
 % - Využít nějak admixture model Genelandu
 % - Možná dát do Genelandu výstupy dlouhého pořádného běhu
 % - Poznámky o tom, jak číst mapy z Genelandu
@@ -7132,7 +7141,6 @@
 % - Víc příkladů se smyčkami a větvením
 % Poznámky 2022
 % - Chybějící data v genlight po konverzi z vcfR, filtrace chybějících dat v genind po konverzi z vcfR.
-% - AMOVA až za PCoA? Vylepšit ji.
 % - nancycats a rupica nemají použitelné souřadnice na mapy - nějaký testovací dataset na kreslení map
 % - u SHP z Makedonie zdůraznit, že mají stahovat můj zip
 % - rozpustit kapitolu o SNP v základních analýzách
@@ -7145,6 +7153,5 @@
 % - nějaké OSM
 % - pro sp stromy použít vyčištěné sady stromů
 % - zkontrolovat significance výstupů modelů evolučních korelací
-% - phangorn:.modelTest
 % - https://cran.r-project.org/web/packages/pirouette/index.html
 
