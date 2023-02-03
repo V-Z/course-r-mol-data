@@ -4918,6 +4918,9 @@
 \end{frame}
 
 \begin{frame}[fragile]{Ladderize tree, drop fossil (extinct) tips}
+	\begin{itemize}
+		\item Trees are printed in exactly same order of tips as is written in source file --- common tasks are various rearrangements for better display
+	\end{itemize}
 	\begin{spluscode}
     plot.phylo(hauss.nj)
     # Ladderize the tree - step-wise rotation of nodes
@@ -5127,7 +5130,7 @@
 \begin{frame}[fragile]{Topographical distances among trees III}{Post process the matrix and plot it}
 	\begin{itemize}
 		\item There are several methods for calculating distance matrices among the trees --- some take branch lengths into account, some only topology
-		\item There are plenty of heatmap functions, like \texttt{heatmap}, \texttt{heatmap2.} (from \href{https://cran.r-project.org/package=gplots}{gplots}), \texttt{heatmap.plus} (\href{https://cran.r-project.org/package=heatmap.plus}{archived}), and more\ldots
+		\item There are plenty of heatmap functions, like \texttt{heatmap}, \texttt{heatmap2} (from \href{https://cran.r-project.org/package=gplots}{gplots}), \texttt{heatmap.plus} (\href{https://cran.r-project.org/package=heatmap.plus}{archived}), and more\ldots
 	\end{itemize}
 	\begin{spluscode}
     # Create heat maps using heatmap.2 function from gplots package
@@ -5169,8 +5172,7 @@
 
 \begin{frame}[fragile]{PCoA from distance matrices of topographical differences among trees --- the code}{PC plots help to identify outliers --- trees with noticeably different topology}
 	\begin{spluscode}
-    # Test if the distance matrix is Euclidean or not
-    library(ade4)
+    library(ade4) # Test if the distance matrix is Euclidean or not
     is.euclid(distmat=oxalis.trees.d, plot=TRUE)
     [1] TRUE # If FALSE, we can use e.g. quasieuclid() to make it Euclidean
     # Calculate the PCoA
@@ -5403,6 +5405,7 @@
 		\begin{center}
 			\includegraphics[height=6.5cm]{kronoviz.png}
 		\end{center}
+		\vfill
 		\begin{spluscode}
     kronoviz(x=oxalis.trees.rooted,
       layout=length(
@@ -5418,7 +5421,7 @@
 			\item The plot can be very long and it can be hard to see details
 			\item But one can get impression if all trees are more or less in same scale (have comparable length) or not
 		\end{itemize}
-		\vfil
+		\vfill
 	\end{multicols}
 \end{frame}
 
