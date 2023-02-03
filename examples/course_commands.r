@@ -1871,6 +1871,7 @@ head(shorebird.data)
 shorebird.tree
 plot.phylo(shorebird.tree)
 # The tree must be fully bifurcating for most of methods
+# multi2di randomly splits polytomies into bifurcating topology
 shorebird.tree <- multi2di(phy=shorebird.tree)
 # See result
 plot.phylo(shorebird.tree)

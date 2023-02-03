@@ -5578,6 +5578,7 @@
     shorebird.tree # See the phylogeny
     plot.phylo(shorebird.tree)
     # The tree must be fully bifurcating for most of methods
+    # multi2di randomly splits polytomies into bifurcating topology
     shorebird.tree <- multi2di(phy=shorebird.tree)
     plot.phylo(shorebird.tree) # See result
 	\end{spluscode}
@@ -5724,7 +5725,7 @@
 		\item It requires as input phylogenetic tree and respective comparative data
 		\item Phylogenetic component is removed from the data, then classical PCA is calculated
 		\item Very useful for comparison of plenty of characters
-		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the taxa --- it shows trends of character evolution on the tree, not positions of taxa in PC space
+		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the characters --- it shows trends of character evolution on the tree, not positions of taxa in PC space
 		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
 		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
 		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
@@ -5739,8 +5740,8 @@
     shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]),
       method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1,
       nfnega=0)
-    print(shorebird.ppca) # Print results # See summary information
-    summary(shorebird.ppca)
+    print(shorebird.ppca) # Print results
+    summary(shorebird.ppca) # See summary information
     # See PCA scores for variables on phylogenetic tree
     scatter(shorebird.ppca)
     # See decomposition of pPCA eigenvalues
