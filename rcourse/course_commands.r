@@ -108,7 +108,7 @@ install.packages(pkgs=installed.packages()) # Packages installed manually from d
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
-# GUI uses for parallelisation snow and Rmpi
+# GUI uses for parallelization snow and Rmpi
 # RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools, shapefiles (requires foreign) and tripack on GIS layer
 install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 # On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/
@@ -316,7 +316,7 @@ nothofagus.dna # See it
 # Query NCBI databases
 library(rentrez)
 entrez_dbs() # Genetic banks available for rentrez
-entrez_db_summary("nucleotide") # Brief description of what the database is
+entrez_db_summary("nucleotide") # Brief description of the selected database
 entrez_db_searchable("nucleotide") # Set of search terms that can used with this database
 # Search the database and get IDs of matched records
 nothofagus.search <- entrez_search(db="nucleotide", term="Nothofagus[ORGN] AND rbcL[GENE]")
@@ -663,9 +663,11 @@ lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 # FST
 # Fit, Fst and Fis for each locus
 # For Fst, fstat and theta.msat the loci object must contain population column
-Fst(x=hauss.loci, pop=1)
+Fst(x=hauss.loci, pop=1) # Calculation per locus
+summary(Fst(x=hauss.loci, pop=1)) # Summary across loci
 # Nei's pairwise Fst between all pairs of populations.
 pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
+heatmap(x=pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind)), Rowv=NA, Colv=NA) # Simple visualization
 # For mixed ploidy data sets
 # stamppFst requires population factor in genlight (here, population code consists of first three letters of individual's name)
 indNames(arabidopsis.genlight)
@@ -718,10 +720,11 @@ hist(x=microbov.bar, col="firebrick", main="Average inbreeding in Salers cattle"
 ?bruvo.msn
 # Get the MSN
 # Note SSRs repeats 'rep(2, 12)' - change according to your data
-bruvo.msn(gid=hauss.genind, replen=rep(2, 12), loss=TRUE, palette=rainbow, vertex.label ="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
+# Here 12 SSRS loci of length 2 bp
+bruvo.msn(gid=hauss.genind, replen=rep(x=2, times=12), loss=TRUE, palette=rainbow, vertex.label ="inds", gscale=TRUE, wscale=TRUE, showplot=TRUE)
 # For another data types
 ?msn.poppr
-# Interactive creation of MSN. Opens browser window
+# Interactive creation of MSN
 ?imsn
 
 ## Genetic distances
@@ -745,7 +748,7 @@ hauss.dist.pop
 
 # Bruvo's distances weighting SSRs repeats - take care about replen parameter - requires repetition length for every SSRs locus
 # E.g. if having 5 SSRs with repeat lengths 2, 2, 3, 3 and 2 bp use: bruvo.dist(pop=... replen=c(2, 2, 3, 3, 2)...)
-hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(2, 12), loss=TRUE)
+hauss.dist.bruvo <- bruvo.dist(pop=hauss.genind, replen=rep(x=2, times=12), loss=TRUE)
 # Test if it is Euclidean
 is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
 # Turn to be Euclidean
@@ -804,13 +807,23 @@ dev.off() # Close graphical device to reset settings
 # See details of distance methods in package poppr
 vignette("algo", package="poppr")
 
+# Selecting model for calculating distances among DNA sequences
+library(phangorn) # Load needed library
+?modelTest # Plenty of options, including possible parallelization
+usflu.models <- modelTest(object=as.phyDat(usflu.dna)) # Test models
+# Sort results according to AIC or BIC - the lower the better fit
+head(usflu.models[order(usflu.models[["AIC"]]),], n=15L)
+# Same for Gunnera dataset
+gunnera.models <- modelTest(object=as.phyDat(gunnera.mafft.ng))
+head(gunnera.models[order(gunnera.models[["AIC"]]),], n=15L)
+
 # DNA distances - there are various models available
 ?dist.dna
-usflu.dist <- dist.dna(x=usflu.dna, model="TN93")
+usflu.dist <- dist.dna(x=usflu.dna, model="F84")
 usflu.dist
 class(usflu.dist)
 dim(as.matrix(usflu.dist))
-gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="F81")
+gunnera.dist <- dist.dna(x=gunnera.mafft.ng, model="TN93")
 gunnera.dist
 class(gunnera.dist)
 dim(as.matrix(gunnera.dist))
@@ -1296,7 +1309,7 @@ plot(hauss.mantel.cor)
 ## Monmonier - genetic boundaries
 # It requires every point to have unique coordinates (one can use jitter() or difference in scale of meters). Example here is on population level, which is not ideal.
 # Calculates Monmonier's function (for threshold use 'd')
-hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=dist(hauss.genpop@tab), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
+hauss.monmonier <- monmonier(xy=hauss.genpop$other$xy, dist=rogers.dist(x=hauss.genpop), cn=chooseCN(hauss.genpop$other$xy, ask=FALSE, type=6, k=2, plot.nb=FALSE, edit.nb=FALSE), nrun=1)
 coords.monmonier(hauss.monmonier) # See result as text
 # Plot genetic boundaries
 plot.monmonier(hauss.monmonier, add.arrows=FALSE, bwd=10, sub="Monmonier plot", csub=2)
@@ -1335,14 +1348,18 @@ hauss.geneland.nrun <- 5
 hauss.geneland.burnin <- 100
 # Set maximal K (number of populations)
 hauss.geneland.maxpop <- 10
+# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
+# Number of iterations (MCMC steps)
+hauss.geneland.nit <- 10000
+# Sampling (thinning)
+hauss.geneland.thinning <- 10
 # FOR loop will run several independent runs and produce output maps of genetic clusters - outputs are written into subdirectory within geneland directory
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="") # paste is good especially for joining several text chains into one
 	# On Windows, remove following line and create subdirectories from 1 to max K manually (creating subdirs in Windows in R is complicated)
 	system(paste("mkdir ", hauss.geneland.path.mcmc)) # Creates subdirectory
 	# Inferrence - MCMC chain - see ?MCMC for details
-	# In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
-	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=10000, thinning=10, freq.model="Uncorrelated", spatial=TRUE)
+	MCMC(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc=hauss.geneland.path.mcmc, delta.coord=0.001, varnpop=TRUE, npopmin=1, npopmax=hauss.geneland.maxpop, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, freq.model="Uncorrelated", spatial=TRUE)
 	# Post-process chains
 	PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
 	# Output
@@ -1369,7 +1386,7 @@ for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
 	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
 	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=10000, thinning=10, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
 	}
 # Produce maps of respective inferred clusters
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
@@ -1848,6 +1865,7 @@ head(shorebird.data)
 shorebird.tree
 plot.phylo(shorebird.tree)
 # The tree must be fully bifurcating for most of methods
+# multi2di randomly splits polytomies into bifurcating topology
 shorebird.tree <- multi2di(phy=shorebird.tree)
 # See result
 plot.phylo(shorebird.tree)
