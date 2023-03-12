@@ -508,7 +508,7 @@ seqinr::write.fasta(sequences=as.character.DNAbin(gunnera.dna), names=names(gunn
 # Export DNA sequnces as NEXUS
 write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
 # Export VCF
-write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
+vcfR::write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
 # Export trees (objects of class phylo)
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
@@ -648,7 +648,7 @@ vignette("algo", package="poppr")
 # According to loci
 hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
 # Results per-locus
-hauss.hwe.test
+haussknechtii.hwe.test
 # Summary across all loci
 summary(hauss.hwe.test)
 # According to populations
