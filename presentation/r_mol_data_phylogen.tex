@@ -165,7 +165,7 @@
 			\item \href{https://en.wikipedia.org/wiki/Emacs}{GNU Emacs}
 			\item \href{https://www.geany.org/}{Geany}
 			\item \href{https://bluefish.openoffice.nl/}{Bluefish}
-			\item \href{https://wiki.gnome.org/Apps/Gedit}{Gedit}
+			\item \href{https://gedit-technology.github.io/apps/gedit/}{Gedit}
 			\item \href{https://notepad-plus-plus.org/}{Notepad++}
 			\item \href{https://www.sublimetext.com/}{Sublime}
 			\item \href{https://code.visualstudio.com/}{VS Code}
@@ -248,17 +248,17 @@
 	\begin{itemize}
 		\item Most users use some GUI --- it is more convenient than plain command line
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
-		\item RStudio \url{https://rstudio.com/products/rstudio/} --- probably the most common, multi-platform, very powerful
+		\item RStudio \url{https://posit.co/products/open-source/rstudio/} --- probably the most common, multi-platform, very powerful
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\begin{itemize}
 			\item RKWard must be compiled for the same version of R as you use
 			\item If downloading for Windows or macOS, check your version of R and download respective version of RKWard
 			\item On Linux, do not mix package repositories, ensure RKWard is compiled for your R version (typically install both from same resource)
 		\end{itemize}
-		\item R commander (Rcmdr) \url{https://www.rcommander.com/} --- multi-platform, not so rich as previous
+		\item R commander (Rcmdr) \url{https://www.john-fox.ca/RCommander/} --- multi-platform, not so rich as previous
 		\item Java GUI for R \url{https://rforge.net/JGR/} --- Java (multi-platform, but with all Java issues like memory consumption)
 		\item Tinn-R (Windows only) \url{https://sourceforge.net/projects/tinn-r/} and \url{https://tinn-r.org/en/}
-		\item \href{https://ess.r-project.org/}{Emacs speaks statistics}, \href{https://docs.microsoft.com/visualstudio/rtvs}{R Tools for MS Visual Studio}, \href{https://rattle.togaware.com/}{Rattle}, \href{https://radiant-rstats.github.io/docs/}{Radiant},~\ldots
+		\item \href{https://ess.r-project.org/}{Emacs speaks statistics}, \href{https://code.visualstudio.com/docs/languages/r}{R Tools for MS Visual Studio}, \href{https://rattle.togaware.com/}{Rattle}, \href{https://radiant-rstats.github.io/docs/}{Radiant},~\ldots
 		\item And more\ldots
 		\item Pick one you like (from above list or any else) and install it\ldots
 	\end{itemize}
@@ -298,7 +298,7 @@
 		\item Most of packages are available as pre-compiled and can be immediately installed from R --- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
 		\item Usually there are some problems every time new version of OS is released --- it takes time to modify and recompile packages for new version of OS
 		\item You have to check for new version of R manually
-		\item RStudio is available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows.html}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac.html}{macOS}, but it requires some work to install it
 	\end{itemize}
 \end{frame}
@@ -319,7 +319,7 @@
 		\item Debian (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/debian/}
 		\item Ubuntu (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/ubuntu/}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
-		\item RStudio is also available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -335,7 +335,7 @@
 		\end{itemize}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
 		\item Install packages \texttt{patterns-openSUSE-devel\_basis} and \texttt{gcc-fortran} for compilation of R packages when installing them from R (only some R packages are available in openSUSE repositories)
-		\item RStudio is also available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -343,7 +343,7 @@
 	\begin{itemize}
 		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/}
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
-		\item RStudio is available from its \href{https://rstudio.com/products/rstudio/download/\#download}{download page}
+		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -359,8 +359,8 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 19,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,000 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 20,300 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,200 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
@@ -978,7 +978,7 @@
 			\item If it is not available, respective function can sometimes use different parallelization backend or user can turn off parallelization for respective function
 		\end{itemize}
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
-		\begin{itemize}
+		\begin{itemize} % FIXME Check if ape works with MUSCLE 5 or just 3.8
 			\item Aligner of sequences (from slide~\ref{alignment})
 			\item Use version 3.8 from \url{https://drive5.com/muscle/downloads_v3.htm}, not 5.X
 		\end{itemize}
@@ -1097,7 +1097,7 @@
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
 		\begin{itemize}
-			\item Popular plain text format used by software like \href{https://mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{http://www.splitstree.org/}{SplitsTree},~\ldots
+			\item Popular plain text format used by software like \href{https://mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{https://en.wikipedia.org/wiki/SplitsTree}{SplitsTree},~\ldots
 			\item Structure can be complex, is divided into blocks containing e.g. sequences, trees (in NEWICK format), distance matrix, fragmentation data, networks (e.g. for SplitsTree), MrBayes commands, traits,~\ldots
 			\item Several variants, sometimes problems with interoperability
 			\item Extension usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
@@ -1238,11 +1238,11 @@
 				\item Population genetics
 				\item Species delimitation (genotyping, identification and assignment of species)
 			\end{itemize}
-			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://botany.natur.cuni.cz/brassiploidy/marhold}{Karol Marhold} and his team
+			\item Small subset of population AFLP data of \textit{Cardamine amara} (Brassicaceae) from Europe by \href{https://web.natur.cuni.cz/botanika/brassiploidy/marholdcv/}{Karol Marhold} and his team
 			\begin{itemize}
 				\item Population genetics
 			\end{itemize}
-			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://botany.natur.cuni.cz/ecolgen/people}{Magdalena Bohutínská} and her colleagues
+			\item Small subset of non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} (Brassicaceae) from central and northern Europe by \href{https://scholar.google.com/citations?user=kSnTudAAAAAJ}{Magdalena Bohutínská} and her colleagues
 			\begin{itemize}
 				\item Population genomics
 				\item Associations of various traits (physiological,~\ldots) with particular genetic loci/alleles
@@ -1309,7 +1309,7 @@
 	\begin{multicols}{2}
 		\begin{itemize}
 			\item Now we will use mainly packages \href{https://adegenet.r-forge.r-project.org/}{adegenet} and \href{https://grunwaldlab.github.io/poppr/}{poppr}
-			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{https://pbil.univ-lyon1.fr/ADE-4/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
+			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{https://sdray.github.io/software/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
 			\item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
 			\item Most of methods are available for polyploids (although not all)
 			\item Some methods are unavailable for dominant (presence/absence) data
@@ -2098,7 +2098,7 @@
 		\item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
 		\begin{itemize}
 			\item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python --- only matters what user likes, knows and wish to do with the results\ldots
-			\item See e.g. \url{https://github.com/V-Z/hybseq-scripts/blob/master/bin/hybseq_4_alignment_3_run.r} from \href{https://github.com/V-Z/hybseq-scripts}{HybSeq scripts}
+			\item See e.g. \url{https://github.com/V-Z/hybseq-scripts/blob/master/bin/hybseq_4_alignment_3_run.r} from my \href{https://github.com/V-Z/hybseq-scripts}{HybSeq scripts}
 		\end{itemize}
 		\item R packages use common alignment software: \href{https://mafft.cbrc.jp/alignment/software/}{MAFFT}, \href{https://www.drive5.com/muscle/}{MUSCLE}, \href{http://clustal.org/}{Clustal},~\ldots
 		\begin{itemize}
@@ -2430,7 +2430,6 @@
 	\begin{itemize}
 		\item Of course, there are plenty of another options\ldots
 		\begin{itemize}
-			\item See e.g. \href{https://cran.r-project.org/web/views/}{CRAN Views} for \href{https://cran.r-project.org/web/views/Genetics.html}{genetics} or \href{https://cran.r-project.org/web/views/Multivariate.html}{multivariate statistics}
 			\item Representative, but not exhaustive examples are shown --- \alert{try more yourselves, adjust shown methods for your data}
 		\end{itemize}
 	\end{itemize}
@@ -5102,7 +5101,7 @@
 			\item Test it with \texttt{ade4::is.euclid}, can be scaled (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} --- carefully, it can damage meaning of the data
 			\item We get matrix of pairwise differences among trees (from multiple genes), we need display and analyze it
 		\end{itemize}
-		\item Set of tools for identifying discordant phylogenetic trees are e.g. in package \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}
+		\item Set of tools for identifying discordant phylogenetic trees are e.g. in package \href{https://github.com/V-Z/kdetrees}{kdetrees}
 		\item Filtered trees (with removed outlying topologies) are input for further species tree reconstruction method
 		\item Other approach are phylogenetic networks searching consensus among phylogenetic trees
 		\item In any case, there are plenty of options how to display the differences among the trees
@@ -5556,7 +5555,7 @@
 		\item Methods and models are highly debated in the literature
 		\begin{itemize}
 			\item Different experts commonly disagree what is the best method\ldots
-			\item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{http://chromevol.tau.ac.il/}{chromEvol})
+			\item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{https://github.com/soungalo/chromEvol}{chromEvol})
 			\item Usage is better to be consulted with some relevant expert
 			\item This is very difficult chapter by meaning of how to find the best method to analyze particular data\ldots
 		\end{itemize}
@@ -6465,7 +6464,7 @@
 			\item \href{https://www.metacentrum.cz/en/Sluzby/Cloud/}{Cloud} (\href{https://www.metacentrum.cz/cs/Sluzby/Cloud/}{česky}) --- computing (HPC) cloud similar to e.g. Amazon Elastic Compute Cloud (EC2), Google Compute Engine or Microsoft Azure
 			\item \href{https://www.cesnet.cz/services/owncloud/?lang=en}{ownCloud} (\href{https://www.cesnet.cz/sluzby/owncloud/}{česky}) to backup and/or sync data across devices (default capacity is 100~GB, user may ask for more) --- similar to e.g. Dropbox, Google Drive or Microsoft OneDrive
 		\end{itemize}
-		\item Information about MetaCentrum \url{https://www.metacentrum.cz/en/} (\href{https://www.metacentrum.cz/cs/}{česky}) and wiki \url{https://wiki.metacentrum.cz/wiki/Main_Page} (\href{https://wiki.metacentrum.cz/wiki/Hlavn\%C3\%AD_strana}{česky}) (main information for users containing all needed documentation)
+		\item Information about MetaCentrum \url{https://www.metacentrum.cz/en/} (\href{https://www.metacentrum.cz/cs/}{česky}) and documentation \url{https://docs.metacentrum.cz/} (main information for users containing all needed documentation)
 		\item Check my special course \url{https://soubory.trapa.cz/linuxcourse/}
 	\end{itemize}
 \end{frame}
@@ -6488,7 +6487,7 @@
 \begin{frame}{OnDemand}{Applications in web browser}
 	\begin{itemize}
 		\item It allows to run selected interactive application (e.g. RStudio) in web browser
-		\item See \url{https://wiki.metacentrum.cz/wiki/OnDemand} and \url{https://ondemand.cerit-sc.cz/}
+		\item See \url{https://docs.metacentrum.cz/software/ondemand/} and \url{https://ondemand.grid.cesnet.cz/}
 		\item Applications start in \texttt{/storage/brno3-cerit/home/\$USER/} --- ensure to have everything needed there
 	\end{itemize}
 	\begin{center}
@@ -6501,11 +6500,11 @@
 		\begin{itemize}
 			\item Web service allowing to record code as well as its output for languages like BASH, \href{https://wiki.metacentrum.cz/wiki/Jupyter_for_MetaCentrum_users\#Adding_R_kernel}{R}, Python,~\ldots
 			\item Convenient for recording and sharing code, interactive work,~\ldots
-			\item Use \href{https://wiki.metacentrum.cz/wiki/Jupyter_for_MetaCentrum_users}{Jupyter Hub} for MetaCentrum users
+			\item Use \url{https://docs.metacentrum.cz/related/jupyter/}
 			\begin{itemize}
-				\item Data are in \texttt{/storage/brno2/home/USER/}
+				\item Data are typically in \texttt{/storage/brno2/home/USER/}
 			\end{itemize}
-			\item \href{https://wiki.metacentrum.cz/wiki/Jupyter_notebook}{Available} also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cerit-sc.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
+			\item Available also as part of OnDemand (previous slide), or \href{https://hub.cloud.e-infra.cz}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
 		\end{itemize}
 		\begin{center}
 			\includegraphics[height=6.5cm]{jupyter.png}
@@ -6730,6 +6729,12 @@
 
 \subsection{Resources}
 
+% Add somewhere something like
+%
+% 			\item See e.g. \href{https://cran.r-project.org/web/views/}{CRAN Views} for \href{https://cran.r-project.org/web/views/Genetics.html}{genetics} or \href{https://cran.r-project.org/web/views/Multivariate.html}{multivariate statistics}
+%
+% And link to https://cran.r-project.org/web/views/Phylogenetics.html
+
 \begin{frame}{Citations}
 	\begin{itemize}
 		\item To correctly cite R launch \texttt{citation()} and see information there --- it is slightly different for every version of R
@@ -6786,7 +6791,7 @@
 		\item Phytools \url{https://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
 		\item Poppr documentation \url{https://grunwaldlab.github.io/poppr/reference/poppr-package.html}
 		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12558}{Kamvar et al}
-		\item ade4 home page \url{https://pbil.univ-lyon1.fr/ADE-4/ade4-html/00Index.html?lang=eng} and documentation \url{https://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
+		\item ade4 home page \url{https://sdray.github.io/software/ade4-html/00Index.html?lang=eng} and documentation \url{https://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
 		\item R Programming \url{https://en.wikibooks.org/wiki/R_Programming}
@@ -6832,7 +6837,7 @@
 		\item \href{https://CRAN.R-project.org/package=gplots}{gplots}: plotting data
 		\item \href{https://CRAN.R-project.org/package=hierfstat}{hierfstat}: estimation and tests of hierarchical F-statistics
 		\item \href{https://CRAN.R-project.org/package=ips}{ips}: interfaces to phylogenetic software
-		\item \href{https://CRAN.R-project.org/package=kdetrees}{kdetrees}: non-parametric method for identifying potential outlying observations in a~collection of phylogenetic trees
+		\item \href{https://github.com/V-Z/kdetrees}{kdetrees}: non-parametric method for identifying potential outlying observations in a~collection of phylogenetic trees
 		\item \href{https://CRAN.R-project.org/package=lattice}{lattice}: Trellis graphics, with an emphasis on multivariate data
 		\item \href{https://CRAN.R-project.org/package=mapdata}{mapdata}: supplement to maps, larger and/or higher-resolution databases
 		\item \href{https://CRAN.R-project.org/package=mapplots}{mapplots}: extra map plotting, pie charts and more
