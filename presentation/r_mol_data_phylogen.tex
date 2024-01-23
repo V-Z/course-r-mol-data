@@ -186,10 +186,11 @@
 			\item \textbf{Read} the command and all comments around, \textbf{do not blindly launch} it
 			\item Ensure you understand, what is \textbf{aim} of the command (what it is supposed to do)
 			\item Ensure you understand all \textbf{limitations} of the method (when you can use it and when not)
-			\item Ensure you understand \textbf{syntax} of the command (its grammatical structure and what and how it technically does)
+			\item Ensure you understand \textbf{syntax} of the command (its grammar and how it technically works)
 		\end{enumerate}
 		\begin{itemize}
 			\item \ldots and then you \alert{learn} \textbf{R}\ldots
+			\item Write there your own notes, so you can later use it for your data
 		\end{itemize}
 		\item Some \alert{commands} from \texttt{course\_commands.r} \alert{\textit{do \textbf{require}} to be edited} according to particular user's computer --- it is described in the comments around the command --- \textbf{read also comments} around the command
 		\item Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code --- in such case, you wouldn't be able to solve any issue with your workflow
@@ -249,6 +250,9 @@
 		\item Most users use some GUI --- it is more convenient than plain command line
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://posit.co/products/open-source/rstudio/} --- probably the most common, multi-platform, very powerful
+		\begin{itemize}
+		 \item For Linux it is commonly available in distribution repository
+		\end{itemize}
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\begin{itemize}
 			\item RKWard must be compiled for the same version of R as you use
@@ -319,6 +323,7 @@
 		\item Debian (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/debian/}
 		\item Ubuntu (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/ubuntu/}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
+		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
 		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
@@ -335,6 +340,7 @@
 		\end{itemize}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
 		\item Install packages \texttt{patterns-openSUSE-devel\_basis} and \texttt{gcc-fortran} for compilation of R packages when installing them from R (only some R packages are available in openSUSE repositories)
+		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
 		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
@@ -343,6 +349,8 @@
 	\begin{itemize}
 		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/}
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
+		\item Install group packages \texttt{"Development Tools"} and \texttt{"C Development Tools and Libraries"}
+		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
 		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
 	\end{itemize}
 \end{frame}
@@ -384,6 +392,7 @@
 			\item Windows and Mac: find it as normal application in menu
 			\item Type commands to work\ldots
 			\item \alert{Ever wished to be Harry Potter? Secret spells make magic operations~:-)}
+			\item Learning new language is always hard\ldots
 			\item Use arrows up and down to navigate in history
 			\item \texttt{Ctrl+R} works as reverse search --- searches text in history
 		\end{itemize}
@@ -405,13 +414,13 @@
 	\begin{itemize}
 		\item New/modified object (with data,~\ldots) is on the left: \enquote{\texttt{<-}} says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
 		\item Functions have various parameters/arguments (in brackets, separated by comas): \texttt{argument=ItsValue}
-		\item Arguments are named --- if you keep order, no need to name them:
+		\item Arguments are named --- if you keep default order (as in help page), no need to name them:
 	\end{itemize}
 	\begin{spluscode}
     SomeFunction(MyData, TRUE, 123, "SomeName")
 	\end{spluscode}
 	\begin{itemize}
-		\item When only some of the arguments are in use, use the names (order doesn't matter any more)
+		\item When only some of the arguments are in use, use the names (order doesn't matter)
 	\end{itemize}
 	\begin{spluscode}
     SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)
@@ -430,8 +439,6 @@
     help.search("searched phrase") # Search for the phrase within all
       # installed packages - return list of hits sorted according to
       # type and package (i.e. package::function)
-    require(sos) # More comprehensive search from packages
-    findFn("function") # Search for function name
 	\end{spluscode}
 	\vfill
 	\alert{\texttt{?}} shows help for questioned function (in console type \texttt{q} to close it):
@@ -463,10 +470,7 @@
 			\item Private folder for particular R project (task) prevents unwanted inferences with another tools/projects
 		\end{itemize}
 		\item Without saving and loading the R data next time, it is not possible to do any longer work or to check the work in the future
-		\item \alert{Get used that R \textbf{always} work in some directory and by default saves/loads files there}
-		\begin{itemize}
-		 \item When starting RStudio/RKWard, R usually starts in user's home directory
-		\end{itemize}
+		\item \alert{Get used that R \textbf{always} work in some directory and by default saves/loads files there} (R usually starts in user's home directory)
 		\item RStudio and RKWard also save session information (list of opened files,~\ldots) --- very convenient
 		\item Regularly save your work to prevent looses in case of crash or any other accident
 		\item \alert{There \textbf{must not} be any space or accented characters in the path/directory name!}
@@ -539,8 +543,11 @@
 		\item \texttt{vcfR} --- imported (and possibly edited) VCF
 		\item and more\ldots~common task is converting among formats\ldots
 		\item \ldots not all formats are (easily) convertible among each other\ldots
-		\item To get information about content of each data type see \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
+		\item To get information about content of each data type see e.g. \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
 		\item Common task is conversion among various formats --- functions commonly require different input format
+		\begin{itemize}
+		 \item Wrong class as input is common error\ldots
+		\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -684,6 +691,7 @@
     load("test.RData") # Loads saved R environment with all objects
     fix(y) # Use to edit matrices, data frames, functions, ...
     rm(y) # Removing...
+    ?iris # Information about R test dataset with morphometry of Iris species
 	\end{spluscode}
 \end{frame}
 
@@ -717,7 +725,7 @@
 
 \begin{frame}[fragile]{Analysis of Variance (ANOVA)}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Analysis_of_variance}{ANOVA} tells us if there is significant difference among means of samples
+		\item \href{https://en.wikipedia.org/wiki/Analysis_of_variance}{ANOVA} tells us if there is significant difference among means of samples (here sepal lengths among species)
 	\end{itemize}
 	\begin{spluscode}
     aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]) # Output:
@@ -744,7 +752,7 @@
 	\begin{exampleblock}{Tasks I}
 		\begin{enumerate}
 			\item Load R training dataset \texttt{iris} (\texttt{data(iris)}) and read about it (\texttt{?iris}).
-			\item Explore it --- print it, display only beginning of data (\texttt{head()}). How many rows and columns does it have? Which variables? Which species (\texttt{levels()})?
+			\item Explore it --- print it, display only beginning of data (\texttt{head()}). How many rows and columns does it have (\texttt{dim()})? Which variables? Which species (\texttt{levels()})?
 			\item Extract from \texttt{iris} dataset only sepal lengths and save it as new vector.
 			\item Extract from \texttt{iris} dataset petal length and species and save it as new data frame.
 			\item Extract from \texttt{iris} dataset lines 10--20.
@@ -776,8 +784,8 @@
 	\begin{itemize}
 		\item Standalone plain R doesn't have enough tools for most of scientific disciplines --- only basic methods and tools for programmers, including for package management
 		\item Users/developers contribute by making extra packages extending computational possibilities --- one of biggest R advantages --- it then has unlimited possibilities
-		\item R has infrastructure for maintaining (for developers) and installing (for users) packages --- the \href{https://CRAN.R-project.org/}{CRAN} repository
-		\item For various reasons, some people build their own infrastructures to maintain and install R packages --- compatible with R, bud separated
+		\item R has infrastructure for maintaining (for developers) and installing (for users) packages --- the \href{https://CRAN.R-project.org/}{CRAN} repository (comprehensive R archive network)
+		\item For various reasons, some people build their own infrastructures to maintain and install R packages --- compatible with R, bud separated (not in CRAN)
 		\item User has basically two options
 		\begin{enumerate}
 			\item Set all repositories in R and use basic commands to install packages (slide~\ref{repos})
@@ -803,10 +811,8 @@
 \begin{frame}[fragile]{Set repositories}
 	\label{repos}
 	\begin{spluscode}
-    # Basic package installation
-    install.packages("PackageName") # Case sensitive!
-    ?install.packages # Shows all available parameters (options)
     getOption("repos") # Shows actual repositories
+    # Set new repositories
     options(repos=c("https://mirrors.nic.cz/R/",
       "https://r-forge.r-project.org/", "https://rforge.net/"))
     options() # Generic function to modify various settings
@@ -816,7 +822,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 4.1 to 4.2), user \textbf{must} reinstall all packages
+		\item After upgrade of R (e.g. from 4.2.1 to 4.3.0), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -850,11 +856,11 @@
       "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn",
       "philentropy", "phylobase", "rentrez", "phytools", "picante", "plotrix",
       "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap",
-      "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep",
-      "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
+      "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs",
+      "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
-    # Upgrade all packages e.g. from R 4.1 to 4.2
+    # Upgrade all packages e.g. from R 4.2 to 4.3
     install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
@@ -896,6 +902,21 @@
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz",
       repos=NULL, type="source")
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Install kdetrees package}{Simple installation from GitHub}
+	\label{kdetrees}
+	\begin{itemize}
+		\item Removed from CRAN, forked on GitHub as \url{https://github.com/V-Z/kdetrees} and slightly updated
+	\end{itemize}
+	\begin{spluscode}
+    # Ensure package 'devtools' is installed
+    if( ! 'devtools' %in% installed.packages()) {install.packages('devtools')}
+    # Install 'kdetrees' from https://github.com/V-Z/kdetrees Git repository
+    devtools::install_github('V-Z/kdetrees')
+    # When needed, the package can be loaded as
+    # library(kdetrees)
 	\end{spluscode}
 \end{frame}
 
@@ -1007,7 +1028,7 @@
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Isozyme}{Isozymes}} --- forms of proteins differing in electrophoresis by their weight and/or charge
 		\begin{itemize}
 			\item Typically coded as presence/absence (1/0) data
-			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) data matrices
+			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) data matrices (this is very common approach)
 		\end{itemize}
 		\item \textbf{Fragmentation data} --- length polymorphism
 		\begin{itemize}
@@ -1015,12 +1036,13 @@
 			\begin{itemize}
 				\item Variability in number of short (usually 1--3~bp) oligonucleotide repeats (ATAT vs. ATATAT, typically ca. 25--250 repeats) bordered by unique primer sequences
 				\item Very variable, fast evolving, species-specific primers needed
-				\item Mainly for population genetics, relationships among closely related species
+				\item Mainly for population genetics (very popular), relationships among closely related species
 				\item Similarly ISSRs (Inter Simple Sequence Repeats)
 			\end{itemize}
 			\item Presence/absence (1/0) dominant data
 			\begin{itemize}
 				\item The allele \textbf{is} or \textbf{is not} present  --- it is impossible to distinguish heterozygots from dominant homozygots
+				\item Same mathematical tools as for analysis of isozymes and another presence/absence data
 				\item \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP} (Amplified Fragment Length Polymorphism) --- very variable, technically complicated, nowadays bit expensive and outdated
 				\item Simpler methods \href{https://en.wikipedia.org/wiki/Random_amplification_of_polymorphic_DNA}{RAPD} (Random Amplified Polymorphic DNA) and \href{https://en.wikipedia.org/wiki/Restriction_fragment_length_polymorphism}{PCR-RFLP} (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
 			\end{itemize}
@@ -5214,6 +5236,7 @@
 
 \begin{frame}[fragile]{kdetrees --- identification of outlying trees I}
 	\begin{itemize}
+		\item See slide~\ref{kdetrees} for installation
 		\item Distance-based method of identification of trees with significantly different topology
 		\item Function \texttt{kdetrees} has plenty of options\ldots
 		\item Parameter \texttt{k} sets threshold for trees to be removed --- it requires repeated running with different \texttt{k} (and plotting the figures) to decide which trees to remove and which to keep
@@ -6858,7 +6881,6 @@
 		\item \href{https://CRAN.R-project.org/package=seqinr}{seqinr}: exploratory data analysis and data visualization for biological sequence
 		\item \href{https://CRAN.R-project.org/package=shapefiles}{shapefiles}: read and write ESRI shapefiles
 		\item \href{https://CRAN.R-project.org/package=snow}{snow}: simple parallel computing
-		\item \href{https://CRAN.R-project.org/package=sos}{sos}: searches contributed R packages
 		\item \href{https://CRAN.R-project.org/package=sp}{sp}: classes and methods for spatial data
 		\item \href{https://CRAN.R-project.org/package=spdep}{spdep}: spatial dependence: weighting schemes, statistics and models
 		\item \href{https://CRAN.R-project.org/package=splancs}{splancs}: display and analysis of spatial point pattern data

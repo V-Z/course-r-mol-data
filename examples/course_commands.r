@@ -3,8 +3,6 @@ help(rep) # Help for particular function (package must be loaded)
 ?rep # Help for particular function (package must be loaded)
 ??ANOVA # Search for the term within all installed packages
 help.search("analysis of variance") # Search for the phrase within all installed packages - return list of hits sorted according to type and package (i.e. package::function)
-require(sos) # More comprehensive search from packages
-findFn("DAPC") # Search for function name
 
 ## Set working directory
 setwd("~/dokumenty/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
@@ -67,6 +65,8 @@ fix(y) # Use to edit matrices, data frames, functions, ...
 rm(y) # Removing...
 
 ## Some basic statistics
+# Information about R test dataset with morphometry of Iris species
+?iris
 # Basic summary statistics
 summary(iris)
 # Boxplot comparing sepal lengths of the three species
@@ -98,7 +98,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sos", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
@@ -123,6 +123,13 @@ devtools::install_github("gilles-guillot/Geneland")
 install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies="Imports")
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+
+# Install kdetrees package (removed from CRAN)
+# Ensure package 'devtools' is installed
+if( ! 'devtools' %in% installed.packages() ) { install.packages('devtools') }
+# Install 'kdetrees' from https://github.com/V-Z/kdetrees Git repository
+devtools::install_github('V-Z/kdetrees')
+# When needed, the package can be loaded as "library(kdetrees)"
 
 # We will load packages by library(package) one by one when needed...
 
