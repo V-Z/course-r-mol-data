@@ -2327,7 +2327,7 @@
 
 \begin{frame}[allowframebreaks]{Introductory overview of statistics and methods}
 	\begin{itemize}
-		\item \alert{Selected method depends on data type, question to answer,~\ldots}{ }--- see further slides and chapters
+		\item \alert{Selected method depends on data type, question to answer,~\ldots}{ }--- see further chapters
 		\begin{itemize}
 			\item Check assumptions and requirements of the methods before usage
 			\item Think if the method answers your question
@@ -2353,7 +2353,7 @@
 			\end{itemize}
 			\item \textbf{\href{https://en.wikipedia.org/wiki/Hierarchical_clustering}{Hierarchical clustering}} --- from slide~\ref{hierclust}
 			\begin{itemize}
-				\item Several methods clustering individuals according to their (dis)similarity from top or down into clusters
+				\item Several methods clustering individuals according to their (dis)similarity from top (i.e. starts by division into 2 groups etc.) or down (starts by grouping of the closest pair of samples) into clusters
 				\item (Un)weighted per-group mean average (\textbf{U/WPGMA}) and others
 				\item Used more in ecology, for genetic data not so much anymore (following methods use to produce better results)
 			\end{itemize}
@@ -2366,7 +2366,7 @@
 			\item \textbf{Principal Coordinates Analysis (PCoA)} --- from slide~\ref{pcoa}
 			\begin{itemize}
 				\item The most common method of \href{https://en.wikipedia.org/wiki/Multidimensional_scaling}{multivariate statistics} for genetic data
-				\item Shows individuals in 2D scatter plot to retain maximum variability (by finding correlations among loci)
+				\item Shows individuals in 2D scatter plot to retain maximum variability (starts with matrix of similarity indices)
 			\end{itemize}
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Minimum_spanning_tree}{Minimum Spanning Network (MSN)}} --- slide~\ref{MSN}
@@ -2383,23 +2383,23 @@
 				\item PCoA requires as input distance matrix; PCA, NMDS and others source data matrix
 			\end{itemize}
 			\item New variables are sorted according amount of variability they show (the decrease is very steep --- first 1--4~axes are usually enough) --- it is possible to display xy-scatter plot showing most of variability of the data
-			\item Good for data display and creation of hypotheses --- not to verify them (there is no statistical test)
+			\item Good for data display and creation of hypotheses --- not to verify them (there is no statistical test) --- researchers use to use them as \textit{proof}, which is incorrect
 			\item Data are commonly scaled --- all variables are in same scale
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum Parsimony (MP)}} --- from slide~\ref{MP}
 		\begin{itemize}
-			\item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of evolutionary changes (DNA mutations)
+			\item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of evolutionary changes (DNA mutations) under given alignment
 			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_likelihood_estimation}{Maximum Likelihood (ML)}}
 		\begin{itemize}
-			\item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely phylogenetic tree under given mutational model
+			\item Methods look for the most likely (probable) solution of the data under given model, e.g. the most likely phylogenetic tree under given mutational model (and alignment)
 			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
 		\end{itemize}
 		\item \textbf{\href{https://en.wikipedia.org/wiki/Bayesian_statistics}{Bayesian statistics}}
 		\begin{itemize}
 			\item Based on \href{https://en.wikipedia.org/wiki/Bayes_theorem}{Bayesian theorem} --- probability of model under given data
-			\item Methods are looking for the best (e.g. evolutionary) \textbf{model} (e.g. phylogenetic tree) \textbf{explaining the data} (e.g. DNA sequences)
+			\item Methods are looking for the best (e.g. evolutionary) \textbf{model} (e.g. phylogenetic tree) \textbf{explaining the data} (e.g. DNA sequences) --- reversed logic comparing to MP and ML
 			\item Algorithm exploring possible models, scoring them and approaching the best runs in steps (iterative generations)
 			\begin{itemize}
 				\item After some time it converges to find optimal solution (usually described by logarithms of likelihood of given model)
@@ -2537,6 +2537,48 @@
 
 \subsection{Statistics}
 
+\begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
+	\begin{itemize}
+		\item Package poppr has central function returning plenty of statistics
+		\item See \href{https://grunwaldlab.github.io/Population_Genetics_in_R/}{poppr's manual} and \texttt{vignette("algo", package="poppr")} for details
+		\item \texttt{Pop} --- Population analyzed
+		\begin{itemize}
+			\item If \texttt{total=TRUE}, there are also statistics for whole dataset
+		\end{itemize}
+		\item \texttt{N} --- Number of individuals/isolates in the specified population
+		\item \texttt{MLG} --- Number of multilocus genotypes found in the specified population (see \texttt{?mlg})
+		\item \texttt{eMLG} --- The expected number of MLG at the lowest common sample size (set by \texttt{minsamp})
+		\item \texttt{SE} --- The standard error for the rarefaction analysis (assets species richness --- how it grows with growing sample size)
+		\begin{itemize}
+			\item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
+		\end{itemize}
+		\item \texttt{H} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} --- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size (is population sizes are very different, indices are not comparable)
+		\begin{itemize}
+			\item One of the most common diversity indices (used elsewhere, not only in biology)
+		\end{itemize}
+		\item \texttt{G} --- \href{https://academic.oup.com/genetics/article/118/4/705/5997522}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
+		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
+		\begin{itemize}
+			\item Commonly used in ecology to compare sites, communities, etc.
+		\end{itemize}
+		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
+		\item \texttt{Hexp} --- \href{https://academic.oup.com/genetics/article/89/3/583/5992737}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
+		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
+		\begin{itemize}
+			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
+			\item Populations whose members are undergoing clonal reproduction generally do so via mitosis --- most likely mechanism for a~change in genotype is via mutation --- the rate of mutation varies from species to species, but it is rarely sufficiently high to approximate a~random shuffling of alleles
+			\item The index of association is a~calculation based on the ratio of the variance of the raw number of differences between individuals and the sum of those variances over each locus
+			\item It as the observed variance over the expected variance --- if they are the same, then the index is zero (=prevailing clonal reproduction) after subtracting one --- it rises with with increasing differences
+		\end{itemize}
+		\item \texttt{p.Ia} --- P-value for \texttt{Ia} from the number of reshuffling indicated in \texttt{sample}
+		\item \texttt{rbarD} --- Standardized Index of Association for each population (see \texttt{?ia}) --- corrected for higher number of loci not to rise so steeply
+		\item \texttt{p.rD} --- P-value for \texttt{rbarD} from the number of reshuffles indicated in \texttt{sample}
+	\end{itemize}
+	\begin{block}{Too much to choose from?}
+		Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages --- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
+	\end{block}
+\end{frame}
+
 \begin{frame}[fragile]{Population statistics by poppr()}
 	\vfill
 	\begin{itemize}
@@ -2566,41 +2608,6 @@
 	\begin{center}
 		\includegraphics[width=\textwidth-2.5cm]{poppr.png}
 	\end{center}
-\end{frame}
-
-\begin{frame}[allowframebreaks]{Population statistics returned by poppr()}
-	\begin{block}{Too much to choose from?}
-		Generally, there are plenty of different population indices (and distances and another statistics) with different assumptions and usage in many packages --- it can be complicated to pick the best one\ldots{ }The course shows many examples, but the list is far from being exhaustive\ldots
-	\end{block}
-	\begin{itemize}
-		\item \texttt{Pop} --- Population analyzed
-		\begin{itemize}
-			\item If \texttt{total=TRUE}, there are also statistics for whole dataset
-		\end{itemize}
-		\item \texttt{N} --- Number of individuals/isolates in the specified population
-		\item \texttt{MLG} --- Number of multilocus genotypes found in the specified population (see \texttt{?mlg})
-		\item \texttt{eMLG} --- The expected number of MLG at the lowest common sample size (set by \texttt{minsamp})
-		\item \texttt{SE} --- The standard error for the rarefaction analysis (assets species richness --- how it grows with growing sample size)
-		\begin{itemize}
-			\item Big difference between \texttt{MLG} and \texttt{eMLG} indicate some process lowering/increasing genetic diversity
-		\end{itemize}
-		\item \texttt{H} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Shannon_index}{Shannon-Wiener Diversity index} --- evaluates number of genotypes and their distribution, takes entropy into account, grows with higher richness and diversity, sensitive to uneven sample size (is population sizes are very different, indices are not comparable)
-		\item \texttt{G} --- \href{https://academic.oup.com/genetics/article/118/4/705/5997522}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
-		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
-		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
-		\item \texttt{Hexp} --- \href{https://academic.oup.com/genetics/article/89/3/583/5992737}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
-		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
-		\begin{itemize}
-			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
-			\item Populations whose members are undergoing clonal reproduction generally do so via mitosis --- most likely mechanism for a~change in genotype is via mutation --- the rate of mutation varies from species to species, but it is rarely sufficiently high to approximate a~random shuffling of alleles
-			\item The index of association is a~calculation based on the ratio of the variance of the raw number of differences between individuals and the sum of those variances over each locus
-			\item It as the observed variance over the expected variance --- if they are the same, then the index is zero (=prevailing clonal reproduction) after subtracting one --- it rises with with increasing differences
-		\end{itemize}
-		\item \texttt{p.Ia} --- P-value for \texttt{Ia} from the number of reshuffling indicated in \texttt{sample}
-		\item \texttt{rbarD} --- Standardized Index of Association for each population (see \texttt{?ia}) --- corrected for higher number of loci not to rise so steeply
-		\item \texttt{p.rD} --- P-value for \texttt{rbarD} from the number of reshuffles indicated in \texttt{sample}
-		\item See \href{https://grunwaldlab.github.io/Population_Genetics_in_R/}{poppr's manual} and \texttt{vignette("algo", package="poppr")} for details
-	\end{itemize}
 \end{frame}
 
 \begin{frame}[fragile]{Departure from Hardy-Weinberg equilibrium}
@@ -2652,7 +2659,7 @@
 		\begin{itemize}
 			\item F$_{IT}$ is the inbreeding coefficient of an individual relative to the total population (all samples)
 			\item F$_{IS}$ is the inbreeding coefficient of an individual relative to the subpopulation (\enquote{population} in common terminology) and averaging them
-			\item F$_{ST}$ is the effect of subpopulations (\enquote{population}) compared to the total population (all samples)
+			\item F$_{ST}$ is the effect of subpopulations (\enquote{populations}) compared to the total population (all samples across all populations)
 		\end{itemize}
 		\item For \texttt{Fst}, \texttt{theta.msat} and another similar functions the data object \textbf{must} contain population column (see manual of respective function)
 	\end{itemize}
@@ -2661,7 +2668,7 @@
     Fst(x=hauss.loci, pop=1) # Calculation per locus
                     Fit        Fst         Fis
     msta93   0.31835291 0.17867087  0.17006829
-        ...         ...        ...         ...
+       ...          ...        ...         ...
     summary(Fst(x=hauss.loci, pop=1)) # Summary across loci
 	\end{spluscode}
 \end{frame}
@@ -2671,7 +2678,7 @@
     # Pairwise Fst comparing populations
     # Convert Adegent's genind to format of hierfstat package
     ?genind2hierfstat
-    # Nei's pairwise Fst between all pairs of populations
+    # Nei's pairwise Fst between all pairs of populations - most common usage
     pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
            He     Ne     Oh     Pr     Sk
     He     NA 0.3204 0.1824 0.1942 0.1599 # 0 = no structure

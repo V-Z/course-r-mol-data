@@ -673,7 +673,7 @@ lapply(X=hauss.pops.loci, FUN=hw.test, B=1000)
 # For Fst, fstat and theta.msat the loci object must contain population column
 Fst(x=hauss.loci, pop=1) # Calculation per locus
 summary(Fst(x=hauss.loci, pop=1)) # Summary across loci
-# Nei's pairwise Fst between all pairs of populations.
+# Nei's pairwise Fst between all pairs of populations - most common usage
 pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind))
 heatmap(x=pairwise.neifst(dat=genind2hierfstat(dat=hauss.genind)), Rowv=NA, Colv=NA) # Simple visualization
 # For mixed ploidy data sets
