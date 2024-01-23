@@ -1493,7 +1493,7 @@
 		\item Resulting fragments are visualized and recorded as presence/absence (1/0) matrix of fragment of particular length
 		\item Highly variable, no prior knowledge of target genome required, suitable for fine-scale population genetics, relationships among closely related species (not for phylogeny)
 		\item Technically relatively demanding, nowadays people use to prefer RAD-Seq or similar
-		\item Same methods are used also for another presence/absence data
+		\item \alert{Same methods are used also for another presence/absence data}
 	\end{itemize}
 \end{frame}
 
@@ -1603,8 +1603,8 @@
 	\begin{itemize}
 		\item When importing fragmentation, character, etc. data, we somehow use function \texttt{read.table()} --- it is important to understand it
 		\item I~recommend to use TAB (TSV --- tab separated values; encoded as \texttt{\textbackslash t} in R) to separate columns (no quotation marks, no commas)
-		\item When importing microsatellites, all alleles \textbf{must} have same number of digits. Separate alleles by \enquote{\texttt{/}}, \enquote{\texttt{|}} or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
-		\item \textbf{Do not use} underscores (\enquote{\texttt{\_}}) or minuses (\enquote{\texttt{-}}) to name objects in R --- only numbers, Latin letters or dots
+		\item When importing microsatellites, all alleles \textbf{must} have same number of digits (use trailing zeros). Separate alleles by \enquote{\texttt{/}}, \enquote{\texttt{|}} or something similar and correctly specify it in \texttt{read.loci()} or \texttt{df2genind()} (or read the data with \texttt{read.table()}, convert into matrix and use \texttt{alleles2loci()})
+		\item \textbf{Do not use} dashes (minuses) (\enquote{\texttt{-}}) to name objects in R (sometimes there are problems with underscores (\enquote{\texttt{\_}})) --- only numbers, Latin letters or dots
 		\item \texttt{read.loci()} sometimes doesn't work correctly on AFLP or polyploid microsatellites --- try \texttt{read.table()} instead\ldots
 		\item Genind object is able to store mixed ploidy data, but not all analysis are able to handle it
 	\end{itemize}
@@ -1618,9 +1618,9 @@
 		\item Probably most common genetic data
 		\item Genes of various lengths and mutation rate --- from variable introns suitable for population genetics to conservative genes suitable for phylogenies
 		\item Examples are shown for DNA, but same apply for RNA and mostly also for protein sequences (use class \texttt{AAbin} instead of \texttt{DNAbin})
-		\item Same methods are used for single nucleotide polymorphism extracted from larger-scale sequencing, including from modern sequencing methods
+		\item Same methods are used for single nucleotide polymorphism extracted from larger-scale sequencing, including from modern sequencing methods (Illumina etc.)
 		\item Data use to be stored in FASTA  or NEXUS format --- can contain any sequences of any origin
-		\item Outputs of modern high-throughput sequencing use to be stored in FASTQ and later BAM and VCF (see further)
+		\item Outputs of modern high-throughput sequencing use to be stored in FASTQ and later BAM and VCF (see next chapter)
 	\end{itemize}
 \end{frame}
 
@@ -1726,7 +1726,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Importing SNP}
+\begin{frame}[fragile]{Importing large SNP}
 	\begin{itemize}
 		\item Import from \href{https://zzz.bwh.harvard.edu/plink/index.shtml}{PLINK} requires saving of data with option \href{https://zzz.bwh.harvard.edu/plink/dataman.shtml}{\enquote{-{-}recodeA}}
 	\end{itemize}
@@ -1745,7 +1745,7 @@
     # If it crashes (on Windows), try to add parameter "parallel=FALSE"
 	\end{spluscode}
 	\begin{itemize}
-		\item For small data sets, keep data as genind as it is more information-rich --- genlight is more efficient for large data (> $\sim$100,000~SNPs)
+		\item For small data sets, keep data as DNAbin or genind as they are more information-rich --- genlight is more efficient for large data (> $\sim$100,000~SNPs)
 		\item Adegenet has custom format to store SNP as plain text file and function \texttt{read.snp} to import it into \texttt{genlight} object --- check \href{https://github.com/thibautjombart/adegenet/wiki/Tutorials}{Adegenet tutorial} \textbf{genomics}, \texttt{?read.snp}
 	\end{itemize}
 \end{frame}
@@ -1777,7 +1777,7 @@
 
 \begin{frame}[fragile]{Checking sequences}
 	\begin{spluscode}
-    # Test is distribution of SNPs is random (1000 permutations)
+    # Test if distribution of SNPs is random (1000 permutations)
     snpposi.test(as.matrix(usflu.dna))
     pegas::nuc.div(x=usflu.dna) # Nucleotide diversity
     ape::base.freq(x=usflu.dna) # Base frequencies
@@ -1787,8 +1787,8 @@
     seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]),
       wordsize=3)
     # View sequences - all must be of the same length
-    # Function "image.DNAbine" requires as input matrix
-    # So that sequences must be of same length (aligned)
+    # Function "image.DNAbine" requires as input matrix, so that sequences
+    # must be of same length (aligned) - stored as DNAbin.matrix
     image.DNAbin(x=usflu.dna)
     # Sequences must be of same length - as.matrix.DNAbin() can help
     image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
@@ -1836,7 +1836,7 @@
 	\begin{itemize}
 		\item Download into working directory input file \url{https://soubory.trapa.cz/rcourse/arabidopsis.vcf.gz} and reference sequence \url{https://soubory.trapa.cz/rcourse/alygenomes.fasta}
 		\item Non-synonymous SNPs from \href{https://www.arabidopsis.org/servlets/TairObject?type=locus&name=At2g46980}{ASY3} gene (required for meiosis) from diploids and tetraploids of \textit{Arabidopsis arenosa} from central and northern Europe
-		\item Package \textbf{vcfR} has functions (class \texttt{vcfR}) to manipulate and explore VCF; other option is usage of \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} (uses different classes)
+		\item Package \textbf{vcfR} has functions to manipulate and explore VCF (class \texttt{vcfR}); other option is usage of \href{https://bioconductor.org/packages/release/bioc/html/VariantAnnotation.html}{VariantAnnotation} (uses different classes)
 	\end{itemize}
 	\begin{spluscode}
     library(vcfR) # Required library
@@ -1947,8 +1947,8 @@
     arabidopsis.vcf.missg <-
       arabidopsis.vcf.miss/ncol(arabidopsis.vcf@gt[,-1])
     hist(x=arabidopsis.vcf.missg, xlab="Missingness (%)")
-    abline(h=seq(from=0, to=350, by=25), col="grey")
     # Set abline parameters according to your data
+    abline(h=seq(from=0, to=350, by=25), col="grey")
 	\end{spluscode}
 \end{frame}
 
@@ -1982,13 +1982,13 @@
       name="Arabidopsis arenosa", seq=arabidopsis.dna)
     arabidopsis.chrom
     plot(arabidopsis.chrom)
-    # Masking sites with too low/high DP and/or MQ
+    # Masking sites with too low/high DP and/or MQ (sites are not removed yet)
     arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1,
       min_DP=8, max_DP=5000, min_MQ=40, max_MQ=200)
     arabidopsis.chrom.mask
     plot(arabidopsis.chrom.mask)
     variant.table(arabidopsis.chrom.mask)
-    # Saving mask into new object
+    # Saving mask into new object (actually removing masked sites)
     arabidopsis.chrom.fin <- proc.chromR(x=arabidopsis.chrom.mask)
 	\end{spluscode}
 \end{frame}

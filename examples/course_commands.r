@@ -336,7 +336,7 @@ write(x=nothofagus.fasta, file="nothofagus.fasta")
 nothofagus.dna <- read.dna(file="nothofagus.fasta", format="fasta")
 nothofagus.dna
 
-# Importing SNP
+# Importing large SNP
 ?read.PLINK # See it for available options
 # Extract SNP from FASTA alignment
 usflu.genlight <- fasta2genlight(file="https://adegenet.r-forge.r-project.org/files/usflu.fasta", quiet=FALSE, saveNbAlleles=TRUE)
@@ -357,7 +357,7 @@ snpposi.plot(as.matrix(usflu.dna))
 # When converting to genind object, only polymorphic loci are kept - threshold for polymorphism can be arbitrary (polyThres=...)
 usflu.genind2 <- DNAbin2genind(x=usflu.dna, polyThres=0.01)
 usflu.genind2 # See it
-# Test is distribution of SNP is random (1000 permutations)
+# Test if distribution of SNP is random (1000 permutations)
 snpposi.test(x=as.matrix(usflu.dna))
 
 # Check sequences
@@ -370,7 +370,7 @@ ape::GC.content(x=usflu.dna)
 # Number of times any dimer/trimer/etc oligomers occur in a sequence
 seqinr::count(seq=as.character.DNAbin(gunnera.dna[["AF447749.1"]]), wordsize=3)
 # View sequences - all must be of the same length
-# Function "image.DNAbin" requires as input matrix, so that sequences must be of same length (aligned)
+# Function "image.DNAbin" requires as input matrix, so that sequences must be of same length (aligned) - stored as DNAbin.matrix
 image.DNAbin(x=usflu.dna)
 # Sequences must be of same length - as.matrix.DNAbin() can help
 image.DNAbin(x=as.matrix.DNAbin(usflu.dna))
@@ -433,6 +433,7 @@ abline(h=seq(from=0, to=90, by=5), col="grey")
 # Boxplot of GQ
 boxplot(arabidopsis.vcf.gq, las=2, main="Genotype Quality (GQ)")
 abline(h=seq(from=0, to=100, by=5), col="grey")
+# Basically same as work with DP...
 
 # Missing data
 # Extract information about missing data
@@ -445,7 +446,7 @@ abline(h=seq(from=0, to=1, by=0.05), col="grey")
 arabidopsis.vcf.missg <- apply(X=arabidopsis.vcf.dp, MARGIN=1, FUN=function(x){sum(is.na(x))})
 arabidopsis.vcf.missg <- arabidopsis.vcf.miss/ncol(arabidopsis.vcf@gt[,-1])
 hist(x=arabidopsis.vcf.missg, xlab="Missingness (%)")
-abline(h=seq(from=0, to=350, by=25), col="grey")
+abline(h=seq(from=0, to=350, by=25), col="grey") # Set abline parameters according to your data
 
 # Remove indels
 arabidopsis.vcf <- extract.indels(x=arabidopsis.vcf)
@@ -463,12 +464,12 @@ arabidopsis.dna
 arabidopsis.chrom <- create.chromR(vcf=arabidopsis.vcf, name="Arabidopsis arenosa", seq=arabidopsis.dna)
 arabidopsis.chrom
 plot(arabidopsis.chrom)
-# Masking sites with too low/high DP and/or MQ
+# Masking sites with too low/high DP and/or MQ (sites are not removed yet)
 arabidopsis.chrom.mask <- masker(x=arabidopsis.chrom, min_QUAL=1, min_DP=8, max_DP=5000, min_MQ=40, max_MQ=200)
 arabidopsis.chrom.mask
 plot(arabidopsis.chrom.mask)
 variant.table(arabidopsis.chrom.mask)
-# Saving mask into new object
+# Saving mask into new object (actually removing masked sites)
 arabidopsis.chrom.fin <- proc.chromR(x=arabidopsis.chrom.mask)
 arabidopsis.chrom.fin
 chromoqc(chrom=arabidopsis.chrom.fin) # The plot is bit empty as we have only single gene
@@ -516,7 +517,7 @@ seqinr::write.fasta(sequences=as.character.DNAbin(gunnera.dna), names=names(gunn
 write.nexus.data(x=gunnera.dna, file="gunnera.nexus", format="dna")
 # Export VCF
 vcfR::write.vcf(x=arabidopsis.vcf, file="arabidopsis.vcf.gz")
-# Export trees (objects of class phylo)
+# Export trees (objects of class phylo) - will be introduced later
 write.tree(phy=hauss.nj.bruvo, file="haussknechtii.nwk") # Writes tree(s) in NEWICK format
 write.nexus(hauss.nj.bruvo, file="haussknechtii.nexus") # Writes tree(s) in NEXUS format
 
