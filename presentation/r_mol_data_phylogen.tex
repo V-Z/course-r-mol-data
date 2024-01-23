@@ -2116,7 +2116,7 @@
 	\begin{itemize}
 		\item Good alignment is basic condition for any analysis of DNA sequences
 		\item DNA/RNA and protein sequences must be aligned prior any subsequent analysis (tree building,~\ldots)
-		\item R doesn't have any possibility for visual editing (use rather software like \href{https://ugene.net/}{Unipro UGENE}, \href{https://www.geneious.com/}{Geneious} or \href{https://digitalinsights.qiagen.com/products-overview/analysis-and-visualization/qiagen-clc-genomics-workbench/}{CLC Genomics Workbench}
+		\item R doesn't have any possibility for visual editing of alignments (use rather software like \href{https://ugene.net/}{Unipro UGENE}, \href{https://www.geneious.com/}{Geneious} or \href{https://digitalinsights.qiagen.com/products-overview/analysis-and-visualization/qiagen-clc-genomics-workbench/}{CLC Genomics Workbench})
 		\item R can automatically (in batch) run multiple sequence alignments of multiple genes (there are several possibilities)
 		\begin{itemize}
 			\item Simple scripts for this task can be written in any scripting language like BASH, Perl or Python --- only matters what user likes, knows and wish to do with the results\ldots
@@ -2129,13 +2129,14 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Overview and MAFFT}
+\subsection{MAFFT}
 
 \begin{frame}[fragile]{Multiple sequence alignment with MAFFT}
 	\begin{itemize}
-		\item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} --- first one reads \enquote{\texttt{*StringSet}} classes R objects and writes \enquote{\texttt{*MultipleAlignment}} R classes objects; the latter reads and writes object of class \enquote{\texttt{DNAbin}}
-		\item \texttt{ape} also contains functions to use Clustal and T-Coffee --- both read and write \texttt{DNAbin}
 		\item MAFFT is available from (same author) in packages \href{https://CRAN.R-project.org/package=ips}{ips} and \href{http://www.christophheibl.de/Rpackages.html}{phyloch} --- both read and write \texttt{DNAbin}
+		\begin{itemize}
+			\item Phyloch is missing in CRAN, while ips is there and has generally more features, so we can use it
+		\end{itemize}
 	\end{itemize}
 	\begin{spluscode}
     library(ape)
@@ -2146,16 +2147,20 @@
     gunnera.mafft <- mafft(x=gunnera.dna, method="localpair", maxiterate=100,
       options="--adjustdirection", exec="/usr/bin/mafft")
     gunnera.mafft # See results, compare with 'gunnera'
+    class(gunnera.mafft)
+    image.DNAbin(gunnera.mafft)
 	\end{spluscode}
 \end{frame}
 
-\subsection{MAFFT, Clustal, MUSCLE and T-Coffee}
+\subsection{Clustal, MUSCLE and T-Coffee}
 
 \begin{frame}[fragile]{Clustal, MUSCLE and T-Coffee from ape}
+	\begin{itemize}
+		\item MUSCLE is available in packages \texttt{muscle} and \texttt{ape} --- first one reads classes \enquote{\texttt{*StringSet}} and writes classes \enquote{\texttt{*MultipleAlignment}} (see \texttt{?muscle::muscle}); the latter reads and writes object of class \enquote{\texttt{DNAbin}}
+		\item \texttt{ape} also contains functions to use Clustal and T-Coffee --- both read and write \texttt{DNAbin}
+	\end{itemize}
 	\begin{spluscode}
-    class(gunnera.mafft)
-    image.DNAbin(gunnera.mafft)
-    # read ?clustal and documentation of Clustal, Muscle and T-Coffee
+    # Read "?clustal" and documentation of Clustal, Muscle and T-Coffee
     # when using them to set correct parameters
     gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=
       0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE,
@@ -2165,27 +2170,25 @@
     image.DNAbin(gunnera.clustal)
     gunnera.muscle <- muscle(x=gunnera.dna, exec="muscle", quiet=FALSE,
       original.ordering=TRUE) # Change "exec" to fit your path to muscle!
-    gunnera.muscle
-    class(gunnera.muscle)
+    gunnera.muscle # And "class(gunnera.muscle)"
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
+	\begin{spluscode}
     image.DNAbin(gunnera.muscle)
-    ?muscle::muscle # See options in muscle package
+	\end{spluscode}
+	\begin{center}
+		\includegraphics[height=4.5cm]{muscle.png}
+	\end{center}
+	\begin{spluscode}
+    # Remove gaps from alignment - destroy it (not aligned anymore)
+    gunnera.nogaps <- del.gaps(gunnera.muscle)
+    ?del.gaps # See for details
 	\end{spluscode}
 \end{frame}
 
 \subsection{Multiple genes}
-
-\begin{frame}[fragile]{Multiple sequence alignment with MUSCLE}
-	\begin{center}
-		\includegraphics[height=5cm]{muscle.png}
-	\end{center}
-	\vfil
-	\begin{spluscode}
-    # Remove gaps from alignment - destroy it
-    gunnera.nogaps <- del.gaps(gunnera.muscle)
-    ?del.gaps # See for details
-	\end{spluscode}
-	\vfill
-\end{frame}
 
 \begin{frame}[fragile]{Align multiple genes}
 	\begin{itemize}
@@ -2230,7 +2233,7 @@
 	\end{spluscode}
 \end{frame}
 
-\subsection{Display and cleaning}
+\subsection{Checking}
 
 \begin{frame}[fragile]{Checking the alignment}
 	\begin{spluscode}
@@ -2239,12 +2242,12 @@
     # Check the alignment
     checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
     checkAlignment(x=as.matrix.DNAbin(x=gunnera.clustal), check.gaps=TRUE,
-      plot=TRUE, what=1:4)
+      plot=TRUE, what=1:4) # If it is saved as DNAbin list, not matrix
     ?checkAlignment # See details
     # DNAbin can be technically list or matrix - some functions require
     # list, some matrix, some can handle both - check manual and if needed,
     # use:
-    as.matrix.DNAbin()
+    as.matrix.DNAbin() # or
     as.list.DNAbin()
     # Matrix makes sense only for alignments, list for any import
     # (sequences do no have to have same lengths)
@@ -2257,6 +2260,8 @@
 	\end{center}
 \end{frame}
 
+\subsection{Cleanup}
+
 \begin{frame}[fragile]{Cleaning the alignment}
 	\begin{spluscode}
     # Delete all columns/rows containing only gaps or missing data (N, ?, -)
@@ -2267,33 +2272,34 @@
     gunnera.mafft.ng<-deleteGaps(x=gunnera.mafft,gap.max=nrow(gunnera.mafft)/4)
     gunnera.mafft.ng
     # Do not confuse with function delete.gaps() from phyloch package
-    # See of settings of "nmax" value - threshold for gap deletion
-    ?deleteGaps # "nmax=0" deletes all columns with any gap
-    multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
-    multialign.aln.ng
-    # Delete every line (sample) containing at least 20% of missing data
-    gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.2,
+    # Delete every line (sample) containing at least 50% of missing data
+    gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.5,
       freq.only=FALSE)
     gunnera.mafft.ng
     ?ape::del.rowgapsonly # See help page for details
+    # Delete every alignment position having at least 20% of missing data
+    gunnera.mafft.ng <- del.colgapsonly(x=gunnera.mafft.ng, threshold=0.2,
+      freq.only=FALSE)
+    gunnera.mafft.ng
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Cleaning the alignment}
 	\begin{spluscode}
-    # Delete every alignment position having at least 20% of missing data
-    gunnera.mafft.ng <- del.colgapsonly(x=gunnera.mafft.ng, threshold=0.2,
-      freq.only=FALSE)
-    gunnera.mafft.ng
     ?ape::del.colgapsonly # See help page for details
     # Display the result
     image.DNAbin(x=gunnera.mafft.ng)
+    # See of settings of "nmax" value - threshold for gap deletion
+    ?deleteGaps # "nmax=0" deletes all columns with any gap
+    multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
+    multialign.aln.ng
     lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 	\end{spluscode}
 	\vfil
 	\begin{itemize}
 		\item \enquote{Strictness} of alignment cleaning depends on following steps --- NJ (and another distance-based methods) doesn't like more than $\sim$10--15\% of missing data, but some tree builders (MrBayes, IQ-TREE,~\ldots) are able to work with gaps --- check their documentation\ldots
 		\item Automated cleanup is useful especially if batch processing plenty of genes
+		\item \texttt{lapply} or \texttt{mclapply} can be used in the same way for any batch processing of alignments
 	\end{itemize}
 \end{frame}
 

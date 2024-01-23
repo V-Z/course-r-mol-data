@@ -535,7 +535,7 @@ class(gunnera.mafft)
 image.DNAbin(gunnera.mafft) # Plot the alignment
 
 # Multiple sequence alignments using clustal, muscle and t-coffee are available in package ape
-# read ?clustal and documentation of Clustal and Muscle to set correct parameters
+# Read "?clustal" and documentation of Clustal and Muscle to set correct parameters
 gunnera.clustal <- ape::clustal(x=gunnera.dna, pw.gapopen=10, pw.gapext=0.1, gapopen=10, gapext=0.2, exec="/usr/bin/clustalw2", quiet=FALSE, original.ordering=TRUE) # Change "exec" to fit your path to clustal!
 gunnera.clustal # See results
 class(gunnera.clustal)
@@ -547,7 +547,7 @@ image.DNAbin(gunnera.muscle) # Plot the alignment
 # See options in muscle package
 ?muscle::muscle
 
-# Remove gaps from alignment - destroy it
+# Remove gaps from alignment - destroy it (not aligned anymore)
 gunnera.nogaps <- del.gaps(gunnera.muscle)
 ?del.gaps # See for details
 
@@ -578,10 +578,10 @@ lapply(X=multialign.aln2, FUN=class)
 image.DNAbin(x=gunnera.mafft)
 # Check the alignment
 checkAlignment(x=usflu.dna, check.gaps=TRUE, plot=TRUE, what=1:4)
-checkAlignment(x=as.matrix.DNAbin(x=gunnera.clustal), check.gaps=TRUE, plot=TRUE, what=1:4)
+checkAlignment(x=as.matrix.DNAbin(x=gunnera.clustal), check.gaps=TRUE, plot=TRUE, what=1:4) # If it is saved as DNAbin list, not matrix
 ?checkAlignment # See details
 # DNAbin can be technically list or matrix - some functions require list, some matrix, some can handle both - check manual and if needed, use
-as.matrix.DNAbin()
+as.matrix.DNAbin() # or
 as.list.DNAbin()
 # Matrix makes sense only for alignments, list for any import (sequences do no have to have same lengths)
 
@@ -593,12 +593,8 @@ gunnera.mafft <- deleteEmptyCells(DNAbin=gunnera.mafft)
 gunnera.mafft.ng <- deleteGaps(x=gunnera.mafft, gap.max=nrow(gunnera.mafft)/4)
 gunnera.mafft.ng
 # Do not confuse with function delete.gaps() from phyloch package
-# See of settings of "nmax" value - threshold for gap deletion
-?deleteGaps # "nmax=0" deletes all columns with any gap
-multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
-multialign.aln.ng
-# Delete every line (sample) containing at least 20% of missing data
-gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.2, freq.only=FALSE)
+# Delete every line (sample) containing at least 50% of missing data
+gunnera.mafft.ng <- del.rowgapsonly(x=gunnera.mafft.ng, threshold=0.5, freq.only=FALSE)
 gunnera.mafft.ng
 ?ape::del.rowgapsonly # See help page for details
 # Delete every alignment position having at least 20% of missing data
@@ -607,6 +603,10 @@ gunnera.mafft.ng
 ?ape::del.colgapsonly # See help page for details
 # Display the result
 image.DNAbin(x=gunnera.mafft.ng)
+# See of settings of "nmax" value - threshold for gap deletion
+?deleteGaps # "nmax=0" deletes all columns with any gap
+multialign.aln.ng <- lapply(X=multialign.aln, FUN=deleteGaps, gap.max=5)
+multialign.aln.ng
 lapply(X=multialign.aln.ng, FUN=image.DNAbin)
 
 ## Descriptive statistics
