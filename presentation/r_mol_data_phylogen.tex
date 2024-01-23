@@ -1072,6 +1072,74 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}{Examples of data and formats I --- AFLP (presence/absence) gel and microsatellites from sequencing machine}
+	\begin{center}
+		\includegraphics[height=5.75cm]{aflp_ssrs.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Examples of data and formats II --- Aligned DNA sequences displayed in Geneious}
+	\begin{center}
+		\includegraphics[height=5.75cm]{alignment_geneious.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences, text view}
+	\begin{spluscode}
+    > CY013200
+    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttcccctagtgaaaaca
+    ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgatcacgaatgat
+    > CY013781
+    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttccccaaattgaagtg
+    ... # FASTA continues...
+	\end{spluscode}
+	\vfill
+	\begin{spluscode}
+    @7001425F:141:CAV4JANXX:3:1104:1496:1976 1:N:0:GTGTCC
+    NCGATTCATTTTAGCAATTAGACGTGAAGGTCTCTTGATGAAAGACACTAACGAACTCTTTCCTTGGACACC
+    +
+    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    @7001425F:141:CAV4JANXX:3:1104:1250:1987 1:N:0:GTGTCC
+    TCGATTCACTGAACTGAATGTCCGACAAACTTTAGTTTGTCGTTTCTACCTCACCAAAGTTCGGAGCTTCGA
+    +
+    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    ... # FASTQ continues...
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It contains Illumina short reads mapped to reference}
+	\begin{center}
+		\includegraphics[height=6cm]{bam_igv.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{Examples of data and formats V --- VCF with 5 samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
+	\begin{center}
+		\includegraphics[height=6cm]{vcf_igv.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Examples of data and formats VI --- Parts of VCF in text view}
+	\begin{spluscode}
+    ... # Header
+    ##ALT=<ID=NON_REF,Description="Represents any possible alternative al...
+    ##FILTER=<ID=DP_4,Description="DP < 4">
+    ... # Information about data stored
+    ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in geno...
+    ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for ...
+    ... # Information about chromosomes etc.
+    ##contig=<ID=scaffold_1,length=33132539>
+    ##contig=<ID=scaffold_2,length=19320864>
+    ... # The data (variants of nucleotides)
+    #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMA...
+    scaffold_4      22846289        .       C       A       91.52   PASS ...
+    scaffold_4      22846291        .       C       T       325.58  PASS ...
+    ...AC=1;AF=1.057e-03;AN=946;BaseQRankSum=0.825;ClippingRankSum=0.118;...
+    ...DP=4046;ExcessHet=3.0302;FS=0.000;InbreedingCoeff=-0.0096;MQ=79.24...
+    ... # More data...
+	\end{spluscode}
+\end{frame}
+
 \begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
@@ -1155,74 +1223,6 @@
 			\item Extension usually \texttt{*.vcf} or \texttt{*.vcf.gz}
 		\end{itemize}
 	\end{itemize}
-\end{frame}
-
-\begin{frame}{Examples of data and formats I --- AFLP (presence/absence) gel and microsatellites from sequencing machine}
-	\begin{center}
-		\includegraphics[height=5.75cm]{aflp_ssrs.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Examples of data and formats II --- Aligned DNA sequences displayed in Geneious}
-	\begin{center}
-		\includegraphics[height=5.75cm]{alignment_geneious.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Examples of data and formats III --- FASTA and FASTQ sequences, text view}
-	\begin{spluscode}
-    > CY013200
-    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttcccctagtgaaaaca
-    ggaaatgacaacagcacagcaacgctgtgcctgggacaccatgcagtgccaaacggaacgatcacgaatgat
-    > CY013781
-    atgaagactatcattgctttgagctacattttatgtctggttttcgctcaaaaacttccccaaattgaagtg
-    ... # FASTA continues...
-	\end{spluscode}
-	\vfill
-	\begin{spluscode}
-    @7001425F:141:CAV4JANXX:3:1104:1496:1976 1:N:0:GTGTCC
-    NCGATTCATTTTAGCAATTAGACGTGAAGGTCTCTTGATGAAAGACACTAACGAACTCTTTCCTTGGACACC
-    +
-    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-    @7001425F:141:CAV4JANXX:3:1104:1250:1987 1:N:0:GTGTCC
-    TCGATTCACTGAACTGAATGTCCGACAAACTTTAGTTTGTCGTTTCTACCTCACCAAAGTTCGGAGCTTCGA
-    +
-    #<<BBFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-    ... # FASTQ continues...
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}{Examples of data and formats IV --- BAM displayed in IGV}{It contains Illumina short reads mapped to reference}
-	\begin{center}
-		\includegraphics[height=6cm]{bam_igv.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}{Examples of data and formats V --- VCF with 5 samples displayed in IGV}{Variants of alleles and depth of coverage for each sample, mapped to reference}
-	\begin{center}
-		\includegraphics[height=6cm]{vcf_igv.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Examples of data and formats VI --- Parts of VCF in text view}
-	\begin{spluscode}
-    ... # Header
-    ##ALT=<ID=NON_REF,Description="Represents any possible alternative al...
-    ##FILTER=<ID=DP_4,Description="DP < 4">
-    ... # Information about data stored
-    ##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in geno...
-    ##INFO=<ID=AF,Number=A,Type=Float,Description="Allele Frequency, for ...
-    ... # Information about chromosomes etc.
-    ##contig=<ID=scaffold_1,length=33132539>
-    ##contig=<ID=scaffold_2,length=19320864>
-    ... # The data (variants of nucleotides)
-    #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMA...
-    scaffold_4      22846289        .       C       A       91.52   PASS ...
-    scaffold_4      22846291        .       C       T       325.58  PASS ...
-    ...AC=1;AF=1.057e-03;AN=946;BaseQRankSum=0.825;ClippingRankSum=0.118;...
-    ...DP=4046;ExcessHet=3.0302;FS=0.000;InbreedingCoeff=-0.0096;MQ=79.24...
-    ... # More data...
-	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{R training data}
