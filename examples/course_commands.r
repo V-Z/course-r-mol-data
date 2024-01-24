@@ -769,7 +769,7 @@ is.euclid(hauss.dist.bruvo, plot=TRUE, print=TRUE, tol=1e-10)
 # Show it
 hauss.dist.bruvo
 
-# Nei's distance (not Euclidean) for individuals (other methods are available, see ?nei.dist from poppr package)
+# Nei's distance (very popular, but not Euclidean) for individuals (other methods are available, see "?poppr::nei.dist")
 hauss.dist.nei <- poppr::nei.dist(x=hauss.genind, warning=TRUE)
 # Test if it is Euclidean
 is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
@@ -794,6 +794,8 @@ MyDistance <- cailliez(MyDistance, print=TRUE, tol = 1e-10, cor.zero=TRUE)
 is.euclid(MyDistance, plot=TRUE, print=TRUE, tol = 1e-10)
 MyDistance
 
+# See details of distance methods in package poppr
+vignette("algo", package="poppr")
 # Compare different distance matrices
 # List of functions to be parsed to respective dist.* function
 distances <- c("Nei", "Rogers", "Edwards", "Reynolds", "Prevosti")
@@ -815,8 +817,6 @@ x <- lapply(names(dists), function(x) {
 	add.scale.bar(lcol="red", length=0.1)
 	})
 dev.off() # Close graphical device to reset settings
-# See details of distance methods in package poppr
-vignette("algo", package="poppr")
 
 # Selecting model for calculating distances among DNA sequences
 library(phangorn) # Load needed library
@@ -895,6 +895,7 @@ table.paint(df=as.data.frame(as.matrix(usflu.dist)), cleg=0, clabel.row=0.5, cla
 # heatmap() reorders values
 heatmap(x=as.matrix(usflu.dist), Rowv=NA, Colv=NA, symm=TRUE)
 # Another possibility is to use function corrplot() from package corrplot
+?corrplot::corrplot
 
 ## Heatmaps
 # Based on various distances
@@ -903,17 +904,6 @@ heatmap(as.matrix(hauss.dist.pop), symm=TRUE)
 heatmap(as.matrix(hauss.dist.bruvo), symm=TRUE)
 heatmap(as.matrix(hauss.dist.diss), symm=TRUE)
 ?heatmap # Other options
-
-## AMOVA
-# From package pegas (doesn't directly show percentage of variance)
-hauss.pop <- pop(hauss.genind)
-hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=FALSE)
-# See results
-hauss.amova
-# For more complicated hierarchy
-?poppr::poppr.amova
-# For mixed-ploidy dat sets
-?StAMPP::stamppAmova
 
 ## Hierarchical clustering
 # According to distance used
@@ -931,6 +921,7 @@ title("UPGMA tree")
 # Test quality - tests correlation of original distance in the matrix and reconstructed distance from hclust object
 plot(x=as.vector(usflu.dist), y=as.vector(as.dist(cophenetic(usflu.upgma))), xlab="Original pairwise distances", ylab="Pairwise distances on the tree", main="Is UPGMA appropriate?", pch=20, col=transp(col="black", alpha=0.1), cex=2)
 abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~as.vector(usflu.dist)), col="red")
+# See NJ chapter for testing of this correlation
 
 ## NJ
 
@@ -954,12 +945,14 @@ plot.phylo(x=hauss.nj, type="radial", edge.color="red", edge.width=2, edge.lty=3
 # boot.phylo() resamples all columns - remove population column first
 hauss.loci.nopop <- hauss.loci
 hauss.loci.nopop[["population"]] <- NULL
+# Calculate the bootstrap - repeat EXACTLY ALL STEPS from data to tree
 hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function(XXX) nj(dist.gene(loci2genind(XXX)@tab, method="pairwise")), B=1000)
 # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
 # Plot the tree
 plot.phylo(x=hauss.nj, type="unrooted", main="Neighbour-Joining tree")
 # Labels for nodes - bootstrap - see ?nodelabels for graphical settings
 nodelabels(text=round(hauss.boot/10))
+?boot.phylo # See details
 
 # Another bootstrap possibility
 hauss.aboot <- aboot(x=hauss.genind, tree=nj, distance=nei.dist, sample=100) # Bootstrap values are in slot node.label
@@ -1029,6 +1022,7 @@ tiplabels(text=usflu.annot$year, bg=num2col(usflu.annot$year, col.pal=usflu.pal)
 legend(x="bottomright", fill=num2col(x=pretty(x=1993:2008, n=8), col.pal=usflu.pal), leg=pretty(x=1993:2008, n=8), ncol=1)
 
 # Root the tree - "outgroup" is name of accession (in quotation marks) or number (position within phy object)
+# Here, outgroup is the oldes (first) sample as viruses were sampled continuously during seveal years
 usflu.tree.rooted <- root.phylo(phy=usflu.tree, outgroup=1)
 # Plot it
 plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
@@ -1105,6 +1099,17 @@ add.scatter.eig(hauss.pcoa.bruvo$eig, posi="bottomright", 3, 1, 2)
 colorplot(xy=hauss.pcoa$li[c(1, 2)], X=hauss.pcoa$li, transp=TRUE, cex=3, xlab="PC 1", ylab="PC 2")
 title(main="PCoA, axes 1 and 2")
 abline(v=0, h=0, col="grey", lty=2)
+
+## AMOVA
+# From package pegas (doesn't directly show percentage of variance)
+hauss.pop <- pop(hauss.genind)
+hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL, nperm=1000, is.squared=FALSE)
+# See results
+hauss.amova
+# For more complicated hierarchy
+?poppr::poppr.amova
+# For mixed-ploidy dat sets
+?StAMPP::stamppAmova
 
 ## SNP
 

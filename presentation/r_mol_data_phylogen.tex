@@ -251,7 +251,7 @@
 		\item Provide more comfortable interface for work with scripts (source code highlight,~\ldots), overview of loaded packages and variables, easier work with figures,~\ldots
 		\item RStudio \url{https://posit.co/products/open-source/rstudio/} --- probably the most common, multi-platform, very powerful
 		\begin{itemize}
-		 \item For Linux it is commonly available in distribution repository
+			\item For Linux it is commonly available in distribution repository
 		\end{itemize}
 		\item RKWard \url{https://rkward.kde.org/} --- feature very rich, developed mainly for Linux, available also for another operating systems
 		\begin{itemize}
@@ -463,7 +463,7 @@
 
 \begin{frame}{Importance of working directory}
 	\begin{itemize}
-	 \item Very important point to get familiar with paths in R
+		\item Very important point to get familiar with paths in R
 		\item Default place to load/save, import/export data/results
 		\begin{itemize}
 			\item It changes paths --- one of the most common mistakes --- something (input file,~\ldots) is not found because of wrong path
@@ -546,7 +546,7 @@
 		\item To get information about content of each data type see e.g. \texttt{getClassDef("data.frame")} (Or any other class name of loaded package) --- there are information about slots within that classes you can access
 		\item Common task is conversion among various formats --- functions commonly require different input format
 		\begin{itemize}
-		 \item Wrong class as input is common error\ldots
+			\item Wrong class as input is common error\ldots
 		\end{itemize}
 	\end{itemize}
 \end{frame}
@@ -2891,7 +2891,7 @@
     is.euclid(hauss.dist.pop, plot=TRUE, print=TRUE, tol=1e-10) # TRUE = OK
 	\end{spluscode}
 	\vfil
-	Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean distances} (non-negative, Pythagorean theorem is valid, etc.). If the distance matrix contains non-Euclidean distances, the result can be weird\ldots
+	Most of analysis based on distances more or less require \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean distances} (non-negative vales only, Pythagorean theorem is valid, etc.). If the distance matrix contains non-Euclidean distances, the result can be misleading\ldots
 	\vfill
 \end{frame}
 
@@ -2927,8 +2927,8 @@
 
 \begin{frame}[fragile]{More distances\ldots}
 	\begin{spluscode}
-    # Nei's distance (not Euclidean) for individuals
-    # (other methods are available, see ?nei.dist from poppr package)
+    # Nei's distance (very popular, but not Euclidean) for individuals
+    # (other methods are available, see "?poppr::nei.dist")
     hauss.dist.nei <- nei.dist(x=hauss.genind, warning=TRUE)
     is.euclid(distmat=hauss.dist.nei, plot=TRUE, print=TRUE, tol=1e-10)
     # Dissimilarity matrix returns a distance reflecting the number of
@@ -2940,13 +2940,13 @@
 	\textbf{Import own distance matrix from another software:}
 	\begin{multicols}{2}
 		\begin{spluscode}
-       Fe       He      Oh      ...
-    Fe 0.00000  132.019 109.159 ...
-    He 132.0191 0.00000 9.89111 ...
-    Oh 109.1590 9.89111 0.00000 ...
-    Pr 139.5669 8.55312 4.40562 ...
-    Ne 156.7619 9.96143 16.6927 ...
-    ... ...     ...     ...     ...
+              Fe      He      Oh ...
+    Fe  0.000000 132.019 109.159 ...
+    He  132.0191 0.00000 9.89111 ...
+    Oh  109.1590 9.89111 0.00000 ...
+    Pr  139.5669 8.55312 4.40562 ...
+    Ne  156.7619 9.96143 16.6927 ...
+    ...      ...     ...     ... ...
 		\end{spluscode}
 		\columnbreak
 		\begin{spluscode}
@@ -3016,8 +3016,8 @@
 		\begin{itemize}
 			\item Only selected models can be tested
 			\item On Linux and macOS it's possible to speed up calculations with parallelization
+			\item Names of models are not exactly same as names of models in \texttt{ape::dist.dna}\ldots
 		\end{itemize}
-		\item Names of models are not exactly same as names of models in \texttt{ape::dist.dna}\ldots
 	\end{itemize}
 	\begin{spluscode}
     library(phangorn) # Load needed library
@@ -3082,6 +3082,10 @@
 \end{frame}
 
 \begin{frame}[fragile]{Distances in mixed-ploidy data sets I}{Nei's distance}
+	\begin{itemize}
+		\item Package \href{https://CRAN.R-project.org/package=StAMPP}{StAMPP} implements Nei's distance and F$_{ST}$ for mixed-ploidy data
+		\item It is highly sensitive to missing data
+	\end{itemize}
 	\begin{spluscode}
     # stamppNeisD requires population factor in genlight Nei's 1972 distance
     # between individuals (use pop=TRUE to calculate among populations)
@@ -3168,40 +3172,6 @@
 	\end{multicols}
 \end{frame}
 
-\subsection{AMOVA}
-
-\begin{frame}{AMOVA I}
-	\begin{itemize}
-		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
-		\item Some implementations can partition variance into various levels
-		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
-		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
-		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
-		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{AMOVA II}
-	\begin{spluscode}
-    hauss.pop <- pop(hauss.genind)
-    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
-      nperm=1000, is.squared=FALSE)
-    # See results
-    hauss.amova
-    ...
-                    SSD       MSD df
-    hauss.pop  5770.446 1442.6116  4
-    Error     12022.022  286.2386 42
-    Total     17792.468  386.7928 46
-    ...
-    Variance components:
-              sigma2 P.value
-    hauss.pop 133.37       0 # From here we can calculate the percentage
-    Error     286.24         # 100 * 133.37 / (133.37 + 286.24) = 31.78 %
-    ...
-	\end{spluscode}
-\end{frame}
-
 \subsection{Hierarchical clustering}
 
 \begin{frame}[fragile]{Heat maps}
@@ -3248,8 +3218,9 @@
 		\end{spluscode}
 		\vfil
 		\begin{itemize}
-			\item This is very basic function to make dendrogram
+			\item This is very basic function to make clustering dendrogram
 			\item There are better possibilities (NJ etc --- see slide~\ref{NJ} and onward)
+			\item More popular in ecology than in genetics
 		\end{itemize}
 	\end{multicols}
 	\vfill
@@ -3273,6 +3244,7 @@
     # Add correlation line
     abline(lm(as.vector(as.dist(cophenetic(usflu.upgma)))~
       as.vector(usflu.dist)), col="red")
+    # See NJ chapter for testing of this correlation
 	\end{spluscode}
 \end{frame}
 
@@ -3290,7 +3262,7 @@
 		\item One of the oldest methods to reconstruct tree-like relationships among samples/populations, still commonly used
 		\item Quality relies on good distance matrix (must be Euclidean etc.) --- choose it well according to your data
 		\item Relatively sensitive to amount of missing data --- keep under ca. 10--15\% missingness in input data
-		\item Usually much better than hierarchical clustering (UPGMA and similar), can be constructed from any data
+		\item Usually much better than hierarchical clustering (UPGMA and similar), can be constructed from any data (this universality is big advantage)
 		\item Super fast to compute, easy to do bootstrap test, but usually not so accurate as MP, ML or Bayesian methods
 		\item Suffers of some issues like chaining of individuals in case of low signal in data
 		\item Several method try to reimplement and improve it (see slide~\ref{NJ-replacement})
@@ -3325,12 +3297,12 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Bootstrap}
+\begin{frame}[fragile]{Bootstrap}{Test of reliability of estimated branching pattern}
 	\begin{spluscode}
     # boot.phylo() re-samples all columns - remove population column first
     hauss.loci.nopop <- hauss.loci
     hauss.loci.nopop[["population"]] <- NULL
-    # Calculate the bootstrap
+    # Calculate the bootstrap - repeat EXACTLY ALL STEPS from data to tree
     hauss.boot <- boot.phylo(phy=hauss.nj, x=hauss.loci.nopop, FUN=function
       (XXX) nj(dist.gene(loci2genind(XXX)@tab, method="pairwise")), B=1000)
     # boot.phylo returns NUMBER of replicates - NO PERCENTAGE
@@ -3437,7 +3409,7 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{NJ tree based on DNA sequences}
+\begin{frame}[fragile]{NJ tree based on DNA sequences}{Commonly used as first look at the data}
 	\begin{spluscode}
     # Calculate the tree
     usflu.tree <- nj(X=usflu.dist)
@@ -3460,7 +3432,8 @@
 \begin{frame}[fragile]{Root the tree}
 	\begin{spluscode}
     # Root the tree - "outgroup" is name of accession (in quotation marks)
-    # or number (position within phy object)
+    # or number (position within phy object). Here, outgroup is the oldes
+    # (first) sample as viruses were sampled continuously during seveal years
     usflu.tree.rooted <- root.phylo(phy=usflu.tree, outgroup=1)
     # Plot it
     plot.phylo(x=usflu.tree.rooted, show.tip=FALSE, edge.width=2)
@@ -3504,8 +3477,8 @@
     usflu.tree.usflu.na.density <- usflu.tree.rooted
     # Determine branches with low support - note BS values are in raw
     # numbers - use desired percentage with respect to number of bootstraps
-    usflu.tocollapse <- match(x=which(usflu.boot < 700)+length(usflu.tree.
-      rooted$tip.label), table=usflu.tree.usflu.na.density$edge[,2])
+    usflu.tocollapse <- match(x=which(usflu.boot < 700)+length(
+      usflu.tree.rooted$tip.label),table=usflu.tree.usflu.na.density$edge[,2])
     # Set length of bad branches to zero
     usflu.tree.usflu.na.density$edge.length[usflu.tocollapse] <- 0
     # Create new tree
@@ -3545,19 +3518,19 @@
 	\label{pcoa}
 	\begin{itemize}
 		\item Create 2-D scatter plot (mostly) showing relationships among samples and their grouping
-		\item PCoA is variant of PCA using distance matrix as input
+		\item PCoA is variant of PCA using distance matrix as input (not primary data as PCA)
 		\begin{itemize}
 			\item It's crucial to select correct Euclidean distance matrix
 		\end{itemize}
-		\item PCA is using as input data frame with any data type, but results are unstable for large number of variables
+		\item PCA is using as input data frame with any data type, but results are unstable for large number of variables (typical case for molecular data --- each locus is one variable)
 		\begin{itemize}
 			\item In genetic data, each locus (position in alignment, SSRs locus,~\ldots) is separate variable from technical point of view
 			\item PCA is unstable if there are more variables than samples
 		\end{itemize}
 		\item These methods are exploratory
 		\begin{itemize}
-		 \item For creating hypothesis, not testing them
-		 \item There are no tests involved, no bootstraps, nothing like that
+			\item For creating hypothesis, not testing them
+			\item There are no tests involved, no bootstraps, nothing like that
 		\end{itemize}
 		\item There are variants of PCA for spatial data, for analysis of traits, etc.
 		\item More such multivariate methods are used in another fields, like NMDS in ecology,~\ldots
@@ -3618,6 +3591,40 @@
 	\begin{center}
 		\includegraphics[height=6.5cm]{pcoa-dalsi.png}
 	\end{center}
+\end{frame}
+
+\subsection{AMOVA}
+
+\begin{frame}{AMOVA I}
+	\begin{itemize}
+		\item Analysis of molecular variance tests if there are significant differences among populations (and/or another levels)
+		\item Some implementations can partition variance into various levels
+		\item \texttt{pegas::amova} returns a~table of sums of square deviations (\texttt{SSD}), mean square deviations (\texttt{MSD}), and the number of degrees of freedom (\texttt{df}), and a~vector of variance components (\texttt{sigma2})
+		\item See \texttt{sigma2} column for how much of the variance is on which level --- percentage can be calculated as percentage of each level from total
+		\item For more complicated hierarchy see \texttt{?poppr::poppr.amova}
+		\item For mixed-ploidy dat sets see \texttt{?StAMPP::stamppAmova}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{AMOVA II}
+	\begin{spluscode}
+    hauss.pop <- pop(hauss.genind)
+    hauss.amova <- pegas::amova(hauss.dist~hauss.pop, data=NULL,
+      nperm=1000, is.squared=FALSE)
+    # See results
+    hauss.amova
+    ...
+                    SSD       MSD df
+    hauss.pop  5770.446 1442.6116  4
+    Error     12022.022  286.2386 42
+    Total     17792.468  386.7928 46
+    ...
+    Variance components:
+              sigma2 P.value
+    hauss.pop 133.37       0 # From here we can calculate the percentage
+    Error     286.24         # 100 * 133.37 / (133.37 + 286.24) = 31.78 %
+    ...
+	\end{spluscode}
 \end{frame}
 
 \subsection{Tasks}
@@ -3736,8 +3743,8 @@
 \begin{frame}{Discriminant Analysis of Principal components}
 	\tableofcontents[currentsection, sectionstyle=show/hide, hideothersubsections]
 	\begin{enumerate}
-	 \item Bayesian clustering on data pre-processed by PCA
-	 \item Discriminant analysis using this above clustering and original data
+		\item Bayesian clustering on data pre-processed by PCA
+		\item Discriminant analysis using this above clustering and original data
 	\end{enumerate}
 \end{frame}
 
@@ -3762,6 +3769,12 @@
 \begin{frame}{Principal difference between PCA and DA}
 	\begin{center}
 		\includegraphics[height=6.5cm]{dapc-da-pca.png}
+	\end{center}
+\end{frame}
+
+\begin{frame}{DAPC example of almost 500 samples of \textit{Nuphar lutea}}
+	\begin{center}
+		\includegraphics[height=6.5cm]{dapc.png}
 	\end{center}
 \end{frame}
 
@@ -3907,12 +3920,6 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}{Another DAPC example}
-	\begin{center}
-		\includegraphics[height=6.5cm]{dapc.png}
-	\end{center}
-\end{frame}
-
 \subsection{Tasks}
 
 \begin{frame}{Try DAPC}
@@ -3942,7 +3949,7 @@
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations, generally it is autocorrelation coefficient with broader use
 		\begin{itemize}
-		 \item As \enquote{classical} correlation index, spatial PCA, Monmonier's algorithm searching for genetic boundaries,~\ldots
+			\item As \enquote{classical} correlation index, spatial PCA, Monmonier's algorithm searching for genetic boundaries,~\ldots
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Mantel_test}{Mantel test} --- several implementations, popular, although recently criticized as biologically irrelevant, generally correlation of two matrices (here genetic and geographical)
 		\item Bayesian clustering using geographical information as a~proxy and showing results in geographical context (here as implemented in Geneland)
@@ -5298,8 +5305,8 @@
 			\includegraphics[height=6.5cm]{oxalis-cons.png}
 		\end{center}
 		\begin{itemize}
-		 \item Very basic method simply collapsing all nodes with lower than required (typically 50--75\%) identity
-		 \item There is no underlying model, only comparison of topologies
+			\item Very basic method simply collapsing all nodes with lower than required (typically 50--75\%) identity
+			\item There is no underlying model, only comparison of topologies
 		\end{itemize}
 		\begin{spluscode}
     # Consensus tree (50% rule)
