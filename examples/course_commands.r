@@ -98,7 +98,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "akima", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
@@ -1249,7 +1249,7 @@ data(rupica)
 library(adespatial)
 # Try various settings for chooseCN (type=X) - type 1-4 as there are identical coordinates (multiple sampling from same locality)
 ?chooseCN # See for more details - select the best "type" for your data
-chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Play with settings little bit...
+chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE, edit.nb=FALSE, ...) # Task: play with settings little bit...
 
 # Calculates sPCA - here is only 1 positive and 3 negative factors
 hauss.spca <- spca(obj=hauss.genind, cn=hauss.connectivity, scale=TRUE, scannf=TRUE)
@@ -1279,21 +1279,21 @@ hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999
 hauss.spca.loc
 plot(hauss.spca.loc)
 
-# Map of genetic clines
-library(akima) # This library is needed for some manipulation with coordinates
-hauss.spca.temp <- interp(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]), le=200), yo=seq(min(other(hauss.genind)$xy[,2]), max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
-# For 1st axis
-image(x=hauss.spca.temp, col=spectral(100))
-s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE, csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
-# For 2nd axis
-image(x=hauss.spca.temp, col=spectral(100))
-s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
-# Interpolated lagged score on a map
-hauss.spca.annot <- function() {
-	title("sPCA - interpolated map of individual scores")
-	points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
-	}
-filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
+# # Map of genetic clines
+# library(akima) # This library is needed for some manipulation with coordinates
+# hauss.spca.temp <- interp(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]), le=200), yo=seq(min(other(hauss.genind)$xy[,2]), max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
+# # For 1st axis
+# image(x=hauss.spca.temp, col=spectral(100))
+# s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE, csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
+# # For 2nd axis
+# image(x=hauss.spca.temp, col=spectral(100))
+# s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2], add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
+# # Interpolated lagged score on a map
+# hauss.spca.annot <- function() {
+# 	title("sPCA - interpolated map of individual scores")
+# 	points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
+# 	}
+# filled.contour(hauss.spca.temp, color.pal=colorRampPalette(lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\nscore 1"), plot.title=hauss.spca.annot())
 
 # Loading plots - which alleles contribute the most?
 hauss.spca.loadings <- hauss.spca$c1[,1]^2
@@ -1396,14 +1396,14 @@ for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	}
 # Print Fst output
 hauss.geneland.fstat
-# MCMC inference under the admixture model
-for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
-	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
-	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
-	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
-	}
+# # MCMC inference under the admixture model
+# for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
+# 	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
+# 	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
+# 	# On Windows, remove following line of code and create in each result directory (from 1 to max K) new subdirectory "admixture" (creating subdirs in Windows in R is complicated)
+# 	system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
+# 	HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc, nit=hauss.geneland.nit, thinning=hauss.geneland.thinning, path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+# 	}
 # Produce maps of respective inferred clusters
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
@@ -1450,18 +1450,6 @@ shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], l
 # Insert legend
 legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
-# Google map is produced into a file
-# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/overview
-?GetMap # See all options
-?PlotOnStaticMap # See all options
-# Download map
-hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, maptype="satellite")
-# Plot saved map, with extra data
-PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
-PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
-PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
-# Google maps have their own internal scaling, adding of points by standard functions will not work correctly
-
 # Pie charts on a map
 # Prepare matrix with some data (exemplary distribution of haplotypes)
 hauss.pie <- cbind(c(20, 30, 15, 40, 10), c(30, 10, 25, 5, 45), c(10, 20, 20, 15, 5))
@@ -1477,6 +1465,18 @@ for (L in 1:5) { add.pie(z=hauss.pie[L,], x=as.vector(hauss.genpop@other$xy[["lo
 ?add.pie # See more options
 # Add population labels
 text(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="red", cex=2)
+
+# Google map is produced into a file
+# Google recently started to require API key, see https://developers.google.com/maps/documentation/maps-static/overview
+?GetMap # See all options
+?PlotOnStaticMap # See all options
+# Download map
+hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640), destfile="gmap.png", zoom=8, maptype="satellite")
+# Plot saved map, with extra data
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue", cex=5)
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19, col="red", cex=3)
+PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]], lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text, labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
+# Google maps have their own internal scaling, adding of points by standard functions will not work correctly
 
 # Pie charts on Google map
 # Prepare list to store recalculated coordinates

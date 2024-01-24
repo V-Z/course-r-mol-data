@@ -850,14 +850,14 @@
     # Install packages. Installation of multiple packages may sometimes
     # fail - install then packages in smaller groups or one by one
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
-      "akima", "ape", "BiocManager", "caper", "corrplot", "devtools",
-      "adespatial", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips",
-      "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps",
-      "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn",
-      "philentropy", "phylobase", "rentrez", "phytools", "picante", "plotrix",
-      "poppr", "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap",
-      "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs",
-      "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
+      "ape", "BiocManager", "caper", "corrplot", "devtools", "adespatial",
+      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
+      "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme",
+      "PBSmapping", "pegas", "permute", "phangorn", "philentropy",
+      "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
+      "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
+      "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP",
+      "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
     # Upgrade all packages e.g. from R 4.2 to 4.3
@@ -3947,7 +3947,7 @@
 
 \begin{frame}{Short overview of spatial genetics (in R)}{Basic approaches}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations, generally it is autocorrelation coefficient with broader use
+		\item \href{https://en.wikipedia.org/wiki/Moran\%27s_I}{Moran's~\textit{I}} --- several implementations, generally it is autocorrelation coefficient with broader use (also in evolutionary studies)
 		\begin{itemize}
 			\item As \enquote{classical} correlation index, spatial PCA, Monmonier's algorithm searching for genetic boundaries,~\ldots
 		\end{itemize}
@@ -4059,9 +4059,9 @@
 \begin{frame}{Reading and limits on Moran's~\textit{I}}
 	\begin{itemize}
 		\item 1$^{st}$ and 2$^{nd}$ PC axes are orthogonal to each other, so they show different patterns
-		\item Moran's~\textit{I} show single index over all data (whole space), but different processes might be going on on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are significantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
+		\item Moran's~\textit{I} shows single index over all data (whole space), but different processes might be ongoing on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are significantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
 		\item Single number isn't always the best description of complex biological situation\ldots
-		\item Calculations using \texttt{moran.test} are done in connectivity network created by \texttt{chooseCN} --- it's crucial to select connectivity network reflecting biological features of studied species and its geographic situation
+		\item Calculations using \texttt{moran.test} are done in connectivity network created by \texttt{chooseCN} --- it's crucial to select connectivity network reflecting biological features of studied species and its geographic situation --- different networks lead into different results\ldots
 	\end{itemize}
 \end{frame}
 
@@ -4081,7 +4081,7 @@
     # are identical coordinates (multiple sampling from same locality)
     ?chooseCN # See for more details - select the best "type" for your data
     chooseCN(xy=rupica$other$xy, ask=TRUE, type=5/6/7, plot.nb=TRUE,
-      edit.nb=FALSE, ...) # Play with settings little bit...
+      edit.nb=FALSE, ...) # Task: play with settings little bit...
 	\end{spluscode}
 \end{frame}
 
@@ -4107,7 +4107,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}{sPCA outputs I}
+\begin{frame}{sPCA outputs}
 	\begin{center}
 		\includegraphics[width=\textwidth-6cm]{spca.png}
 	\end{center}
@@ -4130,42 +4130,42 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Map of genetic clines}
-	\begin{spluscode}
-    library(akima) # It is needed for manipulation with coordinates
-    # Transform the coordinates
-    hauss.spca.temp <- interp(other(hauss.genind)$xy[,1],
-      other(hauss.genind)$xy[,2], hauss.spca$ls[,1],
-      xo=seq(min(other(hauss.genind)$xy[,1]),
-      max(other(hauss.genind)$xy[,1]), le=200),
-      yo=seq(min(other(hauss.genind)$xy[,2]),
-      max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
-    # For 1st axis
-    image(x=hauss.spca.temp, col=spectral(100))
-    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE,
-      csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
-    # For 2nd axis
-    image(x=hauss.spca.temp, col=spectral(100))
-    s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2],
-      add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{sPCA outputs II}
-	\begin{spluscode}
-    # Interpolated lagged score on a map
-    hauss.spca.annot <- function() {
-      title("sPCA - interpolated map of individual scores")
-      points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
-      }
-    filled.contour(hauss.spca.temp, color.pal=colorRampPalette(
-      lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\n
-      score 1"), plot.title=hauss.spca.annot())
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[width=\textwidth-6cm]{spca-pc.png}
-	\end{center}
-\end{frame}
+% \begin{frame}[fragile]{Map of genetic clines}
+% 	\begin{spluscode}
+%     library(akima) # It is needed for manipulation with coordinates
+%     # Transform the coordinates
+%     hauss.spca.temp <- interp(other(hauss.genind)$xy[,1],
+%       other(hauss.genind)$xy[,2], hauss.spca$ls[,1],
+%       xo=seq(min(other(hauss.genind)$xy[,1]),
+%       max(other(hauss.genind)$xy[,1]), le=200),
+%       yo=seq(min(other(hauss.genind)$xy[,2]),
+%       max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
+%     # For 1st axis
+%     image(x=hauss.spca.temp, col=spectral(100))
+%     s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa$li[,1], add.p=TRUE,
+%       csize=0.5, sub="PCoA - first PC", csub=2, possub="topleft")
+%     # For 2nd axis
+%     image(x=hauss.spca.temp, col=spectral(100))
+%     s.value(dfxy=hauss.genind$other$xy, z=hauss.pcoa[["li"]][,2],
+%       add.p=TRUE, csize=0.5, sub="PCoA - second PC", csub=2, possub="topleft")
+% 	\end{spluscode}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{sPCA outputs II}
+% 	\begin{spluscode}
+%     # Interpolated lagged score on a map
+%     hauss.spca.annot <- function() {
+%       title("sPCA - interpolated map of individual scores")
+%       points(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2])
+%       }
+%     filled.contour(hauss.spca.temp, color.pal=colorRampPalette(
+%       lightseasun(100)), pch=20, nlevels=100, key.title=title("Lagged\n
+%       score 1"), plot.title=hauss.spca.annot())
+% 	\end{spluscode}
+% 	\begin{center}
+% 		\includegraphics[width=\textwidth-6cm]{spca-pc.png}
+% 	\end{center}
+% \end{frame}
 
 \begin{frame}[fragile]{Loading plots --- which alleles contribute the most?}
 	\begin{spluscode}
@@ -4188,8 +4188,8 @@
 \begin{frame}[fragile]{Mantel test}
 	\begin{itemize}
 		\item Originally created for biomedicine to test correlation between treatment and diseases
-		\item \enquote{Only} correlation of two matrices --- no biologically relevant underlying model --- because of that it is heavily criticized (mainly in ecology)
 		\item It is universal method usable for plenty of tasks
+		\item \enquote{Only} correlation of two matrices --- no biologically relevant underlying model --- because of that it is heavily criticized (mainly in ecology)
 		\item Test of spatial and genetic relationships is probably one of few biologically relevant applications
 		\item Package \href{https://CRAN.R-project.org/package=vegan}{vegan} (set of ecological tools) has implementation to test genetic similarity in various distance classes --- not only overall result --- very useful
 		\item Distance matrix can be calculated as simple Euclidean geometric distance by \texttt{dist()}, or for larger areas by geodesic distance along Earth surface (e.g. \texttt{pegas::geod()}), or using special package like \href{https://CRAN.R-project.org/package=geosphere}{geosphere}
@@ -4205,7 +4205,7 @@
     hauss.gdist <- as.dist(m=geod(lon=hauss.genind$other$xy$lon,
       lat=hauss.genind$other$xy$lat), diag=TRUE, upper=TRUE)
     # Mantel test
-    hauss.mantel <- mantel.randtest(m1=hauss.dist, m2=hauss.gdist, nrepet=1000)
+    hauss.mantel <- mantel.randtest(m1=hauss.dist,m2=hauss.gdist, nrepet=1000)
     hauss.mantel # See text output
     plot(hauss.mantel, nclass=30)
     # Libraries required by mantel.correlog:
@@ -4237,7 +4237,7 @@
     Based on 1000 replicates
     Simulated p-value: 0.000999001
     Alternative hypothesis: greater
-      Std.Obs Expectation  Variance
+       Std.Obs Expectation  Variance
     7.61967545 0.001687140 0.0021389
 		\end{spluscode}
 		\vfill
@@ -4413,7 +4413,7 @@
 	\begin{multicols}{2}
 		\begin{itemize}
 			\item Monte Carlo Markov Chains (MCMC) require usually millions of generations (iterations, \texttt{nit)} to find optimal solution
-			\item Beginning ($\sim$10--20\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analysis and it is discarded
+			\item Beginning ($\sim$10--25\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analysis and it is discarded
 			\item Geneland allows to set density of sampling among generations (\texttt{thinning}) --- it is not necessary to sample (save) every generation
 			\item Within millions of generations we can sample every 1000--10000$^{th}$ generation
 			\item Denser sampling produces smoother data, but can consume too much disk space\ldots
@@ -4432,7 +4432,7 @@
 	\begin{itemize}
 		\item For real analysis, Baysian tools require millions of MCMC steps (generations, iterations) --- Here we use only 10000 to speed up processing
 		\item Not every generation (step) is sampled, in case of millions of iterations, sampling (thinning) can be $\sim$thousands
-		\item Whole MCMC step is repeated several (usually $\sim$10) times using \texttt{for} loop (following 2~slides) to select the best run and compare them (MCMC process is by it's nature random)
+		\item Whole MCMC step is repeated several (usually $\sim$10 times) using \texttt{for} loop (following 2~slides) to select the best run and compare them (MCMC process is by it's nature random)
 	\end{itemize}
 	\begin{spluscode}
     hauss.geneland.nrun <- 5 # Set number of independent runs
@@ -4470,7 +4470,7 @@
 	\begin{spluscode}
       # ...Start of FOR loop is on previous slide
       PostProcessChain(coordinates=hauss.geneland.coord.utm, path.mcmc=hauss.
-        geneland.path.mcmc, nxdom=500, nydom=500, burnin=hauss.geneland.burnin)
+        geneland.path.mcmc, nxdom=500, nydom=500,burnin=hauss.geneland.burnin)
       # Output
       # Simulated number of populations
       Plotnpop(path.mcmc=hauss.geneland.path.mcmc, printit=TRUE,
@@ -4508,27 +4508,27 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{MCMC inference under the admixture model}
-	\begin{spluscode}
-    for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
-      hauss.geneland.path.mcmc <- paste("geneland/",
-        hauss.geneland.irun, "/", sep="")
-      hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc,
-        "admixture", "/", sep="")
-      # On Windows, remove following line of code and create in each
-      # result directory (from 1 to max K) new subdirectory "admixture"
-      # (creating subdirs in Windows in R is complicated)
-      system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
-      HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
-        hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc,
-        nit=hauss.geneland.nit, thinning=hauss.geneland.thinning,
-        path.mcmc.adm=hauss.geneland.path.mcmc.adm)
-      }
-	\end{spluscode}
-	\begin{itemize}
-		\item Currently, there is no much use for admixture results, at lest not without extra work\ldots
-	\end{itemize}
-\end{frame}
+% \begin{frame}[fragile]{MCMC inference under the admixture model}
+% 	\begin{spluscode}
+%     for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
+%       hauss.geneland.path.mcmc <- paste("geneland/",
+%         hauss.geneland.irun, "/", sep="")
+%       hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc,
+%         "admixture", "/", sep="")
+%       # On Windows, remove following line of code and create in each
+%       # result directory (from 1 to max K) new subdirectory "admixture"
+%       # (creating subdirs in Windows in R is complicated)
+%       system(paste("mkdir ", hauss.geneland.path.mcmc.adm))
+%       HZ(coordinates=hauss.geneland.coord.utm, geno.dip.codom=
+%         hauss.geneland.data, path.mcmc.noadm=hauss.geneland.path.mcmc,
+%         nit=hauss.geneland.nit, thinning=hauss.geneland.thinning,
+%         path.mcmc.adm=hauss.geneland.path.mcmc.adm)
+%       }
+% 	\end{spluscode}
+% 	\begin{itemize}
+% 		\item Currently, there is no much use for admixture results, at lest not without extra work\ldots
+% 	\end{itemize}
+% \end{frame}
 
 \begin{frame}[fragile]{Produce maps of respective inferred clusters}
 	\begin{spluscode}
@@ -4663,45 +4663,6 @@
 	\end{center}
 \end{frame}
 
-\begin{frame}[fragile]{Google map basics}
-	\begin{multicols}{2}
-		\begin{spluscode}
-    # Basic help for Google maps
-    ?GetMap
-    ?PlotOnStaticMap
-		\end{spluscode}
-		\begin{itemize}
-			\item For larger/complex maps Google requires \href{https://developers.google.com/maps/documentation/maps-static/overview}{API key}
-			\item See \href{https://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
-			\item Map is first downloaded with \texttt{GetMap()} into R object, and then plotted with \texttt{PlotOnStaticMap()} or with another function
-			\item Many on-line map services do require (paid) API key\ldots
-		\end{itemize}
-		\begin{center}
-			\includegraphics[height=6.5cm]{gmap.jpg}
-		\end{center}
-	\end{multicols}
-\end{frame}
-
-\begin{frame}[fragile]{Plotting Google map}
-	\begin{spluscode}
-    # Download map
-    hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640),
-      destfile="gmap.png", zoom=8, maptype="satellite")
-    # Plot saved map, with extra data
-    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
-      lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue",
-      cex=5)
-    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
-      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19,
-      col="red", cex=3)
-    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
-      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text,
-      labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
-    # Google maps have their own internal scaling, adding of points by
-    # standard functions will not work correctly
-	\end{spluscode}
-\end{frame}
-
 \begin{frame}[fragile]{Adding pie charts to map I}
 	\begin{spluscode}
     # Prepare matrix with some data (exemplary distribution of haplotypes)
@@ -4743,6 +4704,45 @@
 			\includegraphics[height=6.25cm]{map_pie.png}
 		\end{center}
 	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Google map basics}
+	\begin{multicols}{2}
+		\begin{spluscode}
+    # Basic help for Google maps
+    ?GetMap
+    ?PlotOnStaticMap
+		\end{spluscode}
+		\begin{itemize}
+			\item For larger/complex maps Google requires \href{https://developers.google.com/maps/documentation/maps-static/overview}{API key}
+			\item See \href{https://rgooglemaps.r-forge.r-project.org/}{documentation} and more options, it can use plenty of map resources (Bing maps,~\ldots)
+			\item Map is first downloaded with \texttt{GetMap()} into R object, and then plotted with \texttt{PlotOnStaticMap()} or with another function
+			\item Many on-line map services do require (paid) API key\ldots
+		\end{itemize}
+		\begin{center}
+			\includegraphics[height=6.5cm]{gmap.jpg}
+		\end{center}
+	\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Plotting Google map}
+	\begin{spluscode}
+    # Download map
+    hauss.gmap <- GetMap(center=c(lat=41, lon=21), size=c(640, 640),
+      destfile="gmap.png", zoom=8, maptype="satellite")
+    # Plot saved map, with extra data
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], FUN=points, pch=19, col="blue",
+      cex=5)
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=points, pch=19,
+      col="red", cex=3)
+    PlotOnStaticMap(MyMap=hauss.gmap, lat=hauss.genpop@other$xy[["lat"]],
+      lon=hauss.genpop@other$xy[["lon"]], add=TRUE, FUN=text,
+      labels=as.vector(popNames(hauss.genind)), pos=4, cex=3, col="white")
+    # Google maps have their own internal scaling, adding of points by
+    # standard functions will not work correctly
+	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Pie charts on Google map I}
@@ -4802,7 +4802,7 @@
 \begin{frame}[fragile]{Plotting on SHP files I}
 	\begin{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
-		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (from \url{https://download.geofabrik.de/europe/macedonia.html}) and unpack them into R working directory
+		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (originally from \href{https://download.geofabrik.de/europe/macedonia.html}{Geofabrik}) and unpack them into R working directory
 		\item R working directory has to contain also respective DBF and SHX files (same name, only different extension)
 	\end{itemize}
 	\begin{spluscode}
