@@ -6534,12 +6534,12 @@
 
 \begin{frame}{Running R tasks on MetaCentrum}
 	\begin{itemize}
-		\item There are only some R packages, to get more create own package library and use it in scripts (see e.g. \texttt{/software/R/4.0.0/gcc/lib/R/library/})
+		\item There are only some R packages, to get more create own package library and use it in scripts (see e.g. \texttt{.libPaths()} within \texttt{R})
 		\item \alert{Be careful about paths!}
-		\item In the \texttt{metacentrum.sh} script load R \texttt{module add R-4.0.0-gcc} and start there R script as usually \texttt{R CMD BATCH script.r}
+		\item In the \texttt{metacentrum.sh} script load R, e.g. \texttt{module add r/4.1.3-gcc-10.2.1-6xt26dl} and start there R script as usually \texttt{R CMD BATCH script.r}
 	\end{itemize}
 	\begin{enumerate}
-		\item Login to selected front node via SSH
+		\item Login to selected front node via SSH and load R module
 		\item Create somewhere new directory for R packages \texttt{mkdir rpkgs} (or use default \texttt{$\sim$/R/})
 		\item Start R \texttt{R} and install \textbf{all} R packages needed for the task --- install them into the \texttt{rpkgs} directory \texttt{install.packages(pkgs=\ldots, lib="rpkgs")}
 		\item In the R script \texttt{*.r} load the packages from the \texttt{rpkgs} directory \texttt{library(package=\ldots, lib.loc="/storage/\ldots/rpkgs")}
@@ -6549,7 +6549,7 @@
 
 \begin{frame}{OnDemand}{Applications in web browser}
 	\begin{itemize}
-		\item It allows to run selected interactive application (e.g. RStudio) in web browser
+		\item It allows to run selected interactive applications in web browser
 		\item See \url{https://docs.metacentrum.cz/software/ondemand/} and \url{https://ondemand.grid.cesnet.cz/}
 		\item Applications start in \texttt{/storage/brno3-cerit/home/\$USER/} --- ensure to have everything needed there
 	\end{itemize}
@@ -6561,13 +6561,13 @@
 \begin{frame}{Jupyter Notebook}
 	\begin{multicols}{2}
 		\begin{itemize}
-			\item Web service allowing to record code as well as its output for languages like BASH, \href{https://wiki.metacentrum.cz/wiki/Jupyter_for_MetaCentrum_users\#Adding_R_kernel}{R}, Python,~\ldots
+			\item Web service allowing to record code as well as its output for languages like BASH, R, Python,~\ldots
 			\item Convenient for recording and sharing code, interactive work,~\ldots
-			\item Use \url{https://docs.metacentrum.cz/related/jupyter/}
+			\item Use \href{https://docs.metacentrum.cz/related/jupyter/}{Jupyter Hub} for MetaCentrum users
 			\begin{itemize}
 				\item Data are typically in \texttt{/storage/brno2/home/USER/}
 			\end{itemize}
-			\item Available also as part of OnDemand (previous slide), or \href{https://hub.cloud.e-infra.cz}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
+			\item Available also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cloud.e-infra.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
 		\end{itemize}
 		\begin{center}
 			\includegraphics[height=6.5cm]{jupyter.png}
@@ -6758,6 +6758,18 @@
 			\item Always carefully read error messages and think about them
 		\end{itemize}
 		\item Imagine you should answer --- which information do you need?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{ChatGPT and others}
+	\begin{itemize}
+		\item Usage of generative AI, large language models (LLM) like ChatGPT can help a lot
+		\item Very good to improve code and fixing non-working code
+		\item Can well explain existing code --- good starting point
+		\item Good for adaptation of existing code for user's needs
+		\item Limited usage to generate new code --- can misunderstand request, code can be technically wrong, but not well working, can be incomplete or limited in corner-cases
+		\item Without at least basic understanding of subject it is hard to realize if ChatGPT solution is correct --- user should be at least basically able to work without AI, otherwise there is high risk of failures
+		\item One should never rely on tool with unclear functionality and problematic usage of of users' data and copyrighted content
 	\end{itemize}
 \end{frame}
 
