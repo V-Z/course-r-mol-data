@@ -4131,7 +4131,7 @@
 	\end{center}
 \end{frame}
 
-% \begin{frame}[fragile]{Map of genetic clines}
+% \begin{frame}[fragile]{Map of genetic clines} % TODO Genetic clines
 % 	\begin{spluscode}
 %     library(akima) # It is needed for manipulation with coordinates
 %     # Transform the coordinates
@@ -4509,7 +4509,7 @@
 	\end{itemize}
 \end{frame}
 
-% \begin{frame}[fragile]{MCMC inference under the admixture model}
+% \begin{frame}[fragile]{MCMC inference under the admixture model} % TODO Admixture
 % 	\begin{spluscode}
 %     for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 %       hauss.geneland.path.mcmc <- paste("geneland/",
@@ -5625,6 +5625,10 @@
 			\item This is very difficult chapter by meaning of how to find the best method to analyze particular data\ldots
 		\end{itemize}
 		\item Always read manual and original papers explaining the methods
+			\begin{itemize}
+				\item Some methods match values and tips according to labels, some according to order (\alert{!})
+				\item Functions often require input in specific form
+			\end{itemize}
 	\end{itemize}
 \end{frame}
 
@@ -5789,7 +5793,7 @@
 		\item It requires as input phylogenetic tree and respective comparative data
 		\item Phylogenetic component is removed from the data, then classical PCA is calculated
 		\item Very useful for comparison of plenty of characters
-		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- not the characters --- it shows trends of character evolution on the tree, not positions of taxa in PC space
+		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- \textbf{not} the characters --- it shows trends of character evolution on the tree, not positions of taxa in PC space
 		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
 		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
 		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
@@ -5823,81 +5827,81 @@
 	\end{center}
 \end{frame}
 
-\subsection{Decomposition}
-
-\begin{frame}[fragile]{Decomposition of topographical distances}
-	\begin{spluscode}
-    table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(
-      x=shorebird.tree, result="orthobasis")), treetype="cladogram")
-	\end{spluscode}
-	\begin{center}
-		\includegraphics[height=5.5cm]{shorebird_tree_decomp.png}
-	\end{center}
-\end{frame}
-
-\begin{frame}[fragile]{Prepare toy data set (the variable)}
-	\begin{spluscode}
-    # Generate some random variable
-    library(geiger)
-    shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1,
-      model="BM")[,,1]
-    ?sim.char # See it for another possibilities to simulate data
-    # Names for the values
-    names(shorebird.eco) <- shorebird.tree[["tip.label"]]
-    shorebird.eco # See it
-	\end{spluscode}
-	\begin{itemize}
-		\item \texttt{sim.char()} creates an array (we keep only numeric vector of 1$^{st}$ simulation --- \texttt{[,,1]}) of simulated characters, with \texttt{model="BM"} under \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion}
-		\item Many methods compare \textbf{names} of character values with \texttt{tip.label} slot of the tree to pair character values with correct taxa
-		\begin{itemize}
-			\item Otherwise values must be ordered in same way as in \texttt{tip.label} slot
-			\item \alert{Always check manual for respective function and all data!}
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Orthonormal decomposition --- phylogenetic eigenvector regression}
-	\begin{spluscode}
-    anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree,
-      method="patristic")[,1:2])))
-    Analysis of Variance Table
-    Response: shorebird.eco
-                 Df Sum Sq Mean Sq F value    Pr(>F)
-    as.matrix...  2 226.61 113.306  54.045 8.918e-15 ***
-    Residuals    68 142.56   2.097
-    anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(
-      x=shorebird.tree, method="patristic")[,1:2])))
-	\end{spluscode}
-	\begin{itemize}
-		\item Significant result --- significant phylogenetic inertia (phylogenetic effect) --- the tendency for traits to resist evolutionary change despite environmental perturbations
-		\item \texttt{orthobasis.phylo()} return matrix, which is linear transformation of cophenetic distances --- columns 1~and 2~can be used to calculate phylogenetic variance --- it can be used to calculate linear regression
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Orthonormal decomposition of variance of a~quantitative variable on an orthonormal basis}
-	\begin{spluscode}
-    orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000,
-      alter="two-sided")
-    ?orthogram # See another calculation possibilities
-    orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000,
-      alter="two-sided")
-	\end{spluscode}
-	\begin{itemize}
-		\item Analyses one quantitative trait
-		\item Do not confuse with \texttt{ade4::orthogram} --- similar, but require data in little bit different form, marked as deprecated and replaced by the \texttt{adephylo} version
-		\item It returns results of 5~non-parametric tests associated to the variance decomposition
-		\item Procedure decomposes data matrix to separate phylogeny and phenotype to see if there is significant signal
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Orthogram}
-	\begin{center}
-		\includegraphics[height=6cm]{orthogram.png}
-	\end{center}
-	\begin{itemize}
-		\item Observed value is out of permutations --- significant \href{https://en.wikipedia.org/wiki/Phylogenetic_inertia}{inertia of the trait to phylogeny}
-	\end{itemize}
-\end{frame}
+% \subsection{Decomposition} TODO Decomposition
+% 
+% \begin{frame}[fragile]{Decomposition of topographical distances}
+% 	\begin{spluscode}
+%     table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(
+%       x=shorebird.tree, result="orthobasis")), treetype="cladogram")
+% 	\end{spluscode}
+% 	\begin{center}
+% 		\includegraphics[height=5.5cm]{shorebird_tree_decomp.png}
+% 	\end{center}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Prepare toy data set (the variable)}
+% 	\begin{spluscode}
+%     # Generate some random variable
+%     library(geiger)
+%     shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1,
+%       model="BM")[,,1]
+%     ?sim.char # See it for another possibilities to simulate data
+%     # Names for the values
+%     names(shorebird.eco) <- shorebird.tree[["tip.label"]]
+%     shorebird.eco # See it
+% 	\end{spluscode}
+% 	\begin{itemize}
+% 		\item \texttt{sim.char()} creates an array (we keep only numeric vector of 1$^{st}$ simulation --- \texttt{[,,1]}) of simulated characters, with \texttt{model="BM"} under \href{https://en.wikipedia.org/wiki/Brownian_motion}{Brownian motion}
+% 		\item Many methods compare \textbf{names} of character values with \texttt{tip.label} slot of the tree to pair character values with correct taxa
+% 		\begin{itemize}
+% 			\item Otherwise values must be ordered in same way as in \texttt{tip.label} slot
+% 			\item \alert{Always check manual for respective function and all data!}
+% 		\end{itemize}
+% 	\end{itemize}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Orthonormal decomposition --- phylogenetic eigenvector regression}
+% 	\begin{spluscode}
+%     anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree,
+%       method="patristic")[,1:2])))
+%     Analysis of Variance Table
+%     Response: shorebird.eco
+%                  Df Sum Sq Mean Sq F value    Pr(>F)
+%     as.matrix...  2 226.61 113.306  54.045 8.918e-15 ***
+%     Residuals    68 142.56   2.097
+%     anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(
+%       x=shorebird.tree, method="patristic")[,1:2])))
+% 	\end{spluscode}
+% 	\begin{itemize}
+% 		\item Significant result --- significant phylogenetic inertia (phylogenetic effect) --- the tendency for traits to resist evolutionary change despite environmental perturbations
+% 		\item \texttt{orthobasis.phylo()} return matrix, which is linear transformation of cophenetic distances --- columns 1~and 2~can be used to calculate phylogenetic variance --- it can be used to calculate linear regression
+% 	\end{itemize}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Orthonormal decomposition of variance of a~quantitative variable on an orthonormal basis}
+% 	\begin{spluscode}
+%     orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000,
+%       alter="two-sided")
+%     ?orthogram # See another calculation possibilities
+%     orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000,
+%       alter="two-sided")
+% 	\end{spluscode}
+% 	\begin{itemize}
+% 		\item Analyses one quantitative trait
+% 		\item Do not confuse with \texttt{ade4::orthogram} --- similar, but require data in little bit different form, marked as deprecated and replaced by the \texttt{adephylo} version
+% 		\item It returns results of 5~non-parametric tests associated to the variance decomposition
+% 		\item Procedure decomposes data matrix to separate phylogeny and phenotype to see if there is significant signal
+% 	\end{itemize}
+% \end{frame}
+% 
+% \begin{frame}{Orthogram}
+% 	\begin{center}
+% 		\includegraphics[height=6cm]{orthogram.png}
+% 	\end{center}
+% 	\begin{itemize}
+% 		\item Observed value is out of permutations --- significant \href{https://en.wikipedia.org/wiki/Phylogenetic_inertia}{inertia of the trait to phylogeny}
+% 	\end{itemize}
+% \end{frame}
 
 \subsection{PGLS}
 
@@ -6008,30 +6012,29 @@
 
 \subsection{Phylosignal}
 
-\begin{frame}[fragile]{Phylogenetic signal}
+\begin{frame}[fragile]{Phylogenetic signal}{Blomberg's K~statistic of phylogenetic signal}
 	\begin{itemize}
 		\item Direct consequence of the evolution of trait depends on evolution --- if trait variation is driven by environment, phylogenetic signal is~0
-		\item Blomberg's K~statistic of phylogenetic signal
+		\item Blomberg's values of 1~correspond to a~Brownian motion process, which implies some degree of phylogenetic signal or conservatism
+		\item K~values closer to zero correspond to a~random or convergent pattern of evolution, while K~values greater than 1~indicate strong phylogenetic signal and conservatism of traits
 	\end{itemize}
 	\begin{spluscode}
     library(picante)
     # It requires named vector of trait values
     shorebird.mmass <- shorebird.data[["M.Mass"]]
     names(shorebird.mmass) <- rownames(shorebird.data)
+    shorebird.mmass
+	\end{spluscode}
+\end{frame}
+
+\begin{frame}[fragile]{Analyze, including multiple traits in once}
+	\begin{spluscode}
     # Bloomberg's K statistics
     Kcalc(x=shorebird.mmass, phy=shorebird.tree, checkdata=TRUE)
     # Test with permutations
     phylosignal(x=shorebird.mmass, phy=shorebird.tree, reps=1000, checkdata=T)
-\end{spluscode}
-	\begin{itemize}
-		\item Blomberg's values of 1~correspond to a~Brownian motion process, which implies some degree of phylogenetic signal or conservatism
-		\item K~values closer to zero correspond to a~random or convergent pattern of evolution, while K~values greater than 1~indicate strong phylogenetic signal and conservatism of traits
-	\end{itemize}
-\end{frame}
-
-\begin{frame}[fragile]{Analyze multiple traits in once}
-	\begin{spluscode}
-    # multiPhylosignal requires data frame of numerical values
+    # Analyze multiple traits in once with multiPhylosignal,
+    # it requires data frame of numerical values
     multiPhylosignal(x=shorebird.data[,2:5], phy=shorebird.tree, reps=1000)
                     K PIC.variance.obs PIC.variance.rnd.mean PIC.variance.P...
     M.Mass   1.089419     5.139489e+02          3.278559e+03    0.000999001...
@@ -6087,7 +6090,7 @@
 	\begin{spluscode}
     # Load library
     library(ape)
-    # Loading data
+    # Loading data - morphological characteristics of Acer species
     # Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
     data(maples, package="adephylo")
     ?adephylo::maples
@@ -6228,41 +6231,36 @@
     maples.height.bayes <- anc.Bayes(tree=maples.tree, x=maples.height,
       ngen=1000000) # Use more MCMC generations
     maples.height.bayes
-    # Get end of ancestral states from Bayesian posterior distribution
-    # (it should converge to certain values)
+    # Get end (discard ca. first 20%) of ancestral states from Bayesian
+    # posterior distribution (it should converge to certain values)
     tail(maples.height.bayes[["mcmc"]])
-    maples.height.bayes[["mcmc"]][10001,3:18]
+    dim(maples.height.bayes[["mcmc"]])
     # Get means of ancestral states from Bayesian posterior distribution
-    colMeans(maples.height.bayes[["mcmc"]][2001:nrow(
-      maples.height.bayes[["mcmc"]]),as.character(1:
+    maples.height.bayes.anc <- colMeans(maples.height.bayes[["mcmc"]][2001:
+      nrow(maples.height.bayes[["mcmc"]]),as.character(1:
       maples.tree$Nnode+length(maples.tree$tip.label))])
     # Plot the ancestral states from posterior distribution
     # (it should converge to certain values)
     plot(maples.height.bayes)
-    # Plot the tree and reconstructed ancestral states
-    plot.phylo(x=maples.tree, edge.width=2, cex=2)
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Bayesian ancestral character estimation II}
 	\begin{spluscode}
-    maples.height.bayes # Mean ancestral states from posterior distribution
-          18       19       20       21       22       23       24       25...
-    2.659527 2.662223 2.932293 2.482104 2.456929 2.510414 2.692636 2.919908...
-    tail(maples.height.bayes[["mcmc"]]) # See end of the table
-              gen      sig2       18       19       20 ...       33    logLik
-       ...     ...       ...      ...      ...      ... ...      ...       ...
-    10000  999900 0.1860167 2.284352 2.680593 2.962142 ... 2.494260 -19.00596
-    10001 1000000 0.1834573 2.315086 2.048144 2.755104 ... 2.485949 -20.80713
-    maples.height.bayes[["mcmc"]][10001,3:18] # See end of the table - values
-                18       19       20       21       22       23       24 ...
-    10001 2.315086 2.048144 2.755104 1.680306 2.019788 2.660322 2.456076 ...
-    # Get means of ancestral states from Bayesian posterior distribution
-    colMeans(maples.height.bayes[["mcmc"]][2001:nrow(
-      maples.height.bayes[["mcmc"]]),as.character(1:
-      maples.tree$Nnode+length(maples.tree$tip.label))])
-          18       19       20       21       22       23       24       25 ...
-    2.659527 2.662223 2.932293 2.482104 2.456929 2.510414 2.692636 2.919908 ...
+    # Mean ancestral states from posterior distribution
+    maples.height.bayes.anc
+          18       19       20       21       22       23       24       25
+    2.722285 2.646832 2.927672 2.482144 2.449808 2.507120 2.767445 2.922756
+          26       27       28       29       30       31       32       33
+    2.755663 2.723439 2.621110 2.560384 2.437797 2.285165 2.406589 2.527682
+    # Statistics of reconstructed values
+    summary(maples.height.bayes[["mcmc"]][2001:nrow(maples.height.bayes
+      [["mcmc"]]),as.character(1:maples.tree$Nnode+length(
+      maples.tree$tip.label))])
+    # Plot the tree and reconstructed ancestral states
+    plot.phylo(x=maples.tree, edge.width=2, cex=2)
+    tiplabels(maples.height, adj=c(1, 0), col="blue", bg="yellow", cex=1.5)
+    nodelabels(round(x=maples.height.bayes.anc, digits=2), cex=1.5)
 	\end{spluscode}
 \end{frame}
 

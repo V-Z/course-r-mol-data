@@ -1279,7 +1279,7 @@ hauss.spca.loc <- local.rtest(X=hauss.genind$tab, listw=hauss.spca$lw, nperm=999
 hauss.spca.loc
 plot(hauss.spca.loc)
 
-# # Map of genetic clines
+# # TODO Map of genetic clines
 # library(akima) # This library is needed for some manipulation with coordinates
 # hauss.spca.temp <- interp(other(hauss.genind)$xy[,1], other(hauss.genind)$xy[,2], hauss.spca$ls[,1], xo=seq(min(other(hauss.genind)$xy[,1]), max(other(hauss.genind)$xy[,1]), le=200), yo=seq(min(other(hauss.genind)$xy[,2]), max(other(hauss.genind)$xy[,2]), le=200), duplicate="median")
 # # For 1st axis
@@ -1396,7 +1396,7 @@ for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 	}
 # Print Fst output
 hauss.geneland.fstat
-# # MCMC inference under the admixture model
+# # TODO MCMC inference under the admixture model
 # for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
 # 	hauss.geneland.path.mcmc <- paste("geneland/", hauss.geneland.irun, "/", sep="")
 # 	hauss.geneland.path.mcmc.adm <- paste(hauss.geneland.path.mcmc, "admixture", "/", sep="")
@@ -1990,26 +1990,26 @@ screeplot(shorebird.ppca)
 # Plot pPCA results - global vs. local structure, decomposition of pPCA eigenvalues, PCA plot of variables and PCA scores for variables on phylogenetic tree
 plot(shorebird.ppca)
 
-## Orthonormal Decomposition - phylogenetic eigenvector regression
-
-# Decomposition of topographical distances (right plot)
-library(phylobase)
-table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(x=shorebird.tree, result="orthobasis")), treetype="cladogram")
-
-# Generate some random variable
-library(geiger)
-shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1, model="BM")[,,1]
-?sim.char # See it for another possibilities to simulate data
-# Names for the values
-names(shorebird.eco) <- shorebird.tree[["tip.label"]]
-shorebird.eco # See it
-
-# significant result - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
-anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
-anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
-orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000, alter="two-sided")
-?orthogram # See another calculation possibilities
-orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000, alter="two-sided")
+# ## TODO Orthonormal Decomposition - phylogenetic eigenvector regression
+# 
+# # Decomposition of topographical distances (right plot)
+# library(phylobase)
+# table.phylo4d(x=phylo4d(x=shorebird.tree, tip.data=treePart(x=shorebird.tree, result="orthobasis")), treetype="cladogram")
+# 
+# # Generate some random variable
+# library(geiger)
+# shorebird.eco <- sim.char(phy=shorebird.tree, par=0.1, nsim=1, model="BM")[,,1]
+# ?sim.char # See it for another possibilities to simulate data
+# # Names for the values
+# names(shorebird.eco) <- shorebird.tree[["tip.label"]]
+# shorebird.eco # See it
+# 
+# # significant result - significant phylogenetic inertia (phylogenetic effect) - the tendency for traits to resist evolutionary change despite environmental perturbations
+# anova(lm(shorebird.eco ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
+# anova(lm(shorebird.data[["M.Mass"]] ~ as.matrix(orthobasis.phylo(x=shorebird.tree, method="patristic")[,1:2])))
+# orthogram(x=shorebird.eco, tre=shorebird.tree, nrepet=1000, alter="two-sided")
+# ?orthogram # See another calculation possibilities
+# orthogram(x=shorebird.data[["M.Mass"]], tre=shorebird.tree, nrepet=1000, alter="two-sided")
 
 ## Phylogenetic Generalized Least Squares
 
@@ -2063,6 +2063,7 @@ library(picante)
 # It requires named vector of trait values
 shorebird.mmass <- shorebird.data[["M.Mass"]]
 names(shorebird.mmass) <- rownames(shorebird.data)
+shorebird.mmass
 # Bloomberg's K statistics
 Kcalc(x=shorebird.mmass, phy=shorebird.tree, checkdata=TRUE)
 # Test with permutations
@@ -2085,7 +2086,7 @@ summary(pgls(formula=shorebird.mmass ~ 1, data=comparative.data(phy=shorebird.tr
 
 ## Ancestral state reconstruction
 
-# Loading data
+# Loading data - morphological characteristics of Acer species
 # Ackerly & Donoghue (1998) https://doi.org/10.1086/286208
 data(maples, package="adephylo")
 ?adephylo::maples
@@ -2170,16 +2171,20 @@ maples.height.ml
 ?anc.Bayes
 maples.height.bayes <- anc.Bayes(tree=maples.tree, x=maples.height, ngen=1000000) # Use more MCMC generations
 maples.height.bayes
-# Get end of ancestral states from Bayesian posterior distribution (it should converge to certain values)
+# Get end (discard ca. first 20%)  of ancestral states from Bayesian posterior distribution (it should converge to certain values)
 tail(maples.height.bayes[["mcmc"]])
-maples.height.bayes[["mcmc"]][10001,3:18]
+dim(maples.height.bayes[["mcmc"]])
 # Get means of ancestral states from Bayesian posterior distribution
-colMeans(maples.height.bayes[["mcmc"]][2001:nrow(maples.height.bayes[["mcmc"]]),as.character(1:maples.tree$Nnode+length(maples.tree$tip.label))])
+maples.height.bayes.anc <- colMeans(maples.height.bayes[["mcmc"]][2001:nrow(maples.height.bayes[["mcmc"]]),as.character(1:maples.tree$Nnode+length(maples.tree$tip.label))])
+maples.height.bayes.anc
+# Statistics of reconstructed values
+summary(maples.height.bayes[["mcmc"]][2001:nrow(maples.height.bayes[["mcmc"]]),as.character(1:maples.tree$Nnode+length(maples.tree$tip.label))])
 # Plot the ancestral states from posterior distribution (it should converge to certain values)
 plot(maples.height.bayes)
 # Plot the tree and reconstructed ancestral states
 plot.phylo(x=maples.tree, edge.width=2, cex=2)
-nodelabels(round(x=maples.height.bayes[["mcmc"]][10001,3:18], digits=2), cex=1.5)
+tiplabels(maples.height, adj=c(1, 0), col="blue", bg="yellow", cex=1.5)
+nodelabels(round(x=maples.height.bayes.anc, digits=2), cex=1.5)
 
 # Continuous map
 ?contMap
