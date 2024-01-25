@@ -906,9 +906,10 @@
 \end{frame}
 
 \begin{frame}[fragile]{Install kdetrees package}{Simple installation from GitHub}
-	\label{kdetrees}
+	\label{kdetreesinst}
 	\begin{itemize}
 		\item Removed from CRAN, forked on GitHub as \url{https://github.com/V-Z/kdetrees} and slightly updated
+		\item See slide~\ref{kdetrees} for usage
 	\end{itemize}
 	\begin{spluscode}
     # Ensure package 'devtools' is installed
@@ -5098,6 +5099,25 @@
 	\end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]{Number of possible tree topologies}
+	Number of possible rooted topologies for bifurcating tree with \textit{n} tips:
+	\begin{equation}
+		f\left(n\right) = \frac{(2n-3)!}{2^{(n-2)}(n-2)!}
+	\end{equation}	
+	\begin{spluscode}
+    # Function to calculate number of possible topologies for rooted fully
+    # bifurcating phylogenetic trees
+    nt <- function(n) { return((factorial(2*n-3))/(2^(n-2)*factorial(n-2))) }
+    # See how many possible topologies are there...
+    for (i in seq(from=5, to=90, by=5)) {
+      cat("Tips:", i, "topologies:", nt(i), "\n")
+      }
+	\end{spluscode}
+	\begin{itemize}
+		\item You can find different variants of the above equation depending which cases are taken into account
+	\end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]{Maximum parsimony --- code and result}
 	\begin{multicols}{2}
 		\begin{center}
@@ -5138,7 +5158,7 @@
 			\item If the difference is very close to root, RF value can be large, even there are not much differences in the tree at all --- \texttt{dist.multiPhylo} from package \href{https://CRAN.R-project.org/package=distory}{distory} can be an alternative, although interpretation of that geodesic distance is sometimes not so straightforward as simple logic of RF
 		\end{itemize}
 		\item Methods implemented in \texttt{ape::dist.topo} allow comparison of trees with polytomies (\texttt{method="PH85"}) or use of squared lengths of internal branches (\texttt{method="score"})
-		\item Final matrices are commonly not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} --- may be problematic for usage in methods like PCA
+		\item Final matrices are commonly not \href{https://en.wikipedia.org/wiki/Euclidean_distance_matrix}{Euclidean} --- may be problematic for usage in methods like PCoA
 		\begin{itemize}
 			\item Test it with \texttt{ade4::is.euclid}, can be scaled (forced to became Euclidean) by functions like \texttt{quasieuclid} or \texttt{cailliez} in \texttt{ade4} --- carefully, it can damage meaning of the data
 			\item We get matrix of pairwise differences among trees (from multiple genes), we need display and analyze it
@@ -5186,11 +5206,9 @@
 \end{frame}
 
 \begin{frame}[fragile]{Topographical distances among trees IV}{Calculate Robinsons-Foulds distance matrix among trees and plot it}
-	\begin{itemize}
-		\item \texttt{phytools::multiRF} can handle \texttt{multiPhylo} objects
-	\end{itemize}
 	\begin{spluscode}
     # Robinsons-Foulds distance
+    ?multiRF # See help first...
     oxalis.trees.d.rf <- multiRF(oxalis.trees)
     # Add names of columns and rows
     colnames(oxalis.trees.d.rf) <- names(oxalis.trees)
@@ -5255,8 +5273,9 @@
 \end{frame}
 
 \begin{frame}[fragile]{kdetrees --- identification of outlying trees I}
+	\label{kdetrees}
 	\begin{itemize}
-		\item See slide~\ref{kdetrees} for installation
+		\item See slide~\ref{kdetreesinst} for installation
 		\item Distance-based method of identification of trees with significantly different topology
 		\item Function \texttt{kdetrees} has plenty of options\ldots
 		\item Parameter \texttt{k} sets threshold for trees to be removed --- it requires repeated running with different \texttt{k} (and plotting the figures) to decide which trees to remove and which to keep
@@ -5282,6 +5301,9 @@
 \end{frame}
 
 \begin{frame}[fragile]{kdetrees --- identification of outlying trees III}
+	\begin{itemize}
+		\item Value of \texttt{k} is multiplication index: 1 is default, below 1 is more strict (more trees removed), above 1 more permissive (more trees kept)
+	\end{itemize}
 	\begin{spluscode}
     # See removed trees
     plot.multiPhylo(oxalis.kde[["outliers"]])
@@ -5386,7 +5408,7 @@
 
 \begin{frame}[fragile]{Networks}
 	\begin{spluscode}
-    library(phangorn)
+    library(phangorn) # All tips must be in all trees
     oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
     plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE,
       show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE,

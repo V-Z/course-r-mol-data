@@ -1673,6 +1673,11 @@ is.ultrametric(oxalis.trees)
 # Computes the branch lengths of a tree giving its branching times (aka node ages or heights)
 ?compute.brtime
 
+# Function to calculate number of possible topologies for rooted fully bifurcating phylogenetic trees
+nt <- function(n) { return((factorial(2*n-3))/(2^(n-2)*factorial(n-2))) }
+# See how many possible topologies are there...
+for (i in seq(from=5, to=90, by=5)) { cat("Tips:", i, "topologies:", nt(i), "\n") }
+
 ## Maximum parsimony
 library(phangorn)
 # Conversion to phyDat for phangorn
@@ -1688,6 +1693,8 @@ gunnera.tre.pars <- optim.parsimony(tree=gunnera.tre.ini, data=gunnera.phydat)
 # Draw a tree
 plot.phylo(x=gunnera.tre.pars, type="cladogram", edge.width=2)
 title("Maximum-parsimony tree of Gunnera spp.")
+
+## Seeing trees in the forest
 
 ## Topographical distances among trees
 
@@ -1707,6 +1714,7 @@ head.matrix(as.matrix(oxalis.trees.d))
 heatmap.2(x=as.matrix(x=oxalis.trees.d), Rowv=FALSE, Colv="Rowv", dendrogram="none", symm=TRUE, scale="none", na.rm=TRUE, revC=FALSE, col=rainbow(15), cellnote=round(x=as.matrix(x=oxalis.trees.d), digits=2), notecex=1, notecol="white", trace="row", linecol="black", labRow=names(oxalis.trees), labCol=names(oxalis.trees), key=TRUE, keysize=2, density.info="density", symkey=FALSE, main="Correlation matrix of topographical distances", xlab="Trees", ylab="Trees")
 
 # Robinsons-Foulds distance
+?multiRF # See help first...
 oxalis.trees.d.rf <- multiRF(oxalis.trees)
 
 # Add names of columns and rows
@@ -1762,7 +1770,7 @@ oxalis.trees.good
 # Save passing trees
 write.tree(phy=oxalis.trees.good, file="trees_good.nwk")
 
-## Seeing trees in the forest
+## Species tree out of bunch of gene trees
 
 # Consenus tree (50% rule)
 oxalis.tree.con <- ape::consensus(oxalis.trees.rooted, p=0.5, check.labels=TRUE)
@@ -1798,6 +1806,7 @@ axisPhylo(side=1)
 # https://github.com/lliu1871/phybase
 
 # Networks
+# All tips must be in all trees
 library(phangorn)
 oxalis.tree.net <- consensusNet(oxalis.trees.rooted, prob=0.25)
 plot(x=oxalis.tree.net, planar=FALSE, type="2D", use.edge.length=TRUE, show.tip.label=TRUE, show.edge.label=TRUE, show.node.label=TRUE, show.nodes=TRUE, edge.color="black", tip.color="blue") # 2D
