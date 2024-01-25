@@ -98,19 +98,17 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
-# Upgrade all packages e.g. from R 3.5 to 3.6
-install.packages(pkgs=installed.packages()) # Packages installed manually from different resources must be reinstalled manually
 
 # Install package Geneland (since version 4 not available in CRAN anymore)
 # Other packages used when using Geneland
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelization snow and Rmpi
-# RgoogleMaps (requires rgdal) can be used to plot Geneland output on top of Google map, maptools, shapefiles (requires foreign) and tripack on GIS layer
-install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+# RgoogleMaps can be used to plot output on top of Google map, sf and related tools on GIS layer
+install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sf", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 # On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/
 # Install Geneland from GitHub
 # Devtools package is required to install from GitHub
@@ -656,7 +654,7 @@ vignette("algo", package="poppr")
 # According to loci
 hauss.hwe.test <- hw.test(x=hauss.loci, B=1000)
 # Results per-locus
-haussknechtii.hwe.test
+hauss.hwe.test
 # Summary across all loci
 summary(hauss.hwe.test)
 # According to populations
@@ -1137,7 +1135,7 @@ points(glNA(usflu.genlight), rep(0, nLoc(usflu.genlight)), pch="|", cex=2, col="
 # PCA - select number of retained PC axes, about 10 here
 usflu.pca <- glPca(x=usflu.genlight, center=TRUE, scale=FALSE, loadings=TRUE)
 # Plot PCA
-scatter.glPca(x=usflu.pca, posi="bottomright")
+scatter.glPca(x=usflu.pca, posi="topright")
 title("PCA of the US influenza data")
 # Loading plot - contribution of variables to the pattern observed
 loadingplot.glPca(x=usflu.pca)
@@ -1501,43 +1499,43 @@ map(database="world", boundary=TRUE, interior=TRUE, fill=TRUE, col="lightgrey", 
 # If you'd use projection, use - mapproject() to convert also coordinates! See ?mapproject for details
 points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=3)
 
-# Plotting on SHP files
-library(maptools)
-library(rgdal)
-# Load SHP file
-# Data from https://download.geofabrik.de/europe/macedonia.html
-# R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
-dir() # Verify required files are unpacked in the working directory
-# Get from https://soubory.trapa.cz/rcourse/macedonia.zip
-# Check correct import by plotting all layers
-macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
-plot(macedonia_building)
-macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
-plot(macedonia_landuse)
-macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
-plot(macedonia_natural)
-macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
-plot(macedonia_railways)
-macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
-plot(macedonia_roads)
-macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
-plot(macedonia_waterways)
-# Plot all layers into single image, add more information
-plot(macedonia_building)
-plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
-plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
-plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
-plot(macedonia_roads, add=TRUE, col="orange")
-plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
-# Add state boundaries
-plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=5, add=TRUE) # Or e.g.
-map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
-# Add sampling points
-points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
-# Add description of psampling points
-shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
-# Add legend
-legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
+# # FIXME Plotting on SHP files
+# library(maptools)
+# library(rgdal)
+# # Load SHP file
+# # Data from https://download.geofabrik.de/europe/macedonia.html
+# # R working directory has to contain also respective DBF and SHX files (same name, only different suffix)
+# dir() # Verify required files are unpacked in the working directory
+# # Get from https://soubory.trapa.cz/rcourse/macedonia.zip
+# # Check correct import by plotting all layers
+# macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
+# plot(macedonia_building)
+# macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
+# plot(macedonia_landuse)
+# macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
+# plot(macedonia_natural)
+# macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
+# plot(macedonia_railways)
+# macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
+# plot(macedonia_roads)
+# macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
+# plot(macedonia_waterways)
+# # Plot all layers into single image, add more information
+# plot(macedonia_building)
+# plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
+# plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
+# plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
+# plot(macedonia_roads, add=TRUE, col="orange")
+# plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+# # Add state boundaries
+# plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1, lwd=5, add=TRUE) # Or e.g.
+# map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE, col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
+# # Add sampling points
+# points(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
+# # Add description of psampling points
+# shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black", bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15, pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
+# # Add legend
+# legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"), col="red", border="black", pch=15:19, pt.cex=2, bty="o", bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
 
 ## Tree manipulations
 
@@ -1977,6 +1975,7 @@ plot(x=carnivora.correlogram2, lattice=FALSE, legend=TRUE, test.level=0.05)
 
 ## Phylogenetic PCA
 library(adephylo) # Library needed to create phylo4d object required by ppca
+library(phylobase)
 # Calculate pPCA
 shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]), method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1, nfnega=0)
 # Print results

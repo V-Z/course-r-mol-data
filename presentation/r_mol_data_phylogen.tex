@@ -852,16 +852,14 @@
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
       "ape", "BiocManager", "caper", "corrplot", "devtools", "adespatial",
       "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
-      "lattice", "mapdata", "mapplots", "mapproj", "maps", "maptools", "nlme",
+      "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme",
       "PBSmapping", "pegas", "permute", "phangorn", "philentropy",
       "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
-      "raster", "rgdal", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
-      "seqinr", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP",
+      "raster", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr",
+      "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP",
       "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
-    # Upgrade all packages e.g. from R 4.2 to 4.3
-    install.packages(pkgs=installed.packages())
 	\end{spluscode}
 \end{frame}
 
@@ -875,10 +873,10 @@
     # Other packages used when using Geneland
     # Needed is PBSmapping or mapproj for conversion of coordinates
     # GUI uses for parallelization snow and Rmpi
-    # RgoogleMaps (requires rgdal) can be used to plot output on top of Google
-    # map, maptools, shapefiles (requires foreign) and tripack on GIS layer
-    install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps",
-      "Rmpi", "sp", "maptools", "shapefiles", "snow", "tripack"),
+    # RgoogleMaps can be used to plot output on top of Google map,
+    # sf and related tools on GIS layer
+    install.packages(pkgs=c("PBSmapping", "mapproj", "RgoogleMaps", "Rmpi",
+      "sf", "sp", "shapefiles", "snow", "tripack"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     # Install Geneland from GitHub
     # Devtools package is required to install from GitHub
@@ -1000,7 +998,7 @@
 			\item If it is not available, respective function can sometimes use different parallelization backend or user can turn off parallelization for respective function
 		\end{itemize}
 		\item MUSCLE \url{https://www.drive5.com/muscle/}
-		\begin{itemize} % FIXME Check if ape works with MUSCLE 5 or just 3.8
+		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 			\item Use version 3.8 from \url{https://drive5.com/muscle/downloads_v3.htm}, not 5.X
 		\end{itemize}
@@ -3711,7 +3709,7 @@
 	\begin{spluscode}
     usflu.pca <- glPca(x=usflu.genlight, center=TRUE, scale=FALSE,
       loadings=TRUE) # Select number of retained PC axes, about 10 here
-    scatter.glPca(x=usflu.pca, posi="bottomright") # Plot PCA
+    scatter.glPca(x=usflu.pca, posi="topright") # Plot PCA
     title("PCA of the US influenza data")
     # Loading plot - contribution of variables to the pattern observed
     loadingplot.glPca(x=usflu.pca)
@@ -4800,72 +4798,72 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Plotting on SHP files I}
-	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
-		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (originally from \href{https://download.geofabrik.de/europe/macedonia.html}{Geofabrik}) and unpack them into R working directory
-		\item R working directory has to contain also respective DBF and SHX files (same name, only different extension)
-	\end{itemize}
-	\begin{spluscode}
-    library(maptools)
-    library(rgdal)
-    dir() # Verify required files are unpacked in the working directory
-    # Check correct import by plotting all layers
-    macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
-    plot(macedonia_building)
-    macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
-    plot(macedonia_landuse)
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Plotting on SHP files II}
-	\begin{spluscode}
-    macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
-    plot(macedonia_natural)
-    macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
-    plot(macedonia_railways)
-    macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
-    plot(macedonia_roads)
-    macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
-    plot(macedonia_waterways)
-    # Plot all layers into single image, add more information
-    plot(macedonia_building)
-    plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
-    plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
-    plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
-    plot(macedonia_roads, add=TRUE, col="orange")
-    plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
-    # Now we can add few more data, next slide
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Plotting on SHP files III}
-	\begin{spluscode}
-    # Add state boundaries
-    plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
-      lwd=5, add=TRUE) # Or e.g.
-    map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE,
-      col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
-    # Add sampling points
-    points(x=hauss.genpop@other$xy[["lon"]],
-      y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
-    # Add description of sampling points
-    shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
-      xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
-      bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
-      pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
-    # Add legend
-    legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"),
-      col="red", border="black", pch=15:19, pt.cex=2, bty="o",
-      bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
-	\end{spluscode}
-\end{frame}
-
-\begin{frame}{Plotting on SHP files IV and maps from mapproj}
-	\begin{center}
-		\includegraphics[height=6.5cm]{mapy.png}
-	\end{center}
-\end{frame}
+% \begin{frame}[fragile]{Plotting on SHP files I} % FIXME Plot SHP map
+% 	\begin{itemize}
+% 		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefile} (SHP) is common format for geographical data
+% 		\item Get SHP files from \url{https://soubory.trapa.cz/rcourse/macedonia.zip} (originally from \href{https://download.geofabrik.de/europe/macedonia.html}{Geofabrik}) and unpack them into R working directory
+% 		\item R working directory has to contain also respective DBF and SHX files (same name, only different extension)
+% 	\end{itemize}
+% 	\begin{spluscode}
+%     library(maptools)
+%     library(rgdal)
+%     dir() # Verify required files are unpacked in the working directory
+%     # Check correct import by plotting all layers
+%     macedonia_building <- readOGR(dsn="macedonia_buildings.shp")
+%     plot(macedonia_building)
+%     macedonia_landuse <- readOGR(dsn="macedonia_landuse.shp")
+%     plot(macedonia_landuse)
+% 	\end{spluscode}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Plotting on SHP files II}
+% 	\begin{spluscode}
+%     macedonia_natural <- readOGR(dsn="macedonia_natural.shp")
+%     plot(macedonia_natural)
+%     macedonia_railways <- readOGR(dsn="macedonia_railways.shp")
+%     plot(macedonia_railways)
+%     macedonia_roads <- readOGR(dsn="macedonia_roads.shp")
+%     plot(macedonia_roads)
+%     macedonia_waterways <- readOGR(dsn="macedonia_waterways.shp")
+%     plot(macedonia_waterways)
+%     # Plot all layers into single image, add more information
+%     plot(macedonia_building)
+%     plot(macedonia_landuse, add=TRUE, col="darkgreen", fill=TRUE)
+%     plot(macedonia_natural, add=TRUE, col="green", fill=TRUE)
+%     plot(macedonia_railways, add=TRUE, col="brown", lty="dotted")
+%     plot(macedonia_roads, add=TRUE, col="orange")
+%     plot(macedonia_waterways, add=TRUE, col="blue", lwd=2)
+%     # Now we can add few more data, next slide
+% 	\end{spluscode}
+% \end{frame}
+% 
+% \begin{frame}[fragile]{Plotting on SHP files III}
+% 	\begin{spluscode}
+%     # Add state boundaries
+%     plot(x=getMap(resolution="high"), xlim=c(19, 24), ylim=c(39, 44), asp=1,
+%       lwd=5, add=TRUE) # Or e.g.
+%     map(database="world", boundary=TRUE, interior=TRUE, fill=FALSE,
+%       col="red", add=TRUE, plot=TRUE, xlim=c(16, 27), ylim=c(37, 46), lwd=5)
+%     # Add sampling points
+%     points(x=hauss.genpop@other$xy[["lon"]],
+%       y=hauss.genpop@other$xy[["lat"]], pch=15:19, col="red", cex=4)
+%     # Add description of sampling points
+%     shadowtext(x=hauss.genpop@other$xy[["lon"]], y=hauss.genpop@other$
+%       xy[["lat"]], labels=as.vector(popNames(hauss.genind)), col="black",
+%       bg="white", theta=seq(pi/4, 2*pi, length.out=8), r=0.15,
+%       pos=c(1, 3, 2, 4, 4), offset=0.75, cex=1.5)
+%     # Add legend
+%     legend(x="topright", inset=1/50, legend=c("He", "Oh", "Pr", "Ne", "Sk"),
+%       col="red", border="black", pch=15:19, pt.cex=2, bty="o",
+%       bg="lightgrey", box.lwd=1.5, cex=1.5, title="Populations")
+% 	\end{spluscode}
+% \end{frame}
+% 
+% \begin{frame}{Plotting on SHP files IV and maps from mapproj}
+% 	\begin{center}
+% 		\includegraphics[height=6.5cm]{mapy.png}
+% 	\end{center}
+% \end{frame}
 
 \subsection{Tasks}
 
@@ -5804,6 +5802,7 @@
 	\begin{spluscode}
     # Library needed to create phylo4d object required by ppca
     library(adephylo)
+    library(phylobase)
     # Calculate pPCA
     shorebird.ppca <- ppca(x=phylo4d(x=shorebird.tree, shorebird.data[,2:5]),
       method="patristic", center=TRUE, scale=TRUE, scannf=TRUE, nfposi=1,
@@ -6912,7 +6911,6 @@
 		\item \href{https://CRAN.R-project.org/package=mapplots}{mapplots}: extra map plotting, pie charts and more
 		\item \href{https://CRAN.R-project.org/package=mapproj}{mapproj}: converts latitude/longitude into projected coordinates
 		\item \href{https://CRAN.R-project.org/package=maps}{maps}: draws geographical maps
-		\item \href{https://CRAN.R-project.org/package=maptools}{maptools}: manipulating and reading geographic data % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=nlme}{nlme}: fits and compares Gaussian linear and nonlinear mixed-effects models
 		\item \href{https://CRAN.R-project.org/package=PBSmapping}{PBSmapping}: spatial analysis tools
 		\item \href{https://CRAN.R-project.org/package=pegas}{pegas}: population and evolutionary genetics analysis
@@ -6926,11 +6924,11 @@
 		\item \href{https://CRAN.R-project.org/package=poppr}{poppr}: genetic analysis of populations with mixed reproduction
 		\item \href{https://CRAN.R-project.org/package=raster}{raster}: reading, writing, manipulating, analyzing and modeling of gridded spatial data
 		\item \href{https://CRAN.R-project.org/package=rentrez}{rentrez}: interface to the NCBI, allowing to search databases like GenBank
-		\item \href{https://CRAN.R-project.org/package=rgdal}{rgdal}: bindings to the Geospatial Data Abstraction Library and access to projection/transformation operations library % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=RgoogleMaps}{RgoogleMaps}: interface to query the Google server for static maps and uses the map as a~background image to overlay plots
 		\item \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi}: interface (wrapper) to MPI (used for parallel processing)
 		\item \href{https://CRAN.R-project.org/package=rworldmap}{rworldmap}: mapping global data (and extra data in \href{https://CRAN.R-project.org/package=rworldxtra}{rworldxtra})
 		\item \href{https://CRAN.R-project.org/package=seqinr}{seqinr}: exploratory data analysis and data visualization for biological sequence
+		\item \href{https://CRAN.R-project.org/package=sf}{sf}: standardized way to encode spatial vector data
 		\item \href{https://CRAN.R-project.org/package=shapefiles}{shapefiles}: read and write ESRI shapefiles
 		\item \href{https://CRAN.R-project.org/package=snow}{snow}: simple parallel computing
 		\item \href{https://CRAN.R-project.org/package=sp}{sp}: classes and methods for spatial data
