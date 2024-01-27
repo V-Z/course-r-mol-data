@@ -855,9 +855,9 @@
       "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme",
       "PBSmapping", "pegas", "permute", "phangorn", "philentropy",
       "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
-      "raster", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr",
-      "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP",
-      "TeachingDemos", "tripack", "vcfR", "vegan"),
+      "raster", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
+      "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs",
+      "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
       repos="https://mirrors.nic.cz/R/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
 	\end{spluscode}
@@ -2764,7 +2764,7 @@
     # of MLGs into populations
     # (table and/or plot)
     mlg.table(gid=hauss.genind,
-      bar=TRUE, total=TRUE,
+      plot=TRUE, total=TRUE,
       quiet=FALSE)
     mlg.vector(hauss.genind)
     mlg.id(hauss.genind)
@@ -6924,6 +6924,7 @@
 		\item \href{https://CRAN.R-project.org/package=poppr}{poppr}: genetic analysis of populations with mixed reproduction
 		\item \href{https://CRAN.R-project.org/package=raster}{raster}: reading, writing, manipulating, analyzing and modeling of gridded spatial data
 		\item \href{https://CRAN.R-project.org/package=rentrez}{rentrez}: interface to the NCBI, allowing to search databases like GenBank
+		\item \href{https://CRAN.R-project.org/package=rgl}{rgl}: visualization using OpenGL
 		\item \href{https://CRAN.R-project.org/package=RgoogleMaps}{RgoogleMaps}: interface to query the Google server for static maps and uses the map as a~background image to overlay plots
 		\item \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi}: interface (wrapper) to MPI (used for parallel processing)
 		\item \href{https://CRAN.R-project.org/package=rworldmap}{rworldmap}: mapping global data (and extra data in \href{https://CRAN.R-project.org/package=rworldxtra}{rworldxtra})
@@ -7160,7 +7161,6 @@
 % - Přidat ke stažení balíček s daty na hraní.
 % - Poznámky k alignerům pro macOS (Homebrew?) a Windows
 % - Přehled typů dat proložit obrázky
-% - K datům dát obrázky a pár informací navíc
 % - Formáty dat proložit ukázkami a obrázky
 % - Zkontrolovat práci se jmény a populacemi při načítání AFLP
 % - Úloha - naimportovat z GenBank jezevce
@@ -7183,7 +7183,6 @@
 % - Ověřit scaleGen - zdali je to nutné a tak.
 % - V colorplotu PCoA mít něco smysluplného
 % - SNP rozpustit v záklandích analýzách
-% - NJ z genlight?
 % - V DAPC dát loadingplot a optim.a.scores hned za analýzu
 % - Hraní si s konektivitou v datasetu rupica na začátek prostorových analýz
 % - Utřídit, kterou síť kde používat --- jiná je na začátku u Morana, sPCA --- zkonvertovat výstupy
@@ -7206,14 +7205,11 @@
 % - Přidat k pPCA loadingplot (jde-li to)
 % - U pPCA a dalších možná přidat okomentované textové výstupy, zkontrolovat obalování metod do anova, summary, apod.
 % - U ace() možná dát na strom i hodnoty intervalu spolehlivosti
-% - U anc.Bayes nepoužívat hodnoty z posledního řádku, ale jen průměry sloupců (jak automaticky vybrat poslední řádek?)
-% - Zpřehlednit slide Bayesian ancestral character estimation II
 % - Ke contmap přidat na uzly i hodnoty z fastAnc
 % - Lepší příklad na fenogramy?
 % - Víc příkladů na kreslení něčeho na stromě
 % - Přidat pár příkladů na instalaci z GitHubu, víc příkladů z devtools
 % - Informace o načítání balíčků z určité knihovny ve skriptech
-% - Slide o spouštění R na MetaCentru - balíčky, skripty, OnDemand
 % - Do funkce přidat výchozí hodnoty a použití return()
 % - Víc příkladů se smyčkami a větvením
 % Poznámky 2022
@@ -7224,7 +7220,6 @@
 % - zkontrolovat import polyploidních mikrosatelitů a aflp
 % - zkontrolovat manipulace g genlight
 % - zkontrolovat konverzi z vcfr do dna
-% - zredukovat upgma
 % - přidat tvorbu ML stromu
 % - vyhodit colorploty?
 % - nějaké OSM

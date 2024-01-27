@@ -98,7 +98,7 @@ options() # Generic function to modify various settings
 ?options # Gives details
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
@@ -705,7 +705,7 @@ mlg(gid=hauss.genind, quiet=FALSE)
 # MLGs shared among populations (a list)
 mlg.crosspop(gid=hauss.genind, df=TRUE, quiet=FALSE)
 # Detailed view on distribution of MLGs into populations (table and/or plot)
-mlg.table(gid=hauss.genind, bar=TRUE, total=TRUE, quiet=FALSE)
+mlg.table(gid=hauss.genind, plot=TRUE, total=TRUE, quiet=FALSE)
 # Which individual belong to which vector (two ways of display)
 mlg.vector(hauss.genind)
 mlg.id(hauss.genind)
@@ -1357,15 +1357,20 @@ hauss.geneland.data <- read.table(file="https://soubory.trapa.cz/rcourse/hausskn
 dim(hauss.geneland.data)
 hauss.geneland.data
 # Set number of independent runs
+# For real data use rather 10 or more
 hauss.geneland.nrun <- 5
 # Set length of burnin chain
+# For real data use ca. 20-25% of hauss.geneland.nit - is it is e.g. 5000000, set here at least 1000000
 hauss.geneland.burnin <- 100
 # Set maximal K (number of populations)
+# Use some value relevant from point of view of number of sampling sites etc.
 hauss.geneland.maxpop <- 10
 # In practice set much higher number of iterations (nit, millions), appropriate sampling (thinning, thousands) and longer burnin
 # Number of iterations (MCMC steps)
+# For real data use millions
 hauss.geneland.nit <- 10000
 # Sampling (thinning)
+# For real data, if hauss.geneland.nit is e.g. 5000000, use ca. 1000-10000
 hauss.geneland.thinning <- 10
 # FOR loop will run several independent runs and produce output maps of genetic clusters - outputs are written into subdirectory within geneland directory
 for (hauss.geneland.irun in 1:hauss.geneland.nrun) {
