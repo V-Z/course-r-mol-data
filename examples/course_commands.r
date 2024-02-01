@@ -221,14 +221,6 @@ hauss.loci.cor <- genind2loci(hauss.genind.cor)
 # Writes loci file to the disk
 write.loci(hauss.loci.cor, file="hauss.loci.cor.txt", loci.sep="\t", allele.sep="/")
 
-# Read data sets from various software
-?read.genalex # poppr - reads *.csv file
-?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
-?read.genetix # adegenet - reads *.gtx files, only haploid/diploid data
-?read.genepop # adegenet - reads *.gen files, only haploid/diploid data
-?read.structure # adegenet - reads *.str files, only haploid/diploid data
-?import2genind # adegenet - more automated version of above functions
-
 # Import of triploid (polyploid) microsattelites
 tarax3n.table <- read.table("https://soubory.trapa.cz/rcourse/tarax3n.txt", header=TRUE, sep="\t", quote="", row.names=1)
 # Check the data
@@ -256,6 +248,14 @@ aflp.genind <- df2genind(X=amara.aflp, sep="", ind.names=NULL, loc.names=NULL, p
 indNames(aflp.genind) <- amara.aflp[,1] # Add individual names
 aflp.genind
 summary(amara.aflp)
+
+# Read data sets from various software
+?read.genalex # poppr - reads *.csv file
+?read.fstat # adegenet - reads *.dat files, only haploid/diploid data
+?read.genetix # adegenet - reads *.gtx files, only haploid/diploid data
+?read.genepop # adegenet - reads *.gen files, only haploid/diploid data
+?read.structure # adegenet - reads *.str files, only haploid/diploid data
+?import2genind # adegenet - more automated version of above functions
 
 # Some useful functions for data manipulations
 ?genind2df # adegenet - export into data frame
