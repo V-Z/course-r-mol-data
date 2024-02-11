@@ -46,8 +46,9 @@ examples/*.nwk
 examples/*.png
 examples/*.rda
 examples/*.svg
+examples/*.tsv
 examples/*.txt
 examples/*.vcf*
 examples/macedonia_*
-examples/test.RData
+examples/*.RData
 rcourse/macedonia.zip
