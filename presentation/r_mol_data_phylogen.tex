@@ -165,7 +165,7 @@
 			\item \href{https://en.wikipedia.org/wiki/Emacs}{GNU Emacs}
 			\item \href{https://www.geany.org/}{Geany}
 			\item \href{https://bluefish.openoffice.nl/}{Bluefish}
-			\item \href{https://gedit-technology.github.io/apps/gedit/}{Gedit}
+			\item \href{https://gedit-text-editor.org/}{Gedit}
 			\item \href{https://notepad-plus-plus.org/}{Notepad++}
 			\item \href{https://www.sublimetext.com/}{Sublime}
 			\item \href{https://code.visualstudio.com/}{VS Code}
@@ -302,7 +302,7 @@
 		\item Most of packages are available as pre-compiled and can be immediately installed from R --- it is convenient, but usually not tuned for particular computer architecture (type of CPU)
 		\item Usually there are some problems every time new version of OS is released --- it takes time to modify and recompile packages for new version of OS
 		\item You have to check for new version of R manually
-		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
+		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/}{download page}
 		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows.html}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac.html}{macOS}, but it requires some work to install it
 	\end{itemize}
 \end{frame}
@@ -324,13 +324,13 @@
 		\item Ubuntu (and derivatives): follow instructions at \url{https://CRAN.R-project.org/bin/linux/ubuntu/}
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-dev} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward} and/or \texttt{rstudio}
 		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
-		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
+		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/}{download page}
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Linux --- openSUSE and SUSE Linux Enterprise}
 	\begin{itemize}
-		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/suse/}
+% 		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/suse/}
 		\item Add repository/ies for appropriate version of your distribution
 		\begin{itemize}
 			\begin{footnotesize}
@@ -341,7 +341,7 @@
 		\item Install packages \texttt{R-base} (the R), \texttt{R-base-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rstudio} and/or \texttt{rkward}
 		\item Install packages \texttt{patterns-openSUSE-devel\_basis} and \texttt{gcc-fortran} for compilation of R packages when installing them from R (only some R packages are available in openSUSE repositories)
 		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
-		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
+		\item RStudio is also available from its \href{https://posit.co/products/open-source/rstudio/}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -351,7 +351,7 @@
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
 		\item Install group packages \texttt{"Development Tools"} and \texttt{"C Development Tools and Libraries"}
 		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
-		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/download/}{download page}
+		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/}{download page}
 	\end{itemize}
 \end{frame}
 
@@ -866,7 +866,7 @@
 \begin{frame}[fragile]{Install Geneland package}
 	\label{Geneland}
 	\begin{itemize}
-		\item Since version 4, not in CRAN anymore, check its \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual}, \href{https://github.com/gilles-guillot/Geneland}{GitHub} and homepage \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
+		\item Since version 4, not in CRAN anymore, check its \href{https://github.com/gilles-guillot/Geneland/blob/master/vignettes/Geneland.pdf}{manual} and \href{https://github.com/gilles-guillot/Geneland}{homepage}
 		\item On Windows install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} first to be able to compile source package on Windows
 	\end{itemize}
 	\begin{spluscode}
@@ -915,7 +915,7 @@
     # Install 'kdetrees' from https://github.com/V-Z/kdetrees Git repository
     devtools::install_github('V-Z/kdetrees')
     # When needed, the package can be loaded as
-    # library(kdetrees)
+    library(kdetrees) # Not needed now
 	\end{spluscode}
 \end{frame}
 
@@ -973,7 +973,7 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item Gdal \url{https://trac.osgeo.org/gdal/wiki/DownloadingGdalBinaries}
+		\item Gdal \url{https://gdal.org/}
 		\begin{itemize}
 			\item Recommended for conversion of coordinates for Geneland (from slide~\ref{GenelandUse}), loading of SHP files, etc.
 			\item Optional for Windows users, Linux users should use \texttt{gdal} and respective development (\texttt{-dev(el)}) packages
@@ -1002,7 +1002,7 @@
 			\item Aligner of sequences (from slide~\ref{alignment})
 			\item Use version 3.8 from \url{https://drive5.com/muscle/downloads_v3.htm}, not 5.X
 		\end{itemize}
-		\item proj \url{https://proj.org/download.html}
+		\item proj \url{https://proj.org/}
 		\begin{itemize}
 			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
 			\item Optional for Windows users, Linux users should use \texttt{proj} and respective development (\texttt{-dev(el)}) packages
@@ -1272,7 +1272,7 @@
 			\begin{itemize}
 				\item Phylogenomics, target enrichment (HybSeq) sequencing of multiple genes --- construction of individual gene trees, their evaluation (identification of trees with significantly different topology --- genes with different evolutionary pathway) and construction of species trees and networks
 			\end{itemize}
-			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from \href{https://www.ncbi.nlm.nih.gov/popset/22854787}{GenBank}
+			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from GenBank
 			\begin{itemize}
 				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
 			\end{itemize}
@@ -1663,7 +1663,7 @@
 
 \begin{frame}[fragile]{Import sequences from GenBank}
 	\begin{itemize}
-		\item Data from \url{https://www.ncbi.nlm.nih.gov/popset/22854787} (\textit{Gunnera} spp., phylogenetic study of \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al. 2002})
+		\item Data from \href{https://www.ncbi.nlm.nih.gov/nuccore?term=popset+representative+uid+22854787[word]}{GenBank}, \textit{Gunnera} spp., phylogenetic study of \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al. 2002}
 	\end{itemize}
 	\begin{spluscode}
     # Importing sequences according to sequence ID
@@ -2966,12 +2966,12 @@
 		\textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
 		\href{https://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & \alert{No}\\
 			& \texttt{diss.dist} & & \\
-		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{https://academic.oup.com/genetics/article/89/3/583/5992737?login=true}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
+		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{https://academic.oup.com/genetics/article-abstract/89/3/583/5992737}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
 			& & Genetic Drift & \\
 		\href{https://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
 		\href{https://academic.oup.com/genetics/article/106/3/575/5996320}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
 		Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- & Yes\\
-		\href{https://onlinelibrary.wiley.com/doi/10.1111/j.1365-294X.2004.02209.x/full}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
+		\href{https://onlinelibrary.wiley.com/doi/full/10.1111/j.1365-294X.2004.02209.x}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
 	\end{tabular}
 	\vfill
 	\begin{spluscode}
@@ -4363,7 +4363,7 @@
 		\item Spatially explicit Bayesian clustering
 		\item Produces maps of distribution of inferred genetic clusters
 		\item Relative complicated tool with various modeling options
-		\item For more information see \url{https://i-pri.org/special/Biostatistics/Software/Geneland/}
+		\item For more information see \url{https://github.com/gilles-guillot/Geneland}
 	\end{itemize}
 	\vfill
 	\begin{spluscode}
@@ -4610,7 +4610,7 @@
 		\item To obtain structure-like plots, file \texttt{proba.pop.membership.indiv.txt} in Geneland output directory can be used as input file for \href{https://web.stanford.edu/group/rosenberglab/distruct.html}{distruct}
 		\item To use SNPs, ATCG bases must be recoded as \texttt{1, 2, 3, 4}, fixed alleles must be removed
 		\item Geneland can handle only haploids and diploids (no ploidy mixing)
-		\item When unsure, consult \href{https://i-pri.org/special/Biostatistics/Software/Geneland/Geneland-Doc.pdf}{manual}
+		\item When unsure, consult \href{https://github.com/gilles-guillot/Geneland/blob/master/vignettes/Geneland.pdf}{manual}
 	\end{itemize}
 \end{frame}
 
@@ -6517,14 +6517,14 @@
 
 \begin{frame}{CESNET and MetaCentrum}
 	\begin{itemize}
-		\item \href{https://www.cesnet.cz/?lang=en}{CESNET} (\href{https://www.cesnet.cz/}{česky}) is organization of Czech universities, Academy of Science and other organizations taking care about Czech backbone Internet, one of world leading institutions of this type
-		\item CESNET provides various \href{https://www.cesnet.cz/services/?lang=en}{services} (\href{https://www.cesnet.cz/sluzby/}{česky})
+		\item \href{https://www.cesnet.cz/en}{CESNET} (\href{https://www.cesnet.cz/}{česky}) is organization of Czech universities, Academy of Science and other organizations taking care about Czech backbone Internet, one of world leading institutions of this type
+		\item CESNET provides various \href{https://www.cesnet.cz/en/services}{services} (\href{https://www.cesnet.cz/sluzby/}{česky})
 		\begin{itemize}
-			\item Massive computations --- \href{https://www.cesnet.cz/services/massive-computations-metacentrum/?lang=en}{MetaCentrum} (\href{https://www.cesnet.cz/sluzby/metacentrum/}{česky})
-			\item Large \href{https://www.cesnet.cz/services/data-storage/?lang=en}{data storage} (\href{https://www.cesnet.cz/sluzby/datova-uloziste/}{česky})
-			\item \href{https://www.cesnet.cz/services/filesender/?lang=en}{FileSender} (\href{https://www.cesnet.cz/sluzby/filesender/}{česky}) to be able to send up to 1.9~TB file
+			\item Massive computations --- \href{https://www.cesnet.cz/en/services/computing-2/metacentrum-10}{MetaCentrum} (\href{https://www.cesnet.cz/sluzby/vypocty-2/narocne-vypocty-metacentrum-10}{česky})
+			\item Large \href{https://www.cesnet.cz/en/services/data-storage-3}{data storage} (\href{https://www.cesnet.cz/sluzby/datova-uloziste-3/datova-uloziste-13}{česky})
+			\item \href{https://www.cesnet.cz/en/services/data-storage-3/filesender-15}{FileSender} (\href{https://www.cesnet.cz/sluzby/datova-uloziste-3/filesender-15}{česky}) to be able to send up to 1.9~TB file
 			\item \href{https://www.metacentrum.cz/en/Sluzby/Cloud/}{Cloud} (\href{https://www.metacentrum.cz/cs/Sluzby/Cloud/}{česky}) --- computing (HPC) cloud similar to e.g. Amazon Elastic Compute Cloud (EC2), Google Compute Engine or Microsoft Azure
-			\item \href{https://www.cesnet.cz/services/owncloud/?lang=en}{ownCloud} (\href{https://www.cesnet.cz/sluzby/owncloud/}{česky}) to backup and/or sync data across devices (default capacity is 100~GB, user may ask for more) --- similar to e.g. Dropbox, Google Drive or Microsoft OneDrive
+			\item \href{https://www.cesnet.cz/en/services/data-storage-3/owncloud-16}{ownCloud} (\href{https://www.cesnet.cz/sluzby/datova-uloziste-3/owncloud-16}{česky}) to backup and/or sync data across devices (default capacity is 100~GB, user may ask for more) --- similar to e.g. Dropbox, Google Drive or Microsoft OneDrive
 		\end{itemize}
 		\item Information about MetaCentrum \url{https://www.metacentrum.cz/en/} (\href{https://www.metacentrum.cz/cs/}{česky}) and documentation \url{https://docs.metacentrum.cz/} (main information for users containing all needed documentation)
 		\item Check my special course \url{https://soubory.trapa.cz/linuxcourse/}
@@ -6549,7 +6549,7 @@
 \begin{frame}{OnDemand}{Applications in web browser}
 	\begin{itemize}
 		\item It allows to run selected interactive applications in web browser
-		\item See \url{https://docs.metacentrum.cz/software/ondemand/} and \url{https://ondemand.grid.cesnet.cz/}
+		\item See \url{https://docs.metacentrum.cz/ondemand/} and \url{https://ondemand.grid.cesnet.cz/}
 		\item Applications start in \texttt{/storage/brno3-cerit/home/\$USER/} --- ensure to have everything needed there
 	\end{itemize}
 	\begin{center}
@@ -6566,7 +6566,7 @@
 			\begin{itemize}
 				\item Data are typically in \texttt{/storage/brno2/home/USER/}
 			\end{itemize}
-			\item Available also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cloud.e-infra.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/docs/jupyterhub.html}{documentation})
+			\item Available also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cloud.e-infra.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/en/web-apps/jupyterhub}{documentation})
 		\end{itemize}
 		\begin{center}
 			\includegraphics[height=6.5cm]{jupyter.png}
@@ -6876,7 +6876,7 @@
 		\item plyr documentation \url{https://plyr.had.co.nz/} --- manipulation with data (split-apply-combine)
 		\item Leaflet for R \url{https://rstudio.github.io/leaflet/}
 		\item Learning R blog \url{https://learnr.wordpress.com/}
-		\item Quick-R learning resource \url{https://www.statmethods.net/}
+		\item R datacamp \url{https://www.datacamp.com/doc/r/category/r-documentation}
 		\item Visualizing and annotating phylogenetic trees with ggtree \url{https://4va.github.io/biodatasci/r-ggtree.html}
 		\item \href{https://rseek.org/}{Uncle Google} is your friend (\textit{\enquote{how to XXX in R}})\ldots
 		\item R packages commonly contain vignettes (tutorials) --- list them by \texttt{vignette()} and load selected by \texttt{vignette("VignetteName")}
@@ -6900,7 +6900,7 @@
 		\item \href{https://CRAN.R-project.org/package=devtools}{devtools}: package development tools, access to GitHub
 		\item \href{https://CRAN.R-project.org/package=gee}{gee}: generalized estimation equation solver
 		\item \href{https://CRAN.R-project.org/package=geiger}{geiger}: fitting macroevolutionary models to phylogenetic trees
-		\item \href{https://i-pri.org/special/Biostatistics/Software/Geneland/}{Geneland}: stochastic simulation and MCMC inference of structure from genetic data
+		\item \href{https://github.com/gilles-guillot/Geneland}{Geneland}: stochastic simulation and MCMC inference of structure from genetic data
 		\item \href{https://CRAN.R-project.org/package=ggplot2}{ggplot2}: data visualizations using the Grammar of Graphics
 		\item \href{https://CRAN.R-project.org/package=gplots}{gplots}: plotting data
 		\item \href{https://CRAN.R-project.org/package=hierfstat}{hierfstat}: estimation and tests of hierarchical F-statistics
@@ -7013,7 +7013,7 @@
 		\item \href{https://CRAN.R-project.org/package=permute}{permute}: restricted permutation designs
 		\item \href{https://github.com/lliu1871/phybase}{Phybase}: read, write, manipulate, simulate, estimate, and summarize phylogenetic trees (gene trees and species trees)
 		\item \href{https://CRAN.R-project.org/package=phyclust}{phyclust}: phylogenetic clustering
-		\item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling
+% 		\item \href{https://CRAN.R-project.org/package=phyloclim}{phyloclim}: integrating phylogenetics and climatic niche modeling % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=PHYLOGR}{PHYLOGR}: manipulation and analysis of phylogenetically simulated data sets and phylogenetically based analysis using GLS
 % 		\item \href{https://CRAN.R-project.org/package=phyloland}{phyloland}: models a~space colonization process mapped onto a~phylogeny % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=phylolm}{phylolm}: phylogenetic linear models and phylogenetic generalized linear models
@@ -7050,7 +7050,7 @@
 		\item \href{https://github.com/cran/strataG}{strataG}: analyzing stratified population genetic data by vast range of methods, very powerful
 		\item \href{https://CRAN.R-project.org/package=stringi}{stringi} and \href{https://CRAN.R-project.org/package=stringr}{stringr}: character string processing, internally used by many packages
 		\item \href{https://CRAN.R-project.org/package=SYNCSA}{SYNCSA}: analysis of metacommunities based on functional traits and phylogeny of the community components
-		\item \href{https://CRAN.R-project.org/package=taxize}{taxize}: taxonomic information from around the web
+% 		\item \href{https://CRAN.R-project.org/package=taxize}{taxize}: taxonomic information from around the web % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=TESS}{TESS}: simulation of reconstructed phylogenetic trees under tree-wide time-heterogeneous birth-death processes and estimation of diversification parameters under the same model
 		\item \href{https://CRAN.R-project.org/package=tidysq}{tidysq}: tidy approach to analysis of biological sequences
 		\item \href{https://CRAN.R-project.org/package=tmap}{tmap}: various thematic maps
