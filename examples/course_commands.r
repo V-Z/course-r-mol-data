@@ -90,12 +90,13 @@ aov(formula=iris[["Sepal.Length"]]~iris[["Species"]])
 summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]))
 
 ## Packages and repositories
-# Set repositories
+# Set repositories for the current R session
 # We will need extra repositories
 getOption("repos") # Shows actual repositories
 options(repos=c("https://mirrors.nic.cz/R/", "https://r-forge.r-project.org/", "https://rforge.net/"))
 options() # Generic function to modify various settings
 ?options # Gives details
+
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
 install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
@@ -306,7 +307,7 @@ nothofagus <- query(listname="nothofagus", query="SP=Nothofagus AND K=rbcL", ver
 nothofagus$req
 # Get the sequences as a list
 nothofagus.sequences <- getSequence(nothofagus$req)
-# See sequences
+# See sequences - just a plain list - must be converted into DNAbin
 nothofagus.sequences
 # Get annotations
 nothofagus.annot <- getAnnot(nothofagus$req)

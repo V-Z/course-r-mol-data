@@ -367,7 +367,7 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 20,300 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (almost 22,000 packages + many orphaned and archived --- abandoned by developers, might be working)
 		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,200 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
@@ -492,7 +492,7 @@
 		\item In Windows plain R (\textbf{File | working directory}), in RStudio (\textbf{Session | Set working directory}) or in RKWard (\textbf{Workspace | Set Working Directory}) set it in menu or by the above command
 		\item R saves history of commands into file \texttt{.Rhistory} file within working directory (by default hidden in Linux/macOS)
 		\item When closing R by \texttt{q()} you can save all R data in \texttt{.RData} (and command history in \texttt{.Rhistory}) file(s) and it/they can be loaded next time (files can be renamed)
-		\item RStudio and RKWard help with this very much
+		\item \alert{\textbf{Task:}} Create new empty directory for this course and set R working directory there!
 	\end{itemize}
 \end{frame}
 
@@ -812,7 +812,7 @@
 	\label{repos}
 	\begin{spluscode}
     getOption("repos") # Shows actual repositories
-    # Set new repositories
+    # Set new repositories for the current R session
     options(repos=c("https://mirrors.nic.cz/R/",
       "https://r-forge.r-project.org/", "https://rforge.net/"))
     options() # Generic function to modify various settings
@@ -822,7 +822,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 4.2.1 to 4.3.0), user \textbf{must} reinstall all packages
+		\item After upgrade of R (e.g. from 4.3 to 4.4), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -830,7 +830,7 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
-		\item After upgrade of R (e.g. from 4.1 to 4.2), all packages must be reinstalled
+		\item After upgrade of R (e.g. from 4.3 to 4.4), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
@@ -1479,7 +1479,7 @@
 	\end{spluscode}
 \end{frame}
 
-\subsection{AFLP}
+\subsection{AFLP/PA}
 
 \begin{frame}{Amplified Fragment Length Polymorphism}
 	\begin{enumerate}
@@ -1692,7 +1692,7 @@
     nothofagus$req # See the sequences information
     # Get the sequences as a list
     nothofagus.sequences <- getSequence(nothofagus$req)
-    nothofagus.sequences # See sequences
+    nothofagus.sequences # See sequences - just a plain list
     nothofagus.annot <- getAnnot(nothofagus[["req"]]) # Get annotations
     nothofagus.annot
     closebank() # Close the bank when work is over
@@ -3527,7 +3527,7 @@
 		\end{itemize}
 		\item These methods are exploratory
 		\begin{itemize}
-			\item For creating hypothesis, not testing them
+			\item For creating hypothesis, \textbf{not testing} them
 			\item There are no tests involved, no bootstraps, nothing like that
 		\end{itemize}
 		\item There are variants of PCA for spatial data, for analysis of traits, etc.
@@ -3925,7 +3925,7 @@
 		\begin{enumerate}
 			\item Try DAPC with \texttt{microbov} dataset (\texttt{data(microbov)}, see \texttt{?microbov}), the U.S. flu dataset (the \texttt{usflu.genind} object), or some other data according to your choice.
 			\begin{enumerate}
-				\item Try K-means clustering as well as DAPC itself.
+				\item Try K-means clustering as well as DAPC itself (think which highest \texttt{max.n.clust} to use --- check data size and number of populations).
 				\item Try various Ks (if appropriate).
 				\item Try various displays.
 			\end{enumerate}
@@ -4054,7 +4054,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Reading and limits on Moran's~\textit{I}}
+\begin{frame}{Reading and limits of Moran's~\textit{I}}
 	\begin{itemize}
 		\item 1$^{st}$ and 2$^{nd}$ PC axes are orthogonal to each other, so they show different patterns
 		\item Moran's~\textit{I} shows single index over all data (whole space), but different processes might be ongoing on large or small scale --- commonly negative autocorrelation on large scale (distant individuals are significantly dissimilar) and positive autocorrelation on small scale (individuals, which are close to each other are significantly similar)
@@ -4410,7 +4410,7 @@
 \begin{frame}{Before running MCMC}
 	\begin{multicols}{2}
 		\begin{itemize}
-			\item Monte Carlo Markov Chains (MCMC) require usually millions of generations (iterations, \texttt{nit)} to find optimal solution
+			\item Monte Carlo Markov Chains (MCMC) require usually \textbf{millions} of generations (iterations, \texttt{nit)} to find optimal solution
 			\item Beginning ($\sim$10--25\%) of the steps (\texttt{burnin}) use to be very unstable and useless for following analysis and it is discarded
 			\item Geneland allows to set density of sampling among generations (\texttt{thinning}) --- it is not necessary to sample (save) every generation
 			\item Within millions of generations we can sample every 1000--10000$^{th}$ generation
