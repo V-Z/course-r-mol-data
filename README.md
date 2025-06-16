@@ -10,7 +10,7 @@ Bude-li se kurzu účastnit alespoň jeden člověk nemluvící česky, kurz bud
 
 Kurz poběží turnusově 5 dnů, přičemž 4 dny poběží výuka a poslední den bude na zápočty a individuální konzultace. Tento poslední den účastníci mohou (což je vřele doporučeno), ale nemusí využít.
 
-* Informace o kurzu: <https://trapa.cz/cs/kurz-molekularni-data-r-2024>
+* Informace o kurzu: <https://trapa.cz/cs/kurz-molekularni-data-r-2025>
 * Kurz ve studijním informačním systému: <https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16>
 * Materiály z kurzu: <https://soubory.trapa.cz/rcourse/>
 * Kontakt na autora: <https://trapa.cz/cs/contakt>
@@ -33,7 +33,7 @@ The course will be taught 5 days, while 4 days are for teaching and last day is 
 
 If there is at least one participant not speaking Czech, the course will be in English.
 
-* Information about the course: <https://trapa.cz/en/course-molecular-data-r-2024>
+* Information about the course: <https://trapa.cz/en/course-molecular-data-r-2025>
 * Course in Study Information System: <https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16>
 * Course materials: <https://soubory.trapa.cz/rcourse/>
 * Contact author: <https://trapa.cz/en/contact>
