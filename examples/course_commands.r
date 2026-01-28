@@ -683,7 +683,7 @@ substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
 pop(arabidopsis.genlight) <- substr(x=indNames(arabidopsis.genlight), start=1, stop=3)
 pop(arabidopsis.genlight) # Check it
 popNames(arabidopsis.genlight)
-arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, percent=95, nclusters=1)
+arabidopsis.fst <- StAMPP::stamppFst(geno=arabidopsis.genlight, nboots=100, percent=95, nclusters=8) # On Windows maybe "nclusters=1"
 # For large data use higher nclusters to parallelize calculations
 ?StAMPP::stamppFst # See details
 # Matrix of Fst among populations
@@ -1634,7 +1634,7 @@ plot.phylo(hauss.nj.bind)
 oxalis.trees <- read.tree(file="https://soubory.trapa.cz/rcourse/oxalis.nwk")
 oxalis.trees
 lapply(X=oxalis.trees, FUN=print.phylo)
-plot.multiPhylo(x=oxalis.trees) # See all trees
+plot(x=oxalis.trees) # See all trees
 summary(oxalis.trees)
 length(oxalis.trees)
 names(oxalis.trees)
@@ -1643,9 +1643,9 @@ write.tree(phy=oxalis.trees, file="trees.nwk")
 # Export trees in NEXUS format
 write.nexus(oxalis.trees, file="trees.nexus")
 # Root all trees
-oxalis.trees.rooted <- root.multiPhylo(phy=oxalis.trees, outgroup="O._fibrosa_S159", resolve.root=TRUE)
+oxalis.trees.rooted <- root(phy=oxalis.trees, outgroup="O._fibrosa_S159", resolve.root=TRUE)
 lapply(X=oxalis.trees.rooted, FUN=print.phylo)
-plot.multiPhylo(x=oxalis.trees) # See all trees
+plot(x=oxalis.trees) # See all trees
 
 # Drop a tip
 plot.phylo(hauss.nj)
@@ -1657,12 +1657,12 @@ hauss.nj.drop <- drop.tip(phy=hauss.nj, tip=c("H18", "H29", "H31"))
 plot.phylo(hauss.nj.drop)
 
 # Drop a tip from multiPhylo
-plot.multiPhylo(x=oxalis.trees)
+plot(x=oxalis.trees)
 # See tip labels
 oxalis.trees[[1]][["tip.label"]]
 oxalis.trees.drop <- lapply(X=oxalis.trees, FUN=drop.tip, tip="O._callosa_S15")
 class(oxalis.trees.drop) <- "multiPhylo"
-plot.multiPhylo(x=oxalis.trees.drop)
+plot(x=oxalis.trees.drop)
 lapply(X=oxalis.trees.drop, FUN=print.phylo)
 
 # Check if the tree is ultrametric - is variance of distances of all tips to node 0? It is required for some analysis
@@ -1763,7 +1763,7 @@ oxalis.kde
 plot(oxalis.kde)
 hist(oxalis.kde)
 # See removed trees
-plot.multiPhylo(oxalis.kde[["outliers"]])
+plot(oxalis.kde[["outliers"]])
 # Save removed trees
 write.tree(phy=oxalis.kde[["outliers"]], file="oxalis_trees_outliers.nwk")
 # Save kdetrees report
@@ -1823,9 +1823,9 @@ hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=compute.brlen)
 hauss.nj.trees <- lapply(X=hauss.nj.trees, FUN=chronos)
 class(hauss.nj.trees) <- "multiPhylo"
 # The trees should be (otherwise plotting works, but may be more ugly)...
-is.rooted.multiPhylo(hauss.nj.trees) # rooted,
-is.ultrametric.multiPhylo(hauss.nj.trees) # ultrametric and
-is.binary.multiPhylo(hauss.nj.trees) # binary bifurcating.
+is.rooted(hauss.nj.trees) # rooted,
+is.ultrametric(hauss.nj.trees) # ultrametric and
+is.binary(hauss.nj.trees) # binary bifurcating.
 # Plotting has various options, play with it
 phangorn::densiTree(x=hauss.nj.trees, direction="downwards", scaleX=TRUE, col=rainbow(3), width=5, cex=1.5)
 densiTree(x=hauss.nj.trees, direction="upwards", scaleX=TRUE, width=5)
