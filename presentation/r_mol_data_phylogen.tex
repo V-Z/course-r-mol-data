@@ -303,7 +303,7 @@
 		\item Usually there are some problems every time new version of OS is released --- it takes time to modify and recompile packages for new version of OS
 		\item You have to check for new version of R manually
 		\item RStudio is available from its \href{https://posit.co/products/open-source/rstudio/}{download page}
-		\item RKWard is also available for \href{https://rkward.kde.org/RKWard_on_Windows.html}{Windows} and \href{https://rkward.kde.org/RKWard_on_Mac.html}{macOS}, but it requires some work to install it
+		\item RKWard is also available for \href{https://rkward.kde.org/rkward-on-windows/}{Windows} and \href{https://rkward.kde.org/rkward-on-mac/}{macOS}, but it requires some work to install it
 	\end{itemize}
 \end{frame}
 
@@ -367,8 +367,8 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (almost 22,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,200 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 23,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,300 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
@@ -813,7 +813,7 @@
 	\begin{spluscode}
     getOption("repos") # Shows actual repositories
     # Set new repositories for the current R session
-    options(repos=c("https://mirrors.nic.cz/R/",
+    options(repos=c("https://cloud.r-project.org",
       "https://r-forge.r-project.org/", "https://rforge.net/"))
     options() # Generic function to modify various settings
     ?options # Gives details
@@ -858,7 +858,7 @@
       "raster", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
       "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs",
       "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
-      repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+      repos="https://cloud.r-project.org", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
 	\end{spluscode}
 \end{frame}
@@ -877,7 +877,7 @@
     # sf and related tools on GIS layer
     install.packages(pkgs=c("PBSmapping", "mapproj", "RgoogleMaps", "Rmpi",
       "sf", "sp", "shapefiles", "snow", "tripack"),
-      repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+      repos="https://cloud.r-project.org", dependencies="Imports")
     # Install Geneland from GitHub
     # Devtools package is required to install from GitHub
     if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
@@ -891,6 +891,9 @@
 	\begin{itemize}
 		\item Check \url{http://www.christophheibl.de/Rpackages.html}
 		\item Package phyloch is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
+		\begin{itemize} % FIXME Check availability of IPS in CRAN
+			\item IPS was recently archived from CRAN, hopefully it will be restored soon\ldots
+		\end{itemize}
 	\end{itemize}
 	\begin{spluscode}
     # If not done already, install required packages first
@@ -924,7 +927,7 @@
 	\begin{itemize}
 		\item Tools for analysis of genomic data, see \url{https://bioconductor.org/}
 		\item To install it \textbf{use Bioconductor's special helper package}
-		\item Explore available packages: \href{https://bioconductor.org/packages/}{https://bioconductor.org/packages/release/BiocViews.html}
+		\item Explore available packages: \url{https://bioconductor.org/packages/release/BiocViews.html}
 	\end{itemize}
 	\begin{spluscode}
     # Install CRAN package BiocManager used to manage Bioconductor packages
@@ -1141,7 +1144,7 @@
 
 \begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Binary_Alignment_Map}{\textbf{BAM}} (Binary Alignment Map)
+		\item \href{https://en.wikipedia.org/wiki/BAM_(file_format)}{\textbf{BAM}} (Binary Alignment Map)
 		\begin{itemize}
 			\item Sequences (usually short reads from Illumina) mapped to reference
 			\item Each file contains data for single sample
@@ -1186,7 +1189,7 @@
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Nexus_file}{\textbf{NEXUS}}
 		\begin{itemize}
-			\item Popular plain text format used by software like \href{https://mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{https://en.wikipedia.org/wiki/SplitsTree}{SplitsTree},~\ldots
+			\item Popular plain text format used by software like \href{https://www.mesquiteproject.org/}{Mesquite}, \href{https://nbisweden.github.io/MrBayes/}{MrBayes}, \href{https://paup.phylosolutions.com/}{PAUP*}, \href{https://uni-tuebingen.de/en/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/algorithms-in-bioinformatics/software/splitstree/}{SplitsTree},~\ldots
 			\item Structure can be complex, is divided into blocks containing e.g. sequences, trees (in NEWICK format), distance matrix, fragmentation data, networks (e.g. for SplitsTree), MrBayes commands, traits,~\ldots
 			\item Several variants, sometimes problems with interoperability
 			\item Extension usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
@@ -1272,7 +1275,7 @@
 			\begin{itemize}
 				\item Phylogenomics, target enrichment (HybSeq) sequencing of multiple genes --- construction of individual gene trees, their evaluation (identification of trees with significantly different topology --- genes with different evolutionary pathway) and construction of species trees and networks
 			\end{itemize}
-			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al 2014} downloaded from GenBank
+			\item Internal transcribed spacer sequences of \textit{Gunnera} spp. (Gunneraceae) from \href{https://doi.org/10.1046/j.1365-2699.2003.00895.x}{Wanntorp et al 2014} downloaded from GenBank
 			\begin{itemize}
 				\item Phylogenetic relationships among species with \enquote{Gondwana} distribution (south of South America, South Africa, Australia, New Zealand,~\ldots)
 			\end{itemize}
@@ -1330,7 +1333,7 @@
 	\begin{multicols}{2}
 		\begin{itemize}
 			\item Now we will use mainly packages \href{https://adegenet.r-forge.r-project.org/}{adegenet} and \href{https://grunwaldlab.github.io/poppr/}{poppr}
-			\item Other important genetic packages: \href{http://ape-package.ird.fr/}{ape}, \href{https://sdray.github.io/software/}{ade4} and \href{http://ape-package.ird.fr/pegas.html}{pegas}
+			\item Other important genetic packages: \href{https://emmanuelparadis.r-universe.dev/ape}{ape}, \href{https://sdray.github.io/software/}{ade4} and \href{https://emmanuelparadis.github.io/pegas.html}{pegas}
 			\item Dominant/co-dominant marker data of any ploidy level including SSRs, SNP, and AFLP are analyzed in same way
 			\item Most of methods are available for polyploids (although not all)
 			\item Some methods are unavailable for dominant (presence/absence) data
@@ -1662,7 +1665,7 @@
 
 \begin{frame}[fragile]{Import sequences from GenBank}
 	\begin{itemize}
-		\item Data from \href{https://www.ncbi.nlm.nih.gov/nuccore?term=popset+representative+uid+22854787[word]}{GenBank}, \textit{Gunnera} spp., phylogenetic study of \href{https://bioone.org/journals/systematic-botany/volume-27/issue-3/0363-6445-27.3.512/Phylogenetic-Relationships-of-Gunnera-based-on-Nuclear-Ribosomal-DNA-ITS/10.1043/0363-6445-27.3.512.full}{Wanntorp et al. 2002}
+		\item Data from \href{https://www.ncbi.nlm.nih.gov/nuccore?term=popset+representative+uid+22854787[word]}{GenBank}, \textit{Gunnera} spp., phylogenetic study of \href{https://doi.org/10.1046/j.1365-2699.2003.00895.x}{Wanntorp et al. 2002}
 	\end{itemize}
 	\begin{spluscode}
     # Importing sequences according to sequence ID
@@ -2384,7 +2387,7 @@
 			\item Good for data display and creation of hypotheses --- not to verify them (there is no statistical test) --- researchers use to use them as \textit{proof}, which is incorrect
 			\item Data are commonly scaled --- all variables are in same scale
 		\end{itemize}
-		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum Parsimony (MP)}} --- from slide~\ref{MP}
+		\item \textbf{\href{https://en.wikipedia.org/wiki/Maximum_parsimony}{Maximum Parsimony (MP)}} --- from slide~\ref{MP}
 		\begin{itemize}
 			\item Generally, the methods are looking for the most simple solution under given model, e.g. to construct phylogenetic tree requiring the lowest number of evolutionary changes (DNA mutations) under given alignment
 			\item It is easy to score how good the solution is (comparing to another solution), but computationally demanding to find the best one
@@ -2554,13 +2557,13 @@
 		\begin{itemize}
 			\item One of the most common diversity indices (used elsewhere, not only in biology)
 		\end{itemize}
-		\item \texttt{G} --- \href{https://academic.oup.com/genetics/article/118/4/705/5997522}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
+		\item \texttt{G} --- \href{https://doi.org/10.1093/genetics/118.4.705}{Stoddard and Taylor's Index} --- roughly, similar approach as the previous one, highly enhanced
 		\item \texttt{lambda} --- \href{https://en.wikipedia.org/wiki/Diversity_index\#Simpson_index}{Simpson's index} $\lambda$~=~1~minus the sum of squared genotype frequencies --- estimation of the probability that two randomly selected genotypes are different and scales from 0~(no genotypes are different) to 1~(all genotypes are different)
 		\begin{itemize}
 			\item Commonly used in ecology to compare sites, communities, etc.
 		\end{itemize}
 		\item \texttt{E.5} --- Evenness --- measure of the distribution of genotype abundances, wherein a~population with equally abundant genotypes yields a~value equal to 1~and a~population dominated by a~single genotype is closer to~0
-		\item \texttt{Hexp} --- \href{https://academic.oup.com/genetics/article/89/3/583/5992737}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
+		\item \texttt{Hexp} --- \href{https://doi.org/10.1093/genetics/89.3.583}{Nei's gene diversity} (expected heterozygosity) --- unbiased gene diversity (from 0~=~no diversity to 1~=~highest diversity)
 		\item \texttt{Ia} --- Index of Association (\texttt{?ia}) --- widely used to detect clonal reproduction within populations
 		\begin{itemize}
 			\item Populations whose members are undergoing sexual reproduction will produce gametes via meiosis, and thus have a~chance to shuffle alleles in the next generation
@@ -2965,12 +2968,12 @@
 		\textbf{Method} & \textbf{Function} & \textbf{Assumption} & \textbf{Euclidean}\\
 		\href{https://link.springer.com/article/10.1007/BF00831894}{Prevosti 1975} & \texttt{prevosti.dist}, & --- & \alert{No}\\
 			& \texttt{diss.dist} & & \\
-		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{https://academic.oup.com/genetics/article-abstract/89/3/583/5992737}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
+		\href{https://www.jstor.org/stable/2459777}{Nei 1972}, \href{https://doi.org/10.1093/genetics/89.3.583}{1978} & \texttt{nei.dist} & Infinite Alleles, & \alert{No}\\
 			& & Genetic Drift & \\
-		\href{https://www.jstor.org/stable/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
-		\href{https://academic.oup.com/genetics/article/106/3/575/5996320}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
+		\href{https://doi.org/10.2307/2528824}{Edwards 1971} & \texttt{edwards.dist} & Genetic Drift & Yes\\
+		\href{https://doi.org/10.1093/genetics/106.3.575}{Reynolds 1983} & \texttt{reynolds.dist} & Genetic Drift & Yes\\
 		Rogers 1972\footnote{Rogers (1972): Measures of genetic similarity and genetic distances. Pp. 145-153 of Studies in Genetics. University of Texas Publishers} & \texttt{rogers.dist} & --- & Yes\\
-		\href{https://onlinelibrary.wiley.com/doi/full/10.1111/j.1365-294X.2004.02209.x}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
+		\href{https://doi.org/10.1111/j.1365-294X.2004.02209.x}{Bruvo 2004} & \texttt{bruvo.dist} & Step-wise Mutation & \alert{No}
 	\end{tabular}
 	\vfill
 	\begin{spluscode}
@@ -4622,7 +4625,7 @@
 		\item It is possible to use various on-line maps
 		\item \href{https://en.wikipedia.org/wiki/Shapefile}{Shapefiles} (SHP) used in specialized GIS software can be used as base layer to plot points etc. to that map
 		\item Interactive maps can be created with libraries like \href{https://CRAN.R-project.org/package=leaflet}{leaflet}
-		\item It is possible to plot to maps not only point and/or text labels, but also pie charts, bar charts, or e.g. \href{http://blog.phytools.org/2019/03/projecting-phylogenetic-tree-onto-map.html}{plot phylogeny to the map}
+		\item It is possible to plot to maps not only point and/or text labels, but also pie charts, bar charts, or e.g. \href{https://blog.phytools.org/2019/03/projecting-phylogenetic-tree-onto-map.html}{plot phylogeny to the map}
 		\item Much more options are available in specialized mapping packages, especially with connections with GIS (e.g. \href{https://qgis.org/}{QGIS} or \href{https://grass.osgeo.org/}{GRASS GIS})
 	\end{itemize}
 \end{frame}
@@ -5087,7 +5090,7 @@
 \begin{frame}{Maximum parsimony --- theory}
 	\label{MP}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Maximum_parsimony_(phylogenetics)}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
+		\item \href{https://en.wikipedia.org/wiki/Maximum_parsimony}{Maximum parsimony} finds optimal topology of the phylogenetic tree by minimizing of the total number of character-state changes
 		\item It minimizes homoplasy (convergent evolution, parallel evolution, evolutionary reversals)
 		\item Very simple criterion, easy to score the tree, but not to find it --- exhaustive search to explore all possible trees is realistic until $\sim$9 taxa, branch-and-bound swapping (guaranteeing finding the best tree) until $\sim$20 taxa, for more taxa heuristic search is needed --- it doesn't always guarantee to find the most probable (parsimonious) tree
 		\item To speed up calculations, initial tree (usually NJ --- slide~\ref{NJ}) is used to start the search
@@ -5594,7 +5597,7 @@
 			\item Import/export some tree(s), preferably your data you are working with. Try various plotting options.
 			\item Try various displays of some tree(s) from phytools dataset (see \texttt{data(package="phytools")}).
 			\item Use some method to analyze Apicomplexa trees (see \texttt{?kdetrees::apicomplexa}) or some your data. Find discordant trees and try to construct species tree from the set of gene trees.
-			\item Browse \url{http://blog.phytools.org/} for a while. Do you find there some interesting/useful display? Try something with your or test data.
+			\item Browse \url{https://blog.phytools.org/} for a while. Do you find there some interesting/useful display? Try something with your or test data.
 		\end{enumerate}
 	\end{exampleblock}
 \end{frame}
@@ -5617,7 +5620,7 @@
 		\item Methods and models are highly debated in the literature
 		\begin{itemize}
 			\item Different experts commonly disagree what is the best method\ldots
-			\item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{https://github.com/soungalo/chromEvol}{chromEvol})
+			\item General methods are not usable everywhere (e.g. evolution of genome size must take into account polyploidization --- \href{https://chromevol.evolseq.net/}{chromEvol})
 			\item Usage is better to be consulted with some relevant expert
 			\item This is very difficult chapter by meaning of how to find the best method to analyze particular data\ldots
 		\end{itemize}
@@ -5792,7 +5795,7 @@
 		\item Very useful for comparison of plenty of characters
 		\item Together with nodes (taxa), PCA scores for PC axes are plotted --- \textbf{not} the characters --- it shows trends of character evolution on the tree, not positions of taxa in PC space
 		\item Other graphs show global vs. local structure, eigenvalues decomposition and positions of characters in virtual space (if they correlate or not)
-		\item From package \href{https://academic.oup.com/bioinformatics/article/26/15/1907/188748}{adephylo} by \href{https://www.sciencedirect.com/science/article/pii/S0022519310001736}{Jombart et al. 2010}
+		\item From package \href{https://doi.org/10.1093/bioinformatics/btq292}{adephylo} by \href{https://doi.org/10.1016/j.jtbi.2010.03.038}{Jombart et al. 2010}
 		\item It doesn't contain any test, it is more method of data exploration or dealing with big data sets, it is not for verifying hypothesis
 	\end{itemize}
 \end{frame}
@@ -6400,7 +6403,7 @@
 \begin{frame}{Evolutionary tasks}
 	\begin{exampleblock}{Tasks}
 		\begin{enumerate}
-			\item Browse \url{http://blog.phytools.org/} and see if you find some interesting method to display your data. If so, try it with any suitable data.
+			\item Browse \url{https://blog.phytools.org/} and see if you find some interesting method to display your data. If so, try it with any suitable data.
 			\item See relevant training datasets \texttt{data(package=c("adephylo", "caper", "geiger","phytools"))} and select some training data set (or use your own data) to try at least 1--2 of the above methods.
 		\end{enumerate}
 	\end{exampleblock}
@@ -6477,7 +6480,7 @@
 \begin{frame}[fragile]{Install package from GitHub}
 	\begin{itemize}
 		\item \href{https://github.com/}{GitHub} is currently probably the most popular platform to host development of open-source projects --- plenty of R packages are there
-		\item \href{https://git-scm.com/}{Git} is version controlling system --- it traces changes among all versions --- absolutely crucial for any software development
+		\item \href{https://git-scm.com/book/en/v2}{Git} is version controlling system --- it traces changes among all versions --- absolutely crucial for any software development
 		\item Normal stable version of package is installed from repository as usual, but sometimes it can be useful to get latest developmental version (e.g. when it fixes some bug and new release is not available yet)
 	\end{itemize}
 	\begin{spluscode}
@@ -6548,7 +6551,7 @@
 \begin{frame}{OnDemand}{Applications in web browser}
 	\begin{itemize}
 		\item It allows to run selected interactive applications in web browser
-		\item See \url{https://docs.metacentrum.cz/ondemand/} and \url{https://ondemand.grid.cesnet.cz/}
+		\item See \url{https://docs.metacentrum.cz/en/docs/graphical/ondemand} and \url{https://ondemand.grid.cesnet.cz/}
 		\item Applications start in \texttt{/storage/brno3-cerit/home/\$USER/} --- ensure to have everything needed there
 	\end{itemize}
 	\begin{center}
@@ -6561,11 +6564,11 @@
 		\begin{itemize}
 			\item Web service allowing to record code as well as its output for languages like BASH, R, Python,~\ldots
 			\item Convenient for recording and sharing code, interactive work,~\ldots
-			\item Use \href{https://docs.metacentrum.cz/related/jupyter/}{Jupyter Hub} for MetaCentrum users
+			\item Use \href{https://docs.metacentrum.cz/en/docs/software/sw-list/jupyter}{Jupyter Hub} for MetaCentrum users
 			\begin{itemize}
 				\item Data are typically in \texttt{/storage/brno2/home/USER/}
 			\end{itemize}
-			\item Available also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cloud.e-infra.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/en/web-apps/jupyterhub}{documentation})
+			\item Available also as part of OnDemand (previous slide), or bit experimental \href{https://hub.cloud.e-infra.cz/}{CERIT hub}, which allows to select custom storage and also custom docker image (see \href{https://docs.cerit.io/en/docs/web-apps/jupyterhub}{documentation})
 		\end{itemize}
 		\begin{center}
 			\includegraphics[height=6.5cm]{jupyter.png}
@@ -6819,7 +6822,6 @@
 				Emmanuel Paradis
 				\newblock Analysis of Phylogenetics and Evolution with R, second edition
 				\newblock Springer, 2012
-				\newblock \url{http://ape-package.ird.fr/APER.html}
 			\bibitem[Crawley 2012]{Crawley2012}
 				Michael J. Crawley
 				\newblock The R Book, second edition
@@ -6853,12 +6855,12 @@
 		\item Little Book of R for Biomedical Statistics \url{https://a-little-book-of-r-for-biomedical-statistics.readthedocs.org/}
 		\item Little Book of R for Time Series \url{https://a-little-book-of-r-for-time-series.readthedocs.org/}
 		\item Adegenet web \url{https://adegenet.r-forge.r-project.org/} and GitHub page \url{https://github.com/thibautjombart/adegenet/wiki}
-		\item APE home page \url{http://ape-package.ird.fr/}
-		\item Information and manual about pegas \url{http://ape-package.ird.fr/pegas.html}
-		\item Phytools \url{https://phytools.org/}, its blog \url{http://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
+		\item APE home page \url{https://emmanuelparadis.r-universe.dev/ape}
+		\item Information and manual about pegas \url{https://emmanuelparadis.github.io/pegas.html}
+		\item Phytools \url{http://phytools.org/}, its blog \url{https://blog.phytools.org/} and GitHub page \url{https://github.com/liamrevell/phytools}
 		\item Poppr documentation \url{https://grunwaldlab.github.io/poppr/reference/poppr-package.html}
-		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://onlinelibrary.wiley.com/doi/full/10.1111/1755-0998.12558}{Kamvar et al}
-		\item ade4 documentation \url{https://pbil.univ-lyon1.fr/ade4/home.php?lang=eng}
+		\item Population Genetics in R \url{https://popgen.nescent.org/} by \href{https://doi.org/10.1111/1755-0998.12558}{Kamvar et al}
+		\item ade4 documentation \url{https://adeverse.github.io/ade4/}
 		\item Phangorn resources \url{https://CRAN.R-project.org/package=phangorn}
 		\item The R journal \url{https://journal.r-project.org/}
 		\item R Programming \url{https://en.wikibooks.org/wiki/R_Programming}
@@ -6946,7 +6948,7 @@
 	\begin{itemize}
 %		\item \href{https://CRAN.R-project.org/package=adhoc}{adhoc}: ad hoc distance thresholds for DNA barcoding identification % FIXME Removed from CRAN
 		\item \href{https://github.com/eliotmiller/addTaxa}{addTaxa}: adding missing taxa to phylogenies
-		\item \href{https://CRAN.R-project.org/package=admixr}{admixr}: interface for running \href{https://academic.oup.com/genetics/article/192/3/1065/5935193}{ADMIXTOOLS}
+		\item \href{https://CRAN.R-project.org/package=admixr}{admixr}: interface for running \href{https://doi.org/10.1534/genetics.112.145037}{ADMIXTOOLS}
 % 		\item \href{https://CRAN.R-project.org/package=apex}{apex}: analysis of multiple gene data % FIXME Removed from CRAN
 % 		\item \href{https://CRAN.R-project.org/package=apTreeshape}{apTreeshape}: analysis of phylogenetic tree topologies % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=BAMMtools}{BAMMtools}: analyzing and visualizing complex macroevolutionary dynamics on phylogenetic trees
@@ -6991,7 +6993,7 @@
 		\item \href{https://CRAN.R-project.org/package=microseq}{microseq}: microbial sequence data analysis (using \href{https://CRAN.R-project.org/package=tibble}{tibble})
 		\item \href{https://github.com/NESCent/MINOTAUR}{MINOTAUR}: multivariate visualization and outlier analysis
 		\item \href{https://CRAN.R-project.org/package=MonoPhy}{MonoPhy}: visualization and exploration of monophyletic clades on a~tree
-		\item \href{https://CRAN.R-project.org/package=motmot}{motmot}: fitting models of trait evolution on phylogenies for continuous traits
+% 		\item \href{https://CRAN.R-project.org/package=motmot}{motmot}: fitting models of trait evolution on phylogenies for continuous traits % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=MPSEM}{MPSEM}: modeling phylogenetic signals using eigenvector maps
 		\item \href{https://bioconductor.org/packages/release/bioc/html/muscle.html}{muscle}: multiple sequence alignment with MUSCLE
 		\item \href{https://CRAN.R-project.org/package=mvMORPH}{mvMORPH}: multivariate comparative tools for fitting evolutionary models to morphometric data
@@ -7017,7 +7019,7 @@
 % 		\item \href{https://CRAN.R-project.org/package=phyloland}{phyloland}: models a~space colonization process mapped onto a~phylogeny % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=phylolm}{phylolm}: phylogenetic linear models and phylogenetic generalized linear models
 		\item \href{https://CRAN.R-project.org/package=phyloTop}{phyloTop}: calculating and viewing topological properties of phylogenetic trees
-		\item \href{https://CRAN.R-project.org/package=phylotools}{phylotools}: supermatrix for DNA barcodes using different genes
+% 		\item \href{https://CRAN.R-project.org/package=phylotools}{phylotools}: supermatrix for DNA barcodes using different genes % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=plotly}{plotly}: creates interactive web graphics
 		\item \href{https://CRAN.R-project.org/package=plyr}{plyr}: splitting, applying and combining data
 		\item \href{https://CRAN.R-project.org/package=pmc}{pmc}: phylogenetic Monte Carlo
@@ -7038,7 +7040,7 @@
 		\item \href{https://bioconductor.org/packages/release/bioc/html/sangeranalyseR.html}{sangeranalyseR}: analysis of Sanger sequence
 		\item \href{https://CRAN.R-project.org/package=sensiPhy}{sensiPhy}: sensitivity analysis for phylogenetic comparative methods,  statistical and graphical methods that estimate and report different types of uncertainty
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/seqLogo.html}{seqLogo}: sequence logos for DNA sequence alignments
-		\item \href{https://CRAN.R-project.org/package=SigTree}{SigTree}: identify and visualize significantly responsive branches in a~phylogenetic tree
+% 		\item \href{https://CRAN.R-project.org/package=SigTree}{SigTree}: identify and visualize significantly responsive branches in a~phylogenetic tree % FIXME Removed from CRAN
 % 		\item \href{https://CRAN.R-project.org/package=SimRAD}{SimRAD}: simulate restriction enzyme digestion, library construction and fragments size selection to predict the number of loci expected from most of the RAD and GPS approaches % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=SNPassoc}{SNPassoc}: SNPs-based whole genome association studies
 		\item \href{https://www.bioconductor.org/packages/release/bioc/html/SNPRelate.html}{SNPRelate}: parallel computing toolset for relatedness and principal component analysis of SNP data
@@ -7050,7 +7052,7 @@
 		\item \href{https://CRAN.R-project.org/package=stringi}{stringi} and \href{https://CRAN.R-project.org/package=stringr}{stringr}: character string processing, internally used by many packages
 		\item \href{https://CRAN.R-project.org/package=SYNCSA}{SYNCSA}: analysis of metacommunities based on functional traits and phylogeny of the community components
 % 		\item \href{https://CRAN.R-project.org/package=taxize}{taxize}: taxonomic information from around the web % FIXME Removed from CRAN
-		\item \href{https://CRAN.R-project.org/package=TESS}{TESS}: simulation of reconstructed phylogenetic trees under tree-wide time-heterogeneous birth-death processes and estimation of diversification parameters under the same model
+% 		\item \href{https://CRAN.R-project.org/package=TESS}{TESS}: simulation of reconstructed phylogenetic trees under tree-wide time-heterogeneous birth-death processes and estimation of diversification parameters under the same model % FIXME Removed from CRAN
 		\item \href{https://CRAN.R-project.org/package=tidysq}{tidysq}: tidy approach to analysis of biological sequences
 		\item \href{https://CRAN.R-project.org/package=tmap}{tmap}: various thematic maps
 		\item \href{https://CRAN.R-project.org/package=treebase}{treebase}: discovery, access and manipulation of TreeBASE phylogeny
