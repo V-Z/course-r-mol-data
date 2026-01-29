@@ -813,7 +813,7 @@
 	\begin{spluscode}
     getOption("repos") # Shows actual repositories
     # Set new repositories for the current R session
-    options(repos=c("https://cloud.r-project.org",
+    options(repos=c("https://cloud.r-project.org/",
       "https://r-forge.r-project.org/", "https://rforge.net/"))
     options() # Generic function to modify various settings
     ?options # Gives details
@@ -851,14 +851,14 @@
     # fail - install then packages in smaller groups or one by one
     install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
       "ape", "BiocManager", "caper", "corrplot", "devtools", "adespatial",
-      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees",
+      "gee", "geiger", "ggplot2", "gplots", "hierfstat",
       "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme",
       "PBSmapping", "pegas", "permute", "phangorn", "philentropy",
       "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
       "raster", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
       "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs",
       "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
-      repos="https://cloud.r-project.org", dependencies="Imports")
+      repos="https://cloud.r-project.org/", dependencies="Imports")
     update.packages(ask=FALSE) # Regularly update installed packages
 	\end{spluscode}
 \end{frame}
@@ -877,7 +877,7 @@
     # sf and related tools on GIS layer
     install.packages(pkgs=c("PBSmapping", "mapproj", "RgoogleMaps", "Rmpi",
       "sf", "sp", "shapefiles", "snow", "tripack"),
-      repos="https://cloud.r-project.org", dependencies="Imports")
+      repos="https://cloud.r-project.org/", dependencies="Imports")
     # Install Geneland from GitHub
     # Devtools package is required to install from GitHub
     if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
@@ -886,7 +886,7 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Install phyloch package}{Example of installation of package not available in any repository}
+\begin{frame}[fragile]{Install phyloch package (and ips)}{Example of installation of package not available in any repository}
 	\label{phyloch}
 	\begin{itemize}
 		\item Check \url{http://www.christophheibl.de/Rpackages.html}
@@ -903,6 +903,9 @@
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz",
       repos=NULL, type="source")
+    install.packages(pkgs=
+      "https://cran.r-project.org/src/contrib/Archive/ips/ips_0.0.12.tar.gz",
+      type="source")
 	\end{spluscode}
 \end{frame}
 

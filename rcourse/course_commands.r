@@ -93,13 +93,13 @@ summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]))
 # Set repositories for the current R session
 # We will need extra repositories
 getOption("repos") # Shows actual repositories
-options(repos=c("https://mirrors.nic.cz/R/", "https://r-forge.r-project.org/", "https://rforge.net/"))
+options(repos=c("https://cloud.r-project.org/", "https://r-forge.r-project.org/", "https://rforge.net/"))
 options() # Generic function to modify various settings
 ?options # Gives details
 
 # Install packages
 # Installation of multiple packages may sometimes fail - install then packages in smaller groups or one by one
-install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo", "adespatial", "ape", "BiocManager", "caper", "corrplot", "devtools", "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips", "kdetrees", "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme", "PBSmapping", "pegas", "permute", "phangorn", "philentropy", "phylobase", "phytools", "picante", "plotrix", "poppr", "raster", "rentrez", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra", "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs", "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"), repos="https://cloud.r-project.org/", dependencies="Imports")
 ?install.packages # See for more options
 # Updates installed packages (by default from CRAN)
 update.packages(ask=FALSE)
@@ -109,7 +109,7 @@ update.packages(ask=FALSE)
 # Needed is PBSmapping or mapproj for conversion of coordinates
 # GUI uses for parallelization snow and Rmpi
 # RgoogleMaps can be used to plot output on top of Google map, sf and related tools on GIS layer
-install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sf", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://mirrors.nic.cz/R/", dependencies="Imports")
+install.packages(pkgs=c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sf", "sp", "maptools", "shapefiles", "snow", "tripack"), repos="https://cloud.r-project.org/", dependencies="Imports")
 # On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/
 # Install Geneland from GitHub
 # Devtools package is required to install from GitHub
@@ -122,6 +122,7 @@ devtools::install_github("gilles-guillot/Geneland")
 install.packages(pkgs=c("ape", "colorspace", "XML"), dependencies="Imports")
 # It is possible to specify direct path (local or web URL) to package source
 install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz", repos=NULL, type="source")
+install.packages(pkgs="https://cran.r-project.org/src/contrib/Archive/ips/ips_0.0.12.tar.gz", type="source")
 
 # Install kdetrees package (removed from CRAN)
 # Ensure package 'devtools' is installed
