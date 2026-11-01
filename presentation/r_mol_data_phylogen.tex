@@ -1,23 +1,21 @@
-\documentclass[compress, xelatex, 11pt, xcolor=svgnames, aspectratio=169,
-	hyperref={
-		bookmarks=true,
-		unicode=true,
-		colorlinks=true,
-		pdftitle={Molecular data in R},
-		plainpages=false,
-		pdfauthor={Vojtech Zeisek},
-		pdfsubject={Course about phylogeny and evolution in R},
-		pdfcreator={XeLaTeX},
-		pdfkeywords={R, evolution, phylogeny, molecular data},
-		linkcolor=Crimson, % Navigation menu links on pages and in navigation menus
-		anchorcolor=Magenta, % Not in use?
-		citecolor=Magenta, % Not in use?
-		filecolor=Magenta, % Not in use?
-		menucolor=Magenta, % Not in use?
-		urlcolor=DodgerBlue, % Links with \href and \url
-		},
-	url={hyphens, lowtilde} % Allow line breaks within URLs
-	]{beamer}
+\documentclass[compress, xelatex, 11pt, xcolor=svgnames, aspectratio=169, url={hyphens, lowtilde}]{beamer}
+
+\hypersetup{
+	unicode=true,
+	colorlinks=true,
+	pdftitle={Molecular data in R},
+	plainpages=false,
+	pdfauthor={Vojtech Zeisek},
+	pdfsubject={Course about phylogeny and evolution in R},
+	pdfcreator={XeLaTeX},
+	pdfkeywords={R, evolution, phylogeny, molecular data},
+	linkcolor=Crimson, % Navigation menu links on pages and in navigation menus
+	anchorcolor=Magenta, % Not in use?
+	citecolor=Magenta, % Not in use?
+	filecolor=Magenta, % Not in use?
+	menucolor=Magenta, % Not in use?
+	urlcolor=DodgerBlue, % Links with \href and \url
+	}
 
 % Theme settings
 \usetheme[secheader]{Boadilla}
@@ -72,7 +70,9 @@
 \AfterEndEnvironment{itemize}{\vspace{-0.25em}}
 
 % Default language
-\usepackage[main=american]{babel}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\setmainlanguage[variant=usmax]{english}
 
 % Quotes
 \usepackage[autostyle=true, english=american]{csquotes}
