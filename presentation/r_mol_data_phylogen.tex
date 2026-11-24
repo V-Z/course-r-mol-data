@@ -57,13 +57,9 @@
 		}
 	}
 
-% Fixing space before and after block of code higlight
-\BeforeBeginEnvironment{spluscode}{\vspace{-0.5em}}
-\AfterEndEnvironment{spluscode}{\par\vspace{-0.5em}}
-
 % Fixing space before and after multicols region
-\BeforeBeginEnvironment{multicols}{\vspace{-1.5em}}
-\AfterEndEnvironment{multicols}{\par\vspace{-1.5em}}
+\BeforeBeginEnvironment{multicols}{\vspace{-1em}}
+\AfterEndEnvironment{multicols}{\par\vspace{-1em}}
 
 % Fixing space before and after itemize region
 \BeforeBeginEnvironment{itemize}{\vspace{-0.25em}}
@@ -347,7 +343,7 @@
 
 \begin{frame}{Linux --- RedHat, Fedora and derivatives like CENTOS, Scientific Linux, etc.}
 	\begin{itemize}
-		\item See instructions at \url{https://CRAN.R-project.org/bin/linux/redhat/}
+		\item See instructions for Red Hat at \url{https://CRAN.R-project.org/bin/linux/redhat/} and Fedora at \url{https://cran.r-project.org/bin/linux/fedora/}
 		\item Install packages \texttt{R-core} (the R), \texttt{R-core-devel} (required to compile additional R packages --- only some are available in repositories) and optionally \texttt{rkward}
 		\item Install group packages \texttt{"Development Tools"} and \texttt{"C Development Tools and Libraries"}
 		\item Various R packages can require their own build dependencies (packages \texttt{\textit{XXX}-dev(el)})
@@ -367,8 +363,8 @@
 \begin{frame}{Sources of R packages}
 	\label{sources}
 	\begin{itemize}
-		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 23,000 packages + many orphaned and archived --- abandoned by developers, might be working)
-		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,300 packages)
+		\item R CRAN \url{https://CRAN.R-project.org/} --- main and largest source of R packages (over 25,000 packages + many orphaned and archived --- abandoned by developers, might be working)
+		\item Bioconductor \url{https://bioconductor.org/} --- mainly bioinformatics packages, genomic data (over 2,400 packages)
 		\item R-Forge \url{https://r-forge.r-project.org/} (over 2,100 packages)
 		\item RForge \url{https://www.rforge.net/} (much smaller)
 		\item And more (\href{https://github.com/}{GitHub}), custom webs,~\ldots
@@ -408,8 +404,8 @@
 		\item General look of R commands:
 	\end{itemize}
 	\begin{spluscode}
-    function(argument1="SomeName", argument2=SomeVariable, argument3=8)
-    ModifiedObject <- SomeFunction(argument1=MyData, argument2=TRUE)
+    function(argument1 = "SomeName", argument2 = SomeVariable, argument3 = 8)
+    ModifiedObject <- SomeFunction(argument1 = MyData, argument2 = TRUE)
 	\end{spluscode}
 	\begin{itemize}
 		\item New/modified object (with data,~\ldots) is on the left: \enquote{\texttt{<-}} says to insert result of the function \texttt{SomeFunction} on the right into the object \texttt{ModifiedObject} on the left
@@ -423,7 +419,7 @@
 		\item When only some of the arguments are in use, use the names (order doesn't matter)
 	\end{itemize}
 	\begin{spluscode}
-    SomeFunction(argument2=TRUE, argument3=123, argument1=MyData)
+    SomeFunction(argument2 = TRUE, argument3 = 123, argument1 = MyData)
 	\end{spluscode}
 	\begin{itemize}
 		\item Some arguments are required, some optional
@@ -642,33 +638,33 @@
     class(x) # Shows class of the object
     x[2] # Shows second element of the object
     x <- x[-5] # Removes fifth element
-    y <- matrix(data=5:20, nrow=4, ncol=4) # Creates a matrix
+    y <- matrix(data = 5:20, nrow = 4, ncol = 4) # Creates a matrix
     is.matrix(y) # Is it matrix? Try is.<TAB><TAB>
     # TAB key shows available functions and objects starting by typed text
     y # Prints the matrix
     dim(y) # Dimensions of "y"
-    y[,2] # Prints second column
+    y[, 2] # Prints second column
 	\end{spluscode}
 \end{frame}
 
 \begin{frame}[fragile]{Basic operations with data II}
 	\begin{spluscode}
     y[3,] # Prints third row
-    y[4,3] # Prints element from fourth row and third column
-    c(x, y[4,]) # Concatenate "x" and 4th row of "y"
+    y[4, 3] # Prints element from fourth row and third column
+    c(x, y[4, ]) # Concatenate "x" and 4th row of "y"
     x2 <- c(x, 3, 2, 1) # Concatenate "x" and values "3", "2" and "1"
-    x <- y[2,] # Replaces "x" by second row of "y" (no warning)
+    x <- y[2, ] # Replaces "x" by second row of "y" (no warning)
     rm(x) # Deletes x (no warning)
-    y[,1:3] # Prints first through third column of the matrix
-    y[3,] <- rep(x=20, each=4) # Replaces third line by value of 20
-    y[y==20] <- 10 # If value of y's element is 20, replace it by 10
+    y[ ,1:3] # Prints first through third column of the matrix
+    y[3, ] <- rep(x = 20, each = 4) # Replaces third line by value of 20
+    y[y == 20] <- 10 # If value of y's element is 20, replace it by 10
     summary(y) # Basic statistics - according to columns
     colnames(y) <- c("A", "B", "C", "D") # Set column names
     # Objects and functions are without quotation marks; files and text with
     colnames(y) # Prints column names, use rownames() in very same way
     y # See modified object
-    y[,"C"] # Prints column C (R is case sensitive!)
-    y[,c("C", "B")] # Extract columns "C" and "B"
+    y[, "C"] # Prints column C (R is case sensitive!)
+    y[, c("C", "B")] # Extract columns "C" and "B"
 	\end{spluscode}
 \end{frame}
 
@@ -678,16 +674,16 @@
     t(y) # Transposes the matrix
     diag(y) # Get diagonal of the matrix
     # Replace diagonal by repetition of values 50 and 100
-    diag(y) <- rep(x=c(50, 100), times=2)
+    diag(y) <- rep(x = c(50, 100), times = 2)
     y # See modified object
     y <- as.data.frame(y) # Turns into DF (see other functions as.*)
     class(y) # Is it data frame now?
-    y[y==17] <- "NA" # Removes values of 17 (NA = not available = missing)
+    y[y == 17] <- "NA" # Removes values of 17 (NA = not available = missing)
     y$B # Gets variable B of data frame y ($ works similarly in S3 objects)
     # When loading saved project, you have to load again libraries and
     # scripts (see further), data objects are restored
     # This can be conveniently done in RStudio/RKWard
-    save(list=ls(), file="test.RData") # Saves all objects during the work
+    save(list = ls(), file = "test.RData") # Saves all objects during the work
     load("test.RData") # Loads saved R environment with all objects
     fix(y) # Use to edit matrices, data frames, functions, ...
     rm(y) # Removing...
@@ -699,21 +695,21 @@
 	\begin{spluscode}
     summary(iris) # Basic summary statistics
     # Boxplot comparing sepal lengths of the three species
-    boxplot(formula=iris$Sepal.Length~iris$Species)
-    setosa <- iris[which(iris$Species=="setosa"),] # Extract only setosa
+    boxplot(formula = iris$Sepal.Length ~ iris$Species)
+    setosa <- iris[which(iris$Species == "setosa"), ] # Extract only setosa
     # Testing correlation between sepal length and width of setosa
-    cor.test(x=setosa$Sepal.Length, y=setosa$Sepal.Width)
+    cor.test(x = setosa$Sepal.Length, y = setosa$Sepal.Width)
     # Plot correlation between sepal length and width of setosa
-    plot(x=setosa$Sepal.Length, y=setosa$Sepal.Width, main="Sepals",
-      xlab="Length", ylab="Width", pch=16, cex=1.5, col="red")
+    plot(x = setosa$Sepal.Length, y = setosa$Sepal.Width, main = "Sepals",
+      xlab = "Length", ylab = "Width", pch = 16, cex = 1.5, col = "red")
     # Add linear model line
     abline(reg=lm(setosa$Sepal.Width~setosa$Sepal.Length), col='brown', lwd=3)
     # Add sepal width mean and standard deviation
-    abline(h=mean(setosa$Sepal.Width), col="green", lwd=2, lty=2)
-    abline(h=mean(setosa$Sepal.Width) + sd(setosa$Sepal.Width), col="green",
-      lwd=2, lty=3)
-    abline(h=mean(setosa$Sepal.Width) - sd(setosa$Sepal.Width), col="green",
-      lwd=2, lty=3)
+    abline(h = mean(setosa$Sepal.Width), col = "green", lwd = 2, lty = 2)
+    abline(h = mean(setosa$Sepal.Width) + sd(setosa$Sepal.Width),
+      col = "green", lwd = 2, lty = 3)
+    abline(h = mean(setosa$Sepal.Width) - sd(setosa$Sepal.Width),
+      col = "green", lwd = 2, lty = 3)
 	\end{spluscode}
 \end{frame}
 
@@ -728,7 +724,7 @@
 		\item \href{https://en.wikipedia.org/wiki/Analysis_of_variance}{ANOVA} tells us if there is significant difference among means of samples (here sepal lengths among species)
 	\end{itemize}
 	\begin{spluscode}
-    aov(formula=iris[["Sepal.Length"]]~iris[["Species"]]) # Output:
+    aov(formula = iris[["Sepal.Length"]] ~ iris[["Species"]]) # Output:
     Call:
        aov(formula = iris[["Sepal.Length"]] ~ iris[["Species"]])
     Terms:
@@ -737,7 +733,7 @@
     Deg. of Freedom                 2       147
     Residual standard error: 0.5147894
     Estimated effects may be unbalanced
-    summary(aov(formula=iris[["Sepal.Length"]]~iris[["Species"]])) # Output:
+    summary(aov(formula = iris[["Sepal.Length"]] ~ iris[["Species"]])) # Output:
                        Df Sum Sq Mean Sq F value Pr(>F)    
     iris[["Species"]]   2  63.21  31.606   119.3 <2e-16 ***
     Residuals         147  38.96   0.265                   
@@ -786,19 +782,20 @@
 		\item Users/developers contribute by making extra packages extending computational possibilities --- one of biggest R advantages --- it then has unlimited possibilities
 		\item R has infrastructure for maintaining (for developers) and installing (for users) packages --- the \href{https://CRAN.R-project.org/}{CRAN} repository (comprehensive R archive network)
 		\item For various reasons, some people build their own infrastructures to maintain and install R packages --- compatible with R, bud separated (not in CRAN)
-		\item User has basically two options
+		\item User has basically 3 options
 		\begin{enumerate}
 			\item Set all repositories in R and use basic commands to install packages (slide~\ref{repos})
-			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff}) or use special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
+			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff})
+			\item U special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
 		\end{enumerate}
+		\item Repositories work in similar way as various app stores in Android, iOS,~\ldots
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Repositories}
 	\begin{itemize}
-		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c(\ldots))} or as \texttt{repos} parameter for each \texttt{install.packages(\ldots)} command (slide~\ref{repos} and onward)
+		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c(\ldots))} (global) or as \texttt{repos} parameter for each \texttt{install.packages(\ldots)} (every relevant time) command (slide~\ref{repos} and onward)
 		\item Repositories don't have to be set as global options, e.g. Bioconductor (slide~\ref{bioc}) has its own way to manage packages
-		\item Similar concepts as app stores of Android, iOS, etc.
 	\end{itemize}
 	\begin{block}{Installation of packages in GUI}
 		\begin{itemize}
@@ -822,7 +819,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 4.3 to 4.4), user \textbf{must} reinstall all packages
+		\item After upgrade of R (e.g. from 4.4 to 4.5), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -836,12 +833,12 @@
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
     ?install.packages # See for more options
-    install.packages(pkgs=c("pkg1", "pkg2", "pkg3", ...),
+    install.packages(pkgs = c("pkg1", "pkg2", "pkg3", ...),
       dependencies="Imports")
     # Installed packages are "inactive" - the must by loaded to use them:
-    library(PackageName) # Loads installed package (we will do it on the fly)
+    library("PackageName") # Loads installed package (we will do it on the fly)
     # Updates installed packages (by default from CRAN)
-    update.packages(ask=FALSE)
+    update.packages(ask = FALSE)
 	\end{spluscode}
 \end{frame}
 
@@ -849,17 +846,17 @@
 	\begin{spluscode}
     # Install packages. Installation of multiple packages may sometimes
     # fail - install then packages in smaller groups or one by one
-    install.packages(pkgs=c("ade4", "adegenet", "adegraphics", "adephylo",
+    install.packages(pkgs = c("ade4", "adegenet", "adegraphics", "adephylo",
       "ape", "BiocManager", "caper", "corrplot", "devtools", "adespatial",
-      "gee", "geiger", "ggplot2", "gplots", "hierfstat",
+      "gee", "geiger", "ggplot2", "gplots", "hierfstat", "ips",
       "lattice", "mapdata", "mapplots", "mapproj", "maps", "nlme",
       "PBSmapping", "pegas", "permute", "phangorn", "philentropy",
       "phylobase", "rentrez", "phytools", "picante", "plotrix", "poppr",
       "raster", "rgl", "RgoogleMaps", "Rmpi", "rworldmap", "rworldxtra",
       "seqinr", "sf", "shapefiles", "snow", "sp", "spdep", "splancs",
       "StAMPP", "TeachingDemos", "tripack", "vcfR", "vegan"),
-      repos="https://cloud.r-project.org/", dependencies="Imports")
-    update.packages(ask=FALSE) # Regularly update installed packages
+      repos = "https://cloud.r-project.org/", dependencies = "Imports")
+    update.packages(ask = FALSE) # Regularly update installed packages
 	\end{spluscode}
 \end{frame}
 
@@ -875,25 +872,21 @@
     # GUI uses for parallelization snow and Rmpi
     # RgoogleMaps can be used to plot output on top of Google map,
     # sf and related tools on GIS layer
-    install.packages(pkgs=c("PBSmapping", "mapproj", "RgoogleMaps", "Rmpi",
+    install.packages(pkgs = c("PBSmapping", "mapproj", "RgoogleMaps", "Rmpi",
       "sf", "sp", "shapefiles", "snow", "tripack"),
-      repos="https://cloud.r-project.org/", dependencies="Imports")
+      repos = "https://cloud.r-project.org/", dependencies = "Imports")
     # Install Geneland from GitHub
     # Devtools package is required to install from GitHub
-    if(! "devtools" %in% installed.packages()) {install.packages("devtools")}
+    if (!"devtools" %in% installed.packages()) { install.packages("devtools") }
     # Install Geneland itself
     devtools::install_github("gilles-guillot/Geneland")
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Install phyloch package (and ips)}{Example of installation of package not available in any repository}
+\begin{frame}[fragile]{Install phyloch package (and ips)}{Example of installation of package not available in any repository and simple installation from GitHub}
 	\label{phyloch}
 	\begin{itemize}
-		\item Check \url{http://www.christophheibl.de/Rpackages.html}
-		\item Package phyloch is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
-		\begin{itemize} % FIXME Check availability of IPS in CRAN
-			\item IPS was recently archived from CRAN, hopefully it will be restored soon\ldots
-		\end{itemize}
+		\item Package \href{http://www.christophheibl.de/Rpackages.html}{phyloch} is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
 	\end{itemize}
 	\begin{spluscode}
     # If not done already, install required packages first
@@ -903,25 +896,16 @@
     # Local or web URL - be careful about correct path) to package source
     install.packages(pkgs="http://www.christophheibl.de/phyloch_1.5-3.tar.gz",
       repos=NULL, type="source")
-    install.packages(pkgs=
-      "https://cran.r-project.org/src/contrib/Archive/ips/ips_0.0.12.tar.gz",
-      type="source")
 	\end{spluscode}
-\end{frame}
-
-\begin{frame}[fragile]{Install kdetrees package}{Simple installation from GitHub}
 	\label{kdetreesinst}
 	\begin{itemize}
-		\item Removed from CRAN, forked on GitHub as \url{https://github.com/V-Z/kdetrees} and slightly updated
-		\item See slide~\ref{kdetrees} for usage
+		\item Removed from CRAN, forked on \href{https://github.com/V-Z/kdetrees}{GitHub} and slightly updated, see slide~\ref{kdetrees} for usage
 	\end{itemize}
 	\begin{spluscode}
     # Ensure package 'devtools' is installed
     if( ! 'devtools' %in% installed.packages()) {install.packages('devtools')}
     # Install 'kdetrees' from https://github.com/V-Z/kdetrees Git repository
     devtools::install_github('V-Z/kdetrees')
-    # When needed, the package can be loaded as
-    library(kdetrees) # Not needed now
 	\end{spluscode}
 \end{frame}
 
