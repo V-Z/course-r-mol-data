@@ -2,10 +2,12 @@
 help(rep) # Help for particular function (package must be loaded)
 ?rep # Help for particular function (package must be loaded)
 ??"ANOVA" # Search for the term within all installed packages
-help.search("analysis of variance") # Search for the phrase within all installed packages - return list of hits sorted according to type and package (i.e. package::function)
+# Search for the phrase within all installed packages - return list of hits sorted according to type and package (i.e. package::function)
+help.search("analysis of variance")
 
 ## Set working directory
-setwd("~/dokumenty/vyuka/r_mol_data/examples/") # Create YOUR OWN empty directory and modify the path accordingly!
+# NOTE Create YOUR OWN empty directory and modify the path accordingly!
+setwd("~/dokumenty/vyuka/r_mol_data/examples/")
 getwd() # Verifies where we are
 dir() # Lists files and folders on the disk
 ls() # Lists currently available R objects
@@ -118,6 +120,7 @@ update.packages(ask = FALSE)
 install.packages(pkgs = c("PBSmapping", "mapproj", "rgdal", "RgoogleMaps", "Rmpi", "sf", "sp", "maptools", "shapefiles", "snow", "tripack"), repos = "https://cloud.r-project.org", dependencies = "Imports")
 
 # On Windows install Rtools from https://cran.r-project.org/bin/windows/Rtools/
+
 # Install Geneland from GitHub
 # Devtools package is required to install from GitHub
 if (!"devtools" %in% installed.packages()) {

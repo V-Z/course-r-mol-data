@@ -109,12 +109,12 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Requirements to exam (\enquote{zápočet})}
+\begin{frame}[allowframebreaks]{Requirements to exam (\enquote{zápočet})}
 	\begin{enumerate}
-		\item Be present whole course.
-		\item Be active --- ask and answer questions.
-		\item Process some data. This will be very variable and individual. Everyone should be able to take some data (according to her/his interest) and do several simple analysis (according to her/his interest). Students can of course use manual, internet, discuss with anyone. The aim is to repeat part the most interesting/important for the student and edit introduced commands to fit her/his needs. Students can thus bring their data (if they are not too large), download any data from the internet or I~can give them some toy data.
-		\item Write at least one page (can be split into multiple articles) on Wikipedia about any method or related topic discussed during the course. Again, this is very open, students can write about any topic they like. I~prefer native language of the student (typically to make larger non-English Wikipedia).
+		\item Active participation.
+		\item Asking and answering on-topic questions during the course.
+		\item Loading of any molecular data into R (own, exemplary data from some R package, or from on-line database) and doing several appropriate analysis (according to data type), it is possible to use Internet, documentation, etc. The script does not have to be completely error-free, but it must be functional. If a student uses AI (LLM), they must clearly describe how they used it, what their input was, and what the AI did. Furthermore, in such a case, the script must work with the student’s real data, and must be absolutely error-free.
+		\item Write at least one standard page on Wikipedia on any topic related to the course material. This may include a translation, edits to existing articles, contributions to several shorter articles, etc. The page should be in the language version of Wikipedia corresponding to the student’s native language (typically non-English version). The page must comply with Wikipedia standards (style, sources, links and backlinks, categorization, etc.). Note that exact requirements vary among various language versions. AI (LLM) may be used to review the written article or,to translate from a foreign language. Afterward, manual review and the addition of all necessary elements, such as links, are always required.
 	\end{enumerate}
 \end{frame}
 
@@ -375,8 +375,9 @@
 
 \begin{frame}{CRAN keeps growing\ldots}
 	\begin{center}
-		\includegraphics[height=6.5cm]{cran.png}
+		\includegraphics[height=6cm]{cran.png}
 	\end{center}
+	\url{https://journal.r-project.org/news/RJ-2026-2-cran/}
 \end{frame}
 
 \subsection{Let's start with R}
@@ -431,7 +432,7 @@
     # "#" marks comments - notes within code which are not executed
     help(function) # Help for particular function (package must be loaded)
     ?function # Help for particular function (package must be loaded)
-    ??SearchedTerm # Search for the term within all installed packages
+    ??"SearchedTerm" # Search for the term within all installed packages
     help.search("searched phrase") # Search for the phrase within all
       # installed packages - return list of hits sorted according to
       # type and package (i.e. package::function)
@@ -786,7 +787,7 @@
 		\begin{enumerate}
 			\item Set all repositories in R and use basic commands to install packages (slide~\ref{repos})
 			\item Specify non-CRAN repository every time installing from it (e.g. slide~\ref{sources-diff})
-			\item U special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
+			\item Use special tools (e.g. for \href{https://bioconductor.org/install/}{Bioconductor} --- slide~\ref{bioc})
 		\end{enumerate}
 		\item Repositories work in similar way as various app stores in Android, iOS,~\ldots
 	\end{itemize}
@@ -794,7 +795,7 @@
 
 \begin{frame}{Repositories}
 	\begin{itemize}
-		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c(\ldots))} (global) or as \texttt{repos} parameter for each \texttt{install.packages(\ldots)} (every relevant time) command (slide~\ref{repos} and onward)
+		\item Repositories (internet directories full of R packages --- slide~\ref{sources}) can be set via \texttt{options(repos=c(\ldots))} (global) or (every relevant time) as \texttt{repos} parameter for each \texttt{install.packages(\ldots, repos=c(\ldots))} command (slide~\ref{repos} and onward)
 		\item Repositories don't have to be set as global options, e.g. Bioconductor (slide~\ref{bioc}) has its own way to manage packages
 	\end{itemize}
 	\begin{block}{Installation of packages in GUI}
@@ -819,7 +820,7 @@
 		\item \alert{Keep newest version of R and and newest versions of packages!}
 		\item Installation of multiple packages may sometimes fail --- install then packages in smaller groups or one by one --- check output and examine why installation failed --- commonly due to missing external dependency (read installation output and look for notes about missing libraries, etc.)
 		\item Avoid mixing of several R versions
-		\item After upgrade of R (e.g. from 4.4 to 4.5), user \textbf{must} reinstall all packages
+		\item After upgrade of R (e.g. from 4.5 to 4.6), user \textbf{must} reinstall all packages
 	\end{itemize}
 \end{frame}
 
@@ -827,14 +828,14 @@
 	\begin{itemize}
 		\item If repositories from slide~\ref{repos} are not set, it is possible to install in several steps packages from main repository (CRAN) and from another sources (following slides)
 		\item This is the basic and default the most common usage
-		\item After upgrade of R (e.g. from 4.3 to 4.4), all packages must be reinstalled
+		\item After upgrade of R (e.g. from 4.5 to 4.6), all packages must be reinstalled
 	\end{itemize}
 	\begin{spluscode}
     # Simplest usage
     install.packages("PackageName") # Case sensitive!
     ?install.packages # See for more options
     install.packages(pkgs = c("pkg1", "pkg2", "pkg3", ...),
-      dependencies="Imports")
+      dependencies = "Imports")
     # Installed packages are "inactive" - the must by loaded to use them:
     library("PackageName") # Loads installed package (we will do it on the fly)
     # Updates installed packages (by default from CRAN)
@@ -864,7 +865,7 @@
 	\label{Geneland}
 	\begin{itemize}
 		\item Since version 4, not in CRAN anymore, check its \href{https://github.com/gilles-guillot/Geneland/blob/master/vignettes/Geneland.pdf}{manual} and \href{https://github.com/gilles-guillot/Geneland}{homepage}
-		\item On Windows install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} first to be able to compile source package on Windows
+		\item \alert{On Windows} install \href{https://cran.r-project.org/bin/windows/Rtools/}{Rtools} first to be able to compile source package on Windows
 	\end{itemize}
 	\begin{spluscode}
     # Other packages used when using Geneland
@@ -883,10 +884,10 @@
 	\end{spluscode}
 \end{frame}
 
-\begin{frame}[fragile]{Install phyloch package (and ips)}{Example of installation of package not available in any repository and simple installation from GitHub}
+\begin{frame}[fragile]{Install packages phyloch and kdetrees}{Example of installation of package not available in any repository and simple installation from GitHub}
 	\label{phyloch}
 	\begin{itemize}
-		\item Package \href{http://www.christophheibl.de/Rpackages.html}{phyloch} is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author (but some functions behave differently) --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
+		\item \href{http://www.christophheibl.de/Rpackages.html}{Phyloch} is similar to \href{https://CRAN.R-project.org/package=ips}{ips} from same author --- both are great for usage of external applications within R, ips seems to develop more and phyloch will probably be deprecated\ldots
 	\end{itemize}
 	\begin{spluscode}
     # If not done already, install required packages first
@@ -899,7 +900,7 @@
 	\end{spluscode}
 	\label{kdetreesinst}
 	\begin{itemize}
-		\item Removed from CRAN, forked on \href{https://github.com/V-Z/kdetrees}{GitHub} and slightly updated, see slide~\ref{kdetrees} for usage
+		\item Kdetrees was removed from CRAN, then forked on \href{https://github.com/V-Z/kdetrees}{GitHub}, usage at slide~\ref{kdetrees}
 	\end{itemize}
 	\begin{spluscode}
     # Ensure package 'devtools' is installed
@@ -922,7 +923,7 @@
     ?BiocManager::install # See options
     # Install Bioconductor packages
     BiocManager::install("muscle") # Simplest usage
-    BiocManager::install(pkgs=c("Biostrings", "muscle"))
+    BiocManager::install(pkgs = c("Biostrings", "muscle"))
     # Update installed packages
     BiocManager::install()
     # Search for Bioconductor packages
@@ -938,8 +939,8 @@
     install.packages(c("adegenet", "poppr", "phytools"))
     update.packages() # Update packages
     # Installation from custom repository (ParallelStructure is not used here)
-    install.packages(pkgs="ParallelStructure",
-      repos="https://r-forge.r-project.org/")
+    install.packages(pkgs = "ParallelStructure",
+      repos = "https://r-forge.r-project.org/")
     ?install.packages # See help for details
     # Install CRAN package BiocManager used to manage Bioconductor packages
     if (!requireNamespace("BiocManager")) install.packages("BiocManager")
@@ -963,17 +964,17 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item Gdal \url{https://gdal.org/}
-		\begin{itemize}
-			\item Recommended for conversion of coordinates for Geneland (from slide~\ref{GenelandUse}), loading of SHP files, etc.
-			\item Optional for Windows users, Linux users should use \texttt{gdal} and respective development (\texttt{-dev(el)}) packages
-		\end{itemize}
-		\item GIMP \url{https://www.gimp.org/}
+% 		\item Gdal \url{https://gdal.org/}
+% 		\begin{itemize}
+% 			\item Recommended for conversion of coordinates for Geneland (from slide~\ref{GenelandUse}), loading of SHP files, etc.
+% 			\item Optional for Windows users, Linux users should use \texttt{gdal} and respective development (\texttt{-dev(el)}) packages
+% 		\end{itemize}
+		\item GIMP \url{https://www.gimp.org/} (optional)
 		\begin{itemize}
 			\item Image manipulation, free open-source alternative to products of Adobe or Corel
 			\item Optional, one of possibilities to view and edit output graphics from R
 		\end{itemize}
-		\item Inkscape \url{https://inkscape.org/}
+		\item Inkscape \url{https://inkscape.org/} (optional)
 		\begin{itemize}
 			\item Vector drawing, free open-source alternative to products of Adobe or Corel
 			\item Optional, one of possibilities to view and edit output graphics from R
@@ -982,7 +983,7 @@
 		\begin{itemize}
 			\item Aligner of sequences (from slide~\ref{alignment})
 		\end{itemize}
-		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/}
+		\item MPI \url{http://fisher.stats.uwo.ca/faculty/yu/Rmpi/} (optional)
 		\begin{itemize}
 			\item Library for parallelization used by \href{https://CRAN.R-project.org/package=Rmpi}{Rmpi} package (optional, recommended especially on Windows; macOS and Linux have more options for parallelization)
 			\item If it is not available, respective function can sometimes use different parallelization backend or user can turn off parallelization for respective function
@@ -992,11 +993,11 @@
 			\item Aligner of sequences (from slide~\ref{alignment})
 			\item Use version 3.8 from \url{https://drive5.com/muscle/downloads_v3.htm}, not 5.X
 		\end{itemize}
-		\item proj \url{https://proj.org/}
-		\begin{itemize}
-			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
-			\item Optional for Windows users, Linux users should use \texttt{proj} and respective development (\texttt{-dev(el)}) packages
-		\end{itemize}
+% 		\item proj \url{https://proj.org/}
+% 		\begin{itemize}
+% 			\item Required for conversion of coordinates for Geneland (from slide~\ref{GenelandUse})
+% 			\item Optional for Windows users, Linux users should use \texttt{proj} and respective development (\texttt{-dev(el)}) packages
+% 		\end{itemize}
 		\item Rtools \url{https://cran.r-project.org/bin/windows/Rtools/}
 		\begin{itemize}
 			\item \alert{On Windows only} --- to be able to compile source packages on Windows
