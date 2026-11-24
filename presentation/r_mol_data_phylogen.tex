@@ -1015,11 +1015,6 @@
 
 \begin{frame}[allowframebreaks]{Brief overview of molecular data types}{Sorted with respect to usage in R}
 	\begin{itemize}
-		\item \textbf{\href{https://en.wikipedia.org/wiki/Isozyme}{Isozymes}} --- forms of proteins differing in electrophoresis by their weight and/or charge
-		\begin{itemize}
-			\item Typically coded as presence/absence (1/0) data
-			\item Old fashioned, but same mathematical tools can be used to analyze any presence/absence (1/0) data matrices (this is very common approach)
-		\end{itemize}
 		\item \textbf{Fragmentation data} --- length polymorphism
 		\begin{itemize}
 			\item Codominant data --- e.g. \href{https://en.wikipedia.org/wiki/Microsatellite}{microsatellites} (SSRs --- Simple Sequence Repeats)
@@ -1029,13 +1024,14 @@
 				\item Mainly for population genetics (very popular), relationships among closely related species
 				\item Similarly ISSRs (Inter Simple Sequence Repeats)
 			\end{itemize}
-			\item Presence/absence (1/0) dominant data
-			\begin{itemize}
-				\item The allele \textbf{is} or \textbf{is not} present  --- it is impossible to distinguish heterozygots from dominant homozygots
-				\item Same mathematical tools as for analysis of isozymes and another presence/absence data
-				\item \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP} (Amplified Fragment Length Polymorphism) --- very variable, technically complicated, nowadays bit expensive and outdated
-				\item Simpler methods \href{https://en.wikipedia.org/wiki/Random_amplification_of_polymorphic_DNA}{RAPD} (Random Amplified Polymorphic DNA) and \href{https://en.wikipedia.org/wiki/Restriction_fragment_length_polymorphism}{PCR-RFLP} (Polymerase Chain Reaction-Restriction Fragment Length Polymorphism) are not used anymore at all
-			\end{itemize}
+		\end{itemize}
+		\item \textbf{Presence/absence (1/0) data}
+		\begin{itemize}
+			\item The allele \textbf{is} or \textbf{is not} present  --- it is impossible to distinguish heterozygots from dominant homozygots
+			\item \href{https://en.wikipedia.org/wiki/Amplified_fragment_length_polymorphism}{AFLP} (Amplified Fragment Length Polymorphism) --- very variable, technically complicated, nowadays bit expensive and outdated
+			\item Datasets of various \href{https://en.wikipedia.org/wiki/Repeated_sequence_(DNA)}{repetitive DNA}, \href{https://en.wikipedia.org/wiki/Transposable_element}{transposable elements}, etc. are commonly coded as presence/absence
+			\item Practically any data can be recoded as \texttt{0/1} --- commonly used as a~\enquote{fallback} in case of any issues (e.g. polyploid microsatellites and unclear allele dosage)
+			\item Same mathematical tools are used regardless input data --- universal, versatile
 		\end{itemize}
 		\item \textbf{Protein sequences} --- not used in the course
 		\begin{itemize}
@@ -1059,6 +1055,18 @@
 			\item Explore more options yourselves
 		\end{itemize}
 		\item For details about the molecular markers check specialized course like \href{https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120P44}{Use of molecular markers in plant systematics and population biology} (\href{https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120P44}{česky})
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Our data and R}{What we have as the input and which data type we use in R}
+	\begin{itemize}
+		\item Table of microsatellites, presence/absence data or similar $\rightarrow$ \texttt{loci} or \texttt{data.frame} $\rightarrow$ \texttt{genind} (population genetics)
+		\item Single or few gene(s) in FASTA or NEXUS file(s) $\rightarrow$ \texttt{DNAbin} $\rightarrow$ \texttt{genind} (mainly population genetics) or \texttt{phyDat}/\texttt{phylo4d} (mainly phylogenetics)
+		\item Large alignment in FASTA file $\rightarrow$ \texttt{genlight}
+		\item SNPs in small VCF $\rightarrow$ \texttt{vcfR} $\rightarrow$ \texttt{genind}
+		\item SNPs in large VCF $\rightarrow$ \texttt{vcfR} $\rightarrow$ \texttt{genlight}
+		\item Phylogenetic tree(s) in NEWICK or NEXUS file(s) $\rightarrow$ \texttt{phylo} (phylogenomics, evolutionary studies, drawing trees with another data,~\ldots)
+		\item Any generic data (spatial coordinates, morphological, ecologial or physiological traits,~\ldots) $\rightarrow$ \texttt{data.frame} (used together with any  of the above)
 	\end{itemize}
 \end{frame}
 
@@ -1132,21 +1140,25 @@
 
 \begin{frame}[allowframebreaks]{Input/output data formats}{Representative selection}
 	\begin{itemize}
-		\item \href{https://en.wikipedia.org/wiki/BAM_(file_format)}{\textbf{BAM}} (Binary Alignment Map)
+		\item \href{https://en.wikipedia.org/wiki/BAM_(file_format)}{\textbf{BAM}} (Binary Alignment Map)/\href{https://en.wikipedia.org/wiki/SAM_(file_format)}{\textbf{SAM}} (Sequence Alignment Map)
 		\begin{itemize}
+			\item Not used during the course
 			\item Sequences (usually short reads from Illumina) mapped to reference
 			\item Each file contains data for single sample
+			\item Structure is relatively complex
 			\item Contains also information about mapping quality etc., complex structure
-			\item Compressed version of SAM (see below)
+			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{https://www.htslib.org/}{SAMtools}
+			\item BAM is \enquote{just} a compressed version of SAM
 			\item Special applications are needed to work with BAM files
-			\item Extension \texttt{*.bam}
+			\item Multiple BAM files are used to construct VCF containing multiple samples
+			\item Extension \texttt{*.bam}/\texttt{*.sam}
 		\end{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}} (Comma Separated Values)
+		\item \href{https://en.wikipedia.org/wiki/Comma-separated_values}{\textbf{CSV}} (Comma Separated Values)/\href{https://en.wikipedia.org/wiki/Tab-separated_values}{\textbf{TSV}} (TAB separated values)
 		\begin{itemize}
 			\item \enquote{One sheet of Excel}
-			\item Common format to store data (traits, coordinates,~\ldots), similar to TSV (see below)
-			\item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks --- it is important to check structure before import into R (and verify it after import)
-			\item Extension usually \texttt{*.csv}
+			\item Common plain text format to store data (traits, coordinates,~\ldots), etc.
+			\item Columns (cells) are separated by commas, cells are commonly bordered by quotation marks (\texttt{csv}), or by tabs (\texttt{\textbackslash t}) (\texttt{tsv}) --- it is important to check structure before import into R (and verify it after import)
+			\item Extension usually \texttt{*.csv}, \texttt{*.tsv}, \texttt{*.tab} or so
 			\item Can have many formatting forms --- carefully set parameter of import function
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTA_format}{\textbf{FASTA}}
@@ -1161,6 +1173,7 @@
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/FASTQ_format}{\textbf{FASTQ}}
 		\begin{itemize}
+			\item Not used during the course
 			\item Text based format to store sequences (mainly nucleotides)
 			\item Every record consists of \textbf{4~lines}: (\textbf{1}) sequence ID (with possible description) starting with \texttt{@}, (\textbf{2}) the sequence (\texttt{ATCG...}), (\textbf{3}) \texttt{+} optionally followed by the same ID as line 1, and (\textbf{4}) quality values for nucleotides from line 2
 			\item Probably the most common format for output of modern high throughput sequencing machines (e.g. Illumina), each file contains huge number of sequences
@@ -1181,21 +1194,6 @@
 			\item Structure can be complex, is divided into blocks containing e.g. sequences, trees (in NEWICK format), distance matrix, fragmentation data, networks (e.g. for SplitsTree), MrBayes commands, traits,~\ldots
 			\item Several variants, sometimes problems with interoperability
 			\item Extension usually \texttt{*.nexus}, \texttt{*.nex}, \texttt{*.nxs}
-		\end{itemize}
-		\item \href{https://en.wikipedia.org/wiki/SAM_(file_format)}{\textbf{SAM}} (Sequence Alignment Map)
-		\begin{itemize}
-			\item Text-based format for storing biological sequences aligned to a~reference sequence
-			\item Each file contains data for one sample
-			\item Structure is relatively complex
-			\item Used by applications like \href{https://github.com/pezmaster31/bamtools/wiki}{bamtools} or \href{https://www.htslib.org/}{SAMtools}
-			\item Extension usually \texttt{*.sam}
-		\end{itemize}
-		\item \href{https://en.wikipedia.org/wiki/Tab-separated_values}{\textbf{TSV}} (TAB separated values)
-		\begin{itemize}
-			\item \enquote{One sheet of Excel}
-			\item Common format to store data (traits, coordinates,~\ldots), plain text, similar to CSV
-			\item Columns (cells) are separated by tabs (\texttt{\textbackslash t}) --- it is important to check structure before import into R (and verify it after import)
-			\item Extension usually \texttt{*.tsv}, \texttt{*.tab}
 		\end{itemize}
 		\item \href{https://en.wikipedia.org/wiki/Text_file}{\textbf{TXT}}
 		\begin{itemize}
