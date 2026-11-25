@@ -1,0 +1,7 @@
+# Molecular data in R
+
+Course of work with molecular data in R by Vojtěch Zeisek, <https://trapa.cz/>, <zeisek@natur.cuni.cz>.
+
+CESNET; Department of Botany, Faculty of Science, Charles University, Prague; Institute of Botany, Czech Academy of Sciences, Průhonice
+
+![R logo](rlogo.jpg)

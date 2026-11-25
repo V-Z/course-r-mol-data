@@ -1,0 +1,917 @@
+# Unmatched sections from QMD (place manually)
+
+<!-- MERGE-REVIEW: qmd section 'Get information about object classes' has no counterpart in TEX. -->
+
+### Get information about object classes
+
+```{r}
+getClassDef("data.frame") # Or select any other class name
+```
+
+<!-- MERGE-REVIEW: qmd section 'Libraries for loading data and population genetic analysis' has no counterpart in TEX. -->
+
+### Libraries for loading data and population genetic analysis
+
+Load needed libraries
+
+```{r}
+library("ape")
+library("ade4")
+library("adegenet")
+library("pegas")
+library("poppr")
+```
+
+<!-- MERGE-REVIEW: qmd section 'Heatmaps' has no counterpart in TEX. -->
+
+### Heatmaps
+
+Based on various distances
+
+```{r}
+heatmap(as.matrix(hauss_dist), symm = TRUE, labRow = rownames(as.matrix(hauss_dist_bruvo)), labCol = colnames(as.matrix(hauss_dist_bruvo))) # hauss_dist doesn't contain names of individuals - we have to add them here
+heatmap(as.matrix(hauss_dist_pop), symm = TRUE)
+heatmap(as.matrix(hauss_dist_bruvo), symm = TRUE)
+heatmap(as.matrix(hauss_dist_diss), symm = TRUE)
+?heatmap # Other options
+```
+
+<!-- MERGE-REVIEW: qmd section 'UPGMA' has no counterpart in TEX. -->
+
+### UPGMA
+
+Calculate it Saving as phylo object (and not hclust) gives more possibilities for further plotting and manipulations
+
+Test quality - tests correlation of original distance in the matrix and reconstructed distance from hclust object
+
+See NJ chapter for testing of this correlation
+
+```{r}
+usflu_upgma <- as.phylo(hclust(d = usflu_dist, method = "average"))
+plot.phylo(x = usflu_upgma, cex = 0.75)
+title("UPGMA tree")
+```
+
+```{r}
+plot(x = as.vector(usflu_dist), y = as.vector(as.dist(cophenetic(usflu_upgma))), xlab = "Original pairwise distances", ylab = "Pairwise distances on the tree", main = "Is UPGMA appropriate?", pch = 20, col = transp(col = "black", alpha = 0.1), cex = 2)
+abline(lm(as.vector(as.dist(cophenetic(usflu_upgma))) ~ as.vector(usflu_dist)), col = "red")
+```
+
+<!-- MERGE-REVIEW: qmd section 'NJ' has no counterpart in TEX. -->
+
+### NJ
+
+Calculates the tree (try with various distances)
+
+Test tree quality - plot original vs. reconstructed distance
+
+Plot a basic tree - see ?plot.phylo for details
+
+Bootstrap
+
+boot.phylo() resamples all columns - remove population column first
+
+Calculate the bootstrap - repeat EXACTLY ALL STEPS from data to tree
+
+boot.phylo returns NUMBER of replicates - NO PERCENTAGE Plot the tree
+
+Labels for nodes - bootstrap - see ?nodelabels for graphical settings
+
+Another bootstrap possibility
+
+Plot the tree, explicitly display node labels
+
+Plot a nice tree with colored tips
+
+Labels for nodes - bootstrap - see ?nodelabels for graphical settings
+
+Coloured labels - creates vector of colors according to population information in genind object
+
+Colored tips
+
+Plot BW tree with tip symbols and legend
+
+Add axis with distances
+
+From node labels let's remove unneeded frame
+
+As tip label we use only symbols - see ?points for graphical details
+
+Plot a legend explainindg symbols
+
+Bruvo's distance - NJ
+
+bruvo.boot() writes all needed information into resulting object, so there is no need for external bootstrap function
+
+Bruvo's distance - UPGMA
+
+Populations aboot() can use distances implemented in poppr:
+
+Calculations
+
+Information about result
+
+Plot a tree
+
+Make a tree based on DNA sequences
+
+Plot it
+
+Coloured tips
+
+Tip labels
+
+Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
+
+Root the tree - "outgroup"is name of accession (in quotation marks) or number (position within phy object) Here, outgroup is the oldes (first) sample as viruses were sampled continuously during seveal years
+
+Plot it
+
+Labeling of tips
+
+Add axis with phylogenetic distance
+
+Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
+
+Bootstrap rooted tree Calculate it
+
+Plot the tree
+
+Legend - describing years - pretty() automatically shows best values from given range, num2col() selects colors from color scale
+
+Plots bootstrap support - note usflu_boot contains raw numbers - transform it into percent
+
+Collapse branches with low bootstrap support
+
+Determine branches with low support - note BS values are in raw numbers - use desired percentage with respect to number of bootstraps
+
+Set length of bad branches to zero
+
+Create new tree
+
+Plot the consensus tree
+
+```{r}
+hauss_nj <- nj(hauss_dist)
+```
+
+```{r}
+plot(as.vector(hauss_dist), as.vector(as.dist(cophenetic(hauss_nj))), xlab = "Original distance", ylab = "Reconstructed distance")
+abline(lm(as.vector(hauss_dist) ~ as.vector(as.dist(cophenetic(hauss_nj)))), col = "red")
+cor.test(x = as.vector(hauss_dist), y = as.vector(as.dist(cophenetic(hauss_nj))), alternative = "two.sided") # Testing the correlation
+summary(lm(as.vector(hauss_dist) ~ as.vector(as.dist(cophenetic(hauss_nj))))) # Prints summary text
+```
+
+```{r}
+plot.phylo(x = hauss_nj, type = "phylogram")
+plot.phylo(x = hauss_nj, type = "cladogram", edge.width = 2)
+plot.phylo(x = hauss_nj, type = "fan", edge.width = 2, edge.lty = 2)
+plot.phylo(x = hauss_nj, type = "radial", edge.color = "red", edge.width = 2, edge.lty = 3, cex = 2)
+```
+
+```{r}
+hauss_loci_nopop <- hauss_loci
+hauss_loci_nopop[["population"]] <- NULL
+```
+
+```{r}
+hauss_boot <- boot.phylo(phy = hauss_nj, x = hauss_loci_nopop, FUN = function(xxX) nj(dist.gene(loci2genind(xxX)@tab, method = "pairwise")), B = 1000)
+```
+
+```{r}
+plot.phylo(x = hauss_nj, type = "unrooted", main = "Neighbour-Joining tree")
+```
+
+```{r}
+nodelabels(text = round(hauss_boot / 10))
+?boot.phylo # See details
+```
+
+```{r}
+hauss_aboot <- aboot(x = hauss_genind, tree = nj, distance = nei.dist, sample = 100) # Bootstrap values are in slot node.label
+```
+
+```{r}
+plot.phylo(x = hauss_aboot, show.node.label = TRUE)
+?aboot # See details...
+?plot.phylo
+```
+
+```{r}
+plot.phylo(x = hauss_nj, type = "unrooted", show.tip = FALSE, edge.width = 3, main = "Neighbour-Joining tree")
+```
+
+```{r}
+nodelabels(text = round(hauss_boot / 10))
+```
+
+```{r}
+nj_rainbow <- colorRampPalette(rainbow(length(popNames(hauss_genind))))
+```
+
+```{r}
+tiplabels(text = indNames(hauss_genind), bg = fac2col(x = pop(hauss_genind), col.pal = nj_rainbow))
+```
+
+```{r}
+plot.phylo(x = hauss_nj, type = "cladogram", show.tip = FALSE, edge.width = 3, main = "Neighbour-Joining tree")
+```
+
+```{r}
+axisPhylo()
+```
+
+```{r}
+nodelabels(text = round(hauss_boot / 10), frame = "none", bg = "white")
+```
+
+```{r}
+tiplabels(frame = "none", pch = rep(x = 0:4, times = c(13, 17, 2, 6, 9)), lwd = 2, cex = 2)
+```
+
+```{r}
+legend(x = "topleft", legend = c("He", "Oh", "Pr", "Ne", "Sk"), border = "black", pch = 0:4, pt.lwd = 2, pt.cex = 2, bty = "o", bg = "lightgrey", box.lwd = 2, cex = 1.2, title = "Populations")
+?plot.phylo
+?nodelabels
+?legend
+?axisPhylo
+```
+
+```{r}
+hauss_nj_bruvo <- bruvo.boot(pop = hauss_genind, replen = rep(2, 12), sample = 1000, tree = "nj", showtree = TRUE, cutoff = 1, quiet = FALSE)
+plot.phylo(x = hauss_nj_bruvo, type = "unrooted", show.tip = FALSE, edge.width = 3, main = "Neighbor-Joining tree")
+```
+
+```{r}
+nodelabels(hauss_nj_bruvo[["node.labels"]]) # Note you can call node labels from phylo object as phylo$node.labels or phylo[["node.labels"]]
+tiplabels(hauss_nj_bruvo[["tip.label"]], bg = fac2col(x = hauss_genind$pop, col.pal = nj_rainbow))
+```
+
+```{r}
+hauss_upgma <- bruvo.boot(pop = hauss_genind, replen = rep(2, 12), sample = 1000, tree = "upgma", showtree = TRUE, cutoff = 1, quiet = FALSE)
+plot.phylo(hauss_upgma, type = "unrooted", show.tip = FALSE, edge.width = 3, main = "UPGMA tree")
+nodelabels(hauss_upgma[["node.labels"]])
+tiplabels(hauss_upgma[["tip.label"]], bg = fac2col(x = hauss_genind@pop, col.pal = nj_rainbow))
+```
+
+```{r}
+?poppr::aboot
+?poppr::nei.dist
+```
+
+```{r}
+hauss_nj_pop <- aboot(x = hauss_genpop, tree = "nj", distance = "nei.dist", sample = 1000, showtree = FALSE)
+```
+
+```{r}
+print.phylo(hauss_nj_pop)
+```
+
+```{r}
+plot.phylo(x = hauss_nj_pop, type = "radial", show.node.label = TRUE, cex = 1.2, edge.width = 3, main = "Neighbor-Joining tree of populations")
+
+```
+
+```{r}
+usflu_tree <- nj(X = usflu_dist)
+```
+
+```{r}
+plot.phylo(x = usflu_tree, type = "unrooted", show.tip = FALSE)
+title("Unrooted NJ tree")
+```
+
+```{r}
+usflu_pal <- colorRampPalette(topo.colors(length(levels(as.factor(usflu_annot[["year"]])))))
+```
+
+```{r}
+tiplabels(text = usflu_annot$year, bg = num2col(usflu_annot$year, col.pal = usflu_pal), cex = 0.75)
+```
+
+```{r}
+legend(x = "bottomright", fill = num2col(x = pretty(x = 1993:2008, n = 8), col.pal = usflu_pal), legend = pretty(x = 1993:2008, n = 8), ncol = 1)
+```
+
+```{r}
+usflu_tree_rooted <- root.phylo(phy = usflu_tree, outgroup = 1)
+```
+
+```{r}
+plot.phylo(x = usflu_tree_rooted, show.tip = FALSE, edge.width = 2)
+title("Rooted NJ tree")
+```
+
+```{r}
+tiplabels(text = usflu_annot$year, bg = transp(num2col(x = usflu_annot$year, col.pal = usflu_pal), alpha = 0.7), cex = 0.75, fg = "transparent")
+```
+
+```{r}
+axisPhylo()
+```
+
+```{r}
+legend(x = "topright", fill = num2col(x = pretty(x = 1993:2008, n = 8), col.pal = usflu_pal), legend = pretty(x = 1993:2008, n = 8), ncol = 1)
+```
+
+```{r}
+usflu_boot <- boot.phylo(phy = usflu_tree_rooted, x = usflu_dna, FUN = function(EEE) root.phylo(nj(dist.dna(EEE, model = "TN93")), outgroup = 1), B = 1000)
+```
+
+```{r}
+plot.phylo(x = usflu_tree_rooted, show.tip = FALSE, edge.width = 2)
+title("NJ tree + bootstrap values")
+tiplabels(frame = "none", pch = 20, col = transp(num2col(x = usflu_annot$year, col.pal = usflu_pal), alpha = 0.7), cex = 3.5, fg = "transparent")
+axisPhylo()
+```
+
+```{r}
+legend(x = "topright", fill = num2col(x = pretty(x = 1993:2008, n = 8), col.pal = usflu_pal), legend = pretty(x = 1993:2008, n = 8), ncol = 1)
+```
+
+```{r}
+nodelabels(text = round(usflu_boot / 10), cex = 0.75)
+```
+
+```{r}
+usflu_tree_usflu_na_density <- usflu_tree_rooted
+```
+
+```{r}
+usflu_tocollapse <- match(x = which(usflu_boot < 700) + length(usflu_tree_rooted$tip.label), table = usflu_tree_usflu_na_density$edge[, 2])
+```
+
+```{r}
+usflu_tree_usflu_na_density$edge.length[usflu_tocollapse] <- 0
+```
+
+```{r}
+usflu_tree_collapsed <- di2multi(phy = usflu_tree_usflu_na_density, tol = 0.00001)
+```
+
+```{r}
+plot.phylo(x = usflu_tree_collapsed, show.tip = FALSE, edge.width = 2)
+title("NJ tree after collapsing weak nodes")
+tiplabels(text = usflu_annot$year, bg = transp(num2col(x = usflu_annot$year, col.pal = usflu_pal), alpha = 0.7), cex = 0.5, fg = "transparent")
+axisPhylo()
+legend(x = "topright", fill = num2col(x = pretty(x = 1993:2008, n = 8), col.pal = usflu_pal), legend = pretty(x = 1993:2008, n = 8), ncol = 1)
+```
+
+<!-- MERGE-REVIEW: qmd section 'Replacements of NJ' has no counterpart in TEX. -->
+
+### Replacements of NJ
+
+Usage is same as nj() Check
+
+```{r}
+?njs
+?bionj
+?bionjs
+?NJ
+?UNJ
+?FastME
+```
+
+<!-- MERGE-REVIEW: qmd section 'SNP' has no counterpart in TEX. -->
+
+### SNP
+
+Plot of missing data (white) and number of 2nd alleles
+
+Sum of the number of second allele in each SNP
+
+Plot distribution of (second) allele frequencies
+
+Mean number of second allele in each SNP
+
+Plot distribution of allele frequencies - play with parameters to get nice image
+
+Number of missing values in each locus
+
+Set range of xlim parameter from 0 to the length of original alignment
+
+PCA - select number of retained PC axes, about 10 here
+
+Plot PCA
+
+Loading plot - contribution of variables to the pattern observed
+
+Coloured plot
+
+Calculate phylogenetic tree
+
+Plot colored phylogenetic tree
+
+Add legend
+
+```{r}
+glPlot(x = usflu_genlight, legend = TRUE, posi = "topleft")
+```
+
+```{r}
+usflu_freq <- glSum(usflu_genlight)
+```
+
+```{r}
+hist(x = usflu_freq, proba = TRUE, col = "gold", xlab = "Allele frequencies", main = "Distribution of (second) allele frequencies")
+lines(x = density(usflu_freq)$x, y = density(usflu_freq)$y * 1.5, col = "red", lwd = 3)
+```
+
+```{r}
+usflu_mean <- glMean(usflu_genlight)
+usflu_mean <- c(usflu_mean, 1 - usflu_mean)
+```
+
+```{r}
+hist(x = usflu_mean, proba = TRUE, col = "darkseagreen3", xlab = "Allele frequencies", main = "Distribution of allele frequencies", nclass = 20)
+lines(x = density(usflu_mean, bw = 0.05)$x, y = density(usflu_mean, bw = 0.05)$y * 2, lwd = 3)
+
+```
+
+```{r}
+usflu_na_density <- density(glNA(usflu_genlight), bw = 10) # Play with bw parameter to get optimal image
+```
+
+```{r}
+plot(x = usflu_na_density, type = "n", xlab = "Position in the alignment", main = "Location of the missing values (NA)", xlim = c(0, 1701))
+polygon(c(usflu_na_density$x, rev(usflu_na_density$x)), c(usflu_na_density$y, rep(0, length(usflu_na_density$x))), col = transp("blue", alpha = 0.3))
+points(glNA(usflu_genlight), rep(0, nLoc(usflu_genlight)), pch = "|", cex = 2, col = "blue")
+```
+
+```{r}
+usflu_pca <- glPca(x = usflu_genlight, center = TRUE, scale = FALSE, loadings = TRUE)
+```
+
+```{r}
+scatter.glPca(x = usflu_pca, posi = "topright")
+title("PCA of the US influenza data")
+```
+
+```{r}
+loadingplot.glPca(x = usflu_pca)
+```
+
+```{r}
+colorplot(usflu_pca$scores, usflu_pca$scores, transp = TRUE, cex = 4)
+title("PCA of the US influenza data")
+abline(h = 0, v = 0, col = "grey")
+add.scatter.eig(usflu_pca$eig[1:40], 2, 1, 2, posi = "topright", inset = 0.05, ratio = 0.3)
+```
+
+```{r}
+usflu_tree_genlight <- nj(dist.gene(as.matrix(usflu_genlight)))
+```
+
+```{r}
+plot.phylo(x = usflu_tree_genlight, typ = "fan", show.tip = FALSE)
+tiplabels(pch = 20, col = num2col(usflu_annot[["year"]], col.pal = usflu_pal), cex = 4)
+title("NJ tree of the US influenza data")
+```
+
+```{r}
+legend(x = "topright", fill = num2col(x = pretty(x = 1993:2008, n = 8), col.pal = usflu_pal), legend = pretty(x = 1993:2008, n = 8), ncol = 1)
+```
+
+<!-- MERGE-REVIEW: qmd section 'Clustering analysis' has no counterpart in TEX. -->
+
+### Clustering analysis
+
+Needed library
+
+Tutorial, more information about DAPC
+
+Graphical web interface for DAPC
+
+```{r}
+library("adegenet")
+```
+
+```{r}
+adegenetTutorial("dapc")
+```
+
+```{r}
+adegenetServer("DAPC")
+```
+
+<!-- MERGE-REVIEW: qmd section 'Seeing trees in the forest' has no counterpart in TEX. -->
+
+### Seeing trees in the forest
+
+<!-- MERGE-REVIEW: qmd section 'kdetrees' has no counterpart in TEX. -->
+
+### kdetrees
+
+Load library
+
+Run main function - play with parameter k
+
+See results
+
+See removed trees
+
+Save removed trees
+
+Save kdetrees report
+
+Extract passing trees
+
+Save passing trees
+
+```{r}
+library("kdetrees")
+?kdetrees # See options
+```
+
+```{r}
+oxalis_kde <- kdetrees(trees = oxalis_trees, k = 0.4, distance = "dissimilarity", topo.only = FALSE, greedy = TRUE)
+```
+
+```{r}
+oxalis_kde
+plot(oxalis_kde)
+hist(oxalis_kde)
+```
+
+```{r}
+plot(oxalis_kde[["outliers"]])
+```
+
+```{r}
+write.tree(phy = oxalis_kde[["outliers"]], file = "oxalis_trees_outliers.nwk")
+```
+
+```{r}
+write.table(x = as.data.frame(x = oxalis_kde), file = "oxalis_trees_scores.tsv", quote = FALSE, sep = "\t")
+```
+
+```{r}
+oxalis_trees_good <- oxalis_trees[names(oxalis_trees) %in% names(oxalis_kde[["outliers"]]) == FALSE]
+oxalis_trees_good
+```
+
+```{r}
+write.tree(phy = oxalis_trees_good, file = "trees_good.nwk")
+```
+
+<!-- MERGE-REVIEW: qmd section 'Species tree out of bunch of gene trees' has no counterpart in TEX. -->
+
+### Species tree out of bunch of gene trees
+
+Consenus tree (50% rule)
+
+Plot the tree
+
+Species tree All trees must be ultrametric - chronos scale them
+
+Mean distances
+
+Plot the tree
+
+Parsimony super tree
+
+TODO STAR and STEAC species trees https://github.com/lliu1871/phybase
+
+Networks All tips must be in all trees
+
+Density tree Prepare list of trees to show
+
+The trees should be (otherwise plotting works, but may be more ugly)...
+
+Plotting has various options, play with it
+
+Another version for comparing several trees
+
+Plot all trees on same scale
+
+Close graphical device to cancel division of plotting device
+
+```{r}
+oxalis_tree_con <- ape::consensus(oxalis_trees_rooted, p = 0.5, check.labels = TRUE)
+print.phylo(oxalis_tree_con)
+```
+
+```{r}
+plot.phylo(oxalis_tree_con, edge.width = 2, label.offset = 0.3)
+axisPhylo(side = 1)
+```
+
+```{r}
+oxalis_trees_ultra <- lapply(X = oxalis_trees_rooted, FUN = chronos, model = "correlated")
+class(oxalis_trees_ultra) <- "multiPhylo"
+```
+
+```{r}
+?speciesTree # See underlying method
+oxalis_tree_sp_mean <- speciesTree(x = oxalis_trees_ultra, FUN = mean)
+print.phylo(oxalis_tree_sp_mean)
+```
+
+```{r}
+plot.phylo(oxalis_tree_sp_mean, edge.width = 2, label.offset = 0.01)
+edgelabels(text = round(oxalis_tree_sp_mean[["edge.length"]], digits = 2), frame = "none", col = "red", bg = "none")
+axisPhylo(side = 1)
+
+```
+
+```{r}
+library("phytools")
+?mrp.supertree # See details
+oxalis_tree_sp <- mrp.supertree(tree = oxalis_trees_rooted, method = "optim.parsimony", rooted = TRUE)
+print.phylo(oxalis_tree_sp)
+plot.phylo(oxalis_tree_sp, edge.width = 2, label.offset = 0.01)
+axisPhylo(side = 1)
+?phangorn::superTree # Similar function
+?phangorn::coalSpeciesTree # Has coalescence model to handle multiple individuals per species
+```
+
+```{r}
+library("phangorn")
+oxalis_tree_net <- consensusNet(oxalis_trees_rooted, prob = 0.25)
+plot(x = oxalis_tree_net, planar = FALSE, type = "2D", use.edge.length = TRUE, show.tip.label = TRUE, show.edge.label = TRUE, show.node.label = TRUE, show.nodes = TRUE, edge.color = "black", tip.color = "blue") # 2D
+plot(x = oxalis_tree_net, planar = FALSE, type = "3D", use.edge.length = TRUE, show.tip.label = TRUE, show.edge.label = TRUE, show.node.label = TRUE, show.nodes = TRUE, edge.color = "black", tip.color = "blue") # 3D
+```
+
+```{r}
+hauss_nj_trees <- list(hauss_nj, hauss_nj_bruvo, hauss_nj_rooted)
+hauss_nj_trees <- lapply(X = hauss_nj_trees, FUN = compute.brlen)
+hauss_nj_trees <- lapply(X = hauss_nj_trees, FUN = chronos)
+class(hauss_nj_trees) <- "multiPhylo"
+```
+
+```{r}
+is.rooted(hauss_nj_trees) # rooted,
+is.ultrametric(hauss_nj_trees) # ultrametric and
+is.binary(hauss_nj_trees) # binary bifurcating.
+```
+
+```{r}
+phangorn::densiTree(x = hauss_nj_trees, direction = "downwards", scaleX = TRUE, col = rainbow(3), width = 5, cex = 1.5)
+densiTree(x = hauss_nj_trees, direction = "upwards", scaleX = TRUE, width = 5)
+densiTree(x = hauss_nj_trees, scaleX = TRUE, width = 5, cex = 1.5)
+?phangorn::densiTree
+?phytools::densityTree
+```
+
+```{r}
+phytools::densityTree(trees = oxalis_trees_ultra, fix.depth = TRUE, use.gradient = TRUE, alpha = 0.5, lwd = 4) # Probably to much noise... :-?
+phytools::densityTree(trees = oxalis_trees_ultra[1:3], fix.depth = TRUE, use.gradient = TRUE, alpha = 0.5, lwd = 4) # Nice selection
+phytools::densityTree(trees = oxalis_trees_ultra[c(2, 4, 6, 7)], fix.depth = TRUE, use.gradient = TRUE, alpha = 0.5, lwd = 4) # Nice selection
+```
+
+```{r}
+kronoviz(x = oxalis_trees_rooted, layout = length(oxalis_trees_rooted), horiz = TRUE)
+```
+
+```{r}
+dev.off()
+```
+
+<!-- MERGE-REVIEW: qmd section 'More about plotting the trees' has no counterpart in TEX. -->
+
+### More about plotting the trees
+
+Nice tiplabels and higlighted tiplabel Load tree in text format
+
+Plot the tree
+
+Add colored tip labels
+
+Add colored node labels
+
+Add scale bar
+
+Note vectors for tip/node labels
+
+```{r}
+?plot.phylo # check it for various possibilities what to influence
+?par
+?points
+par(mfrow = c(1, 2)) # Plot two plots in one row
+plot.phylo(x = hauss_nj, type = "cladogram", use.edge.length = FALSE, direction = "rightwards")
+plot.phylo(x = hauss_nj, type = "cladogram", use.edge.length = FALSE, direction = "leftwards")
+dev.off() # Close graphical device to cancel par() settings
+```
+
+```{r}
+trape <- read.tree(text = "((Homo, Pan), Gorilla);")
+```
+
+```{r}
+plot.phylo(x = trape, show.tip.label = FALSE)
+```
+
+```{r}
+tiplabels(trape[["tip.label"]], bg = c("white", "black", "white"), col = c("black", "white", "black"), cex = 2)
+```
+
+```{r}
+nodelabels(text = c("6.4 Ma", "5.4 Ma"), frame = "circle", bg = "yellow")
+```
+
+```{r}
+add.scale.bar()
+```
+
+<!-- MERGE-REVIEW: qmd section 'PIC' has no counterpart in TEX. -->
+
+### PIC
+
+Load library
+
+Load training data
+
+See it
+
+See the data part
+
+See the phylogeny
+
+The tree must be fully bifurcating for most of methods multi2di randomly splits polytomies into bifurcating topology
+
+See result
+
+PIC - phylogenetically independent contrasts
+
+Plot a tree with PIC values
+
+Plot PIC
+
+Correlation of PIC of body mass and longevity
+
+Correlation test
+
+Linear model of both PICs
+
+Because PICs have expected mean zero - such linear regressions should be done through the origin (i.e. the intercept is set to zero)
+
+Permutation procedure to test PIC
+
+Intraspecific variation PIC - orthonormal contrasts List of numerical vectors is required as an input, otherwise usage is same as with pic()
+
+```{r}
+library("ape")
+```
+
+```{r}
+data(shorebird, package = "caper")
+```
+
+```{r}
+?caper::shorebird
+```
+
+```{r}
+head(shorebird.data)
+```
+
+```{r}
+shorebird.tree
+plot.phylo(shorebird.tree)
+```
+
+```{r}
+shorebird_tree <- multi2di(phy = shorebird.tree)
+```
+
+```{r}
+plot.phylo(shorebird_tree)
+```
+
+```{r}
+shorebird_pic_fmass <- pic(x = shorebird.data[["F.Mass"]], phy = shorebird_tree, scaled = TRUE, var.contrasts = FALSE, rescaled.tree = FALSE)
+shorebird_pic_eggmass <- pic(x = shorebird.data[["Egg.Mass"]], phy = shorebird_tree, scaled = TRUE, var.contrasts = FALSE, rescaled.tree = FALSE)
+```
+
+```{r}
+plot.phylo(x = shorebird_tree, edge.width = 2, cex = 0.8)
+nodelabels(round(shorebird_pic_fmass, digits = 3), adj = c(0, -0.5), frame = "none", col = "red")
+nodelabels(round(shorebird_pic_eggmass, digits = 3), adj = c(0, 1), frame = "none", col = "red")
+add.scale.bar()
+```
+
+```{r}
+plot(x = shorebird_pic_fmass, y = shorebird_pic_eggmass, pch = 16, cex = 1.5)
+abline(a = 0, b = 1, lty = 2) # x = y line
+```
+
+```{r}
+cor(x = shorebird_pic_fmass, y = shorebird_pic_eggmass, method = "pearson")
+```
+
+```{r}
+cor.test(x = shorebird_pic_fmass, y = shorebird_pic_eggmass, alternative = "greater", method = "pearson")
+```
+
+```{r}
+lm(formula = shorebird_pic_fmass ~ shorebird_pic_eggmass)
+```
+
+```{r}
+lm(formula = shorebird_pic_fmass ~ shorebird_pic_eggmass - 1)
+```
+
+```{r}
+lmorigin(formula = shorebird_pic_fmass ~ shorebird_pic_eggmass, nperm = 1000)
+```
+
+```{r}
+?pic.ortho
+```
+
+<!-- MERGE-REVIEW: qmd section 'Graphics' has no counterpart in TEX. -->
+
+### Graphics
+
+Output figure will be saved to the disk as OutputFile.png
+
+Here can go any number of functions making plots...
+
+When using plotting commands, nothing is shown on the screen The final plot(s) will be saved by:
+
+filename = "OutFiles\_%03d.png"\# Returns list of files named OutFiles_001.png, OutFiles_002.png, ... Useful for functions returning more graphs.
+
+```{r}
+png(filename = "OutputFile.png", width = 720, height = 720, bg = "white")
+```
+
+```{r}
+plot(...) # Whatever...
+```
+
+```{r}
+dev.off() # Closes graphical device - needed after use of plotting functions png(), svg(), pdf(), ... followed by any function like plot() to write the file(s) to the disk
+```
+
+```{r}
+?png # These functions have various possibilities to set size, whatever.
+?svg # Exact possibilities of all 3 functions vary from system to system
+?pdf # according to graphical libraries available in the computer.
+```
+
+<!-- MERGE-REVIEW: qmd section 'Functions' has no counterpart in TEX. -->
+
+### Functions
+
+Use as usually:
+
+```{r}
+my_function <- function(x, y) {
+  # Any commands can be here...
+  x + y
+}
+```
+
+```{r}
+my_function(5, 8)
+my_function(1, 4)
+my_function(x = 4, y = 7)
+mf_res <- my_function(9, 15)
+mf_res # See it works
+```
+
+<!-- MERGE-REVIEW: qmd section 'Loops' has no counterpart in TEX. -->
+
+### Loops
+
+For loop Simplest loop - print value of "i"in each step "i"is commonly used for various indexing
+
+In every step modify value of variable "xf"(add 1 to previous value)
+
+Work on each item of a list object Print length of each sequence in gunnera_dna
+
+While loop - it is done while the condition is valid While value of "q"is \< 5 (starting from 0), print it and add 1
+
+```{r}
+for (i in 1:5) {
+  print(i)
+}
+
+```
+
+```{r}
+xf <- 0 # Set initial value
+for (i in 1:10) {
+  # Any commands can be here...
+  print("Loop turn") # Some message for user
+  print(i) # Print number of turn - note how it is increasing
+  xf <- xf + i # Rise value of "xf"by current value of "i"(see previous line)
+  print(paste("Variable value:", xf)) # Print current value of "xf"
+}
+for (i in 10:5) {
+  print(i)
+} # Can be descending...
+```
+
+```{r}
+for (l in seq_along(gunnera_dna)) {
+  print(length(gunnera_dna[[l]]))
+}
+```
+
+```{r}
+q <- 0
+while (q < 5) {
+  print(q <- q + 1)
+}
+```

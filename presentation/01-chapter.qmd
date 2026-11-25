@@ -1,0 +1,140 @@
+# Introduction
+
+### The course information
+
+- The course page: <https://trapa.cz/en/course-molecular-data-r-2026>
+  - Česky: <https://trapa.cz/cs/kurz-molekularni-data-r-2026>
+- Subject in SIS: <https://is.cuni.cz/studium/eng/predmety/index.php?do=predmet&kod=MB120C16>
+  - Česky: <https://is.cuni.cz/studium/predmety/index.php?do=predmet&kod=MB120C16>
+  - For students having subscribed the subject, requirements are on next slide
+
+```{=html}
+<!--
+- In [IS STAG](https://wstag.jcu.cz/portal/studium/prohlizeni.html?pc_lang=en) as KBO/148 "Courses of work with molecular data in R"
+-->
+```
+
+- Working version is available at <https://github.com/V-Z/course-r-mol-data> - feel free to contribute, request new parts or report bugs
+
+### Requirements to exam ("zápočet")
+
+1.  Active participation.
+2.  Asking and answering on-topic questions during the course.
+3.  Loading of any molecular data into R (own, exemplary data from some R package, or from on-line database) and doing several appropriate analysis (according to data type), it is possible to use Internet, documentation, etc. The script does not have to be completely error-free, but it must be functional. If a student uses AI (LLM), they must clearly describe how they used it, what their input was, and what the AI did. Furthermore, in such a case, the script must work with the student’s real data, and must be absolutely error-free.
+4.  Write at least one standard page on Wikipedia on any topic related to the course material. This may include a translation, edits to existing articles, contributions to several shorter articles, etc. The page should be in the language version of Wikipedia corresponding to the student’s native language (typically non-English version). The page must comply with Wikipedia standards (style, sources, links and backlinks, categorization, etc.). Note that exact requirements vary among various language versions. AI (LLM) may be used to review the written article or,to translate from a foreign language. Afterward, manual review and the addition of all necessary elements, such as links, are always required.
+
+### Materials to help you...
+
+- Download the presentation from <https://soubory.trapa.cz/rcourse/r_mol_data_phylogen.pdf>
+- Download the script from <https://soubory.trapa.cz/rcourse/course_commands.r>, use it and write your comments and notes to it during the course
+  - **Note:** Open the R script in some **good** [text editor](https://texteditors.org/cgi-bin/wiki.pl?PickingATextEditor) (next slide) - showing syntax highlight, line numbers, etc. (**NO** Windows Notepad); the file is in UTF-8 encoding and with UNIX end of lines (so that too silly programs like Windows Notepad won't be able to open it correctly)
+  - The best is to open the script (or copy-paste the text) in e.g. RStudio or any other R GUI (slide ) and directly work with it
+  - \*\*Downloaded file must have extension `.r`, not `.txt`
+  - **Never ever** open `R` script in software like MS Word - it destroys quotation marks and other things making script unusable
+
+### Importance of good text editor
+
+**Can your text editor... ?**
+
+- Show syntax highlight
+
+- Show line numbers
+
+- Show space between brackets
+
+- Open any encoding and EOL
+
+- Fold source code
+
+- Show line breaks
+
+- Mark lines
+
+- Open multiple files
+
+- Advanced search and replace
+
+- Use regular expressions
+
+- Make projects, add notes
+
+- Use command line
+
+- Check spelling
+
+- Debug source code
+
+- [Kate](https://kate-editor.org/)
+
+- [KWrite](https://apps.kde.org/kwrite/)
+
+- [Vim](https://www.vim.org/)
+
+- [GNU Emacs](https://en.wikipedia.org/wiki/Emacs)
+
+- [Geany](https://www.geany.org/)
+
+- [Bluefish](https://bluefish.openoffice.nl/)
+
+- [Gedit](https://gedit-text-editor.org/)
+
+- [Notepad++](https://notepad-plus-plus.org/)
+
+- [Sublime](https://www.sublimetext.com/)
+
+- [VS Code](https://code.visualstudio.com/)
+
+- [Nano](https://www.nano-editor.org/)
+
+- And [more](https://en.wikipedia.org/wiki/List_of_text_editors)...
+
+- The best option is to use text editor of selected R GUI...
+
+### Think before you type (and hit Enter)...
+
+- Commands from file `course_commands.r` can be mostly directly launched without editing them, but before you do so...
+
+  1.  **Read** the command and all comments around, **do not blindly launch** it
+  2.  Ensure you understand, what is **aim** of the command (what it is supposed to do)
+  3.  Ensure you understand all **limitations** of the method (when you can use it and when not)
+  4.  Ensure you understand **syntax** of the command (its grammar and how it technically works)
+
+  - ... and then you **learn** **R**...
+  - Write there your own notes, so you can later use it for your data
+
+- Some **commands** from `course_commands.r` **do require to be edited** according to particular user's computer - it is described in the comments around the command - **read also comments** around the command
+
+- Learning R is effective only if you learn R syntax (language grammar), otherwise you only memorize commands without understanding them or blindly repeat someone's code - in such case, you wouldn't be able to solve any issue with your workflow
+
+### What we will and what we will not do...
+
+**We will go through...**
+
+- Basic introduction into R
+
+- Analyzing phylogeny and evolution, population genetics and basic theory
+
+  - DNA sequences, SNP, SSRs, AFLP, VCF, ...
+  - Alignments
+  - NJ, UPGMA, PCoA, DAPC, Bayesian clustering, ML, maximum parsimony, ...
+  - Character evolution, ancestral state reconstructions, ...
+  - Manipulations and analysis with trees
+
+- Plotting
+
+- Maps, spatial analysis, ...
+
+- Basic creation of scripts
+
+- And more...
+
+  **We will not go deep into...**
+
+- Detailed theory behind used methods
+
+- Programming in R
+
+- Other software related to the methods used (with exceptions of applications called from R)
+
+- Other areas of R usage (ecology, biomedicine, proteomics, ...)
+

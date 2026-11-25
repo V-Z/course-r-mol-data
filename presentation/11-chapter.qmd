@@ -1,0 +1,15 @@
+# 
+
+### Process more data
+
+**Not all combinations and possibilities were shown...**
+
+1.  Try to do some analysis with another introduced toy data
+2.  Try some of the introduced analysis with your own custom imported data
+
+- Working code can be easily recycled to process another data in similar way
+- R is always moving forward - new and new options are arising - be opened for news and search them on the Internet
+- Previous examples are not covering all possibilities...
+- It is crucial to be able to edit the introduced commands to be able to handle your data
+- Check help pages of the functions for more options what to do with your data <!-- MERGE-REVIEW: no counterpart section found in QMD; content from TEX kept as-is. -->
+

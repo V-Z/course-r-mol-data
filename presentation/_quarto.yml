@@ -1,0 +1,75 @@
+project:
+  type: book
+  output-dir: docs
+  post-render: make_script.R
+book:
+  title: "Molecular data in R"
+  subtitle: "Course about phylogeny and evolution in R"
+  date: 2026-11-25
+  author: "Vojtěch Zeisek"
+  chapters:
+    - index.qmd
+    - 01-chapter.qmd
+    - 02-chapter.qmd
+    - 03-chapter.qmd
+    - 04-chapter.qmd
+    - 05-chapter.qmd
+    - 06-chapter.qmd
+    - 07-chapter.qmd
+    - 08-chapter.qmd
+    - 09-chapter.qmd
+    - 10-chapter.qmd
+    - 11-chapter.qmd
+    - 12-chapter.qmd
+    - 13-chapter.qmd
+format:
+  html:
+    theme:
+      light: lumen
+      dark: darkly
+    anchor-sections: true
+    tabsets: true
+    smooth-scroll: true
+    respect-user-color-scheme: true
+    toc: true
+    toc-location: left
+    number-sections: true
+    mainfont: "Linux Libertine Sans"
+    monofont: "Linux Libertine Mono"
+    cap-location: bottom
+    fig-cap-location: bottom
+    tbl-cap-location: bottom
+    title-block-banner: true
+    title-block-banner-color: body
+    code-fold: show
+    code-overflow: scroll
+    code-line-numbers: true
+    code-copy: true
+    code-tools: true
+    fig-align: center
+    link-external-icon: true
+    link-external-newwindow: true
+    bread-crumbs: true
+    back-to-top-navigation: true
+    page-navigation: true
+  pdf:
+    documentclass: beamer
+    pdf-engine: xelatex
+    top-level-division: section
+    mainfont: "Linux Libertine O"
+    monofont: "Linux Libertine Mono O"
+    classoption: [compress, 11pt, aspectratio=169, xcolor=svgnames]
+    theme: Boadilla
+    colortheme: whale
+    innertheme: circles
+    institute: |
+      Department of Botany, Faculty of Science, Charles University, Prague<br>
+      Institute of Botany, Czech Academy of Sciences, Průhonice<br>
+      <https://trapa.cz/>, [zeisek@natur.cuni.cz](mailto:zeisek@natur.cuni.cz)
+execute:
+  eval: false
+  echo: true
+lang: "en-US"
+axe: true
+keywords: "R, evolution, phylogeny, molecular data"
+license: "BY-NC-SA"
