@@ -33,6 +33,8 @@ presentation/*minted*
 presentation/*.pyg
 # nomencl
 presentation/*.nlo
+# Quarto
+**.quarto*
 ## Other
 *~
 *.bak
@@ -52,3 +54,4 @@ examples/*.vcf*
 examples/macedonia_*
 examples/*.RData
 rcourse/macedonia.zip
+

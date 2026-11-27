@@ -1,3 +1,9 @@
+# Základní konfigurace: HTML "book" (více stránek podle kapitol) + export R skriptu.
+# Další výstupní formáty jsou v profilech (_quarto-<profil>.yml):
+#   quarto render                          -> docs/ HTML kniha + course_commands.r
+#   quarto render --profile beamer         -> docs/r_mol_data_phylogen.pdf (beamer, jako původní XeLaTeX)
+#   quarto render --profile revealjs --to revealjs -> docs-slides/ HTML prezentace (revealjs)
+#   quarto render --profile a4             -> docs/r_mol_data_phylogen_a4.pdf (klasické A4 PDF)
 project:
   type: book
   output-dir: docs
@@ -52,20 +58,6 @@ format:
     bread-crumbs: true
     back-to-top-navigation: true
     page-navigation: true
-  pdf:
-    documentclass: beamer
-    pdf-engine: xelatex
-    top-level-division: section
-    mainfont: "Linux Libertine O"
-    monofont: "Linux Libertine Mono O"
-    classoption: [compress, 11pt, aspectratio=169, xcolor=svgnames]
-    theme: Boadilla
-    colortheme: whale
-    innertheme: circles
-    institute: |
-      Department of Botany, Faculty of Science, Charles University, Prague<br>
-      Institute of Botany, Czech Academy of Sciences, Průhonice<br>
-      <https://trapa.cz/>, [zeisek@natur.cuni.cz](mailto:zeisek@natur.cuni.cz)
 execute:
   eval: false
   echo: true

@@ -1,0 +1,36 @@
+/* Ladění revealjs podle vzhledu "klasického" HTML (bootswatch lumen + Libertine).
+   Písmo se nastavuje přes mainfont/monofont v _quarto-revealjs.yml, tady barvy. */
+
+.reveal {
+  color: #333;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 {
+  color: #2c3e50;
+  text-transform: none;
+}
+
+.reveal a {
+  color: #158cba;
+}
+
+.reveal a:hover {
+  color: #0f6a8f;
+}
+
+.reveal code {
+  font-family: "Linux Libertine Mono", monospace;
+}
+
+.reveal pre code {
+  background: #f6f6f6;
+}
+
+.reveal ::selection {
+  background: #b3d4fc;
+}

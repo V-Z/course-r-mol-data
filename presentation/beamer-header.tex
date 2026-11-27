@@ -1,0 +1,63 @@
+% Dodatečná preambule pro beamer profil – replikuje vzhled původního
+% XeLaTeX zdroje (r_mol_data_phylogen.pdf). Quarto do LaTeXu generuje kód
+% přes skylighting (prostředí Shaded/Highlighting), proto jsou přestylována
+% tato prostředí místo původního minted (splus).
+
+% Theme settings
+\usetheme[secheader]{Boadilla}
+\usecolortheme{whale}
+\useinnertheme{circles}
+\setbeamertemplate{headline} {
+	\begin{beamercolorbox}{section in head/foot}
+		\insertsectionnavigationhorizontal{\paperwidth}{\hskip0pt plus1fill}{\hskip0pt plus1fill}
+	\end{beamercolorbox}
+	\begin{beamercolorbox}[ht=2ex, dp=1.125ex]{subsection in head/foot}
+		\insertsubsectionnavigationhorizontal{\paperwidth}{}{\hfill\hfill}
+	\end{beamercolorbox}
+	}
+
+% Fonts Linux Libertine
+\usepackage{libertine}
+
+% Other packages
+\usepackage{multicol}
+
+% Add background for \texttt{}
+\renewcommand{\texttt}[1]{\colorbox{Beige}{{\ttfamily #1}}}
+
+% TeX logos
+\usepackage{dtk-logos}
+
+% Code highlight: šedé pozadí bloku a čísla řádků jako u původního minted
+\definecolor{shadecolor}{gray}{0.5}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}, numbers=left, numbersep=-3pt, fontsize=\footnotesize}
+% Change line number style
+\renewcommand{\theFancyVerbLine}{
+	\sffamily
+	\textcolor{BlueViolet}{
+		\tiny
+		\oldstylenums{
+			\arabic{FancyVerbLine}
+			}
+		}
+	}
+
+% Fixing space before and after block of code higlight
+\BeforeBeginEnvironment{Shaded}{\vspace{-0.5em}}
+\AfterEndEnvironment{Shaded}{\par\vspace{-0.5em}}
+
+% Fixing space before and after multicols region
+\BeforeBeginEnvironment{multicols}{\vspace{-1.5em}}
+\AfterEndEnvironment{multicols}{\par\vspace{-1.5em}}
+
+% Fixing space before and after itemize region
+\BeforeBeginEnvironment{itemize}{\vspace{-0.25em}}
+\AfterEndEnvironment{itemize}{\vspace{-0.25em}}
+
+% Quotes
+\makeatletter
+\@ifpackageloaded{csquotes}{}{\usepackage[autostyle=true, english=american]{csquotes}}
+\makeatother
+
+% Title page graphic
+\titlegraphic{\includegraphics[width=1.5cm]{rlogo.jpg}}
