@@ -1,7 +1,7 @@
 project:
   type: book
   output-dir: docs
-  post-render: make_script.R
+  post-render: python3 make_course_script.py
 book:
   title: "Molecular data in R"
   subtitle: "Course about phylogeny and evolution in R"
