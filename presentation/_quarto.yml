@@ -3,11 +3,12 @@
 #   quarto render                          -> docs/ HTML kniha + course_commands.r
 #   quarto render --profile beamer         -> docs/r_mol_data_phylogen.pdf (beamer, jako původní XeLaTeX)
 #   quarto render --profile revealjs --to revealjs -> docs-slides/ HTML prezentace (revealjs)
-#   quarto render --profile a4             -> docs/r_mol_data_phylogen_a4.pdf (klasické A4 PDF)
 project:
   type: book
   output-dir: docs
-  post-render: python3 make_course_script.py
+  post-render:
+    - python3 make_course_script.py
+    - python3 rename_pdf.py docs/Molecular-data-in-R.pdf docs/r_mol_data_phylogen_a4.pdf
 book:
   title: "Molecular data in R"
   subtitle: "Course about phylogeny and evolution in R"
@@ -58,6 +59,27 @@ format:
     bread-crumbs: true
     back-to-top-navigation: true
     page-navigation: true
+  pdf:
+    documentclass: article
+    pdf-engine: xelatex
+    classoption: [a4paper, 11pt]
+    geometry: [margin=2.5cm]
+    top-level-division: section
+    mainfont: "Linux Libertine O"
+    monofont: "Linux Libertine Mono O"
+    highlight-style: pygments
+    toc: true
+    number-sections: true
+    variables:
+      colorlinks: true
+      linkcolor: Crimson
+      anchorcolor: Magenta
+      citecolor: Magenta
+      filecolor: Magenta
+      menucolor: Magenta
+      urlcolor: DodgerBlue
+      pdfsubject: "Course about phylogeny and evolution in R"
+      pdfkeywords: "R, evolution, phylogeny, molecular data"
 execute:
   eval: false
   echo: true
