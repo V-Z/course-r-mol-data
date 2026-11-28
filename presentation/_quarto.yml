@@ -1,16 +1,14 @@
-# Základní konfigurace: HTML "book" (více stránek podle kapitol) + export R skriptu.
-# Další výstupní formáty jsou v profilech (_quarto-<profil>.yml):
-#   quarto render                          -> docs/ HTML kniha + course_commands.r
-#   quarto render --profile beamer         -> docs/r_mol_data_phylogen.pdf (beamer, jako původní XeLaTeX)
-#   quarto render --profile revealjs --to revealjs -> docs-slides/ HTML prezentace (revealjs)
+---
+# /usr/lib/rstudio/resources/app/bin/quarto/bin/quarto render
 project:
   type: book
   output-dir: docs
   post-render:
     - python3 make_course_script.py
-    - python3 rename_pdf.py docs/Molecular-data-in-R.pdf docs/r_mol_data_phylogen_a4.pdf
 book:
   title: "Molecular data in R"
+  output-file: r_mol_data_phylogen_a4
+  downloads: [pdf]
   subtitle: "Course about phylogeny and evolution in R"
   date: 2026-11-25
   author: "Vojtěch Zeisek"
@@ -60,26 +58,32 @@ format:
     back-to-top-navigation: true
     page-navigation: true
   pdf:
-    documentclass: article
     pdf-engine: xelatex
-    classoption: [a4paper, 11pt]
-    geometry: [margin=2.5cm]
+    toc: true
+    number-sections: true
     top-level-division: section
     mainfont: "Linux Libertine O"
     monofont: "Linux Libertine Mono O"
-    highlight-style: pygments
-    toc: true
-    number-sections: true
+    fontsize: 11pt
+    linkcolor: Crimson
+    filecolor: Maroon
+    citecolor: Maroon
+    urlcolor: DodgerBlue
+    toccolor: DarkRed
+    colorlinks: true
+    documentclass: report
+    include-in-header:
+      text: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+    papersize: A4
+    geometry: [margin=2.5cm]
+    code-line-numbers: true
+    code-block-bg: Cornsilk
+    syntax-highlighting: pygments
     variables:
-      colorlinks: true
-      linkcolor: Crimson
-      anchorcolor: Magenta
-      citecolor: Magenta
-      filecolor: Magenta
-      menucolor: Magenta
-      urlcolor: DodgerBlue
-      pdfsubject: "Course about phylogeny and evolution in R"
-      pdfkeywords: "R, evolution, phylogeny, molecular data"
+      anchorcolor: Maroon
+      menucolor: Maroon
 execute:
   eval: false
   echo: true

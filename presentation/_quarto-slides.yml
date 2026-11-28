@@ -1,0 +1,44 @@
+---
+# /usr/lib/rstudio/resources/app/bin/quarto/bin/quarto render --profile slides
+project:
+  type: default
+  output-dir: "."
+  render:
+    - slides.qmd
+  post-render:
+    - sh -c "mkdir -p slides && mv slides.html slides/slides.html 2>/dev/null; mv slides_files slides/slides_files 2>/dev/null; mv slides.pdf slides/r_mol_data_phylogen.pdf 2>/dev/null; rm -f slides.tex; cp -n *.png *.jpg slides.css slides/ 2>/dev/null; true"
+format:
+  revealjs:
+    theme: solarized
+    css: slides.css
+    toc: true
+    number-sections: true
+    slide-number: true
+    logo: rlogo.jpg
+    menu: true
+    scrollable: true
+    smaller: true
+    progress: true
+    keyboard: true
+    mouse-wheel: false
+    code-fold: show
+    code-overflow: scroll
+    code-line-numbers: true
+    code-copy: true
+    mainfont: "Linux Libertine Sans"
+    monofont: "Linux Libertine Mono"
+  beamer:
+    pdf-engine: xelatex
+    keep-tex: true
+    aspectratio: 169
+    toc: true
+    number-sections: false
+    number-depth: 2
+    slide-level: 3
+    classoption: [compress, 11pt, xcolor=svgnames]
+    include-in-header: beamer-header.tex
+    highlight-style: pygments
+    institute: "CESNET; Department of Botany, Faculty of Science, Charles University, Prague; Institute of Botany, Czech Academy of Sciences, Průhonice; <https://trapa.cz/>, [zeisek@natur.cuni.cz](mailto:zeisek@natur.cuni.cz)"
+    variables:
+      geometry: false
+      date: "February 2--5, 2026"

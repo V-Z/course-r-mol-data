@@ -1,0 +1,33 @@
+---
+title: "Molecular data in R"
+subtitle: "Course about phylogeny and evolution in R"
+author: "Vojtěch Zeisek"
+---
+
+{{< include index.qmd >}}
+
+{{< include 01-chapter.qmd >}}
+
+{{< include 02-chapter.qmd >}}
+
+{{< include 03-chapter.qmd >}}
+
+{{< include 04-chapter.qmd >}}
+
+{{< include 05-chapter.qmd >}}
+
+{{< include 06-chapter.qmd >}}
+
+{{< include 07-chapter.qmd >}}
+
+{{< include 08-chapter.qmd >}}
+
+{{< include 09-chapter.qmd >}}
+
+{{< include 10-chapter.qmd >}}
+
+{{< include 11-chapter.qmd >}}
+
+{{< include 12-chapter.qmd >}}
+
+{{< include 13-chapter.qmd >}}

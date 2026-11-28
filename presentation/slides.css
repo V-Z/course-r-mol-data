@@ -1,6 +1,3 @@
-/* Ladění revealjs podle vzhledu "klasického" HTML (bootswatch lumen + Libertine).
-   Písmo se nastavuje přes mainfont/monofont v _quarto-revealjs.yml, tady barvy. */
-
 .reveal {
   color: #333;
 }
